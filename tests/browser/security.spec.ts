@@ -76,10 +76,35 @@ test('active refresh restores a lock and an external storage change cannot unloc
 
 test('a second tab changing storage synchronously gates the first tab', async ({ page, context }) => {
   await mockFullscreen(page); await page.goto('./');
-  const second = await context.newPage(); await second.goto('./');
+  // A second app instance would react to the initial ACTIVE write and lock
+  // both tabs before start() can finish. Use a passive same-origin storage peer.
+  const second = await context.newPage();
+  const peerUrl = new URL('storage-peer', page.url()).href;
+  await second.route(peerUrl, route => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Storage peer</title>' }));
+  await second.goto(peerUrl);
   await page.bringToFront(); await start(page);
+  await page.evaluate(storageKey => {
+    // Registered after the app listener: observe the DOM in the same event stack.
+    window.addEventListener('storage', event => {
+      if (event.key === storageKey && event.newValue === null) {
+        document.documentElement.dataset.questionAbsentOnStorage = String(
+          document.querySelector('[data-testid="question-content"]') === null,
+        );
+      }
+    });
+  }, key);
   await second.evaluate(storageKey => localStorage.removeItem(storageKey), key);
+  await expect(page.locator('html')).toHaveAttribute('data-question-absent-on-storage', 'true');
   await expect(question(page)).toHaveCount(0); await expect(page.getByLabel('Staff unlock PIN')).toBeVisible();
+  await expect.poll(() => page.evaluate(storageKey => {
+    const stored = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
+    return stored && {
+      status: stored.session.status,
+      reason: stored.session.lockReason,
+      consistent: stored.session.eventCount === stored.events.length,
+      lastEvent: stored.events.at(-1)?.type,
+    };
+  }, key)).toEqual({ status: 'LOCKED', reason: 'CROSS_TAB_CONFLICT', consistent: true, lastEvent: 'CROSS_TAB_CONFLICT' });
 });
 
 test('small viewport keeps PIN and controls reachable without horizontal overflow', async ({ page }) => {
