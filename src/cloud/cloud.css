@@ -1,0 +1,7 @@
+.cloud-question{display:flex;flex-direction:column;flex:1;min-height:0;width:100%}
+.cloud-status{position:relative;text-align:center;margin:.25em 0;z-index:1}
+.cloud-entry{align-self:center;padding:1.5em;max-width:40em}
+.cloud-entry label{display:block;margin:.75em 0}
+.cloud-entry input,.cloud-entry select,.cloud-entry button{padding:.5em;margin:.25em;border:2px solid #111;border-radius:.4em}
+.cloud-fields{border:0;padding:0;margin:0;display:flex;flex:1;min-width:0;min-height:0}
+.cloud-fields>.question-content{flex:1}

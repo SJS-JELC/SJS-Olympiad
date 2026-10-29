@@ -1,0 +1,11 @@
+.u5p2-question .question-answer-form { min-height:0; flex:1; display:flex; flex-direction:column; }
+.u5p2-question .question-brief { min-height:0; flex:1; overflow:auto; display:flex; flex-direction:column; padding:2svh 0.6svh 0.6svh; }
+.u5p2-question .question-brief > p { --text-size:2.1svh; --text-leading:1.35; margin:0 1.5vw 1svh; flex-shrink:0; }
+.u5p2-question .dot-cross-editor { text-align:left; background:white; padding:0; flex:1; min-height:24svh; display:flex; flex-direction:column; --text-size:1.8svh; }
+.u5p2-question .dot-cross-editor .toolbar { display:flex; flex-wrap:wrap; padding:0.6svh; gap:0.8svh; flex-shrink:0; }
+.u5p2-question .dot-cross-editor .dc-editor-card { flex:1; min-height:0; display:flex; flex-direction:column; }
+.u5p2-question .dot-cross-editor .workspace,
+.u5p2-question .dot-cross-editor .drawing-area { display:flex; flex-direction:column; flex:1; min-height:0; }
+.u5p2-question .dot-cross-editor .workspace .canvas-wrap { height:auto; flex:1; min-height:0; }
+.u5p2-question .dot-cross-editor .atom-label { --text-size:26px; }
+.u5p2-question .dot-cross-editor .dc-empty-hint p { --text-size:2.1svh; --text-leading:1.35; }

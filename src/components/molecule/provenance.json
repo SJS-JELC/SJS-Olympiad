@@ -1,0 +1,140 @@
+{
+  "sourceProject": "../../32. Masters of Chemistry/apps/Masters-of-Chemistry",
+  "sourceRoot": "src",
+  "readOnlyReference": true,
+  "sources": [
+    {
+      "path": "editors/molecule/MoleculeEditor.tsx",
+      "sha256": "a25b45f7025e9e140fc426c114bd52033a20537e92bce50dce4ba5c4f9686524"
+    },
+    {
+      "path": "editors/molecule/Structure.tsx",
+      "sha256": "19126f9fab3997413f4faf74b1be26192ba2ed554e02ea2cc5dc9b34c7b35e67"
+    },
+    {
+      "path": "editors/molecule/camera.ts",
+      "sha256": "f1a36010c80f313b5b57a1adce7fe394cda12ba4a83578ee85ebe058ad74b910"
+    },
+    {
+      "path": "editors/molecule/molecule.css",
+      "sha256": "bb020e0bb23696d85959f8710617bb05817cc549fb8dfad5257e13e7faf9324e"
+    },
+    {
+      "path": "chemistry/molecule/engine.ts",
+      "sha256": "3f30d9cad67331d3b3313c0f9d03a9afdf587405c42ca2abaed8c383c4814e3e"
+    },
+    {
+      "path": "chemistry/molecule/core.js",
+      "sha256": "37779d573386fb5903fb0ecc96696e2971e403068417ca1806d2f7db1e685642"
+    },
+    {
+      "path": "chemistry/molecule/core.d.ts",
+      "sha256": "a4b55062390b2a90d4b21af07168dde739fef955bb405d1e7dee8d35065343c7"
+    },
+    {
+      "path": "chemistry/molecule/interaction.ts",
+      "sha256": "74f882c0e0a58024976adc5678d660b1561ee1a6157906738c92fd88f1acbcc5"
+    },
+    {
+      "path": "chemistry/molecule/depiction.ts",
+      "sha256": "702a14875ddb1aabf00be918a643ce762000910deb5c52776daa3bdfa5e70c2e"
+    },
+    {
+      "path": "chemistry/molecule/layout.ts",
+      "sha256": "f940ce454b33d8110ada2b305f09fd88b9e97f8300a599bebbed36f6da0bb095"
+    },
+    {
+      "path": "contracts/editors.ts",
+      "sha256": "a2530f2d1812617cec383d99def7656ab222ee7e435e11c293d9df8dfc19ea1d"
+    }
+  ],
+  "adaptations": [
+    "Molecular contract slice only; reference generic engine type specialized to molecule.",
+    "ES module import suffixes adjusted for destination TypeScript configuration.",
+    "White compact toolbar/canvas using six-role shared typography.",
+    "Reusable default depiction retained; per-editor elements, representations and explicitHydrogensOnly options scope Chainspotting to C/H/F/Cl, displayed-only and exactly drawn atoms.",
+    "Direct canvas keyboard placement supports disconnected molecules.",
+    "Reference engine, bounded semantic undo, interaction snapping, layout, camera and pointer cancellation retained.",
+    "No backend, saved structures, inspector, persistence or question-specific marking included.",
+    "SVG atom labels use shared Body role at geometry-specific --text-size; font measurement uses root --font-body after document fonts settle.",
+    "Reference focus rings removed under current app visual instructions; direct keyboard controls retained.",
+    "Structure exposes a reusable molecule-structure SVG group, allowing standalone polymer artwork to share its bond/label styling.",
+    "Toolbar touch pointer releases explicitly activate tools because Chromium can omit the compatibility click after a canvas drag; any subsequent native touch click is deduplicated.",
+    "Acyclic cleanup anchors C=C horizontally before growing substituents on 120-degree rays, retaining every atom and bond. Component spacing and bounded undo remain unchanged."
+  ],
+  "validation": [
+    "TypeScript check passed after integration modules became available.",
+    "Typography audit passed.",
+    "UTF-8 mojibake-marker scan passed for all derived molecular sources and tests.",
+    "Broader unit run: 381 passed, with unrelated in-progress U5P7 JSX and missing U5P2 migration fixture suite failures reported to foreman.",
+    "Touch correction: focused molecular unit suite 9/9 passed; typecheck and typography passed.",
+    "Touch correction: six real Edge/Chromium repetitions passed immediate CDP touch drag -> native Undo.tap and second Undo tap with compatibility-click deduplication.",
+    "Foreman exact regression tests/browser/u5p3.spec.ts -g \"touch pointer drawing\" passed against http://localhost:5173 using native touch input, Edge/Chromium.",
+    "Explicit drawing refinement: 42/42 focused unit tests across five files; typecheck, typography and production build passed. Existing bundle-size advisory only.",
+    "Explicit drawing refinement: 12/12 actual Edge/Chromium browser tests passed, including mouse/touch/keyboard H replacement with F/Cl/C, complete drawing and undo preserved through cooldown expiry/navigation/unlock, three lock reasons and once-only score.",
+    "Inspected cleaned full explicit halogenated alkene at 1200x800, 1440x810 and 960x640 (125% zoom equivalent); no generated atoms or omitted C labels. No document overflow."
+  ],
+  "outputs": [
+    {
+      "path": "src/contracts/molecule.ts",
+      "sha256": "ee066004379f17e6de67294641b57bd97a2b509981d9ccc4e88c55c5a19c0810"
+    },
+    {
+      "path": "src/components/molecule/MoleculeEditor.tsx",
+      "sha256": "e3af2e08667d8b6c29d64abacc2c7de8a64b4a97004c4ddfa62e216d90cc5c56"
+    },
+    {
+      "path": "src/components/molecule/Structure.tsx",
+      "sha256": "3fbe379eae5685068653a50d2147ebc78e027332554f75d69a21655b9a047653"
+    },
+    {
+      "path": "src/components/molecule/camera.ts",
+      "sha256": "75ad46cce299588071f3aba594f260f684aa43aca7c908a273c9f8882161841d"
+    },
+    {
+      "path": "src/components/molecule/molecule.css",
+      "sha256": "fff584e67febdc54ef0bb56719b25ea95d28bff3701372a7cc29aedd294e96f6"
+    },
+    {
+      "path": "src/chemistry/molecule/engine.ts",
+      "sha256": "32719ad5ccf64f304e9e9883bd2e77468f6d322337b7dec0ea513d1ca8aa28df"
+    },
+    {
+      "path": "src/chemistry/molecule/core.js",
+      "sha256": "37779d573386fb5903fb0ecc96696e2971e403068417ca1806d2f7db1e685642"
+    },
+    {
+      "path": "src/chemistry/molecule/core.d.ts",
+      "sha256": "f3171b3d82cd388ae86a6fa3448e257190d195a1f347bbc4c77590aa7cf4ede1"
+    },
+    {
+      "path": "src/chemistry/molecule/interaction.ts",
+      "sha256": "e1b6aa1b547225f4b90e779f8d7725c5673f55dbc9d69d4ca5a64432433f48cb"
+    },
+    {
+      "path": "src/chemistry/molecule/depiction.ts",
+      "sha256": "2e6f6ed604ce0b01d640e977bb0fa40bed801e0e128cb97fbf17357e4fadb0ae"
+    },
+    {
+      "path": "src/chemistry/molecule/layout.ts",
+      "sha256": "c0371279347b6339c672cdddcf7bf85c158dc7128d6710d65f0eed2cee8409f9"
+    },
+    {
+      "path": "tests/unit/molecule-editor-engine.test.ts",
+      "sha256": "765ffd8dac63b1ab1b5449aaced5e8b7cfafffe21d6561ad9852748ece1b41f2"
+    },
+    {
+      "path": "tests/unit/molecule-editor-ui.test.ts",
+      "sha256": "3edd218c2a25a914d12d3aa4770b93110a2a84e4d4e865218785a44e46a68253"
+    },
+    {
+      "path": "src/questions/u5p3/Chainspotting.tsx",
+      "sha256": "8657522d7bf99b52582939e166d6d548f2ca00b7da2bcbef7e48aa3ef04079f9"
+    },
+    {
+      "path": "tests/browser/u5p3.spec.ts",
+      "sha256": "0578500fdef7db7a84a7f7e7223ca1e325d0dff15c73fe3db06ab1eb37c9e1f5"
+    }
+  ],
+  "sourceProjectRelativeTo": "NEW APP project root"
+}

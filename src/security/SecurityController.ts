@@ -52,6 +52,8 @@ export class SecurityController {
     }
   }
   interrupt = (reason: SecurityEventType) => {
+    // Ending remains gated; its fullscreen exit must not overwrite the saved end.
+    if (this.view.phase === 'ending') return;
     const pending = this.view.phase === 'entering' || this.view.phase === 'unlocking';
     if (!pending && this.view.session.status === 'LOCKED' && performance.now() - this.incidentAt <= 500) {
       const incident = this.view.events.find(event => event.id === this.incidentId);
@@ -94,7 +96,7 @@ export class SecurityController {
     try {
       if (!document.documentElement.requestFullscreen) throw new Error('Fullscreen is not supported on this browser.');
       // Called before the first await, preserving the start/unlock button's user gesture.
-      await document.documentElement.requestFullscreen();
+      await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
       if (!this.valid(token)) throw new Error('Entry was interrupted. Keep this page visible and focused.');
       const event = this.event(unlock ? 'STAFF_UNLOCK' : 'COMPETITION_STARTED');
       const events = [...this.view.events, event];
@@ -123,6 +125,26 @@ export class SecurityController {
       return;
     }
     await this.activate(true);
+  };
+  end = async (pin: string) => {
+    if (this.view.phase !== 'idle' || this.view.session.status !== 'LOCKED' || !this.view.storageHealthy) return;
+    if (!this.verifier.verify(pin)) {
+      // Reuse the existing invalid-PIN logging without attempting activation.
+      await this.unlock(pin);
+      return;
+    }
+    const token = ++this.generation;
+    this.publish({ ...this.view, phase: 'ending', error: null });
+    const events = [...this.view.events, this.event('COMPETITION_ENDED')];
+    const candidate: SecurityView = { ...this.view, session: { status: 'NOT_STARTED', eventCount: events.length }, events, phase: 'idle', error: null };
+    try {
+      const saved = await this.save(this.snapshot(candidate), () => token === this.generation);
+      if (!saved || token !== this.generation) return;
+      if (document.fullscreenElement) {
+        try { await document.exitFullscreen(); } catch { /* Ending does not require fullscreen. */ }
+      }
+      if (token === this.generation) { this.publish(candidate); return true; }
+    } catch { this.failed(); }
   };
   reset = async () => {
     if (this.view.phase !== 'idle' || this.view.session.status !== 'NOT_STARTED') return;

@@ -1,0 +1,7 @@
+/* Source-authored content; shared shell/form own behavior and appearance. */
+.l6p9-question .question-brief p { white-space: pre-line; margin-bottom: 1.5svh; }
+.l6p9-answer { --answer-input-width: 28vw; }
+.l6p9-question .question-brief { display: flex; flex-direction: column; }
+
+.l6p9-diagrams { flex: 1; min-height: 12svh; display: grid; grid-template-columns: 1fr 1.6fr; align-items: center; gap: 5vw; width: 75%; margin: 1svh auto; }
+.l6p9-question .l6p9-diagrams img { min-height: 0; height: 100%; }

@@ -1,0 +1,7 @@
+.u6p9-question h2 { margin: 1svh 0 .4svh; text-align: center; color: #152033; }
+.u6p9-operations { --text-size: var(--question-body-size); margin: 1svh 3vw 0; color: #152033; }
+.u6p9-operations > div { display: grid; grid-template-columns: 3vw minmax(0, 1fr); gap: 1vw; margin-bottom: .3svh; }
+.u6p9-operations dd { margin: 0; }
+.u6p9-selections { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 1vw; }
+.u6p9-selections label { --text-size: 2.4svh; display: grid; gap: .6svh; text-align: center; }
+.u6p9-selections select { --text-size: 2.2svh; width: 100%; min-width: 0; border: .4svh solid #000; border-radius: .6svh; background: #fff; color: #152033; padding: 1svh .4vw; }

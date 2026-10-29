@@ -1,0 +1,9 @@
+/* Approved display typography; self-contained for use on any app screen. */
+.olympiad-heading { margin: 0; width: 100%; color: #fcfcff; text-align: center; }
+.olympiad-heading__art { display: block; width: 100%; height: auto; overflow: visible; }
+.olympiad-heading text { fill: currentColor; }
+.olympiad-heading__definitions { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Current Score artwork treatment: white pixel faces, black keyline and down-only shadow. */
+.olympiad-heading--score { color: #fff; }
+.olympiad-heading--score text { stroke: #000; stroke-width: 3.4px; stroke-linejoin: miter; paint-order: fill stroke; }

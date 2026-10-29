@@ -3,6 +3,8 @@ import { act, createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import App from '../../src/App';
+import { BreachModal } from '../../src/components/BreachModal';
+import { useCompetitionSecurity } from '../../src/security';
 import { CompetitionSecurityProvider, SecurityController, TEST_STAFF_PIN, type SecuritySnapshot, type SnapshotAdapter } from '../../src/security';
 
 let root: Root;
@@ -15,9 +17,14 @@ function fullscreen() {
 function adapter(stored: SecuritySnapshot | null = null): SnapshotAdapter {
   return { load: vi.fn(async () => stored), save: vi.fn(async () => {}), clear: vi.fn(async () => {}) };
 }
+// The router now owns the universal modal; retain that composition in this harness.
+function RoutedFixture() {
+  const { session } = useCompetitionSecurity();
+  return createElement('div', null, createElement(App, { onBack: () => {} }), session.status === 'LOCKED' ? createElement(BreachModal, { onEnded: () => {} }) : null);
+}
 async function mount(controller: SecurityController) {
   await act(async () => {
-    root.render(createElement(CompetitionSecurityProvider, { controller, children: createElement(App) }));
+    root.render(createElement(CompetitionSecurityProvider, { controller, children: createElement(RoutedFixture) }));
     await controller.initialize();
   });
 }
@@ -51,7 +58,7 @@ it.each(['visibilitychange', 'blur', 'fullscreenchange', 'pagehide'] as const)('
   actEnvironment.IS_REACT_ACT_ENVIRONMENT = false;
   (eventName === 'visibilitychange' || eventName === 'fullscreenchange' ? document : window).dispatchEvent(new Event(eventName));
   expect(content()).toBeNull();
-  expect(container.querySelector('#staff-pin')).not.toBeNull();
+  expect(container.querySelector('#breach-pin')).not.toBeNull();
   expect(controller.getSnapshot().session.status).toBe('LOCKED');
 });
 
@@ -65,7 +72,7 @@ it('persisted ACTIVE restoration never mounts question DOM', async () => {
     }
   }); observer.observe(container, { subtree: true, childList: true });
   await mount(new SecurityController(adapter(stored)));
-  observer.disconnect(); expect(seenContent).not.toContain(true); expect(content()).toBeNull(); expect(container.querySelector('#staff-pin')).not.toBeNull();
+  observer.disconnect(); expect(seenContent).not.toContain(true); expect(content()).toBeNull(); expect(container.querySelector('#breach-pin')).not.toBeNull();
 });
 
 it('staff unlock keeps actual question DOM gated until fullscreen and atomic save complete', async () => {

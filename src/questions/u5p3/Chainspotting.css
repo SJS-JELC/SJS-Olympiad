@@ -1,0 +1,15 @@
+﻿/* Question composition only; chemistry drawing behaviour is reusable. */
+.u5p3-question { gap: 1svh; }
+.u5p3-question > .question-brief {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: .5svh;
+  padding-block: 1svh;
+  max-height: 27svh;
+}
+.u5p3-question .question-brief p { flex-shrink: 0; margin: 0; }
+.u5p3-question .u5p3-polymer { width: 100%; height: 12svh; flex: 0 0 12svh; margin: 0; }
+.u5p3-polymer svg { display: block; width: 100%; height: 100%; }
+.u5p3-form { flex: 1 1 0; min-height: 0; gap: 1svh; padding-inline: 0; }
+.u5p3-form > .molecule-editor { flex: 1 1 0; min-height: 0; }

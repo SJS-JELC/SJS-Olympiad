@@ -1,0 +1,12 @@
+/* Composition shared only by L5P9 and L6P1. Both source screens use ThemeColour1/4/5. */
+.grouping-question .question-answer-form { padding: 0; }
+.grouping-question .question-brief { container-type: size; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 1svh; }
+.grouping-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 1svh; width: min(100%, calc(100cqh - 9svh)); aspect-ratio: 1; justify-self: center; align-self: center; }
+.grouping-item { position: relative; min-width: 0; min-height: 0; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: .35svh solid #000; border-radius: 1svh; background: #fff; padding: .7svh; cursor: pointer; }
+.grouping-item img { width: 100%; height: 100%; object-fit: contain; opacity: 1; filter: none; }
+.grouping-item img.grouping-element { width: auto; height: 48%; max-width: 80%; }
+.grouping-item[data-group="1"] { background: var(--olympiad-blue, #5cb8fa); }
+.grouping-item[data-group="2"] { background: var(--olympiad-orange, #ffa500); }
+.grouping-item[data-group="3"] { background: var(--olympiad-yellow, #ffff00); }
+.grouping-item:disabled { opacity: 1; filter: none; color: inherit; cursor: default; }
+.grouping-question .question-clear { position: absolute; left: calc(50% + var(--question-action-height) * 150.33 / 42.52 / 2 + 2vw); }

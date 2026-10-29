@@ -1,0 +1,74 @@
+/* Shared question shell. Typography is defined in ../typography.css. */
+.question-page { height: 100svh; overflow: hidden; }
+.question-stage {
+  --question-pane-padding: 2vw;
+  --question-top-gap: 2.5svh;
+  --question-bottom-padding: 1.5svh;
+  --question-action-height: 8svh;
+  --question-action-bottom: 2.5svh;
+  --question-body-size: clamp(19px, 2.8svh, 30px);
+  position: relative;
+  width: 88%;
+  height: 100svh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: var(--question-top-gap) 0 var(--question-bottom-padding);
+  color: #fff;
+}
+.question-header { flex-shrink: 0; display: grid; grid-template-columns: 1fr 2.5fr 1fr; align-items: center; gap: 3vw; margin-bottom: 1svh; }
+.question-identity { grid-column: 2; display: grid; justify-items: center; gap: 1svh; min-width: 0; }
+.question-eagle { display: block; width: 16svh; height: 8svh; object-fit: contain; }
+.question-title-panel, .question-brief { background: #fff; border: .125svh solid #73829b; border-radius: 1svh; }
+.question-title-panel { width: 100%; min-height: 10svh; padding: 1svh 1.5vw; display: grid; align-items: center; }
+.question-back { justify-self: end; background: transparent; border: 0; padding: .5vw; width: 7vw; }
+.question-back img { width: 100%; transform: rotate(180deg); }
+
+/* Reserve the answer area; only excess question content scrolls. */
+.question-content { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 1.5svh; padding-bottom: calc(var(--question-action-bottom) - var(--question-bottom-padding)); }
+
+/* White content pane, separate from the answer form. */
+.question-brief { flex: 0 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 2.5svh var(--question-pane-padding); color: #152033; }
+.question-content--compact { justify-content: flex-start; }
+.question-content--compact > .question-brief { flex: 0 1 auto; }
+/* Text-only prompts shrink to their longest line instead of stretching across
+   the stage. Rich diagram panes retain their shared answer-column geometry. */
+.question-content > .question-brief:not(:has(img, svg, figure, table, canvas)) {
+  align-self: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 2.5svh var(--question-pane-padding);
+}
+.question-content > .question-brief:not(:has(img, svg, figure, table, canvas)) p {
+  max-width: 65ch;
+  margin-inline: auto;
+}
+.question-content--aligned > .question-brief, .question-content--dense > .question-brief { flex: 1 1 0; }
+.question-brief::-webkit-scrollbar { display: none; }
+.question-brief p { --text-size: var(--question-body-size); margin: 0 0 .7svh; color: #152033; }
+.question-brief > p { text-align: center; }
+.question-brief figure { margin: .7svh auto 0; text-align: center; }
+.question-brief img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* Default answer layout; individual questions own diagram-specific placement. */
+.question-answer-form label { color: #152033; }
+.question-answer-form { flex-shrink: 0; position: relative; min-height: 0; padding-inline: var(--question-pane-padding); margin-top: auto; }
+.question-answer-form--compact { display: flex; flex-direction: column; align-items: center; gap: 1.5svh; }
+.question-answer-form--aligned { display: flex; flex-direction: column; gap: 1svh; }
+.question-answer-form--dense { display: flex; flex-direction: column; flex: 1; gap: 1svh; }
+.question-answer-form--dense > .question-brief { flex: 1 1 0; }
+.question-answer-form--inline { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 2vw; }
+.question-answer-form--inline > .question-actions { align-self: end; }
+.question-answer-form--compact > label { display: flex; flex-direction: column; align-items: center; gap: .8svh; }
+.question-answer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5vw; margin-top: 1.6svh; }
+.question-actions { position: relative; flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 2vw; min-height: var(--question-action-height); padding: 0; }
+.question-page .question-actions .check-button { flex-shrink: 0; width: calc(var(--question-action-height) * 150.33 / 42.52); height: var(--question-action-height); }
+.question-page .question-actions .check-button svg { width: 100%; height: 100%; }
+/* Award feedback fits below the common action baseline, including inline rows. */
+.question-actions p { --text-size: var(--text-size-small); --text-leading: 1; position: fixed; top: auto; bottom: .25svh; right: 6vw; margin: 0; white-space: nowrap; color: #152033; }
+.question-clear { display: inline-flex; height: var(--question-action-height); padding: 0; border: 0; background: transparent; cursor: pointer; }
+.question-clear img { display: block; width: auto; height: 100%; }
+
+.question-access { background: #142f60f2; padding: 4svh 3vw; border-radius: 1.5svh; margin: 8svh 0; color: white; }
+.question-access p { color: white; }

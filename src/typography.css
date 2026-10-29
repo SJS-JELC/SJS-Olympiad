@@ -1,0 +1,49 @@
+/* Six shared styles. Component sizing is a modifier, never a new typography role. */
+@font-face { font-family: 'Tilt Neon'; src: url('./assets/fonts/tilt-neon.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: '04b_19'; src: url('./assets/fonts/04b-19.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+:root {
+  --font-body: 'Tilt Neon', ui-sans-serif, system-ui, sans-serif;
+  --font-display: '04b_19', Impact, sans-serif;
+  --text-size-small: clamp(12px, 1.5svh, 16px);
+  --text-size-body: clamp(14px, 1.9svh, 20px);
+  --text-size-heading-small: clamp(20px, 2.8svh, 32px);
+  --text-size-heading-large: clamp(24px, 4.6svh, 54px);
+  font: 400 var(--text-size-body)/1.4 var(--font-body);
+  font-synthesis: none; letter-spacing: 0;
+}
+:where(button, input, select, textarea) { font: inherit; }
+
+/* 1 + 2. Display / Outlined display. Effects stay in the shared OlympiadHeading component. */
+.type-display, .type-outlined, .olympiad-heading { font-family: var(--font-display); font-size: 68px; font-weight: 400; font-synthesis: none; line-height: 1; letter-spacing: 0; text-transform: uppercase; }
+
+/* 3. Heading — one heavier treatment, large or small. */
+.type-heading, :where(h1, h2, h3, h4, h5, h6), .olympiad-question-heading, .wordmark { font: 700 var(--text-size, var(--text-size-heading-large))/1.15 var(--font-body); font-synthesis: weight; letter-spacing: 0; }
+:where(h2, h3, h4, h5, h6) { font-size: var(--text-size-heading-small); }
+.wordmark { --text-size: var(--text-size-heading-small); }
+:where(strong, b) { font-weight: 700; font-synthesis: weight; }
+
+/* 4. Body — instructions, general copy, feedback, numeric text and diagram lettering. */
+.type-body, .question-brief p, .question-actions p, .rules-list, .staff-note, .lock-details dd, .browser-facts dd, .error-banner, .breach-error, .question-description, .loading-card, .score-digit, .element-symbol, .brand-symbol, .lock-icon { font: 400 var(--text-size, var(--text-size-body))/var(--text-leading, 1.4) var(--font-body); font-synthesis: none; letter-spacing: 0; }
+
+/* 5. Label — buttons, inputs, field labels and group legends share one heavier style. */
+.type-label, :where(label, legend, button, input, select, textarea, th), .answer-part label, .answer-part legend, .button, .question-check, .breach-dialog button, .settings-back, .unlock-form label, .breach-dialog label, .diagnostics summary, .breach-pin-slots span, .eyebrow, .olympiad-question-heading__number, .theory-timer { font: 700 var(--text-size, var(--text-size-body))/var(--text-leading, 1.3) var(--font-body); font-synthesis: weight; letter-spacing: 0; }
+
+/* 6. Caption — all smaller supporting text, metadata and code samples. */
+.type-caption, :where(small, code, pre, kbd, samp), .newman-example figcaption, .part-feedback, .question-meta, .button-note, .test-badge, .status-strip, .question-footer, .answer-feedback, .option-letter, .selection-indicator, .diagnostics, .diagnostic-count, .user-agent dd, .diagnostic-disclaimer, .site-footer, .unlock-form p, .lock-details dt, .browser-facts dt, .test-controls p, .breach-dialog .breach-note, .wordmark small, table { font: 400 var(--text-size, var(--text-size-small))/1.4 var(--font-body); font-synthesis: none; letter-spacing: 0; }
+
+/* Shared size/number modifiers: no additional font styles. */
+.text-small, .subtle { --text-size: var(--text-size-small); }
+.text-large { --text-size: var(--text-size-heading-large); }
+.text-heading-small { --text-size: var(--text-size-heading-small); }
+.text-tabular, .answer-input input, .breach-pin input, .breach-pin-slots span, .score-digit, .theory-timer { font-variant-numeric: tabular-nums; }
+.eyebrow, .olympiad-question-heading__number { text-transform: uppercase; letter-spacing: .08em; }
+.olympiad-question-heading__number { --text-size: var(--text-size-body); }
+
+/* SVG alignment is geometry; lettering itself uses Body or Caption. */
+.scientific-diagram text { fill: #152033; stroke: none; text-anchor: middle; dominant-baseline: central; }
+
+/* Flip-card halves must share exactly one full-card baseline. */
+.score-half > span { line-height: var(--score-digit-height); }
+
+/* User-approved monochrome instrument report typography exception. */
+.gc-sheet, .gc-sheet *, .gc-printout, .gc-printout * { font-family: 'Courier New', monospace; font-weight:400; }

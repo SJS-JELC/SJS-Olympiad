@@ -1,0 +1,19 @@
+{
+  "archive": "Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "questionSource": "YAML Code/L6/appCodexL6Problem5.txt",
+  "assets": [
+    {
+      "name": "Newman Question",
+      "file": "newman-question.svg",
+      "sourceEntry": "Assets\\Images\\bc35c0a8-6cfb-48d1-abe5-16666348c4da.svg",
+      "sha256": "bc20fd88a62d9767a66ba77941d7c6c8c67f556d39bb5781c423ea56958a5a05"
+    },
+    {
+      "name": "Newman Example",
+      "file": "newman-example.svg",
+      "sourceEntry": "Assets\\Images\\bb2081b4-1e35-4c05-87b6-9f58944b7671.svg",
+      "sha256": "4be1b913036d575f748c26a904257728623a977681987d5d03b355ae06f8737f"
+    }
+  ]
+}

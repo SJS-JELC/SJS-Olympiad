@@ -1,0 +1,72 @@
+{
+  "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "sourceSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "purpose": "Source attribution for retained artwork and maintained derivatives; source archive remains an external read-only reference.",
+  "assets": [
+    {
+      "name": "Asset 26",
+      "file": "asset-26.svg",
+      "sourceEntry": "Assets\\Images\\2e973a11-1d2f-4e0b-951e-9770c95eb78b.svg",
+      "sha256": "28c08d95540b76fe2a437491726a6eacfe9efcef5b3c993bca9155e75d08854f"
+    },
+    {
+      "name": "RedCross",
+      "file": "redcross.svg",
+      "sourceEntry": "Assets\\Images\\fd49bdae-31e9-46b2-a689-ef9425c26dfb.svg",
+      "sha256": "75066809535f5b8c22cfd92aaccbbbfc0d69b997418c58c030dad2d6c1589b7f"
+    },
+    {
+      "name": "BackArrow",
+      "file": "backarrow.svg",
+      "sourceEntry": "Assets\\Images\\c1cdfa65-26ce-4ec6-8d85-ebc93b45faff.svg",
+      "sha256": "d10bd9c443c43486cdd366ef29bc1848b1d974708ff323eaf979aa8516c05964"
+    },
+    {
+      "name": "Asset 30",
+      "file": "asset-30.svg",
+      "sourceEntry": "Assets\\Images\\6638e1e5-b1a2-44de-ac96-2c0bce439785.svg",
+      "sha256": "a9453a174ad0ecb6ce171c2ba91975d9c0e0bfb87d1492c5e5d2fd592e503e53"
+    },
+    {
+      "name": "Flipped Eagle",
+      "file": "flipped-eagle.svg",
+      "sourceEntry": "Assets\\Images\\e7d32379-5bee-4762-ab4d-009465269ad2.svg",
+      "sha256": "91efd2d1326d951a5fccb21a1886ff469c8abb3f2ce519c6c95f3e3555a0671f"
+    },
+    {
+      "name": "14 Equipment",
+      "file": "14-equipment.png",
+      "sourceEntry": "Assets\\Images\\dfd97b84-2151-4183-874e-3a5464c2b1a7.png",
+      "sha256": "244af0d42d67bed73a171dd616d3455e9af21741fe3941b28ec0499ec3d6c83b"
+    },
+    {
+      "name": "Reset Button",
+      "file": "reset-button.svg",
+      "sourceEntry": "Assets\\Images\\5053db59-b741-4e5d-ad01-ba9c0e79842d.svg",
+      "sha256": "66fccf2584c5531e5c9a94ef16bea0e76ad496b6ff39fc5eb97c2f79b97989e7"
+    }
+  ],
+  "derivatives": [
+    {
+      "file": "../animated/3pt-button-vector.svg",
+      "sourceName": "3pt Button",
+      "sourceEntry": "Assets\\Images\\84c7c4be-9c1b-4640-87a8-fbf1a5af47f7.png",
+      "sourceSha256": "c7f4e75d88776a902bd5baa00ffaacc13ad72795f5c79993389a193294bea823",
+      "treatment": "Vector redraw of the original point-button artwork, used by theoryButtonArtwork.ts."
+    },
+    {
+      "file": "../animated/2pt-button-vector.svg",
+      "sourceName": "2pt Button",
+      "sourceEntry": "Assets\\Images\\e6f18248-8238-474c-9136-561fd60ac434.png",
+      "sourceSha256": "52980a48c7bb70e8ca95ecc9c7bf255338fcecfa02eeed2122c82654b8466419",
+      "treatment": "Vector redraw of the original point-button artwork, used by theoryButtonArtwork.ts."
+    },
+    {
+      "file": "../animated/1pt-button-vector.svg",
+      "sourceName": "1pt Button",
+      "sourceEntry": "Assets\\Images\\a8dd33e8-e37f-421f-99cd-a1935e60e273.png",
+      "sourceSha256": "52194c70d0622fdcd4281362dae6aec9f63bcdf5b8f1a51ae75be520829081b8",
+      "treatment": "Vector redraw of the original point-button artwork, used by theoryButtonArtwork.ts."
+    }
+  ]
+}

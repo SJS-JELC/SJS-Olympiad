@@ -1,0 +1,20 @@
+{
+  "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "2dCyclohexane",
+      "file": "flat-cyclohexane.svg",
+      "sourceEntry": "Assets/Images/d508d562-ee77-469c-95f3-d37db9306edd.svg",
+      "sha256": "c64bacb69cd20f6986d16ca88d0483a80a65a2345bf4cd992a8678e086eea024",
+      "treatment": "Original trusted vector unchanged; outlined scientific labels preserved."
+    },
+    {
+      "name": "3DCyclohexane",
+      "file": "chair-cyclohexane.svg",
+      "sourceEntry": "Assets/Images/fa35934d-4308-4b73-be08-070d99501ea1.svg",
+      "sha256": "b942e9b336087326183200d52f125c2c5b4eee62c74c31b86db3994db7da68a8",
+      "treatment": "Original trusted vector unchanged; outlined scientific labels preserved."
+    }
+  ]
+}

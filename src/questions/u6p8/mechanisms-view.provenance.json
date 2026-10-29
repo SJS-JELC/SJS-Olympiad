@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "file": "assets/sn1-mechanism.svg",
+      "sha256": "1bd43aa3cd6ca1d96d1e241ed37f730aef6c6a04f9e48623adb2e1c83840f582"
+    },
+    {
+      "file": "assets/sn2-mechanism.svg",
+      "sha256": "3c05927ed4dacedd7b1d08424f5d4749fa556717fd2b62b91cbd6fd3e311c391"
+    }
+  ],
+  "treatment": "Source images unchanged. Both mechanisms are contained at intrinsic aspect ratio in the available pane. The existing SLOW label is drawn in a matching viewBox overlay, so source containment and letterboxing also position the annotation. The first ionisation arrow stays labelled SLOW.",
+  "annotation": {
+    "viewBox": "0 0 1453.52 324.93",
+    "x": 405,
+    "y": 235,
+    "sourceAlignment": "Original Power Apps U6P8ProblemLabel1 centre is x202+105/2, relative to mechanism x118 and width491; projected into source coordinates, this is approximately x405. Vertical positioning keeps the label beneath the first arrow."
+  }
+}

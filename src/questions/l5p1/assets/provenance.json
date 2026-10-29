@@ -1,0 +1,20 @@
+{
+  "sourceArchive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "9 Equipment",
+      "file": "assets/equipment-9.png",
+      "sourceEntry": "Assets/Images/d43d203d-5c4e-4e34-8005-d5adef876a5a.png",
+      "sha256": "9f5f34f4a245c157bca3a33d27c0595b15e30ebfe85184baed72d86785e043ee",
+      "treatment": "Unchanged source raster; object-fit contain preserves aspect ratio."
+    },
+    {
+      "name": "4 Equipment",
+      "file": "assets/equipment-4.png",
+      "sourceEntry": "Assets/Images/68962678-0458-4a02-8c64-3e836d3f2893.png",
+      "sha256": "2aadec73e5e5f075d39fbbf5de269d2e10c18ca253e1043500edac89e52143ee",
+      "treatment": "Unchanged source raster; object-fit contain preserves aspect ratio."
+    }
+  ]
+}

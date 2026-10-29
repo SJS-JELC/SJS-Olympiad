@@ -1,0 +1,19 @@
+.competition-page--locked { filter: blur(8px); pointer-events: none; user-select: none; }
+.breach-overlay { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; background: rgb(2 8 22 / 72%); padding: 20px; overflow: auto; }
+.breach-dialog { width: min(650px, 90vw); padding: 22px 40px 26px; text-align: center; color: #fff; background: linear-gradient(150deg, #182439, #0b1425); border: 2px solid #d64343; border-radius: 24px; box-shadow: 0 22px 80px #0008, inset 0 1px 0 #ffffff18; outline: none; }
+.breach-dialog h1 { color: #ff6262; margin: 10px 0 14px; }
+.breach-dialog .breach-beacon { margin: -12px auto -16px; width: min(100%, 220px); }
+.breach-dialog p { color: #d7e0ee; margin: 10px 0 18px; }
+.breach-dialog label { display: block; margin: 16px 0 10px; }
+.breach-pin { position: relative; width: 260px; height: 60px; margin: auto; }
+.breach-pin-slots { display: flex; gap: 12px; height: 100%; }
+.breach-pin-slots span { flex: 1; display: grid; place-items: center; border: 2px solid #73839c; border-radius: 9px; background: #07101d; }
+.breach-pin input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .01; cursor: text; }
+
+.breach-dialog .breach-note { margin: 12px 0 0; }
+.breach-error { min-height: 26px; margin: 10px 0; color: #ffb3b3; }
+.breach-dialog button { display: block; width: 100%; min-height: 46px; border-radius: 10px; cursor: pointer; }
+.breach-unlock { background: #dc333b; color: white; border: 1px solid #ff7379; }
+.breach-end { background: transparent; color: #cad6e8; border: 1px solid #66768d; margin-top: 12px; }
+.breach-dialog button:disabled { opacity: .45; cursor: default; }
+

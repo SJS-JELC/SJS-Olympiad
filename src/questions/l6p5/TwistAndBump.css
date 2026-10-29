@@ -1,0 +1,40 @@
+/* L6P5 geometry alignment only. Shared control appearance lives with components. */
+.l6p5-question {
+  --newman-diagram-width: min(72svh, 100%);
+  --newman-answer-row-height: 8svh;
+  --newman-input-height: 6.5svh;
+  --newman-action-width: calc(var(--question-action-height) * 150.33 / 42.52);
+}
+.newman-example { height: 14svh; display: flex; justify-content: center; align-items: center; gap: 2vw; }
+.newman-example .scientific-diagram { width: auto; max-width: 75%; aspect-ratio: 1000 / 296; }
+.newman-conformations { --text-size: var(--question-body-size); flex: 0 0 auto; text-align: left; }
+.newman-conformations p:last-child { margin-bottom: 0; }
+.question-brief .newman-question { grid-column: 1; height: 100%; min-height: 0; width: var(--newman-diagram-width); margin: 0 auto; }
+
+/* Matching diagram/answer widths keep the columns beneath their molecules. */
+.newman-answers { position: relative; width: var(--newman-diagram-width); margin: 0 auto; color: #152033; }
+.newman-answers .question-answer-grid { grid-template-columns: 27% 38% 35%; gap: 0; margin: 0; }
+.newman-answers .answer-part { position: relative; }
+.newman-answers .answer-part-name,
+.newman-answers .answer-part label > span:first-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.newman-answers .answer-part label { height: var(--newman-answer-row-height); margin: 0; justify-content: center; }
+.newman-answers .part-feedback { position: absolute; top: calc(2 * var(--newman-answer-row-height)); left: 0; width: 100%; text-align: center; }
+.newman-row-labels { --text-size: 2.2svh; position: absolute; right: calc(100% + 1.5vw); top: 0; white-space: nowrap; }
+.newman-row-labels span { display: flex; align-items: center; height: var(--newman-answer-row-height); }
+
+/* Viewport-sized header and answer rows determine the pane height, never its text. */
+.l6p5-question .question-brief { display: grid; grid-template-columns: minmax(0, 1fr) var(--newman-action-width); grid-template-rows: auto auto auto 14svh minmax(15svh, 1fr); gap: .5svh 2vw; padding-block: 1svh; }
+.l6p5-question .question-brief > p, .l6p5-question .newman-example { grid-column: 1 / -1; }
+.l6p5-question .question-brief p { --text-size: 2.4svh; --text-leading: 1.25; margin-bottom: .5svh; }
+.l6p5-question .question-answer-form { padding-top: .8svh; }
+.newman-answers .angle-input input { height: var(--newman-input-height); }
+

@@ -1,0 +1,22 @@
+{
+  "generator": "scripts/create-newman-diagrams.mjs",
+  "treatment": "Remove source lettering only; retain all chemical bond, wedge, circle, arrow and eye geometry. Render mapped labels through app-wide live SVG typography.",
+  "outputs": [
+    {
+      "source": "newman-example.svg",
+      "sourceSha256": "4be1b913036d575f748c26a904257728623a977681987d5d03b355ae06f8737f",
+      "geometry": "newman-example-geometry.svg",
+      "geometrySha256": "2a86bb079370447d3d482b2ff8d1be04203ff0698a0e906c895265604245d42b",
+      "preservedShapeSha256": "6965ed06b5c5c77e57a55c7206b602980f721ca1a14669dc5a30c5183a357ec0",
+      "labelCount": 20
+    },
+    {
+      "source": "newman-question.svg",
+      "sourceSha256": "bc20fd88a62d9767a66ba77941d7c6c8c67f556d39bb5781c423ea56958a5a05",
+      "geometry": "newman-question-geometry.svg",
+      "geometrySha256": "f54c308899bd18d1a0a5e0d9399477e575f707a2675e221266f57f98ae829e2f",
+      "preservedShapeSha256": "1acc8608a3bba1a9c4c64caac0874a93d822cfbbf0a2a0373297cdaaaec2d58b",
+      "labelCount": 11
+    }
+  ]
+}

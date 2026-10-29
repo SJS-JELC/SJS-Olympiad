@@ -1,0 +1,10 @@
+.u6p1-answers { display: flex; justify-content: center; }
+.u6p1-answer { --answer-input-width: 42vw; }
+.u6p1-nmr { width: 100%; }
+.u6p1-nmr-panels { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 2vw; width: 100%; margin-inline: auto; }
+.u6p1-nmr-panels > div { min-width: 0; }
+.question-brief .u6p1-nmr-label { --text-size: 2svh; margin-bottom: .5svh; text-align: center; }
+.u6p1-nmr-overview, .u6p1-nmr-detail { display: block; width: 100%; aspect-ratio: 321.8 / 150.97; overflow: hidden; }
+.u6p1-nmr-overview { cursor: crosshair; touch-action: none; }
+.u6p1-nmr-selection { stroke: #4b8bbb; stroke-width: .6; pointer-events: none; }
+.u6p1-nmr-detail { background: #fff; box-shadow: 0 0 0 .125svh #7fa5c2; }

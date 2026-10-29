@@ -1,0 +1,7 @@
+/* Shared unboxed answer groups and large, black-bordered inputs. */
+.answer-part { margin: 0; min-width: 0; padding: 0; border: 0; color: #152033; background: transparent; }
+.answer-part legend { padding: 0; }
+.answer-part label { display: flex; justify-content: space-between; align-items: center; gap: .6vw; margin: .5svh 0; }
+.part-feedback { color: #9b2020; }
+.answer-part--correct .part-feedback { color: #176334; }
+

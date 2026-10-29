@@ -1,0 +1,9 @@
+.l5p1-question { position: relative; }
+.l5p1-question .question-brief { position: relative; z-index: 1; }
+.l5p1-prompt { display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.l5p1-question .question-brief p { --text-size: clamp(22px, 3.3svh, 36px); }
+.l5p1-question .question-answer-form { z-index: 1; }
+.l5p1-answer { --answer-input-width: 30vw; }
+.l5p1-dressing { position: absolute; bottom: 0; object-fit: contain; pointer-events: none; }
+.l5p1-dressing-left { left: -5vw; width: 24vw; height: 28svh; object-position: left bottom; }
+.l5p1-dressing-right { right: -5vw; width: 14vw; height: 34svh; object-position: right bottom; }

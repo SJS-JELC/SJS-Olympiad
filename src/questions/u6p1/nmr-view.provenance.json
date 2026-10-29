@@ -1,0 +1,16 @@
+{
+  "source": "src/questions/u6p1/assets/nmr.svg",
+  "sourceGeometry": {
+    "width": 321.8,
+    "height": 150.97
+  },
+  "treatment": "Two SVG image references to the unchanged original spectrum: full overview and X-only magnified clipped detail. Both show source y=0..150.97 at exactly the same displayed height and Y scale. Presentation-only horizontal selection pans with pointer movement/click/touch or keyboard on the overview; there are no sliders or visible interaction instructions. No peaks, labels, integration values or axes are recreated.",
+  "detailGeometry": {
+    "width": 40,
+    "height": 150.97,
+    "horizontalMagnificationRelativeToOverview": 8.045,
+    "verticalMagnificationRelativeToOverview": 1
+  },
+  "initialSelection": "Horizontal centre x=248. Selection is clamped inside the original SVG. Arrow keys move by0.25source units; PageUp/PageDown by10; Home/End select the bounds. Y never changes.",
+  "sourceSha256": "2d5b20bfa8fffcd6ae24b284d2ca19e80d66883b1afe2037dd42fddf77e229b8"
+}

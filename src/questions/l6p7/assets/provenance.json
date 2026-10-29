@@ -1,0 +1,31 @@
+{
+  "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "TheRing",
+      "file": "the-ring.png",
+      "sourceEntry": "Assets/Images/567a1509-2e63-444e-bcd6-001bbf28a28b.png",
+      "sha256": "d4fdf16a04095a9ced65c56e6542131e0dc40512f91b66df24eaa7a96d526305",
+      "bytes": 953819,
+      "width": 1016,
+      "height": 805,
+      "screenReference": "Src/L6Problem7.pa.yaml: Image8.Image = TheRing; X = 526; Y omitted (default 0).",
+      "treatment": "Exact archive PNG unchanged, visually confirmed as the engraved One Ring. Header artwork only; replaces the shared eagle. The local text export references Asset 30 and differs from the archive screen's TheRing reference."
+    },
+    {
+      "name": "Diels-Alder Exemplar",
+      "file": "diels-alder-example.svg",
+      "sourceEntry": "Assets/Images/2b96949d-5aff-4182-9fed-545792ab7806.svg",
+      "sha256": "9efb564739b56ff634a9f8f89ab063df50ad50b6b55781519d429b185172ba5b",
+      "treatment": "Original trusted vector unchanged; outlined scientific labels preserved."
+    },
+    {
+      "name": "Diels-Alder Target",
+      "file": "diels-alder-target.svg",
+      "sourceEntry": "Assets/Images/ff08fb0f-f038-4912-bd93-b3fb19c92602.svg",
+      "sha256": "d0572305f4f13490e474ebd2b2fab1ebd5788d04cbd6ede4aece0e9cc48800e9",
+      "treatment": "Original trusted vector unchanged; outlined scientific labels preserved."
+    }
+  ]
+}

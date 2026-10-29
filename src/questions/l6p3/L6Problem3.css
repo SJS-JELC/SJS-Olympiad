@@ -1,0 +1,21 @@
+/* Bespoke timed interaction; deadline and scoring live in definition.ts. */
+.l6p3-question .question-brief { display: flex; flex-direction: column; gap: 1.5svh; }
+.l6p3-prompt { text-align: center; display: grid; align-content: center; justify-items: center; min-height: 0; }
+.l6p3-formula { width: 40vw; height: 14svh; overflow: visible; }
+.l6p3-formula text { --text-size: 70px; --text-leading: 1; }
+.l6p3-go { position: relative; border: 0; background: transparent; padding: 0; width: 14svh; height: 14svh; cursor: pointer; }
+.l6p3-go img { width: 100%; height: 100%; object-fit: contain; }
+.l6p3-go:disabled { cursor: default; }
+.l6p3-go-cover { position: absolute; inset: 0 auto 0 0; background: rgb(255 255 255 / 70%); pointer-events: none; }
+.l6p3-question .l6p3-reveal { margin: 1svh 0; }
+.l6p3-answer-form { flex: 0 0 auto; display: grid; justify-items: center; gap: 1.2svh; margin-top: auto; }
+.l6p3-bars { width: 40vw; display: flex; flex-direction: column; gap: .6svh; }
+.l6p3-bars:empty { display: none; }
+.l6p3-bars img { width: 100%; height: 1.4svh; }
+.l6p3-answer { --answer-input-width: 40vw; }
+.l6p3-submit { width: calc(var(--question-action-height) * 150.33 / 42.52); height: var(--question-action-height); padding: .6svh 1.2vw; background: #39ff14; border: .35svh solid #2d2832; border-radius: .5svh; cursor: pointer; }
+.l6p3-submit:disabled { background: #999; cursor: default; }
+.l6p3-submit .olympiad-heading { display: block; height: 100%; --outlined-shadow-offset: .25svh; }
+.l6p3-submit .olympiad-heading__art { display: block; width: 100%; height: 100%; }
+.l6p3-feedback { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 25svh; height: 25svh; object-fit: contain; pointer-events: none; z-index: 20; }
+.l6p3-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

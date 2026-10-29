@@ -1,0 +1,6 @@
+.scientific-diagram { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.scientific-diagram text { --text-leading: 1; }
+.scientific-diagram [data-label-kind="atom"] { --text-size: 32px; }
+.scientific-diagram [data-label-kind="caption"] { --text-size: 24px; }
+.scientific-diagram [data-label-kind="angle"] { --text-size: 38px; }

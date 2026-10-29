@@ -3,11 +3,15 @@ import { flushSync } from 'react-dom';
 import { SecurityController } from './SecurityController';
 import { STORAGE_KEY } from './securityStorage';
 import { SECURITY_RULES } from './securityEvents';
+import { breachSiren } from './breachSiren';
 
 export const CompetitionSecurityContext = createContext<SecurityController | null>(null);
 export function CompetitionSecurityProvider({ children, controller: supplied }: { children: ReactNode; controller?: SecurityController }) {
   const [controller] = useState(() => supplied ?? new SecurityController());
   useEffect(() => {
+    const updateSiren = () => breachSiren.setLocked(controller.getSnapshot().session.status === 'LOCKED');
+    updateSiren();
+    const unsubscribeSiren = controller.subscribe(updateSiren);
     const lock = (reason: Parameters<SecurityController['interrupt']>[0]) => flushSync(() => controller.interrupt(reason));
     const visibility = () => { if (SECURITY_RULES.pageHidden === 'LOCK' && document.hidden) lock('PAGE_HIDDEN'); };
     const blur = () => { if (SECURITY_RULES.windowBlur === 'LOCK') lock('WINDOW_BLUR'); };
@@ -27,6 +31,8 @@ export function CompetitionSecurityProvider({ children, controller: supplied }: 
       Object.assign(window, { sjsSecurityRecovery: () => { localStorage.removeItem(STORAGE_KEY); location.reload(); } });
     }
     return () => {
+      unsubscribeSiren();
+      breachSiren.dispose();
       document.removeEventListener('visibilitychange', visibility);
       document.removeEventListener('fullscreenchange', fullscreen);
       window.removeEventListener('blur', blur);
@@ -42,5 +48,6 @@ export function useCompetitionSecurity() {
   const controller = useContext(CompetitionSecurityContext);
   if (!controller) throw new Error('CompetitionSecurityProvider is required');
   const view = useSyncExternalStore(controller.subscribe, controller.getSnapshot);
-  return { ...view, start: controller.start, unlock: controller.unlock, reset: controller.reset };
+  const start = () => { breachSiren.prepare(); return controller.start(); };
+  return { ...view, start, unlock: controller.unlock, reset: controller.reset, end: controller.end };
 }

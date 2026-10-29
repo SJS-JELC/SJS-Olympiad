@@ -1,0 +1,107 @@
+import { u5p8 } from './u5p8/definition';
+import { U5Problem8 } from './u5p8/U5Problem8';
+import { u5p2 } from './u5p2/definition';
+import { CrossYourFingers } from './u5p2/CrossYourFingers';
+import { u5p5 } from './u5p5/definition';
+import { ScentsAndScentsibility } from './u5p5/ScentsAndScentsibility';
+import { u5p3Definition } from './u5p3/definition';
+import { Chainspotting } from './u5p3/Chainspotting';
+import { u5p6 } from './u5p6/definition';
+import { U5Problem6 } from './u5p6/U5Problem6';
+import { u5p7 } from './u5p7/definition';
+import { U5Problem7 } from './u5p7/U5Problem7';
+import type { ComponentType } from 'react';
+import type { Attempt, AttemptAction, QuestionDefinition } from './attempts';
+import { l6p5 } from './l6p5/definition';
+import { TwistAndBump } from './l6p5/TwistAndBump';
+import { l5p1 } from './l5p1/definition';
+import { L5Problem1 } from './l5p1/L5Problem1';
+import { l5p2 } from './l5p2/definition';
+import { L5Problem2 } from './l5p2/L5Problem2';
+import { l5p3 } from './l5p3/definition';
+import { L5Problem3 } from './l5p3/L5Problem3';
+import { l5p4 } from './l5p4/definition';
+import { L5Problem4 } from './l5p4/L5Problem4';
+import { l5p5 } from './l5p5/definition';
+import { L5Problem5 } from './l5p5/L5Problem5';
+import { l5p7 } from './l5p7/definition';
+import { L5Problem7 } from './l5p7/L5Problem7';
+import { l5p8 } from './l5p8/definition';
+import { L5Problem8 } from './l5p8/L5Problem8';
+import { l5p9 } from './l5p9/definition';
+import { L5Problem9 } from './l5p9/L5Problem9';
+import { l6p1 } from './l6p1/definition';
+import { L6Problem1 } from './l6p1/L6Problem1';
+import { l6p3 } from './l6p3/definition';
+import { L6Problem3 } from './l6p3/L6Problem3';
+import { u6p4 } from './u6p4/definition';
+import { U6Problem4 } from './u6p4/U6Problem4';
+import { u6p1 } from './u6p1/definition';
+import { U6Problem1 } from './u6p1/U6Problem1';
+import { u6p2 } from './u6p2/definition';
+import { U6Problem2 } from './u6p2/U6Problem2';
+import { u6p3 } from './u6p3/definition';
+import { U6Problem3 } from './u6p3/U6Problem3';
+import { u6p5 } from './u6p5/definition';
+import { U6Problem5 } from './u6p5/U6Problem5';
+import { u6p6 } from './u6p6/definition';
+import { U6Problem6 } from './u6p6/U6Problem6';
+import { u6p7 } from './u6p7/definition';
+import { U6Problem7 } from './u6p7/U6Problem7';
+import { u6p8 } from './u6p8/definition';
+import { U6Problem8 } from './u6p8/U6Problem8';
+import { l6p2 } from './l6p2/definition';
+import { L6Problem2 } from './l6p2/L6Problem2';
+import { l6p6 } from './l6p6/definition';
+import { L6Problem6 } from './l6p6/L6Problem6';
+import { l6p7 } from './l6p7/definition';
+import { L6Problem7 } from './l6p7/L6Problem7';
+import { l6p8 } from './l6p8/definition';
+import { L6Problem8 } from './l6p8/L6Problem8';
+import { l6p9 } from './l6p9/definition';
+import { L6Problem9 } from './l6p9/L6Problem9';
+import { l5p6 } from './l5p6/definition';
+import { L5Problem6 } from './l5p6/L5Problem6';
+import { l6p4 } from './l6p4/definition';
+import { L6Problem4 } from './l6p4/L6Problem4';
+import { u6p9 } from './u6p9/definition';
+import { U6Problem9 } from './u6p9/U6Problem9';
+export type QuestionViewProps = { attempt: Attempt; onAction: (action: AttemptAction) => void };
+export type QuestionEntry = { definition: QuestionDefinition; View: ComponentType<QuestionViewProps> };
+/** Explicit year + number identity; other year groups must never silently fall back to L6. */
+export const questionCatalog: readonly QuestionEntry[] = [
+  { definition: u5p2, View: CrossYourFingers },
+  { definition: u5p5, View: ScentsAndScentsibility },
+  { definition: u5p3Definition, View: Chainspotting },
+  { definition: u5p6, View: U5Problem6 },
+  { definition: u5p7, View: U5Problem7 },
+  { definition: u5p8, View: U5Problem8 },
+  { definition: l6p5, View: TwistAndBump },
+  { definition: l5p6, View: L5Problem6 },
+  { definition: l6p4, View: L6Problem4 },
+  { definition: u6p9, View: U6Problem9 },
+  { definition: l6p2, View: L6Problem2 },
+  { definition: l6p6, View: L6Problem6 },
+  { definition: l6p7, View: L6Problem7 },
+  { definition: l6p8, View: L6Problem8 },
+  { definition: l6p9, View: L6Problem9 },
+  { definition: u6p1, View: U6Problem1 },
+  { definition: u6p2, View: U6Problem2 },
+  { definition: u6p3, View: U6Problem3 },
+  { definition: u6p5, View: U6Problem5 },
+  { definition: u6p6, View: U6Problem6 },
+  { definition: u6p7, View: U6Problem7 },
+  { definition: u6p8, View: U6Problem8 },
+  { definition: l5p1, View: L5Problem1 },
+  { definition: l5p2, View: L5Problem2 },
+  { definition: l5p3, View: L5Problem3 },
+  { definition: l5p4, View: L5Problem4 },
+  { definition: l5p5, View: L5Problem5 },
+  { definition: l5p7, View: L5Problem7 },
+  { definition: l5p8, View: L5Problem8 },
+  { definition: l5p9, View: L5Problem9 },
+  { definition: l6p1, View: L6Problem1 },
+  { definition: l6p3, View: L6Problem3 },
+  { definition: u6p4, View: U6Problem4 }
+];
+export const findQuestion = (year: string, number: number) => questionCatalog.find(entry => entry.definition.year === year && entry.definition.number === number);

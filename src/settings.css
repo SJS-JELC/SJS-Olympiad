@@ -1,0 +1,44 @@
+.settings-page {
+  --green: #23549a;
+  --muted: #375979;
+  --border: #94c7e1;
+  color: #153959;
+  max-width: 1440px;
+  padding: 0 6vw;
+}
+.settings-page .site-header { min-height: 120px; border-color: #ffffff66; }
+.settings-title { width: min(28vw, 330px); }
+.settings-back { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; padding: 12px 18px; border-radius: 10px; background: #effaffcf; }
+.settings-back:hover { background: #fff; }
+.settings-security { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5vw; background: #eefaffdc; border: 1px solid #ffffffaa; border-radius: 18px; padding: 32px; margin-bottom: 26px; backdrop-filter: blur(14px); }
+.settings-security h2 { margin-bottom: 16px; }
+.settings-security h3 { margin: 0 0 16px; }
+.settings-security p { max-width: 560px; }
+.settings-security aside { border-left: 1px solid var(--border); padding-left: 30px; }
+.settings-security .rules-list { margin-top: 0; }
+.settings-security .rules-list li { border-color: var(--border); }
+.settings-security .rules-list li::before { color: #23549a; }
+.settings-page .primary:hover:not(:disabled) { background: #183f78; }
+.settings-page .status-strip, .settings-page .diagnostics { background: #effaffdf; }
+.settings-page .question-card { background: #f5fcfff2; }
+.settings-page .element-option { color: #234775; background: #e6f3ff; border-color: #adcce5; }
+.settings-page .element-option.selected { background: #c5e3fa; border-color: #3860b2; }
+.settings-page .site-footer { color: #234b72; border-color: #ffffff88; }
+
+.end-competition { margin-top: 18px; }
+
+.settings-year { background: #fffffff0; color: #152033; padding: 2svh 2vw; border-radius: 1svh; margin-bottom: 2svh; }
+.settings-year label { margin-right: 1vw; }
+.settings-year select { padding: .5svh 1vw; border: .2svh solid #000; border-radius: .5svh; }
+.settings-year p { margin-bottom: 0; }
+.settings-year .button { margin-top: 1.5svh; }
+
+.problem-testing { background: #fffffff0; color: #152033; padding: 2svh 2vw; border-radius: 1svh; }
+.problem-testing-years { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5vw; }
+.problem-testing-years h2 { margin: 1svh 0; }
+.problem-testing-list { display: grid; gap: 1svh; }
+.problem-testing-card { display: flex; flex-direction: column; gap: .5svh; width: 100%; min-height: 9svh; padding: 1svh 1vw; text-align: left; border: 1px solid #94c7e1; border-radius: .7svh; color: #153959; background: #e6f3ff; }
+.problem-testing-card:hover:not(:disabled) { background: #c5e3fa; border-color: #3860b2; }
+.problem-testing-card:disabled { background: #f3f5f7; color: #66717c; cursor: not-allowed; }
+.problem-testing-card .type-body { --text-size: 1rem; }
+.problem-testing-card .type-label { --text-size: .85rem; }

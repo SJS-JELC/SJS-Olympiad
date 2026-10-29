@@ -1,0 +1,1053 @@
+{
+  "L5P1": {
+    "points": 1,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "vanadium"
+        },
+        {
+          "answer": " VANADIUM "
+        },
+        {
+          "answer": "van adium"
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "V"
+        },
+        {
+          "answer": "vanadium oxide"
+        },
+        {
+          "answer": "vanadum"
+        },
+        {
+          "answer": "van\tadium"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "answer": ""
+        },
+        {
+          "answer": "   "
+        }
+      ]
+    }
+  },
+  "L5P2": {
+    "points": 1,
+    "cooldownMs": 15000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "6.46"
+        },
+        {
+          "answer": " 6.46 "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "6.460"
+        },
+        {
+          "answer": "6.45"
+        },
+        {
+          "answer": "6.46x"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "answer": ""
+        },
+        {
+          "answer": "   "
+        }
+      ]
+    }
+  },
+  "L5P3": {
+    "points": 1,
+    "cooldownMs": 15000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "bicyclo[4.3.1]decane"
+        },
+        {
+          "answer": " BICYCLO[4.3.1]DECANE "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "bicyclo[3.4.1]decane"
+        },
+        {
+          "answer": "bicyclo [4.3.1]decane"
+        },
+        {
+          "answer": "bicyclo[4.3.1]nonane"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "answer": ""
+        },
+        {
+          "answer": "   "
+        }
+      ]
+    }
+  },
+  "L5P4": {
+    "points": 1,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "Co"
+        },
+        {
+          "answer": "CO"
+        },
+        {
+          "answer": " c o "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "cobalt"
+        },
+        {
+          "answer": "Cu"
+        },
+        {
+          "answer": "C"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "answer": ""
+        },
+        {
+          "answer": "   "
+        }
+      ]
+    }
+  },
+  "L5P5": {
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "correct": [
+        {
+          "c2h4o": "3",
+          "c4h8": "5",
+          "c3h9n": "4"
+        },
+        {
+          "c2h4o": "3",
+          "c4h8": "6",
+          "c3h9n": "4"
+        },
+        {
+          "c2h4o": "03",
+          "c4h8": "06",
+          "c3h9n": "04"
+        }
+      ],
+      "wrong": [
+        {
+          "c2h4o": "2",
+          "c4h8": "5",
+          "c3h9n": "4"
+        },
+        {
+          "c2h4o": "3",
+          "c4h8": "4",
+          "c3h9n": "4"
+        },
+        {
+          "c2h4o": "3",
+          "c4h8": "6",
+          "c3h9n": "3"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "c2h4o": "",
+          "c4h8": "",
+          "c3h9n": ""
+        },
+        {
+          "c2h4o": "   ",
+          "c4h8": "   ",
+          "c3h9n": "   "
+        },
+        {
+          "c2h4o": "3",
+          "c4h8": "",
+          "c3h9n": "4"
+        }
+      ]
+    }
+  },
+  "L5P6": {
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "accepted": [
+        {
+          "mass47": "CH3S",
+          "mass74": "C2H4NO2",
+          "mass45": "CHO2"
+        },
+        {
+          "mass47": "s h₃ c",
+          "mass74": "OONHHCCHH",
+          "mass45": "O2HC"
+        }
+      ],
+      "rejected": [
+        "CH3S+",
+        "CH3Se",
+        "(CH3)S",
+        "CH3S1.0",
+        "CH3SO",
+        ""
+      ]
+    }
+  },
+  "L5P7": {
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "correct": [
+        {
+          "perovskite": "5",
+          "gan": "4"
+        },
+        {
+          "perovskite": "5.0",
+          "gan": "4.0"
+        }
+      ],
+      "wrong": [
+        {
+          "perovskite": "4",
+          "gan": "5"
+        },
+        {
+          "perovskite": "5",
+          "gan": "3"
+        },
+        {
+          "perovskite": "5x",
+          "gan": "4"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "perovskite": "",
+          "gan": ""
+        },
+        {
+          "perovskite": "   ",
+          "gan": "   "
+        },
+        {
+          "perovskite": "5",
+          "gan": ""
+        }
+      ]
+    }
+  },
+  "L5P8": {
+    "points": 3,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "90"
+        },
+        {
+          "answer": "90.0"
+        },
+        {
+          "answer": "9e1"
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "89"
+        },
+        {
+          "answer": "91"
+        },
+        {
+          "answer": "90x"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "answer": ""
+        },
+        {
+          "answer": "   "
+        }
+      ]
+    }
+  },
+  "L5P9": {
+    "points": 3,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "accepted": [
+        [
+          "ZnO2",
+          "MgO2",
+          "Na2O2",
+          "Fe3O4",
+          "V6O13",
+          "Ti4O7",
+          "TiO2",
+          "Al2O3",
+          "MgO"
+        ],
+        [
+          "MgO",
+          "Al2O3",
+          "TiO2",
+          "Na2O2",
+          "MgO2",
+          "ZnO2",
+          "Ti4O7",
+          "V6O13",
+          "Fe3O4"
+        ]
+      ],
+      "rejected": [
+        [
+          "ZnO2",
+          "TiO2",
+          "Fe3O4",
+          "MgO2",
+          "Al2O3",
+          "V6O13",
+          "Na2O2",
+          "MgO",
+          "Ti4O7"
+        ]
+      ],
+      "ignored": [
+        [],
+        [
+          "ZnO2",
+          "MgO2",
+          "Na2O2"
+        ]
+      ]
+    }
+  },
+  "L6P1": {
+    "points": 1,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "accepted": [
+        [
+          "S",
+          "Zr",
+          "Th",
+          "Cu",
+          "Na",
+          "F",
+          "V",
+          "As",
+          "Ta"
+        ],
+        [
+          "Ta",
+          "As",
+          "V",
+          "Th",
+          "Zr",
+          "S",
+          "F",
+          "Na",
+          "Cu"
+        ]
+      ],
+      "rejected": [
+        [
+          "Ta",
+          "S",
+          "As",
+          "Cu",
+          "V",
+          "Zr",
+          "F",
+          "Th",
+          "Na"
+        ]
+      ],
+      "ignored": [
+        [],
+        [
+          "S",
+          "Zr",
+          "Th"
+        ]
+      ]
+    }
+  },
+  "L6P2": {
+    "identity": "L6P2",
+    "points": 1,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "accepted": [
+        "V",
+        "v",
+        " V "
+      ],
+      "rejected": [
+        "vanadium",
+        "VV",
+        "",
+        " "
+      ]
+    },
+    "fieldId": "answer"
+  },
+  "L6P3": {
+    "identity": "L6P3",
+    "points": 1,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "draws": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        16,
+        17,
+        18,
+        19,
+        2
+      ],
+      "accepted": " N I T R I T E ( I I I ) ",
+      "rejected": [
+        "nitrite",
+        "nitrite(V)",
+        ""
+      ]
+    }
+  },
+  "L6P4": {
+    "points": 1,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "accepted": [
+        "112211/122112",
+        "221122/122112",
+        "112211/211221",
+        "221122/211221"
+      ],
+      "rejected": [
+        "111111/122112",
+        "112211/112211",
+        "11221/122112"
+      ]
+    }
+  },
+  "L6P5": {
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "correct": [
+        {
+          "molecule1Minimum": "300",
+          "molecule1Maximum": "60",
+          "molecule2Minimum": "300",
+          "molecule2Maximum": "120",
+          "molecule3Minimum": "60",
+          "molecule3Maximum": "240"
+        }
+      ],
+      "wrong": [
+        {
+          "molecule1Minimum": "0"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    }
+  },
+  "L6P6": {
+    "identity": "L6P6",
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "accepted": [
+        "30",
+        "36",
+        "30.0",
+        "3.6e1",
+        " 36 "
+      ],
+      "rejected": [
+        "",
+        " ",
+        "29",
+        "35",
+        "30.001",
+        "30x",
+        "0x1e",
+        "Infinity"
+      ]
+    },
+    "fieldId": "answer"
+  },
+  "L6P7": {
+    "identity": "L6P7",
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "accepted": [
+        "(Z)-but-2-enedioic acid",
+        "(Z)-butenedioic acid",
+        "cis-but-2-enedioic acid",
+        "cis-butenedioic acid",
+        " maleic acid ",
+        "(Z),but-2-enedioic acid"
+      ],
+      "rejected": [
+        "",
+        " ",
+        "but-2-enedioic acid",
+        "(E)-but-2-enedioic acid",
+        "fumaric acid",
+        "maleicacidx",
+        "(Z)–but-2-enedioic acid"
+      ]
+    },
+    "fieldId": "answer"
+  },
+  "L6P9": {
+    "identity": "L6P9",
+    "points": 3,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "accepted": [
+        "295",
+        "295.0",
+        "2.95e2",
+        " 295 "
+      ],
+      "rejected": [
+        "",
+        " ",
+        "294",
+        "295.001",
+        "295pm",
+        "0x127",
+        "Infinity"
+      ]
+    },
+    "fieldId": "answer"
+  },
+  "U5P3": {
+    "identity": "U5P3",
+    "points": 1,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "correct": [
+        {
+          "drawing": "{\"kind\":\"molecule\",\"graph\":{\"atoms\":[{\"id\":1,\"element\":\"C\",\"x\":0,\"y\":0},{\"id\":2,\"element\":\"C\",\"x\":60,\"y\":0},{\"id\":6,\"element\":\"F\",\"x\":60,\"y\":50},{\"id\":21,\"element\":\"C\",\"x\":180,\"y\":0},{\"id\":22,\"element\":\"C\",\"x\":240,\"y\":0},{\"id\":24,\"element\":\"Cl\",\"x\":200,\"y\":50},{\"id\":25,\"element\":\"F\",\"x\":220,\"y\":-50},{\"id\":26,\"element\":\"F\",\"x\":240,\"y\":50},{\"id\":41,\"element\":\"C\",\"x\":360,\"y\":0},{\"id\":42,\"element\":\"C\",\"x\":420,\"y\":0},{\"id\":45,\"element\":\"F\",\"x\":400,\"y\":-50},{\"id\":46,\"element\":\"Cl\",\"x\":420,\"y\":50},{\"id\":61,\"element\":\"C\",\"x\":540,\"y\":0},{\"id\":62,\"element\":\"C\",\"x\":600,\"y\":0},{\"id\":64,\"element\":\"F\",\"x\":560,\"y\":50},{\"id\":65,\"element\":\"Cl\",\"x\":580,\"y\":-50},{\"id\":66,\"element\":\"Cl\",\"x\":600,\"y\":50}],\"bonds\":[{\"a\":1,\"b\":2,\"order\":2},{\"a\":2,\"b\":6,\"order\":1},{\"a\":21,\"b\":22,\"order\":2},{\"a\":21,\"b\":24,\"order\":1},{\"a\":22,\"b\":25,\"order\":1},{\"a\":22,\"b\":26,\"order\":1},{\"a\":41,\"b\":42,\"order\":2},{\"a\":42,\"b\":45,\"order\":1},{\"a\":42,\"b\":46,\"order\":1},{\"a\":61,\"b\":62,\"order\":2},{\"a\":61,\"b\":64,\"order\":1},{\"a\":62,\"b\":65,\"order\":1},{\"a\":62,\"b\":66,\"order\":1}]},\"history\":[]}"
+        }
+      ],
+      "rejected": [
+        "Blank/empty canvas",
+        "Malformed schema or malformed/overlong history",
+        "Missing or extra component, including isolated hydrogen",
+        "Duplicate monomer replacing a required monomer",
+        "CHF=CClF replacing CHCl=CF₂ (same formula, wrong connectivity)",
+        "Wrong bond order, cycle, overvalence, unsupported element or charged species"
+      ]
+    }
+  },
+  "U5P6": {
+    "points": 2,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "485"
+        },
+        {
+          "answer": "485.0"
+        },
+        {
+          "answer": "4.85e2"
+        },
+        {
+          "answer": " 485 "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "484"
+        },
+        {
+          "answer": "486"
+        },
+        {
+          "answer": "484.735"
+        },
+        {
+          "answer": "485.001"
+        },
+        {
+          "answer": "485pm"
+        },
+        {
+          "answer": "0x1e5"
+        },
+        {
+          "answer": "NaN"
+        },
+        {
+          "answer": "Infinity"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "answer": ""
+        },
+        {
+          "answer": "   "
+        }
+      ]
+    }
+  },
+  "U5P8": {
+    "identity": "U5P8",
+    "points": 3,
+    "cooldownMs": 20000,
+    "fixtures": {
+      "accepted": [
+        "159.5",
+        "159.50",
+        "0159.5",
+        "308.3",
+        "308.30",
+        "0308.3"
+      ],
+      "rejected": [
+        "",
+        " ",
+        "0.0325",
+        "159.4",
+        "159.6",
+        "308.2",
+        "308.4",
+        "159.476626",
+        "308.293954",
+        "0.1595",
+        "159500",
+        "159.5cm³",
+        "NaN",
+        "Infinity",
+        "0x9f.8"
+      ]
+    },
+    "fieldId": "answer"
+  },
+  "U6P1": {
+    "identity": {
+      "id": "U6P1",
+      "year": "U6",
+      "number": 1,
+      "title": "NICE, SIMPLE NMR"
+    },
+    "points": 1,
+    "cooldownMs": 15000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "4-hydroxycyclohexanone"
+        },
+        {
+          "answer": " 4-HYDROXY CYCLOHEXANONE "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "4-hydroxycyclohexanol"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [
+      {
+        "name": "NMR",
+        "file": "assets/nmr.svg",
+        "sourceEntry": "Assets/Images/6a1e3b4a-9fea-46a2-8f80-665033971920.svg",
+        "sha256": "2d5b20bfa8fffcd6ae24b284d2ca19e80d66883b1afe2037dd42fddf77e229b8",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged trusted scientific SVG, retaining source geometry and embedded scientific lettering. No external resources, script or personal data."
+      }
+    ],
+    "sourceSha256": "203461810ef5a1384a67ee26254b5c18afa319871701599a868fbf22d61991b2"
+  },
+  "U6P2": {
+    "identity": {
+      "id": "U6P2",
+      "year": "U6",
+      "number": 2,
+      "title": "HOT STUFF"
+    },
+    "points": 1,
+    "cooldownMs": 10000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "28.5"
+        },
+        {
+          "answer": "28.500"
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "28.49"
+        },
+        {
+          "answer": "28.51"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [],
+    "sourceSha256": "6e70a8386b969bd2f6b001a1d3c6725f974fe2fd7d2f04071b86cb467d83a7cc"
+  },
+  "U6P3": {
+    "identity": {
+      "id": "U6P3",
+      "year": "U6",
+      "number": 3,
+      "title": "SPYRO"
+    },
+    "points": 1,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "6-methylspiro[2.3]hexan-4-ol"
+        },
+        {
+          "answer": " 6-METHYLSPIRO[2.3]HEXAN-4-OL "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "6-methyl spiro[2.3]hexan-4-ol"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [
+      {
+        "name": "Spiros",
+        "file": "assets/spiros.svg",
+        "sourceEntry": "Assets/Images/f03756c2-7636-4865-9cb0-811a5777c8b5.svg",
+        "sha256": "91d0ff7b1a421f2a6ca598c871e4a001e0ac00d6e7e26adf4e0454ed53ea74f2",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged trusted scientific SVG, retaining source geometry and embedded scientific lettering. No external resources, script or personal data."
+      }
+    ],
+    "sourceSha256": "b460eccf1cb9183fd247d8beb0932f5cca5df194c02e7520e75525c96f02dd3a"
+  },
+  "U6P4": {
+    "identity": {
+      "id": "U6P4",
+      "year": "U6",
+      "number": 4,
+      "title": "CHARGE HOPPER"
+    },
+    "points": 1,
+    "cooldownMs": 60000,
+    "fixtures": {
+      "correct": [
+        {
+          "a": "4",
+          "b": "10",
+          "c": "8"
+        },
+        {
+          "a": "4.0",
+          "b": "010",
+          "c": "8.0"
+        }
+      ],
+      "wrong": [
+        {
+          "a": "4",
+          "b": "8",
+          "c": "10"
+        },
+        {
+          "a": "4x",
+          "b": "10",
+          "c": "8"
+        }
+      ],
+      "blank": [
+        {},
+        {
+          "a": "4",
+          "b": "10",
+          "c": ""
+        }
+      ]
+    },
+    "assets": [
+      {
+        "name": "Resonance",
+        "file": "assets/resonance.svg",
+        "sourceEntry": "Assets/Images/5009f215-0ca2-4502-b54f-2dd652856033.svg",
+        "sha256": "c7280818fee0628ab4c1b1b430fe8a1c665015ecd356a1bf29345fd3d85822c2",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged scientific SVG geometry and embedded source lettering; no external resources, script or personal data."
+      }
+    ],
+    "sourceSha256": "4fe1d03d7bc546d85f2fdbe1ad70066d5fb2bd21a5c852e45f09316d875fa78b"
+  },
+  "U6P5": {
+    "identity": {
+      "id": "U6P5",
+      "year": "U6",
+      "number": 5,
+      "title": "HOW HARD CAN ISOMERISM BE?"
+    },
+    "points": 2,
+    "cooldownMs": 120000,
+    "fixtures": {
+      "correct": [
+        {
+          "first": "B",
+          "second": "D"
+        },
+        {
+          "first": "d",
+          "second": "b"
+        }
+      ],
+      "wrong": [
+        {
+          "first": "B",
+          "second": "B"
+        },
+        {
+          "first": " B",
+          "second": "D"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [
+      {
+        "name": "Olympiad Stereochemistry problem",
+        "file": "assets/stereoisomers.svg",
+        "sourceEntry": "Assets/Images/1ba478c6-588c-4b8f-ad8d-e5e21842e096.svg",
+        "sha256": "7afa2a8ebd3d548926a223ce77363ef709e0322b3540e0e5274e0eb958d026e3",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged trusted scientific SVG, retaining source geometry and embedded scientific lettering. No external resources, script or personal data."
+      }
+    ],
+    "sourceSha256": "8ce7e97068c7d46f8bb3d68cd1304b91572b8d055262d04ede7b3a1453f09db4"
+  },
+  "U6P6": {
+    "identity": {
+      "id": "U6P6",
+      "year": "U6",
+      "number": 6,
+      "title": "JUMBO MASS SPECTROMETRY"
+    },
+    "points": 2,
+    "cooldownMs": 10000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "29808"
+        },
+        {
+          "answer": "29808.0"
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "29807"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [],
+    "sourceSha256": "be96d8d9db16072070974f04fad7dabb4f46589e7e23d9080d3b56d0ee7a0d23"
+  },
+  "U6P7": {
+    "identity": {
+      "id": "U6P7",
+      "year": "U6",
+      "number": 7,
+      "title": "PROPANE'S CLOSEST ENCOUNTER"
+    },
+    "points": 2,
+    "cooldownMs": 10000,
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "192"
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "0192"
+        },
+        {
+          "answer": "192.0"
+        },
+        {
+          "answer": " 192"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [],
+    "sourceSha256": "3c004c1df41d9762433294552ab0244e0ae6294496bfe7b7123bba3dba56d191"
+  },
+  "U6P8": {
+    "identity": {
+      "id": "U6P8",
+      "year": "U6",
+      "number": 8,
+      "title": "SPEEDY"
+    },
+    "points": 3,
+    "cooldownMs": 10000,
+    "fixtures": {
+      "correct": [
+        {
+          "sn1": "60.3",
+          "sn2": "39.7"
+        },
+        {
+          "sn1": "60.25",
+          "sn2": "39.65"
+        }
+      ],
+      "wrong": [
+        {
+          "sn1": "60.35",
+          "sn2": "39.7"
+        },
+        {
+          "sn1": "60.3",
+          "sn2": "39.75"
+        }
+      ],
+      "blank": [
+        {}
+      ]
+    },
+    "assets": [
+      {
+        "name": "Rate Data",
+        "file": "assets/rate-data.svg",
+        "sourceEntry": "Assets/Images/2bd9de59-2887-47e0-bc5a-ae4b5e9c7944.svg",
+        "sha256": "2f7c336c04ed4b0c4440ce2da17cb2a6bcb04d8c9117a943bd04eb10f33d9e33",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged trusted scientific SVG, retaining source geometry and embedded scientific lettering. No external resources, script or personal data."
+      },
+      {
+        "name": "SN1 Mechanism",
+        "file": "assets/sn1-mechanism.svg",
+        "sourceEntry": "Assets/Images/164eb495-4cbd-4e05-83b2-f08d9fe4ccd6.svg",
+        "sha256": "1bd43aa3cd6ca1d96d1e241ed37f730aef6c6a04f9e48623adb2e1c83840f582",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged trusted scientific SVG, retaining source geometry and embedded scientific lettering. No external resources, script or personal data."
+      },
+      {
+        "name": "SN2 Mechanism",
+        "file": "assets/sn2-mechanism.svg",
+        "sourceEntry": "Assets/Images/3e4926ce-d3ee-4c7b-bd43-1930a2703541.svg",
+        "sha256": "3c05927ed4dacedd7b1d08424f5d4749fa556717fd2b62b91cbd6fd3e311c391",
+        "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+        "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+        "treatment": "Unchanged trusted scientific SVG, retaining source geometry and embedded scientific lettering. No external resources, script or personal data."
+      }
+    ],
+    "sourceSha256": "f7e19f759654b5e572ad0547b62d47312d0867926477d907bfb7d8a269acec03"
+  },
+  "U6P9": {
+    "points": 3,
+    "cooldownMs": 30000,
+    "fixtures": {
+      "accepted": [
+        {
+          "HClO": "Cₛ – E, σ",
+          "SF4": "C₂ᵥ – E, C₂, 2 × σᵥ",
+          "PCl5": "D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥ"
+        }
+      ],
+      "rejected": [
+        {
+          "HClO": "C₁ – E",
+          "SF4": "C₂ᵥ – E, C₂, 2 × σᵥ",
+          "PCl5": "D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥ"
+        }
+      ]
+    },
+    "assets": {
+      "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+      "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+      "records": []
+    },
+    "sourceSha256": "b4ac90d5ebcd6b0d557b3c3df3fbb1313cb5daf69e743747e50f5358235fd910"
+  }
+}

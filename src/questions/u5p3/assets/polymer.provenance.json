@@ -1,0 +1,112 @@
+{
+  "source": "polymer.svg",
+  "sourceSha256": "97f00321f8a7a8daf9776cd48775697611755f66756147ca03bb9c67696824e6",
+  "sourceUnchanged": true,
+  "sourceArchive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "sourceArchiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "sourceEntry": "Assets/Images/377f2525-930e-453f-bef1-1c6ffeb94483.svg",
+  "derivedFiles": [
+    "../polymerGraph.ts",
+    "../PolymerDiagram.tsx"
+  ],
+  "inspection": "Original SVG rendered and visually inspected; outlined glyph path shapes and left-to-right locations independently cross-checked in tests/unit/u5p3.test.ts.",
+  "carbonCount": 22,
+  "explicitAtomCount": 66,
+  "singleBondCount": 65,
+  "continuationStubs": 2,
+  "firstCarbonDirection": "down",
+  "substituentPairOrder": "left/right on the page, from leftmost backbone carbon to rightmost",
+  "carbonSubstituentSequence": [
+    [
+      "Cl",
+      "Cl"
+    ],
+    [
+      "H",
+      "H"
+    ],
+    [
+      "H",
+      "F"
+    ],
+    [
+      "H",
+      "Cl"
+    ],
+    [
+      "F",
+      "F"
+    ],
+    [
+      "F",
+      "Cl"
+    ],
+    [
+      "H",
+      "H"
+    ],
+    [
+      "H",
+      "F"
+    ],
+    [
+      "H",
+      "H"
+    ],
+    [
+      "F",
+      "H"
+    ],
+    [
+      "Cl",
+      "Cl"
+    ],
+    [
+      "F",
+      "F"
+    ],
+    [
+      "H",
+      "Cl"
+    ],
+    [
+      "Cl",
+      "Cl"
+    ],
+    [
+      "F",
+      "H"
+    ],
+    [
+      "H",
+      "H"
+    ],
+    [
+      "F",
+      "Cl"
+    ],
+    [
+      "H",
+      "Cl"
+    ],
+    [
+      "F",
+      "F"
+    ],
+    [
+      "H",
+      "F"
+    ],
+    [
+      "H",
+      "H"
+    ],
+    [
+      "Cl",
+      "Cl"
+    ]
+  ],
+  "geometry": "Dedicated compact alternating zigzag, 50-unit carbon spacing, two explicit side bonds per carbon. Continuation stubs indicate omitted chain at both ends; endpoint h:0 suppresses invented end-group H. This read-only illustration is not a complete closed-shell submitted molecule.",
+  "typography": "Shared Body font through the reusable Structure displayed view; source outlined lettering is retained only in immutable reference SVG.",
+  "runtime": "No raw source SVG injection or RDKit required; local typed graph contains every illustrated atom and bond."
+}

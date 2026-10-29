@@ -1,0 +1,13 @@
+.u6p8-question .question-brief { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); padding-block: 1.5svh; }
+.u6p8-answers { display: flex; align-items: center; justify-content: center; gap: 3vw; }
+.u6p8-answer { display: flex; align-items: center; gap: .8vw; color: #152033; white-space: nowrap; --answer-input-width: 12vw; }
+.u6p8-rate-data { width: max-content; max-width: 100%; margin: 1svh auto; border-collapse: collapse; text-align: center; --text-size: 2svh; }
+.u6p8-rate-data th, .u6p8-rate-data td { border: .125svh solid #73829b; padding: .4svh 1vw; background: #fff; color: #152033; white-space: nowrap; }
+.u6p8-rate-data th { --text-size: 2svh; }
+.u6p8-diagrams { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; gap: 1svh 2vw; }
+.u6p8-question .u6p8-diagram { display: grid; grid-template-rows: auto minmax(0, 1fr); width: 100%; min-height: 0; margin: 0; }
+.u6p8-question .u6p8-diagram img { height: 100%; min-height: 0; }
+.u6p8-diagram figcaption { color: #152033; }
+.u6p8-reaction { position: relative; min-height: 0; }
+.u6p8-slow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.u6p8-slow text { --text-size: 36px; fill: #152033; text-anchor: middle; dominant-baseline: central; }

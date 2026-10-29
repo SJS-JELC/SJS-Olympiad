@@ -1,0 +1,20 @@
+{
+  "sourceArchive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "Perovskite",
+      "file": "assets/perovskite.svg",
+      "sourceEntry": "Assets/Images/9e0871b9-b9e6-40ee-9ab4-84b7adc99330.svg",
+      "sha256": "1b5960eab819f7838b263d99b707265f648b03a3ff97582c932da6b108470982",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    },
+    {
+      "name": "GaN",
+      "file": "assets/gan.svg",
+      "sourceEntry": "Assets/Images/98081c03-4059-4dd1-a455-3d724aa8aff6.svg",
+      "sha256": "94b51e4f7bf582c2381f220dd5dd7ef100af12a474b292a9b1bad48c5d76b022",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    }
+  ]
+}

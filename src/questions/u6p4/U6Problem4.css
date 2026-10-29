@@ -1,0 +1,10 @@
+.u6p4-question .question-brief { display: flex; flex-direction: column; }
+.u6p4-question .question-brief > p { flex-shrink: 0; }
+.u6p4-question .u6p4-diagram { flex: 1; min-height: 0; width: 100%; margin-bottom: 0; }
+.u6p4-question .u6p4-diagram img { height: 100%; }
+.u6p4-answers { position: relative; width: min(100%, var(--u6p4-diagram-width, 68svh)); height: 6.5svh; margin-inline: auto; }
+.u6p4-answer { position: absolute; transform: translateX(-50%); --answer-input-width: 10svh; }
+/* Centres of the three target molecule groups within the original full diagram. */
+.u6p4-answer:nth-child(1) { left: 9%; }
+.u6p4-answer:nth-child(2) { left: 36.5%; }
+.u6p4-answer:nth-child(3) { left: 77.5%; }

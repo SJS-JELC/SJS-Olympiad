@@ -1,0 +1,13 @@
+{
+  "sourceArchive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "HaroldtheGoblin",
+      "file": "assets/goblin.png",
+      "sourceEntry": "Assets/Images/bda8b479-3892-426d-b90b-1130b98dac1a.png",
+      "sha256": "105f66b191c9a9ec02c662a602c271b0f54b01273819f211b10c650728940bf3",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+/* Standalone original-asset treatment; callers may set width for their layout. */
+.check-button {
+  position: relative;
+  display: block;
+  width: 19vw;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: #17223a;
+  background: transparent;
+  cursor: pointer;
+}
+.check-button svg { display: block; width: 100%; height: auto; overflow: visible; }
+.check-button__face { fill: #39ff14; }
+.check-button:disabled { opacity: 1; cursor: default; }
+.check-button:not(:disabled):not(.check-button--cooldown):hover .check-button__face { fill: #6aff4d; }
+.check-button:not(:disabled):not(.check-button--cooldown):active { transform: translateY(2px); }
+
+/* The face itself shows elapsed cooldown; lettering stays sharp above it. */
+.check-button--cooldown .check-button__face { fill: #9b9da0; }
+.check-button__liquid-level { transition: transform .25s linear; }
+.check-button__liquid-wave { fill: #39ff14; animation: check-liquid-ripple 3s linear infinite; }
+.check-button__bubbles { fill: #d0ffc4; fill-opacity: .65; }
+.check-button__bubble { animation: check-liquid-bubble 3.4s linear infinite; }
+.check-button__bubble--two { animation-delay: -1.2s; animation-duration: 4.1s; }
+.check-button__bubble--three { animation-delay: -2.4s; animation-duration: 3.8s; }
+@keyframes check-liquid-ripple { to { transform: translateX(-60px); } }
+@keyframes check-liquid-bubble {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: .7; }
+  85% { opacity: .7; }
+  100% { transform: translateY(-42px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .check-button__liquid-wave { animation: none; }
+  .check-button__bubble { display: none; }
+  .check-button__liquid-level { transition: none; }
+}

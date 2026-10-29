@@ -1,0 +1,25 @@
+﻿/* Layout proportions follow the supplied 1368 x 909 TheorySplash screenshot. */
+.theory-stage { position: relative; height: 100svh; padding: 0; overflow: hidden; }
+.theory-title { position: absolute; left: 33.3%; top: 4.3%; width: 33.3%; height: 19.4%; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: 1.5svh 1vw; border: 1px solid #777; border-radius: 1.3svh; background: #000; }
+/* Fit both SVG dimensions; width-only sizing overflows on wider landscapes. */
+.theory-title .olympiad-heading { width: 100%; height: 100%; min-width: 0; min-height: 0; }
+.theory-title .olympiad-heading__art { width: 100%; height: 100%; }
+.theory-back { position: absolute; right: 2.8%; top: 3.3%; width: 8.8%; height: 10.5%; padding: 0; background: transparent; border: 0; border-radius: 1svh; }
+.theory-back img { display: block; width: 100%; height: 100%; object-fit: contain; transform: rotate(180deg); }
+.theory-band { position: absolute; height: 29%; pointer-events: none; }
+.theory-problem { pointer-events: auto; }
+.theory-band--1 { left: 8.4%; right: 8.4%; top: 24.6%; }
+.theory-band--2 { left: 19.5%; right: 20.2%; top: 42.5%; }
+.theory-band--3 { left: 31.4%; right: 31.4%; top: 64%; height: 28%; }
+.theory-problems { display: flex; justify-content: space-between; height: 100%; }
+.theory-problem { flex: 0 0 auto; width: 13vw; height: 100%; padding: 0; border: 0; border-radius: 1svh; background: transparent; transition: transform 140ms ease; -webkit-tap-highlight-color: transparent; }
+.theory-problem img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.theory-timer { position: absolute; bottom: 0; left: 0; width: 100%; height: 6.1%; display: grid; place-items: center; background: #2d2832; color: white; white-space: nowrap; }
+.theory-message:empty { display: none; }
+.theory-message { position: absolute; z-index: 1; left: 50%; bottom: 7%; transform: translateX(-50%); margin: 0; padding: .6svh 1.2vw; border-radius: .7svh; background: #2d2832; color: white; }
+
+@media (hover: hover) { .theory-problem:hover { transform: translateY(-.4svh); } .theory-back:hover { background: #ffffff18; } }
+.theory-problem:active { transform: scale(.96); }
+@media (prefers-reduced-motion: reduce) { .theory-problem { transition: none; } .theory-problem:hover, .theory-problem:active { transform: none; } }
+
+.theory-timer { --text-size: var(--text-size-heading-large); --text-leading: 1; }

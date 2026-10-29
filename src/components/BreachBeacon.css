@@ -1,0 +1,53 @@
+.breach-beacon {
+  display: block;
+  width: min(100%, 17rem);
+  height: auto;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.breach-beacon__beam,
+.breach-beacon__rotor {
+  transform-box: view-box;
+  transform-origin: 140px 108px;
+  animation: breach-beacon-rotation 2.4s linear infinite;
+}
+
+.breach-beacon__beam {
+  animation-name: breach-beacon-sweep;
+}
+
+.breach-beacon__halo {
+  animation: breach-beacon-glow 2.4s linear infinite;
+}
+
+@keyframes breach-beacon-rotation {
+  0%, 100% { transform: scaleX(1); opacity: .95; }
+  25% { transform: scaleX(.12); opacity: .5; }
+  50% { transform: scaleX(-1); opacity: .35; }
+  75% { transform: scaleX(-.12); opacity: .5; }
+}
+
+@keyframes breach-beacon-sweep {
+  0%, 100% { transform: translateX(0) scaleX(1); opacity: .85; }
+  25% { transform: translateX(59px) scaleX(.2); opacity: .25; }
+  50% { transform: translateX(0) scaleX(.7); opacity: .08; }
+  75% { transform: translateX(-59px) scaleX(.2); opacity: .25; }
+}
+
+@keyframes breach-beacon-glow {
+  0%, 100% { opacity: .8; }
+  25%, 75% { opacity: .35; }
+  50% { opacity: .2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breach-beacon__beam,
+  .breach-beacon__rotor,
+  .breach-beacon__halo {
+    animation: none;
+  }
+
+  .breach-beacon__beam { opacity: .3; }
+  .breach-beacon__halo { opacity: .45; }
+}

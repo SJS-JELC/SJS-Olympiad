@@ -1,0 +1,12 @@
+.question-preview { height: 100svh; padding: 6svh 8vw; display: grid; grid-template-rows: 12svh minmax(0, 1fr); gap: 5svh; }
+.question-preview-header { position: relative; display: grid; place-items: center; }
+.question-preview-title { width: min(50vw, 65svh); }
+.question-preview-back { position: absolute; right: 0; width: 9svh; height: 9svh; padding: 0; border: 0; background: transparent; border-radius: 1svh; }
+.question-preview-back img { width: 100%; height: 100%; object-fit: contain; transform: rotate(180deg); }
+.question-preview-panel { display: grid; place-items: center; border: 2px solid #ffffff80; border-radius: 2svh; background: rgb(35 76 152 / 74%); backdrop-filter: blur(14px); }
+.question-preview-toggle { display: flex; align-items: center; gap: 1.5svh; cursor: pointer; }
+.question-preview-toggle input { appearance: none; width: 7svh; height: 4svh; margin: 0; padding: .4svh; border: 2px solid white; border-radius: 4svh; background: #26364d; cursor: pointer; }
+.question-preview-toggle input::before { content: ''; display: block; width: 2.8svh; height: 2.8svh; border-radius: 50%; background: white; }
+.question-preview-toggle input:checked { background: #247b31; }
+.question-preview-toggle input:checked::before { transform: translateX(3svh); }
+

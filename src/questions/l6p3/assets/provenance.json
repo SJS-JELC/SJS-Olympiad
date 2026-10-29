@@ -1,0 +1,27 @@
+{
+  "archive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "RedCross",
+      "file": "RedCross.svg",
+      "sourceEntry": "Assets/Images/fd49bdae-31e9-46b2-a689-ef9425c26dfb.svg",
+      "sha256": "75066809535f5b8c22cfd92aaccbbbfc0d69b997418c58c030dad2d6c1589b7f",
+      "treatment": "Original trusted artwork; unchanged."
+    },
+    {
+      "name": "Tick",
+      "file": "Tick.svg",
+      "sourceEntry": "Assets/Images/4e550325-da48-4e66-b67a-3dabdce26bd6.svg",
+      "sha256": "ce0649659be567ebba804cbe9d8242be705b51b96f9a05689a48d21e16bbd05c",
+      "treatment": "Original trusted artwork; unchanged."
+    },
+    {
+      "name": "GO",
+      "file": "GO.svg",
+      "sourceEntry": "Assets/Images/ff7b29f4-e82a-42db-a3f4-a34ec500f496.svg",
+      "sha256": "410fcb2122caeb1c434fbff85b9325d15221702649238763d6f0638e2e6c4d9b",
+      "treatment": "Original trusted artwork; unchanged."
+    }
+  ]
+}

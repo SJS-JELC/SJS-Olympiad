@@ -1,0 +1,32 @@
+{
+  "source": "src/questions/u6p8/assets/rate-data.svg",
+  "treatment": "Transcribed the original outlined image into a semantic live HTML table. Original SVG retained unchanged as the source reference. Column headers, experiment numbers, numerical precision, concentration units and rate exponents preserved.",
+  "columns": [
+    "Experiment",
+    "[CH₃CH₂Br] / mol dm⁻³",
+    "[OH⁻] / mol dm⁻³",
+    "Rate / mol dm⁻³ s⁻¹"
+  ],
+  "rows": [
+    [
+      "1",
+      "0.1",
+      "0.3",
+      "3.20 × 10⁻⁵"
+    ],
+    [
+      "2",
+      "0.2",
+      "0.3",
+      "6.40 × 10⁻⁵"
+    ],
+    [
+      "3",
+      "0.2",
+      "0.6",
+      "8.94 × 10⁻⁵"
+    ]
+  ],
+  "verification": "Original SVG rendered and visually compared at .verification/layout-u6/source-diagrams.png. Browser checks verify row content, headers, superscripts and unchanged answer marking.",
+  "sourceSha256": "2f7c336c04ed4b0c4440ce2da17cb2a6bcb04d8c9117a943bd04eb10f33d9e33"
+}

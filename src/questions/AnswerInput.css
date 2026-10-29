@@ -1,0 +1,18 @@
+.answer-input { position: relative; display: inline-flex; align-items: center; gap: .3vw; padding: 0; background: transparent; border: 0; }
+.answer-input input {
+  --text-size: var(--text-size-heading-small);
+  --text-leading: 1.2;
+  width: var(--answer-input-width, 12svh);
+  min-width: 0;
+  height: 6.5svh;
+  padding: .5svh;
+  border: .5svh solid #000;
+  border-radius: .5svh;
+  text-align: center;
+  color: #101b2b;
+  background: white;
+}
+.answer-input input:disabled { opacity: 1; background: white; color: #101b2b; -webkit-text-fill-color: #101b2b; }
+/* Display-only suffix keeps numeric validation, editing and marking unchanged. */
+.answer-input__unit { --text-size: var(--text-size-heading-small); position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none; color: #101b2b; }
+.answer-input input:disabled + .answer-input__unit { color: #243d59; }

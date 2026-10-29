@@ -1,0 +1,45 @@
+{
+  "sources": [
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\editors\\dot-and-cross\\DotCrossEditor.tsx",
+      "sha256": "422269858761750f781fdec98187e7a394712a260b7ebc21d932219080a590b6"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\editors\\dot-and-cross\\Diagram.tsx",
+      "sha256": "18f0fbda09a6cc534d2b622a8bd38ad12a9e7513c534525188933dd9db7f5276"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\editors\\dot-and-cross\\editor.css",
+      "sha256": "8c60a879fd4eb559f29ffd6a2552f0b56614adaf948c1f0c6ea089c1d5912e29"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\engine.ts",
+      "sha256": "e36c76c4aadf5e8d0271b9f023ce6273118eb0ec7ca013f2f556d00570a15b36"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\interaction.ts",
+      "sha256": "31a64f6f756e526a6e4faba550c2d57212b8e8bf43e5ca877cad2e29f2eb2fd0"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\layout.js",
+      "sha256": "49f2780f7072428a34be1dac881d46a0fad5755a4a3fe05f8ab89b049c240c61"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\layout.d.ts",
+      "sha256": "0a9e9eba6475626b00b37c264cad895631ab0fa5122a0123f8806658a2a86b6c"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\core.js",
+      "sha256": "aeeed4cd7d1099ffc81a3d374a68e7c473ff1272edfc21ce09bfc7152e0107cb"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\core.d.ts",
+      "sha256": "cae48bcf2bc4e2981758afb91ac7aed1ac27f7c4f4631766a4cccc9bda59e712"
+    },
+    {
+      "source": "C:\\Users\\jelc\\St John's School Leatherhead\\Chemistry - Staff Resources\\32. Masters of Chemistry\\apps\\Masters-of-Chemistry\\src\\chemistry\\dot-and-cross\\types.ts",
+      "sha256": "ecea1adad1903d29e33b0d564243c38a61d99ae269d342fb689f5bb272b1f5ee"
+    }
+  ],
+  "adaptations": "N/O palette, two symbols, no charge toolbar, local props/contracts, shared typography"
+}

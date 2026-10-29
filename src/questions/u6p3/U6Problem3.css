@@ -1,0 +1,5 @@
+.u6p3-answers { display: flex; align-items: center; justify-content: center; gap: 2vw; }
+.u6p3-answer { display: flex; flex-direction: column; align-items: center; gap: .5svh; color: #152033; --answer-input-width: 42vw; }
+.u6p3-question .question-brief { display: flex; flex-direction: column; }
+.u6p3-question .question-brief > p { flex-shrink: 0; }
+.u6p3-question .u6p3-diagram { flex: 1; min-height: 0; width: 100%; }

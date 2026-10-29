@@ -1,0 +1,3 @@
+/* Only this question's composition belongs here; controls carry their own styling. */
+.starter-question .question-brief { flex: 0 1 auto; height: auto; }
+.starter-answer { display: flex; justify-content: center; color: #152033; }

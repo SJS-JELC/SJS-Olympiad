@@ -1,0 +1,4 @@
+/* Tilt Neon ships a regular face. Opt into browser-synthesised bold only for this title variant. */
+.olympiad-question-heading { --text-size: 4.6svh; --text-size-body: 1.9svh; margin: 0; display: flex; flex-direction: column; justify-content: center; gap: .4svh; color: #152033; text-align: center; }
+.olympiad-question-heading__title { text-wrap: balance; }
+

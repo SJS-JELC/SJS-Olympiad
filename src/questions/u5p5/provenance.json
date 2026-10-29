@@ -1,0 +1,91 @@
+{
+  "question": "U5P5",
+  "title": "Scents and Scentsibility",
+  "source": {
+    "path": "C:/Users/jelc/Downloads/scents_and_scentsibility_question_design.md",
+    "sha256": "adf65612c58706bb011953d36c0317b897ee869c95ecd69c994b89beafb846c4",
+    "usage": "Tone, fictional setting, accord investigation and shared-peak puzzle. Implementation follows user-approved 15 October 2026 refinement."
+  },
+  "approvedRefinement": {
+    "samples": [
+      "Mystery perfume",
+      "100% Citrus accord",
+      "100% Floral accord",
+      "100% Woody accord"
+    ],
+    "calibration": "No standards or curves",
+    "animation": "Original inline SVG injector/continuous coiled tube/detector; one six-second light-segment run",
+    "quantification": "Area-normalized Gaussian constituents, identical injection volume, linear detector response, solvent signal omitted; composition %v/v idealized additive volumes",
+    "feedback": "Shared generic wrong submission cross, twenty-second cooldown, no per-component feedback; two points once"
+  },
+  "media": "Original UI/SVG code; no third-party or imported laboratory imagery",
+  "authority": "Frontend local demonstration; recipe and clock inspectable, no server claims",
+  "scientificFixtures": {
+    "pureTotalArea": 2000,
+    "citrus": [
+      [
+        1.1,
+        0.4
+      ],
+      [
+        2,
+        0.4
+      ],
+      [
+        3.4,
+        0.2
+      ]
+    ],
+    "floral": [
+      [
+        2,
+        0.4
+      ],
+      [
+        2.8,
+        0.3
+      ],
+      [
+        4.1,
+        0.3
+      ]
+    ],
+    "woody": [
+      [
+        1.1,
+        0.4
+      ],
+      [
+        3.2,
+        0.1
+      ],
+      [
+        4.8,
+        0.5
+      ]
+    ],
+    "compositionUnits": [
+      25,
+      14,
+      9,
+      152
+    ],
+    "principalReferenceAreas": [
+      400,
+      600,
+      1000
+    ],
+    "principalMysteryAreas": [
+      50,
+      42,
+      45
+    ]
+  },
+  "compactLaboratoryRevision": {
+    "date": "2026-10-28",
+    "source": "User-approved conversation plan",
+    "knownSamples": "0?100% scent in ethanol, half-percent steps; mystery undiluted",
+    "results": "Eight captured injection snapshots; manual interval integration",
+    "printStyle": "Original monochrome SVG, Courier report typography; ideal simulated signal retained"
+  }
+}

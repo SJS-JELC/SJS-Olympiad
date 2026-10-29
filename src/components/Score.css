@@ -1,0 +1,25 @@
+.score { --outlined-shadow-offset: .375svh; --score-digit-height: 9svh; display: grid; justify-items: center; gap: .8svh; width: max-content; margin-inline: auto; }
+.score__label { width: 12svh; height: 3.2svh; }
+.score__label .olympiad-heading, .score__label .olympiad-heading__art { display: block; width: 100%; height: 100%; }
+.score__display { display: block; padding: .65svh; border: .125svh solid #0c1119; border-radius: 1svh; background: #171e28; box-shadow: 0 .5svh .6svh #0b21394d, inset 0 .125svh 0 #ffffff35; }
+.score__cards { display: flex; gap: .6svh; }
+.score-digit { position: relative; display: block; width: calc(var(--score-digit-height) * .72); height: var(--score-digit-height); perspective: 62.5svh; color: #fff9e9; }
+.score-half { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; backface-visibility: hidden; }
+.score-half > span { position: absolute; left: 0; width: 100%; height: var(--score-digit-height); text-align: center; }
+.score-half--top { top: 0; background: #303742; border-radius: .6svh .6svh 0 0; box-shadow: inset 0 .125svh 0 #ffffff18; }
+.score-half--top > span { top: 0; }
+.score-half--bottom { bottom: 0; background: #252c36; border-radius: 0 0 .6svh .6svh; }
+.score-half--bottom > span { bottom: 0; }
+.score-flip { position: absolute; inset: 0; perspective: 62.5svh; }
+.score-leaf--out { transform-origin: center bottom; animation: score-fold-out 220ms ease-in forwards; z-index: 2; }
+.score-leaf--in { transform-origin: center top; transform: rotateX(90deg); animation: score-fold-in 220ms 220ms ease-out forwards; z-index: 3; }
+.score-digit__seam { position: absolute; z-index: 4; top: 50%; left: 0; right: 0; height: .25svh; transform: translateY(-.125svh); background: #10151f; box-shadow: 0 .125svh 0 #ffffff10; }
+@keyframes score-fold-out { to { transform: rotateX(-90deg); } }
+@keyframes score-fold-in { to { transform: rotateX(0); } }
+@media (prefers-reduced-motion: reduce) { .score-leaf--out { display: none; } .score-leaf--in { animation: none; transform: none; } }
+
+/* Shared page anchor: navigation must not reposition the score. */
+.score-page { position: relative; }
+.score-position { position: absolute; z-index: 1; top: 4.3svh; left: 15.25vw; transform: translateX(-50%); }
+
+.score-digit { --text-size: calc(var(--score-digit-height) * .89); --text-leading: 1; }

@@ -1,0 +1,21 @@
+{
+  "source": "powerapp/asset-26.svg",
+  "sourceSha256": "28c08d95540b76fe2a437491726a6eacfe9efcef5b3c993bca9155e75d08854f",
+  "derived": "olympiad-logo.svg",
+  "derivedSha256": "bfaf050bae1ed8f1a7e586e179ce7c20e63dfe423d6f0179e1a88e5cf949933f",
+  "generator": "scripts/clean-olympiad-logo.mjs",
+  "sourceBytes": 340632,
+  "cleanedBytes": 128486,
+  "sourceGzipBytes": 108241,
+  "cleanedGzipBytes": 38954,
+  "sourceShapes": 1477,
+  "cleanedPaths": 955,
+  "removedDegenerateContours": 170,
+  "treatment": "Local vector contour repair; no raster resampling, mirrored wings, or changed palette. Partial shoulder/head underlaps retain adjacent source geometry; a small wing-translation diagnostic still exposes a shoulder seam, so wing motion requires further rigging. A 1.2-unit same-colour stroke closes subpixel cracks. Repeated flask subgroups preserve original painter order.",
+  "viewBox": [
+    0,
+    0,
+    1039,
+    697
+  ]
+}

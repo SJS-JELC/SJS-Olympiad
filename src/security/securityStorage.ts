@@ -1,6 +1,6 @@
 import type { SecuritySnapshot, SnapshotAdapter } from './securityTypes';
 export const STORAGE_KEY = 'sjs-olympiad-security-v1';
-const types = new Set(['COMPETITION_STARTED','PAGE_HIDDEN','WINDOW_BLUR','FULLSCREEN_EXIT','INVALID_STAFF_PIN','STAFF_UNLOCK','SESSION_RESET','SESSION_INTERRUPTED','CROSS_TAB_CONFLICT','STORAGE_FAILURE']);
+const types = new Set(['COMPETITION_ENDED','COMPETITION_STARTED','PAGE_HIDDEN','WINDOW_BLUR','FULLSCREEN_EXIT','INVALID_STAFF_PIN','STAFF_UNLOCK','SESSION_RESET','SESSION_INTERRUPTED','CROSS_TAB_CONFLICT','STORAGE_FAILURE']);
 const date = (value: unknown) => typeof value === 'string' && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
 export function validateSnapshot(value: unknown): SecuritySnapshot {
   if (!value || typeof value !== 'object') throw new Error('Invalid stored snapshot');

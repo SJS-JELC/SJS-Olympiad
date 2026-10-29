@@ -1,0 +1,70 @@
+/* Derived from the Power App Main Background artwork. Lightweight CSS backdrop with an original vector floor. */
+.olympiad-background {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 49% 47%, #b5eff8 0%, #94e1f7 25%, #66c9f5 55%, #3a9ff0 100%);
+}
+
+.olympiad-background::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 calc(22.5% + 2.3svh);
+  background:
+    url('./assets/wall-hairline-cracks.svg') center / 100% 100% no-repeat,
+    url('./assets/graphene-lattice.svg') center / 30.375svh 17.5365svh repeat;
+}
+
+.olympiad-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 8% 40%, #ffffff55 0, #ffffff00 5px),
+    radial-gradient(circle at 12% 30%, #ffffff40 0, #ffffff00 4px),
+    radial-gradient(circle at 6% 51%, #ffffff40 0, #ffffff00 4px),
+    radial-gradient(circle at 18% 27%, #ffffff38 0, #ffffff00 4px),
+    radial-gradient(circle at 24% 47%, #ffffff30 0, #ffffff00 5px),
+    radial-gradient(circle at 16% 56%, #ffffff30 0, #ffffff00 4px),
+    radial-gradient(circle at 83% 24%, #ffffff38 0, #ffffff00 4px),
+    radial-gradient(circle at 91% 32%, #ffffff40 0, #ffffff00 4px),
+    radial-gradient(circle at 86% 44%, #ffffff30 0, #ffffff00 5px),
+    radial-gradient(circle at 95% 51%, #ffffff38 0, #ffffff00 4px);
+}
+
+.olympiad-background__floor {
+  position: absolute;
+  inset: 77.5% 0 0;
+  background: radial-gradient(ellipse at 50% 0%, #b9f3fa 0%, #8bdff5 50%, #4bb6ee 100%);
+}
+
+.olympiad-background__floor::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('./assets/soft-tile-floor.svg') center top / 100% 100% no-repeat;
+}
+
+.olympiad-background__floor::after {
+  content: '';
+  position: absolute;
+  inset: -2.3svh 0 100%;
+  border-top: 2px solid #319de177;
+  border-bottom: 3px solid #3296d9aa;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 7vw, #379fdb44 7.1vw, #b7f1ff33 7.25vw, transparent 7.4vw),
+    linear-gradient(#9be4f9aa, #4ab4eb88);
+  box-shadow: 0 1px 1px #c1f4fa44;
+}
+
+/* Keep the shared backdrop visible through every session screen. */
+:root { background: #4ab0f2; }
+.app-shell { isolation: isolate; background: transparent; }
+
+/* Own the backdrop stacking context outside all routed/blurred screen content. */
+.olympiad-app-frame { position: relative; isolation: isolate; min-height: 100svh; }
