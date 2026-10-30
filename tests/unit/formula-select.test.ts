@@ -1,9 +1,16 @@
+import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from '../../src/questions/attempts';
-import { l5p6, formulaCounts, normaliseFormula } from '../../src/questions/l5p6/definition';
-import { l6p4 } from '../../src/questions/l6p4/definition';
-import { u6p9, pointGroupOptions, pointGroupKeys } from '../../src/questions/u6p9/definition';
+import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from './server-markers';
+import { l5p6 as public_l5p6, normaliseFormula } from '../../src/questions/l5p6/definition';
+import {formulaCounts} from '../../api/src/private/l5p6.mjs';
+import { l6p4 as public_l6p4 } from '../../src/questions/l6p4/definition';
+import { u6p9 as public_u6p9, pointGroupOptions } from '../../src/questions/u6p9/definition';
+const l5p6=serverDefinition(public_l5p6);
+const l6p4=serverDefinition(public_l6p4);
+const u6p9=serverDefinition(public_u6p9);
 
+
+const pointGroupKeys = { HClO: 'Cₛ – E, σ', SF4: 'C₂ᵥ – E, C₂, 2 × σᵥ', PCl5: 'D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥ' };
 const fragments = { mass47: 'CH3S', mass74: 'C2H4NO2', mass45: 'CHO2' };
 const orbitals = (homo = '112211', lumo = '122112'): Answers => Object.fromEntries([
   ...[...homo].map((value, index) => ['HOMO' + (index + 1), value]),

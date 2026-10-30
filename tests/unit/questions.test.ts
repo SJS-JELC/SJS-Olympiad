@@ -1,12 +1,15 @@
+import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Answers, type Attempt } from '../../src/questions/attempts';
-import { l6p5 } from '../../src/questions/l6p5/definition';
+import { emptyAttempt, score, transition, type Answers, type Attempt } from './server-markers';
+import { l6p5 as public_l6p5 } from '../../src/questions/l6p5/definition';
+const l6p5=serverDefinition(public_l6p5);
+
 const correct: Answers = { molecule1Minimum: '300', molecule1Maximum: '60', molecule2Minimum: '300', molecule2Maximum: '120', molecule3Minimum: '60', molecule3Maximum: '240' };
 const submit = (state: Attempt, now = 1000) => transition(l6p5, state, { type: 'submit', now });
 describe('L6P5 marking and shared attempt lifecycle', () => {
   it('marks each molecule as a pair, awarding nothing for a partial answer', () => {
     const state = submit({ ...emptyAttempt(), answers: { ...correct, molecule2Maximum: '60' } });
-    expect(state.feedback).toEqual({ molecule1: true, molecule2: false, molecule3: true });
+    expect(state.feedback).toEqual({ answer: false });
     expect(state.retryAt).toBe(21000); expect(score([l6p5], { L6P5: state })).toBe(0);
   });
   it('rejects all edits during cooldown, then permits editing any pair', () => {

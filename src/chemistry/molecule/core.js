@@ -1,6 +1,11 @@
 /* Small, deliberately bounded molecular graph model. No coordinates enter marking. */
 
   const LIMIT = 20;
+  const DEFAULT_LIMITS = Object.freeze({ maxHeavyAtoms: LIMIT, maxAtoms: 100, maxBonds: 150 });
+  function limitsFor(limits = DEFAULT_LIMITS) {
+    if (!limits || ['maxHeavyAtoms', 'maxAtoms', 'maxBonds'].some(k => !Number.isSafeInteger(limits[k]) || limits[k] < 1) || limits.maxHeavyAtoms > limits.maxAtoms || limits.maxAtoms > 100 || limits.maxBonds > 150) throw Error('Unsupported molecule limits.');
+    return limits;
+  }
   const valences = { C: 4, O: 2, N: 3, Cl: 1, F: 1, H: 1 };
   const chargedValences = { C: {'-1':3, '1':3}, O: {'-1':1, '1':3}, N: {'-1':2, '1':4}, Cl:{'-1':0}, F:{'-1':0}, H:{'-1':0,'1':0} };
   const valence = atom => atom.charge ? chargedValences[atom.element]?.[atom.charge] : valences[atom.element];
@@ -11,8 +16,9 @@
   const neighbours = (graph, id) => graph.bonds.filter(b => b.a === id || b.b === id)
     .map(b => ({ id: b.a === id ? b.b : b.a, order: b.order }));
   const hydrogens = (graph, atom) => atom.h !== undefined ? atom.h : atom.element === 'H' ? 0 : valence(atom) - neighbours(graph, atom.id).reduce((n, b) => n + b.order, 0);
-  function assertGraph(graph) {
-    if (!graph || !Array.isArray(graph.atoms) || !Array.isArray(graph.bonds) || (heavyCount(graph) > LIMIT || graph.atoms.length > 100)) throw Error('Unsupported graph.');
+  function assertGraph(graph, limits = DEFAULT_LIMITS) {
+    limits = limitsFor(limits);
+    if (!graph || !Array.isArray(graph.atoms) || !Array.isArray(graph.bonds) || (heavyCount(graph) > limits.maxHeavyAtoms || graph.atoms.length > limits.maxAtoms || graph.bonds.length > limits.maxBonds)) throw Error('Unsupported graph.');
     const ids = new Set();
     for (const a of graph.atoms) {
       if (!Number.isInteger(a.id) || ids.has(a.id) || !Object.hasOwn(valences, a.element) || !Number.isFinite(a.x) || !Number.isFinite(a.y)) throw Error('Unsupported atom.');
@@ -29,32 +35,35 @@
     }
     return graph;
   }
-  function addAtom(graph, element, x, y, parentId = null, order = 1) {
-    if ((element !== 'H' && heavyCount(graph) >= LIMIT || graph.atoms.length >= 100)) return graph;
+  function addAtom(graph, element, x, y, parentId = null, order = 1, limits = DEFAULT_LIMITS) {
+    limits = limitsFor(limits);
+    if ((element !== 'H' && heavyCount(graph) >= limits.maxHeavyAtoms || graph.atoms.length >= limits.maxAtoms || parentId !== null && graph.bonds.length >= limits.maxBonds)) return graph;
     const next = clone(graph), id = Math.max(0, ...next.atoms.map(a => a.id)) + 1;
     next.atoms.push({ id, element, x, y });
     if (parentId !== null) next.bonds.push({ a: parentId, b: id, order });
-    return assertGraph(next);
+    return assertGraph(next, limits);
   }
-  function setElement(graph, id, element) {
+  function setElement(graph, id, element, limits = DEFAULT_LIMITS) {
+    limits = limitsFor(limits);
+    if (element !== 'H' && graph.atoms.some(a => a.id === id && a.element === 'H') && heavyCount(graph) >= limits.maxHeavyAtoms) return graph;
     const next = clone(graph), atom = next.atoms.find(a => a.id === id);
     if (atom) { atom.element = element; delete atom.charge; delete atom.h; delete atom.pairs; delete atom.dipole; delete atom.chargeAngle; delete atom.dipoleAngle; }
-    return assertGraph(next);
+    return assertGraph(next, limits);
   }
-  function setBond(graph, a, b, order) {
+  function setBond(graph, a, b, order, limits = DEFAULT_LIMITS) {
     const next = clone(graph), bond = next.bonds.find(e => (e.a === a && e.b === b) || (e.a === b && e.b === a));
     if (bond) bond.order = order;
-    return assertGraph(next);
+    return assertGraph(next, limits);
   }
-  function addBond(graph, a, b, order = 1) {
-    if (a === b || graph.bonds.some(e => (e.a === a && e.b === b) || (e.a === b && e.b === a))) return graph;
+  function addBond(graph, a, b, order = 1, limits = DEFAULT_LIMITS) {
+    if (graph.bonds.length >= limitsFor(limits).maxBonds || a === b || graph.bonds.some(e => (e.a === a && e.b === b) || (e.a === b && e.b === a))) return graph;
     const next = clone(graph);
     next.bonds.push({ a, b, order });
-    return assertGraph(next);
+    return assertGraph(next, limits);
   }
-  function toggleBond(graph, a, b) {
+  function toggleBond(graph, a, b, limits = DEFAULT_LIMITS) {
     const bond = graph.bonds.find(e => (e.a === a && e.b === b) || (e.a === b && e.b === a));
-    return bond ? setBond(graph, a, b, bond.order % 3 + 1) : graph;
+    return bond ? setBond(graph, a, b, bond.order % 3 + 1, limits) : graph;
   }
   function remove(graph, target) {
     const next = clone(graph);
@@ -65,8 +74,8 @@
     if (next.arrows) next.arrows = next.arrows.filter(ar => [ar.from, ar.to].every(anchor => anchor.kind === 'bond' ? next.bonds.some(b => (b.a===anchor.a && b.b===anchor.b)||(b.b===anchor.a && b.a===anchor.b)) : next.atoms.some(a => a.id === anchor.id)));
     return next;
   }
-  function validate(graph, allowDisconnected = false) {
-    try { assertGraph(graph); } catch { return { kind: 'unsupported', message: 'This drawing contains an unsupported structure.' }; }
+  function validate(graph, allowDisconnected = false, limits = DEFAULT_LIMITS) {
+    try { assertGraph(graph, limits); } catch { return { kind: 'unsupported', message: 'This drawing contains an unsupported structure.' }; }
     if (!graph.atoms.length) return { kind: 'empty', message: 'Place an atom to start your molecule.' };
     const invalid = graph.atoms.filter(a => valence(a) === undefined || hydrogens(graph, a) < 0 || neighbours(graph,a.id).reduce((sum,b)=>sum+b.order,0) + hydrogens(graph,a) !== valence(a)).map(a => a.id);
     if (invalid.length) {
@@ -83,8 +92,8 @@
   // Exact labelled-graph isomorphism, including cycles. Candidate pruning keeps the
   // search small for the 20-atom limit; every edge AND non-edge is checked.
   // Bond orders are literal: this is not aromatic/resonance normalisation.
-  function equivalent(left, right) {
-    if (validate(left).kind !== 'valid' || validate(right).kind !== 'valid') return false;
+  function equivalent(left, right, limits = DEFAULT_LIMITS) {
+    if (validate(left, false, limits).kind !== 'valid' || validate(right, false, limits).kind !== 'valid') return false;
     if (left.atoms.length !== right.atoms.length || left.bonds.length !== right.bonds.length) return false;
     function indexed(g) {
       const indices = new Map(g.atoms.map((a, i) => [a.id, i]));
@@ -117,10 +126,10 @@
     }
     return search();
   }
-  function check(graph, reference) {
-    const result = validate(graph);
+  function check(graph, reference, limits = DEFAULT_LIMITS) {
+    const result = validate(graph, false, limits);
     if (result.kind !== 'valid') return result;
-    if (validate(reference).kind !== 'valid') throw Error('Invalid reference answer.');
+    if (validate(reference, false, limits).kind !== 'valid') throw Error('Invalid reference answer.');
     // For molecule answers, attached neutral H atoms and implicit H counts
     // represent the same structure. Validate the original drawing first.
     function implicitHydrogens(g) {
@@ -130,17 +139,17 @@
         h: hydrogens(g,a) + neighbours(g,a.id).filter(b => removed.has(b.id)).length})),
         bonds: g.bonds.filter(b => !removed.has(b.a) && !removed.has(b.b)) };
     }
-    return equivalent(implicitHydrogens(graph), implicitHydrogens(reference))
+    return equivalent(implicitHydrogens(graph), implicitHydrogens(reference), limits)
       ? { kind: 'correct', message: 'That’s right. Your atoms and bonds match.' }
       : { kind: 'incorrect', message: 'Not quite. Check the atoms and how they’re joined, then try again.' };
   }
-  function formula(graph) {
-    if (validate(graph).kind !== 'valid') return null;
+  function formula(graph, limits = DEFAULT_LIMITS) {
+    if (validate(graph, false, limits).kind !== 'valid') return null;
     const counts = { C: 0, H: 0, Cl: 0, F: 0, N: 0, O: 0 };
     graph.atoms.forEach(a => { counts[a.element]++; counts.H += hydrogens(graph, a); });
     // Match RDKit's organic formula convention, including HF and HCl.
     const symbols = Object.keys(counts);
     return symbols.filter(s => counts[s]).map(s => s + (counts[s] === 1 ? '' : counts[s])).join('');
   }
-  const api = { LIMIT, valence, heavyCount, names, empty, clone, neighbours, hydrogens, assertGraph, addAtom, addBond, setElement, setBond, toggleBond, remove, validate, equivalent, check, formula };
+  const api = { LIMIT, DEFAULT_LIMITS, limitsFor, valence, heavyCount, names, empty, clone, neighbours, hydrogens, assertGraph, addAtom, addBond, setElement, setBond, toggleBond, remove, validate, equivalent, check, formula };
 export default api;

@@ -1,40 +1,67 @@
+import { createHash } from 'node:crypto';
 import { createService, ApiError } from './service.mjs';
-const origins = new Set(['https://olympiad.masters-of-chemistry.app', 'https://lively-coast-06a373f0f.2.azurestaticapps.net']);
+const origins = new Set(['https://olympiad.masters-of-chemistry.app','https://lively-coast-06a373f0f.2.azurestaticapps.net']);
+const gets = new Set(['session','events','teams','leaderboard']);
+const posts = new Set(['login','logout','event-create','event-update','event-activate','event-end','codes-update','team-add','team-release','team-delete','claim','start','breach','recovery','resume','question','draft','submit','action','practical','practical-save']);
+const methods = {'event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
+const COOKIE='__Host-olympiad-session';
+function validateBody(body) {
+  if(!body || typeof body!=='object' || Array.isArray(body))throw new ApiError(400,'Invalid request.');
+  // Check parsed JSON iteratively before stringify or canonicalization. Answer
+  // graphs are bounded strings, so ordinary scientific drawings retain their
+  // existing format while hostile nested request objects fail as client errors.
+  const pending=[{value:body,depth:0}];let nodes=0;
+  while(pending.length) {
+    const {value,depth}=pending.pop();
+    if(++nodes>5000 || depth>20)throw new ApiError(400,'Invalid request.');
+    if(value && typeof value==='object') {
+      const children=Object.values(value);
+      if(children.length>1000)throw new ApiError(400,'Invalid request.');
+      for(const child of children)pending.push({value:child,depth:depth+1});
+    } else if(typeof value==='number' && !Number.isFinite(value) || !['string','number','boolean','object'].includes(typeof value))throw new ApiError(400,'Invalid request.');
+  }
+}
 let servicePromise;
 async function service() {
   if (!servicePromise) servicePromise = (async () => {
-    const config = { code:process.env.OLYMPIAD_EVENT_CODE, eventId:process.env.OLYMPIAD_EVENT_ID, endsAt:Date.parse(process.env.OLYMPIAD_EVENT_END || '') };
-    createService({},config); // Validate before connecting to storage.
-    const { connect } = await import('./storage.mjs');
+    const config={eventId:process.env.OLYMPIAD_EVENT_ID,endsAt:Date.parse(process.env.OLYMPIAD_EVENT_END || '')};
+    const { connect }=await import('./storage.mjs');
     return createService(await connect(process.env.OLYMPIAD_STORAGE_CONNECTION_STRING),config);
-  })().catch(error => { servicePromise = undefined; throw error; });
+  })().catch(error=>{servicePromise=undefined;throw error;});
   return servicePromise;
 }
-export async function handle(req, getService = service) {
-  const headers = {'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
+const cookie=(raw,name)=>new RegExp('(?:^|;\\s*)'+name+'=([a-zA-Z0-9._-]+)').exec(raw || '')?.[1];
+export async function handle(req,getService=service) {
+  const headers={'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
   try {
-    const action = req.params?.action;
-    const method = req.method.toUpperCase();
-    if (!(method === 'GET' && action === 'session') && !(method === 'POST' && ['teams','claim','submit'].includes(action))) throw new ApiError(404,'Not found.');
-    if (method === 'POST' && (!origins.has(req.headers.origin) || req.headers['content-type']?.split(';')[0] !== 'application/json')) throw new ApiError(403,'Use the Olympiad website to submit.');
-    if (method === 'POST' && (Buffer.byteLength(req.rawBody ?? JSON.stringify(req.body ?? {})) > 4096 || !req.body || typeof req.body !== 'object' || Array.isArray(req.body))) throw new ApiError(400,'Invalid request.');
-    const api = await getService();
-    const token = /(?:^|;\s*)__Host-olympiad=([a-zA-Z0-9.-]+)/.exec(req.headers.cookie ?? '')?.[1];
+    const action=req.params?.action,method=(req.method || '').toUpperCase();
+    if (!(method==='GET'&&gets.has(action)) && !(method==='POST'&&posts.has(action)))throw new ApiError(404,'Not found.');
+    const requestHeaders=Object.fromEntries(Object.entries(req.headers || {}).map(([key,value])=>[key.toLowerCase(),value]));
+    if(method==='POST') {
+      if(!origins.has(requestHeaders.origin) || requestHeaders['content-type']?.split(';')[0].trim()!=='application/json')throw new ApiError(403,'Use the Olympiad website to submit.');
+      validateBody(req.body);
+      if(Buffer.byteLength(req.rawBody ?? JSON.stringify(req.body))>64000)throw new ApiError(400,'Invalid request.');
+    }
+    const api=await getService(),token=cookie(requestHeaders.cookie,COOKIE);
     let body;
-    if (action === 'session') body = await api.session(token);
-    else if (action === 'submit') {
-      const current = await api.session(token);
-      await api.throttle('submit-' + current.team.id, 30);
-      body = await api.submit(token, req.body);
+    if(action==='login') {
+      const address=String(requestHeaders['x-forwarded-for'] || req.ip || 'unknown').split(',')[0];
+      await api.throttle('login-global',120);
+      await api.throttle('login-'+createHash('sha256').update(address).digest('hex'),10);
+      const result=await api.login({...req.body,legacyToken:cookie(requestHeaders.cookie,'__Host-olympiad')});
+      body=result.state;
+      headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800`;
     } else {
-      await api.throttle('join',120);
-      if (action === 'teams') body = await api.teams(req.body.code);
-      else {
-        const result = await api.claim(req.body,token);
-        body = result.state;
-        headers['Set-Cookie'] = `__Host-olympiad=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=${Math.max(1,Math.floor((body.eventEndsAt-Date.now())/1000))}`;
-      }
+      if(method==='POST')await api.throttle((['recovery','resume'].includes(action)?'recovery-':'mutate-')+(token || 'anonymous'),['recovery','resume'].includes(action)?10:180);
+      if(action==='session')body=await api.session(token,{restore:req.query?.restore==='1' || req.query?.restore===1});
+      else if(action==='logout') {
+        body=await api.logout(token);
+        headers['Set-Cookie']=`${COOKIE}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
+      } else body=await api[methods[action] || action](token,method==='GET'?{eventId:req.query?.eventId}:req.body);
     }
     return {status:200,headers,body};
-  } catch(error) { return {status:error instanceof ApiError ? error.status : 503,headers,body:{error:error instanceof ApiError ? error.message : 'The score service is unavailable. Please retry shortly.'}}; }
+  } catch(error) {
+    if(error instanceof ApiError && error.status===429)headers['Retry-After']='60';
+    return {status:error instanceof ApiError?error.status:503,headers,body:{error:error instanceof ApiError?error.message:'The score service is unavailable. Please retry shortly.'}};
+  }
 }

@@ -2,63 +2,48 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useCompetitionSecurity } from '../security';
 import { BreachBeacon } from './BreachBeacon';
 import './BreachModal.css';
-
-export function BreachModal({ onEnded }: { onEnded: () => void }) {
-  const security = useCompetitionSecurity();
-  const [pin, setPin] = useState('');
-  const dialog = useRef<HTMLDivElement>(null);
-  const input = useRef<HTMLInputElement>(null);
-  const busy = security.phase !== 'idle';
-  useEffect(() => {
-    const previous = document.activeElement;
-    input.current?.focus();
-    const keepFocus = (event: FocusEvent) => {
-      if (!dialog.current?.contains(event.target as Node)) dialog.current?.focus();
-    };
-    const keys = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); }
-      if (event.key !== 'Tab') return;
-      const controls = Array.from(dialog.current?.querySelectorAll<HTMLElement>('input:not(:disabled), button:not(:disabled)') ?? []);
-      const first = controls[0], last = controls.at(-1);
-      if (!first) { event.preventDefault(); dialog.current?.focus(); }
-      else if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) { event.preventDefault(); last?.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-    };
-    document.addEventListener('focusin', keepFocus);
-    document.addEventListener('keydown', keys, true);
-    return () => {
-      document.removeEventListener('focusin', keepFocus);
-      document.removeEventListener('keydown', keys, true);
-      if (previous instanceof HTMLElement && previous.isConnected) previous.focus();
-    };
-  }, []);
-  async function unlock(event: FormEvent) {
-    event.preventDefault();
-    const entered = pin; setPin('');
-    await security.unlock(entered);
-    input.current?.focus();
-  }
-  async function end() {
-    const entered = pin; setPin('');
-    if (await security.end(entered)) onEnded();
-    else input.current?.focus();
-  }
-  return <div className="breach-overlay">
-    <div ref={dialog} className="breach-dialog" role="dialog" aria-modal="true" aria-labelledby="breach-title" aria-describedby="breach-description" tabIndex={-1}>
-      <BreachBeacon />
-      <h1 id="breach-title">COMPETITION MODE BREACHED</h1>
-      <p id="breach-description">A member of staff must enter the PIN to resume.</p>
-      <form onSubmit={unlock}>
-        <label htmlFor="breach-pin">Staff PIN</label>
-        <div className="breach-pin">
-          <div className="breach-pin-slots" aria-hidden="true">{[0, 1, 2, 3].map(index => <span key={index}>{pin.length > index ? '●' : ''}</span>)}</div>
-          <input ref={input} id="breach-pin" type="password" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} autoComplete="off" value={pin} onChange={event => setPin(event.target.value.replace(/\D/g, '').slice(0, 4))} disabled={busy} aria-describedby="breach-pin-note" />
-        </div>
-        <p id="breach-pin-note" className="breach-note">Enter the four-digit staff PIN. Unlocking restores fullscreen.</p>
-        <div className="breach-error" role="alert">{security.error || (!security.storageHealthy ? 'Session storage is unavailable. Staff recovery is required.' : '')}</div>
-        <button className="breach-unlock" disabled={busy || pin.length !== 4 || !security.storageHealthy}>{busy ? 'Please wait…' : 'Staff unlock'}</button>
-        <button type="button" className="breach-end" disabled={busy || pin.length !== 4 || !security.storageHealthy} onClick={() => void end()}>End Competition Mode</button>
-      </form>
-    </div>
-  </div>;
+export function BreachModal() {
+    const security = useCompetitionSecurity();
+    const [code, setCode] = useState('');
+    const dialog = useRef<HTMLDivElement>(null), input = useRef<HTMLInputElement>(null);
+    const busy = security.phase !== 'idle';
+    useEffect(() => {
+        input.current?.focus();
+        const focus = (event: FocusEvent) => { if (!dialog.current?.contains(event.target as Node))
+            dialog.current?.focus(); };
+        const key = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            if (event.key !== 'Tab')
+                return;
+            const controls = Array.from(dialog.current?.querySelectorAll<HTMLElement>('input:not(:disabled),button:not(:disabled)') ?? []), first = controls[0], last = controls.at(-1);
+            if (!first) {
+                event.preventDefault();
+                dialog.current?.focus();
+            }
+            else if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) {
+                event.preventDefault();
+                last?.focus();
+            }
+            else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+        document.addEventListener('focusin', focus);
+        document.addEventListener('keydown', key, true);
+        return () => { document.removeEventListener('focusin', focus); document.removeEventListener('keydown', key, true); };
+    }, []);
+    async function verify(event: FormEvent) { event.preventDefault(); const value = code; setCode(''); await security.unlock(value); }
+    return <div className="breach-overlay"><div ref={dialog} className="breach-dialog" role="dialog" aria-modal="true" aria-labelledby="breach-title" aria-describedby="breach-description" tabIndex={-1}>
+    <BreachBeacon /><h1 id="breach-title">COMPETITION MODE BREACHED</h1>
+    <p id="breach-description">A member of staff must verify the teacher code before you can resume.</p>
+    <form onSubmit={verify}>
+      {!security.recoveryReady && <><label htmlFor="breach-pin">Teacher code</label><div className="breach-pin"><input ref={input} id="breach-pin" type="password" autoComplete="off" value={code} onChange={event => setCode(event.target.value)} disabled={busy} maxLength={128}/></div><button className="breach-unlock" disabled={busy || !code.trim()}>{busy ? 'Verifying…' : 'Verify teacher code'}</button></>}
+      {security.recoveryReady && <><p>Staff verification accepted. Resume to enter fullscreen.</p><button autoFocus type="button" className="breach-unlock" disabled={busy} onClick={() => void security.resume()}>{busy ? 'Resuming…' : 'Resume competition'}</button></>}
+      <div className="breach-error" role="alert">{security.error}</div>
+    </form>
+  </div></div>;
 }

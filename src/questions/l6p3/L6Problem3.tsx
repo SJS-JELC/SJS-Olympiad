@@ -26,10 +26,9 @@ export function L6Problem3({ attempt, onAction }: QuestionViewProps) {
     const timer = window.setInterval(() => {
       const time = Date.now();
       setNow(time);
-      onAction({ type: 'tick', now: time });
     }, 50);
     return () => window.clearInterval(timer);
-  }, [onAction]);
+  }, []);
   const solved = attempt.solvedAt !== null;
   const active = !!run?.active && now < run.deadline;
   useEffect(() => {
@@ -39,14 +38,14 @@ export function L6Problem3({ attempt, onAction }: QuestionViewProps) {
   }, [active]);
   const elapsed = run ? Math.max(0, now - (run.deadline - RUN_MS)) : 0;
   const cooling = now < attempt.retryAt;
-  const prompt = active ? run?.run[run.step] : null;
+  const prompt = active ? run?.formula : null;
   return <div className="question-content question-content--compact l6p3-question">
     <section className="question-brief" aria-label="Question">
       <p className="type-body">You need to name 5 oxyanions.<br />Clock's ticking.</p>
       <div className="l6p3-prompt">
-        {prompt && <svg className="l6p3-formula" viewBox="0 0 460 100" role="img" aria-label={prompt.formula}>
-          <text className="type-body" x="226" y="81" textAnchor="middle" fill="black" stroke="black" strokeWidth="5" aria-hidden="true">{prompt.formula}</text>
-          <text className="type-body" x="230" y="75" textAnchor="middle" fill="white" stroke="black" strokeWidth="5" paintOrder="stroke fill" aria-hidden="true">{prompt.formula}</text>
+        {prompt && <svg className="l6p3-formula" viewBox="0 0 460 100" role="img" aria-label={prompt}>
+          <text className="type-body" x="226" y="81" textAnchor="middle" fill="black" stroke="black" strokeWidth="5" aria-hidden="true">{prompt}</text>
+          <text className="type-body" x="230" y="75" textAnchor="middle" fill="white" stroke="black" strokeWidth="5" paintOrder="stroke fill" aria-hidden="true">{prompt}</text>
         </svg>}
         {!active && !solved && <button type="button" className="l6p3-go" aria-label="GO: start oxyanion challenge" disabled={cooling} onClick={() => { focusOnStart.current = true; onAction({ type: 'start', now: Date.now() }); }}>
           <img src={go} alt="" />

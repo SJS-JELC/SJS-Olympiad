@@ -1,17 +1,20 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
+import { openCompetitorQuestion, resumeCompetition } from './fixtures';
+const competitor = test.extend({accessRole:'competitor' as const});
 
 const route = '/?theory&year=U5&question=6';
 
-test('Cubane uses a rotatable model, persists a non-restarting cooldown, and awards two points once', async ({ page }) => {
+competitor('Cubane uses a rotatable model, persists a non-restarting cooldown, and awards two points once', async ({ page, api }) => {
   await page.clock.install();
-  await page.goto(route);
+  await openCompetitorQuestion(page,api,'U5',6);
   await expect(page.getByTestId('u5p6-content')).toBeVisible();
   const diagram = page.getByRole('group', {name:/Cubane molecule/});
   await expect(diagram).toBeVisible();
   const before=await diagram.locator('[data-atom="C0"]').innerHTML();
   await diagram.focus(); await page.keyboard.press('ArrowRight');
   expect(await diagram.locator('[data-atom="C0"]').innerHTML()).not.toBe(before);
-  await page.getByRole('button',{name:'Reset view'}).click();
+  await expect(page.getByRole('button',{name:'Reset view'})).toHaveCount(0);
+  await page.keyboard.press('Home');
   expect(await diagram.locator('[data-atom="C0"]').innerHTML()).toBe(before);
   const box=(await diagram.boundingBox())!;
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();
@@ -38,13 +41,13 @@ test('Cubane uses a rotatable model, persists a non-restarting cooldown, and awa
   await page.getByRole('button', { name: 'Check answers' }).click();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 02');
   await expect(answer).toBeDisabled();
-  await page.getByRole('button', { name: 'Check answers' }).click();
+  await expect(page.getByRole('button', { name: 'Check answers' })).toBeDisabled();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 02');
   await page.getByRole('button', { name: 'Back to theory' }).click();
   await expect(page.getByRole('button', { name: 'Problem 6, 2 points, correct', exact: true })).toBeVisible();
 });
 
-for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 960, height: 600 }]) {
+for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 960, height: 600 }, {width:1920,height:1080}, {width:2560,height:1440}]) {
   test(`Cubane keeps artwork and answer controls within ${viewport.width}×${viewport.height}`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await page.goto(route);
@@ -56,6 +59,12 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
       expect(box!.y + box!.height).toBeLessThanOrEqual(viewport.height + 1);
     }
     await expect(page.locator('.cubane-model [data-atom]')).toHaveCount(16);
+    await expect(page.locator('.cubane-model text')).toHaveCount(0);
+    await expect(page.locator('.cubane-model [data-atom^="C"] circle')).toHaveCount(8);
+    await expect(page.locator('.cubane-model [data-atom^="H"] circle')).toHaveCount(8);
+    const colours=await page.locator('.cubane-model [data-atom] circle').evaluateAll(circles=>circles.map(circle=>circle.getAttribute('fill')));
+    expect(colours.filter(colour=>colour==='#8b9097')).toHaveLength(8);
+    expect(colours.filter(colour=>colour==='#fff')).toHaveLength(8);
     await page.screenshot({path:'test-results/cubane-3d-'+viewport.width+'.png'});
   });
 }

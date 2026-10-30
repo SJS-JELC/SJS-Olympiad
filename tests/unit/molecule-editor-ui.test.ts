@@ -109,3 +109,31 @@ it('activates a touch toolbar release when the browser omits its compatibility c
   expect(state.graph.atoms).toHaveLength(0);
   expect(updates).toHaveBeenCalledTimes(2);
 });
+
+
+it('camera zoom, pan and fit never emit a semantic edit, even while readOnly',async()=>{
+  await key(svg(),'Enter');
+  const before=structuredClone(state), calls=updates.mock.calls.length;
+  await act(async()=>{readOnly=true;render();});
+  const click = async(label:string) => act(async()=>container.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`)!.click());
+  const initialView=svg().getAttribute('viewBox');
+  await click('Zoom in');
+  expect(svg().getAttribute('viewBox')).not.toBe(initialView);
+  await click('Pan canvas');await key(svg(),'ArrowRight');await key(svg(),'Enter');
+  await click('Zoom out');await click('Fit molecule');
+  expect(state).toEqual(before);expect(updates).toHaveBeenCalledTimes(calls);
+});
+
+it('cleanup fits the returned graph and makes exactly one undoable semantic edit',async()=>{
+  state={...blankMolecule(),graph:{atoms:[{id:1,element:'C',x:2000,y:2000},{id:2,element:'C',x:2005,y:2005}],bonds:[{a:1,b:2,order:2}]}};
+  await act(async()=>render());
+  const before=structuredClone(state);
+  await act(async()=>container.querySelector<HTMLButtonElement>('.clean-button')!.click());
+  expect(state.graph.atoms).toHaveLength(2);expect(state.history).toHaveLength(1);
+  const [left,top,width,height]=svg().getAttribute('viewBox')!.split(' ').map(Number);
+  for (const atom of state.graph.atoms) {
+    expect(atom.x).toBeGreaterThan(left);expect(atom.x).toBeLessThan(left+width);
+    expect(atom.y).toBeGreaterThan(top);expect(atom.y).toBeLessThan(top+height);
+  }
+  await key(svg(),'z',{ctrlKey:true});expect(state).toEqual(before);
+});

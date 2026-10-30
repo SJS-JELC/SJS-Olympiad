@@ -1,22 +1,51 @@
-import {useState} from 'react';
-import type {QuestionViewProps} from '../catalog';
-import {QuestionAnswerForm} from '../QuestionAnswerForm';
-import {u5p7} from './definition';
-import {read,valid,valence,type Drawing,type Graph} from './model';
+import type { QuestionViewProps } from '../catalog';
+import { QuestionAnswerForm } from '../QuestionAnswerForm';
+import { MoleculeEditor } from '../../components/molecule/MoleculeEditor';
+import { ScientificDiagram } from '../../components/ScientificDiagram';
+import { u5p7 } from './definition';
+import { p7Limits, readP7Drawing, serializeP7Drawing, valence, type Drawing } from './model';
+import productGeometry from './assets/ozonolysis-products.svg';
+import productLabels from './assets/ozonolysis-products.labels.json';
 import './U5Problem7.css';
-export function U5Problem7({attempt,onAction}:QuestionViewProps){
- const [tool,setTool]=useState('Carbon'),[selected,setSelected]=useState<number|null>(null),[message,setMessage]=useState('');
- const state=read(attempt.answers.drawings),g=state.graphs[state.selected];
- return <div className="question-content question-content--aligned cut-question"><section className="question-brief"><p>Ozonolysis cuts a C=C bond and replaces it with two C=O bonds. The attached groups stay in place; cutting a double bond in a ring can open the ring.</p><p>X has formula C{'\u2081\u2080'}H{'\u2081\u2086'}, two C=C bonds and no triple bonds. Cutting both double bonds gives one molecule of each product below.</p><svg viewBox="0 0 900 135" className="cut-products" role="img" aria-label="One methanal molecule and one nine-carbon fragment with three carbonyl groups"><g className="type-body"><text x="40" y="42">H{'\u2082'}C=O</text><path d="M270 35h35m60 0h35m45 0h35m60 0h35m60 0h35m85 0h30M421 48v33" fill="none" stroke="black" strokeWidth="2"/><text x="220" y="42">OHC</text><text x="305" y="42">CH{'\u2082'}</text><text x="400" y="42">CH</text><text x="480" y="42">CH{'\u2082'}</text><text x="575" y="42">CH{'\u2082'}</text><text x="670" y="42">C(=O)</text><text x="785" y="42">CH{'\u2083'}</text><text x="400" y="110">C(=O)�CH{'\u2083'}</text></g></svg><p>Draw all possible structures of X. Ignore differences involving only their arrangement in space.</p></section>
- <QuestionAnswerForm definition={u5p7} attempt={attempt} onAction={onAction}>{({disabled,onEdit})=>{
- let history:{past:Drawing[];future:Drawing[]}={past:[],future:[]};try{history=JSON.parse(attempt.answers.history??'');}catch{}
- const save=(next:Drawing,record=true)=>{if(disabled)return;if(record)onEdit('history',JSON.stringify({past:[...history.past,state].slice(-30),future:[]}));onEdit('drawings',JSON.stringify(next));setSelected(null);setMessage('');};
- const change=(next:Graph)=>{if(!valid(next)){setMessage('Carbon can have at most four bonds.');return;}save({...state,graphs:state.graphs.map((v,i)=>i===state.selected?next:v)});};
- const atomClick=(id:number)=>{if(disabled)return;if(tool==='Erase'){change({atoms:g.atoms.filter(a=>a.id!==id),bonds:g.bonds.filter(b=>b.a!==id&&b.b!==id)});return;}if(tool==='Single bond'||tool==='Double bond'){if(selected===null){setSelected(id);return;}if(selected===id)return;change({...g,bonds:[...g.bonds.filter(b=>!((b.a===id&&b.b===selected)||(b.b===id&&b.a===selected))),{a:selected,b:id,order:tool==='Single bond'?1:2}]});}else setSelected(id);};
- return <fieldset className="cut-editor" disabled={disabled}><div className="cut-tools">{['Carbon','Single bond','Double bond','Move','Erase'].map(t=><button type="button" aria-pressed={tool===t} key={t} onClick={()=>{setTool(t);setSelected(null);}}>{t}</button>)}{(['Undo','Redo'] as const).map(t=><button type="button" key={t} disabled={disabled||!(t==='Undo'?history.past:history.future).length} onClick={()=>{const source=t==='Undo'?history.past:history.future;const next=source[source.length-1];onEdit('history',JSON.stringify(t==='Undo'?{past:source.slice(0,-1),future:[...history.future,state]}:{past:[...history.past,state],future:source.slice(0,-1)}));save(next,false);}}>{t}</button>)}</div>
- <svg className="cut-canvas" viewBox="0 0 900 300" role="group" tabIndex={disabled?-1:0} aria-label="Molecule drawing canvas" onKeyDown={e=>{if(e.target===e.currentTarget&&tool==='Carbon'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();change({...g,atoms:[...g.atoms,{id:Math.max(-1,...g.atoms.map(a=>a.id))+1,x:100+(g.atoms.length%8)*90,y:80+Math.floor(g.atoms.length/8)*70}]});}}} onClick={e=>{if(disabled||tool!=='Carbon'||e.target!==e.currentTarget)return;const matrix=e.currentTarget.getScreenCTM();if(!matrix)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse());change({...g,atoms:[...g.atoms,{id:Math.max(-1,...g.atoms.map(a=>a.id))+1,x:pt.x,y:pt.y}]});}}>
- {g.bonds.map(b=>{const a=g.atoms.find(a=>a.id===b.a)!,c=g.atoms.find(a=>a.id===b.b)!;return <g key={b.a+':'+b.b} onClick={()=>{if(tool==='Erase')change({...g,bonds:g.bonds.filter(v=>v!==b)});else if(tool.includes('bond'))change({...g,bonds:g.bonds.map(v=>v===b?{...v,order:tool==='Double bond'?2:1}:v)});}}><line x1={a.x} y1={a.y} x2={c.x} y2={c.y} stroke="transparent" strokeWidth="18"/><line x1={a.x} y1={a.y} x2={c.x} y2={c.y} stroke="black" strokeWidth="2"/>{b.order===2&&<line x1={a.x} y1={a.y+5} x2={c.x} y2={c.y+5} stroke="black" strokeWidth="2"/>}</g>;})}
- {g.atoms.map(a=>{const h=4-valence(g,a.id);return <g key={a.id} role="button" tabIndex={disabled?-1:0} aria-label={'Carbon '+(a.id+1)} onClick={()=>atomClick(a.id)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();atomClick(a.id);}if(tool==='Move'&&e.key.startsWith('Arrow')){e.preventDefault();change({...g,atoms:g.atoms.map(v=>v.id===a.id?{...v,x:Math.max(25,Math.min(875,v.x+(e.key==='ArrowRight'?10:e.key==='ArrowLeft'?-10:0))),y:Math.max(25,Math.min(275,v.y+(e.key==='ArrowDown'?10:e.key==='ArrowUp'?-10:0)))}:v)});}}} onPointerDown={e=>{if(tool==='Move'&&!disabled)e.currentTarget.setPointerCapture(e.pointerId);}} onPointerUp={e=>{if(!e.currentTarget.hasPointerCapture(e.pointerId))return;const svg=e.currentTarget.ownerSVGElement!;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM()!.inverse());change({...g,atoms:g.atoms.map(v=>v.id===a.id?{...v,x:Math.max(25,Math.min(875,pt.x)),y:Math.max(25,Math.min(275,pt.y))}:v)});}}><rect x={a.x-23} y={a.y-15} width="46" height="30" fill={selected===a.id?'#bee8ff':'white'}/><text x={a.x} y={a.y+6} textAnchor="middle" className="type-label">{h===0?'C':h===1?'CH':'CH'+['','','\u2082','\u2083','\u2084'][h]}</text></g>;})}</svg>
- <div className="cut-tools">{state.graphs.map((candidate,i)=><button type="button" key={i} aria-pressed={i===state.selected} onClick={()=>save({...state,selected:i},false)}>Structure {i+1}<svg viewBox="0 0 900 300" className="cut-thumbnail" aria-hidden="true">{candidate.bonds.map((bond,j)=>{const a=candidate.atoms.find(a=>a.id===bond.a)!,b=candidate.atoms.find(a=>a.id===bond.b)!;return <line key={j} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="black" strokeWidth={bond.order===2?10:5}/>;})}{candidate.atoms.map(a=><circle key={a.id} cx={a.x} cy={a.y} r="8" fill="black"/>)}</svg></button>)}<button type="button" disabled={disabled||state.graphs.length>=20} onClick={()=>save({graphs:[...state.graphs,{atoms:[],bonds:[]}],selected:state.graphs.length})}>New structure</button><button type="button" onClick={()=>save({graphs:state.graphs.length===1?[{atoms:[],bonds:[]}]:state.graphs.filter((_,i)=>i!==state.selected),selected:0})}>Delete structure</button></div><p className="type-caption" role="status">{message||'Click to place carbons. Select a bond tool, then two carbons to join them.'}</p></fieldset>;
- }}</QuestionAnswerForm></div>;
+
+/** An unusually large old draft stays intact instead of disappearing into a blank canvas. */
+function LegacyDrawingPreview({ drawing }: { drawing: Drawing }) {
+  return <section className="cut-legacy" aria-label="Saved molecular drawings">
+    <p className="type-caption" role="status">Your saved structures exceed the canvas limit and are shown read-only. They have been preserved.</p>
+    <div className="cut-legacy-grid">{drawing.graphs.filter(g => g.atoms.length).map((g, index) => {
+      const left = Math.min(...g.atoms.map(a => a.x)) - 45, top = Math.min(...g.atoms.map(a => a.y)) - 35;
+      const width = Math.max(...g.atoms.map(a => a.x)) - left + 45, height = Math.max(...g.atoms.map(a => a.y)) - top + 35;
+      return <svg key={index} viewBox={`${left} ${top} ${width} ${height}`} role="img" aria-label={`Saved structure ${index + 1}`}>
+        {g.bonds.map(b => {
+          const a = g.atoms.find(a => a.id === b.a)!, c = g.atoms.find(a => a.id === b.b)!;
+          return <g key={`${b.a}:${b.b}`}><line x1={a.x} y1={a.y} x2={c.x} y2={c.y} />
+            {b.order === 2 && <line x1={a.x} y1={a.y + 5} x2={c.x} y2={c.y + 5} />}</g>;
+        })}
+        {g.atoms.map(a => {
+          const h = 4 - valence(g, a.id), label = `C${h ? `H${h > 1 ? ['₀', '₁', '₂', '₃', '₄'][h] : ''}` : ''}`;
+          return <g key={a.id}><rect x={a.x - 24} y={a.y - 15} width="48" height="30" />
+            <text x={a.x} y={a.y + 6} className="type-body">{label}</text></g>;
+        })}
+      </svg>;
+    })}</div>
+  </section>;
+}
+
+export function U5Problem7({ attempt, onAction }: QuestionViewProps) {
+  const drawing = readP7Drawing(attempt.answers.drawings);
+  return <div className="question-content question-content--aligned cut-question" data-testid="u5p7-content">
+    <section className="question-brief" aria-label="Question">
+      <p>Ozonolysis cuts a C=C bond and replaces it with two C=O bonds. The attached groups stay in place; cutting a double bond in a ring can open the ring.</p>
+      <p>X has formula C₁₀H₁₆, two C=C bonds and no triple bonds. Cutting both double bonds gives one molecule of each product below.</p>
+      <p>Draw all possible structures of X.</p>
+      <figure className="cut-products"><ScientificDiagram geometry={productGeometry} data={productLabels}
+        description="Ozonolysis products: one methanal molecule and OHC–CH₂–CH[C(=O)CH₃]–CH₂–CH₂–C(=O)–CH₃. Every carbon, hydrogen and oxygen atom is displayed." /></figure>
+    </section>
+    <QuestionAnswerForm definition={u5p7} attempt={attempt} onAction={onAction} layout="aligned" autoFocusAnswer={false} className="cut-form">
+      {({ disabled, onEdit }) => drawing.kind === 'legacy-readonly' ? <LegacyDrawingPreview drawing={drawing.drawing} /> :
+        <MoleculeEditor value={drawing.state} readOnly={disabled} limits={p7Limits}
+          elements={['C', 'H', 'O']} representations={['displayed']} explicitHydrogensOnly
+          label="Structures of X" onChange={state => onEdit('drawings', serializeP7Drawing(state))} />}
+    </QuestionAnswerForm>
+  </div>;
 }

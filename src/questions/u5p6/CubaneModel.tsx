@@ -9,7 +9,10 @@ export function CubaneModel() {
  // Subdivide bonds for depth sorting so intersecting near/far edges remain legible.
  const pieces=bonds.flatMap(([a,b],bond)=>Array.from({length:12},(_,i)=>{
   const at=(t:number)=>positions[a].map((v,k)=>v+(positions[b][k]-v)*t) as unknown as Vec3;
-  const start=at(i/12),end=at((i+1)/12);
+  // Stop each bond at the ball surface before depth sorting its sections.
+  const length=Math.hypot(...positions[a].map((v,k)=>positions[b][k]-v));
+  const from=(atoms[a].element==='C'?13:12)/(.86*length),to=1-(atoms[b].element==='C'?13:12)/(.86*length);
+  const start=at(from+(to-from)*i/12),end=at(from+(to-from)*(i+1)/12);
   return {kind:'bond' as const,id:'b'+bond+'-'+i,z:(start[2]+end[2])/2,start:project(start),end:project(end)};
  }));
  const shapes=[...pieces,...atoms.map((a,i)=>({kind:'atom' as const,id:a.id,z:positions[i][2],element:a.element,...project(positions[i])}))].sort((a,b)=>a.z-b.z);
@@ -26,10 +29,9 @@ export function CubaneModel() {
  <line x1={s.start.x} y1={s.start.y} x2={s.end.x} y2={s.end.y} stroke="white" strokeWidth="7"/>
  <line x1={s.start.x} y1={s.start.y} x2={s.end.x} y2={s.end.y} stroke="#253b50" strokeWidth="3" strokeLinecap="round"/>
  </g>:<g key={s.id} data-atom={s.id} aria-hidden="true">
- <circle cx={s.x} cy={s.y} r={s.element==='C'?13:12} fill="white"/>
- <text x={s.x} y={s.y} textAnchor="middle" dominantBaseline="central" className="type-body cubane-atom">{s.element}</text>
+ <circle cx={s.x} cy={s.y} r={s.element==='C'?13:12} fill={s.element==='C'?'#8b9097':'#fff'} stroke={s.element==='C'?'#535960':'#929ba5'} strokeWidth="1.7"/>
  </g>)}
  </svg>
- <div className="cubane-view-controls type-caption"><span>Drag to rotate</span><button type="button" onClick={()=>setAngles(initial)}>Reset view</button></div>
+ <p className="cubane-view-controls type-caption">Drag to rotate</p>
  </div>;
 }

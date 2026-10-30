@@ -1,3 +1,2 @@
 .l5p4-prompt { text-align: center; }
-.l5p4-question .question-brief p { --text-size: clamp(19px, 2.8svh, 30px); }
 .l5p4-answer { --answer-input-width: 18vw; }

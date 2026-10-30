@@ -1,0 +1,26 @@
+/* Ordinary controls share this palette; illustrated challenge artwork is separate. */
+:root {
+  --ui-button-background: #2d2832;
+  --ui-button-color: #fff;
+  --ui-button-hover: #45404a;
+  --ui-button-active: #1c1920;
+  --ui-button-border: #2d2832;
+  --ui-button-disabled: #626068;
+}
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6em;
+  min-height: 4svh;
+  padding: .75svh 1.3svh;
+  border: .2svh solid var(--ui-button-border);
+  border-radius: .65svh;
+  color: var(--ui-button-color);
+  background: var(--ui-button-background);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ui-button:hover:not(:disabled) { background: var(--ui-button-hover); }
+.ui-button:active:not(:disabled) { background: var(--ui-button-active); }
+.ui-button:disabled { color: var(--ui-button-color); background: var(--ui-button-disabled); opacity: 1; cursor: default; }

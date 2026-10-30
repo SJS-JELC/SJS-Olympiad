@@ -13,7 +13,9 @@
 .breach-dialog .breach-note { margin: 12px 0 0; }
 .breach-error { min-height: 26px; margin: 10px 0; color: #ffb3b3; }
 .breach-dialog button { display: block; width: 100%; min-height: 46px; border-radius: 10px; cursor: pointer; }
-.breach-unlock { background: #dc333b; color: white; border: 1px solid #ff7379; }
-.breach-end { background: transparent; color: #cad6e8; border: 1px solid #66768d; margin-top: 12px; }
-.breach-dialog button:disabled { opacity: .45; cursor: default; }
+.breach-unlock, .breach-end { background: var(--ui-button-background); color: var(--ui-button-color); border: 1px solid #66768d; }
+.breach-end { margin-top: 12px; }
+.breach-dialog button:hover:not(:disabled) { background: var(--ui-button-hover); }
+.breach-dialog button:active:not(:disabled) { background: var(--ui-button-active); }
+.breach-dialog button:disabled { background: var(--ui-button-disabled); opacity: 1; cursor: default; }
 

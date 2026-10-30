@@ -5,18 +5,14 @@
  color:var(--dc-ink); min-width:0; background:white;
 }
 .dot-cross-editor * { box-sizing:border-box; }
-.dot-cross-editor .dc-editor-card { border:0.125svh solid #73829b; border-radius:1svh; overflow:hidden; background:white; }
-.dot-cross-editor .toolbar { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:0.5svh; padding:0.5svh; }
+.dot-cross-editor .dc-editor-card { border:var(--question-pane-border,.125svh solid #73829b); border-radius:var(--question-pane-radius,1svh); overflow:hidden; background:white; }
+.dot-cross-editor .toolbar { display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:0.5svh; padding:0.5svh; }
 .dot-cross-editor .palette-group, .dot-cross-editor .control-palette { display:flex; align-items:center; gap:0.4svh; }
-.dot-cross-editor button { background:transparent; color:var(--dc-ink); border:0; border-radius:0.8svh; padding:0.6svh 1svh; min-height:3.5svh; cursor:pointer; }
-.dot-cross-editor button:hover:not(:disabled) { background:#eef4f8; }
-.dot-cross-editor button[aria-pressed='true'] { background:#dcecf9; color:#134d7b; }
-.dot-cross-editor button:disabled { opacity:0.4; cursor:default; }
+.dot-cross-editor button { border-radius:0.8svh; padding:0.6svh 1svh; min-height:3.5svh; cursor:pointer; }
+.dot-cross-editor button[aria-pressed='true']:not(:disabled) { background:var(--ui-button-hover); color:var(--ui-button-color); box-shadow:inset 0 0 0 .2svh var(--ui-button-color); }
 .dot-cross-editor button:focus-visible, .dot-cross-editor svg:focus-visible { outline:none; }
 .dot-cross-editor .element-tool { min-width:3.5svh; }
-.dot-cross-editor .element-tool[data-element='N'] { color:var(--dc-nitrogen); }
-.dot-cross-editor .element-tool[data-element='O'] { color:var(--dc-oxygen); }
-.dot-cross-editor .tool svg { width:1.8svh; height:1.8svh; vertical-align:middle; }
+.dot-cross-editor .tool svg { width:max(18px,2.2svh); height:max(18px,2.2svh); vertical-align:middle; }
 .dot-cross-editor .workspace, .dot-cross-editor .drawing-area { min-width:0; }
 .dot-cross-editor .canvas-wrap { position:relative; height:34svh; overflow:hidden; background:white; }
 .dot-cross-editor .dc-canvas { display:block; width:100%; height:100%; min-height:0; touch-action:none; user-select:none; cursor:crosshair; background:white; }
@@ -38,3 +34,6 @@
 
 .dot-cross-editor .dc-empty-hint { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; pointer-events:none; color:var(--dc-muted); }
 .dot-cross-editor .dc-empty-hint p { margin:0.4svh 0; }
+
+.dot-cross-editor .dc-canvas.panning, .dot-cross-editor .dc-canvas.panning .atom, .dot-cross-editor .dc-canvas.panning .electron, .dot-cross-editor .dc-canvas.panning .region-hit { cursor:grab; }
+.dot-cross-editor .dc-canvas.panning.dragging, .dot-cross-editor .dc-canvas.panning.dragging .atom, .dot-cross-editor .dc-canvas.panning.dragging .electron { cursor:grabbing; }

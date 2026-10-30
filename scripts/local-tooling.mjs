@@ -14,15 +14,17 @@ const localBase = process.platform === 'win32'
     ? path.join(os.homedir(), 'Library', 'Caches')
     : process.env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache');
 const localRoot = path.join(localBase, 'SJS-Olympiad-Security-PoC');
-const worktree = path.join(localRoot, 'worktree');
+const profile = process.env.SJS_OLYMPIAD_TOOLING_PROFILE;
+if (profile && !/^[a-z0-9-]{1,40}$/.test(profile)) throw new Error('Invalid local tooling profile.');
+const worktree = profile ? path.join(localRoot, 'worktrees', profile) : path.join(localRoot, 'worktree');
 const manifestPath = path.join(worktree, '.sjs-source-manifest.json');
-const installMarker = path.join(localRoot, 'installed-manifests.sha256');
+const installMarker = path.join(localRoot, profile ? `installed-${profile}.sha256` : 'installed-manifests.sha256');
 const ignoredDirectories = new Set([
   '.git', '.npm-cache', '.verification', '.vite', 'node_modules', 'dist',
   'coverage', 'playwright-report', 'test-results',
 ]);
 const ignoredFiles = new Set(['.sjs-source-manifest.json', 'Thumbs.db', '.DS_Store']);
-const commands = new Set(['setup', 'migrate', 'dev', 'typecheck', 'test', 'test:browser', 'build', 'preview', 'install-browser']);
+const commands = new Set(['setup', 'migrate', 'dev', 'local-preview', 'typecheck', 'test', 'test:browser', 'build', 'preview', 'install-browser']);
 
 async function collectFiles(directory = sourceRoot, relative = '') {
   const files = [];
@@ -137,7 +139,7 @@ async function main() {
   }
   if (command === 'migrate') return migrateGeneratedFiles();
   if (command === 'install-browser') return npm(['exec', '--', 'playwright', 'install', 'chromium']);
-  if (command === 'dev') {
+  if (command === 'dev' || command === 'local-preview') {
     let syncing = false;
     const timer = setInterval(async () => {
       if (syncing) return;
@@ -146,7 +148,7 @@ async function main() {
       catch (error) { console.error('Source mirror failed:', error); }
       finally { syncing = false; }
     }, 1500);
-    try { await npm(['run', 'dev']); }
+    try { await npm(['run', command]); }
     finally { clearInterval(timer); }
     return;
   }

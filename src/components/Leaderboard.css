@@ -1,0 +1,20 @@
+/* Original Power Apps podium proportions: centre first, left second, right third. */
+.leaderboard-stage { position: relative; height: 100svh; width: 100%; overflow: hidden; color: #fff; }
+.leaderboard-logo { position: absolute; left: 35%; top: 1.5%; width: 30%; height: 27%; }
+.leaderboard-controls { position: absolute; z-index: 2; top: 2%; right: 2%; display: flex; align-items: center; gap: 1.4vw; }
+.leaderboard-fullscreen { --text-size:2.3svh; padding:.8svh 1vw; }
+.leaderboard-event { --text-size: 2.5svh; position: absolute; top: 29.5%; left: 15%; width: 70%; margin: 0; text-align: center; overflow-wrap: anywhere; }
+.leaderboard-podium { margin: 0; padding: 0; list-style: none; }
+.leaderboard-place { position: absolute; z-index: 1; width: 19%; height: 23%; display: flex; flex-direction: column; align-items: center; border-radius: 2.6svh; background: rgb(56, 96, 178); box-shadow: 0 .5svh 0 #17233c; overflow: hidden; text-align: center; }
+.leaderboard-place--1 { left: 40.5%; top: 35%; }
+.leaderboard-place--2 { left: 19.5%; top: 42%; }
+.leaderboard-place--3 { left: 61.5%; top: 49%; }
+.leaderboard-badge { --text-size: 2.3svh; display: block; width: 100%; padding: .4svh .5vw; background: #2d2832; }
+.leaderboard-team { --text-size: clamp(18px, 4svh, 44px); flex: 1; min-height: 0; width: 100%; padding: .7svh .7vw 0; display: grid; place-items: center; overflow-wrap: anywhere; overflow: hidden; }
+.leaderboard-points { --text-size: 4svh; min-height: 5.5svh; padding-bottom: .8svh; }
+.leaderboard-art { position: absolute; pointer-events: none; object-fit: contain; }
+.leaderboard-art--left { left: 0; bottom: 6.4%; width: 30%; height: 30%; }
+.leaderboard-art--centre { left: 38%; bottom: 6.4%; width: 26%; height: 25%; }
+.leaderboard-art--right { right: 0; bottom: 6.4%; width: 24%; height: 34%; }
+.leaderboard-status { --text-size: 2.5svh; position: absolute; bottom: 0; left: 0; width: 100%; min-height: 6.4%; margin: 0; padding: 1svh 2vw; display: grid; place-content: center; text-align: center; background: #2d2832; }
+.leaderboard-status--stale { background: #714909; }

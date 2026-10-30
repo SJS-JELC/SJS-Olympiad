@@ -1,0 +1,7 @@
+{
+  "source": "src/assets/powerapp/flipped-eagle.svg",
+  "sourceSha256": "91efd2d1326d951a5fccb21a1886ff469c8abb3f2ce519c6c95f3e3555a0671f",
+  "sourceAttribution": "Original SJS Chemistry Olympiad Power Apps artwork; archive attribution is retained in src/assets/powerapp/manifest.json.",
+  "derived": "favicon.svg",
+  "treatment": "Unmodified original eagle geometry fitted to a white rounded square; no generated imagery."
+}

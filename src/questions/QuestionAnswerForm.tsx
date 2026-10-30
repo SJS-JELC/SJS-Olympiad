@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Attempt, AttemptAction, QuestionDefinition } from './attempts';
 import { CheckButton } from '../components/CheckButton';
 import { IncorrectFeedback } from '../components/IncorrectFeedback';
+import {useCompetitionSecurity} from '../security';
 
 export type AnswerControls = { disabled: boolean; onEdit: (field: string, value: string) => void };
 export type QuestionAnswerLayout = 'compact' | 'aligned' | 'dense' | 'inline';
@@ -21,6 +22,7 @@ export function QuestionAnswerForm({ definition, attempt, onAction, children, la
   showAwardMessage?: boolean;
   className?: string;
 }) {
+  const preview=useCompetitionSecurity().server?.role==='teacher';
   const formRef = useRef<HTMLFormElement>(null);
   const focusedEntry = useRef<string | null>(null);
   useEffect(() => {
@@ -54,7 +56,7 @@ export function QuestionAnswerForm({ definition, attempt, onAction, children, la
     <IncorrectFeedback remainingMs={remainingMs} cooldownMs={definition.cooldownMs} />
     {children(controls)}
     <div className="question-actions">
-      {solved && showAwardMessage && <p role="status">{definition.points} {definition.points === 1 ? 'point' : 'points'} awarded.</p>}
+      {solved && showAwardMessage && !preview && <p role="status">{`${definition.points} ${definition.points===1?'point':'points'} awarded.`}</p>}
       <CheckButton remaining={remainingMs / 1000} cooldownSeconds={definition.cooldownMs / 1000} />
       {typeof actions === 'function' ? actions(controls) : actions}
     </div>

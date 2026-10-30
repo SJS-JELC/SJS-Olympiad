@@ -1,7 +1,8 @@
+import { transition, l5p9Groups, l6p1Groups } from '../fixtures/custom-server';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Attempt } from '../../src/questions/attempts';
-import { l5p9, l5p9Items, l5p9Groups } from '../../src/questions/l5p9/definition';
-import { l6p1, l6p1Items, l6p1Groups } from '../../src/questions/l6p1/definition';
+import { emptyAttempt, score, type Attempt } from '../../src/questions/attempts';
+import { l5p9, l5p9Items } from '../../src/questions/l5p9/definition';
+import { l6p1, l6p1Items } from '../../src/questions/l6p1/definition';
 
 const cases = [
   { definition: l5p9, items: l5p9Items, groups: l5p9Groups },
@@ -31,11 +32,11 @@ for (const { definition, items, groups } of cases) {
       expect(transition(definition, partial, { type: 'select', item: groups[0][0], now: 0 })).toBe(partial);
       expect(transition(definition, partial, { type: 'select', item: 'unknown', now: 0 })).toBe(partial);
       expect(transition(definition, partial, { type: 'edit', field: 'groups', value: groups.flat().join(','), now: 0 })).toBe(partial);
-      expect(definition.evaluate({}).groups).toBe(false);
+      expect(submit(blank).solvedAt).toBeNull();
     });
     it('rejects a wrong partition and guards the exact retry boundary', () => {
       const wrong = submit(select(items));
-      expect(wrong.feedback).toEqual({ groups: false });
+      expect(wrong.feedback).toEqual({ question: false });
       expect(wrong.retryAt).toBe(1000 + definition.cooldownMs);
       expect(score([definition], { [definition.id]: wrong })).toBe(0);
       expect(submit(wrong, wrong.retryAt - 1)).toBe(wrong);
@@ -66,7 +67,7 @@ for (const { definition, items, groups } of cases) {
     it('rejects malformed partitions and preserves fixed groups of three', () => {
       const correct = groups.flat();
       for (const order of [correct.slice(1), [...correct, items[0]], correct.map((item, index) => index === 0 ? 'unknown' : item), correct.map((item, index) => index === 0 ? correct[1] : item)]) {
-        expect(definition.evaluate({ groups: order.join(',') }).groups).toBe(false);
+        expect(submit({...emptyAttempt(),answers:{groups:order.join(',')}}).solvedAt).toBeNull();
       }
       expect(select(correct.slice(0, 3)).interaction).toEqual({ kind: 'grouping', selected: correct.slice(0, 3) });
     });

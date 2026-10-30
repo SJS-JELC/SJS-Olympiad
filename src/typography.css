@@ -4,10 +4,15 @@
 :root {
   --font-body: 'Tilt Neon', ui-sans-serif, system-ui, sans-serif;
   --font-display: '04b_19', Impact, sans-serif;
-  --text-size-small: clamp(12px, 1.5svh, 16px);
-  --text-size-body: clamp(14px, 1.9svh, 20px);
-  --text-size-heading-small: clamp(20px, 2.8svh, 32px);
-  --text-size-heading-large: clamp(24px, 4.6svh, 54px);
+  /* Minimums protect smaller landscape screens; height drives desktop scale. */
+  --text-size-small: max(12px, 1.5svh);
+  --text-size-body: max(14px, 1.9svh);
+  --text-size-heading-small: max(20px, 2.8svh);
+  --text-size-heading-large: max(24px, 4.6svh);
+  --text-size-question: max(19px, 2.8svh);
+  --text-size-question-large: max(20px, 3svh);
+  --text-size-question-roomy: max(22px, 3.3svh);
+  --text-size-question-dense: max(17px, 2.4svh);
   font: 400 var(--text-size-body)/1.4 var(--font-body);
   font-synthesis: none; letter-spacing: 0;
 }
@@ -37,6 +42,9 @@
 .text-heading-small { --text-size: var(--text-size-heading-small); }
 .text-tabular, .answer-input input, .breach-pin input, .breach-pin-slots span, .score-digit, .theory-timer { font-variant-numeric: tabular-nums; }
 .eyebrow, .olympiad-question-heading__number { text-transform: uppercase; letter-spacing: .08em; }
+.settings-questions .problem-testing-title { text-transform:uppercase; }
+.completion-stamp__time { font-size:70px; }
+.completion-stamp__word { font-size:78px; }
 .olympiad-question-heading__number { --text-size: var(--text-size-body); }
 
 /* SVG alignment is geometry; lettering itself uses Body or Caption. */
@@ -47,3 +55,4 @@
 
 /* User-approved monochrome instrument report typography exception. */
 .gc-sheet, .gc-sheet *, .gc-printout, .gc-printout * { font-family: 'Courier New', monospace; font-weight:400; }
+.gc-sheet .gc-area-readout strong { font-weight: 700; }

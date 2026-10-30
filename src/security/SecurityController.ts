@@ -1,157 +1,260 @@
-import { LocalStorageSnapshotAdapter, validateSnapshot } from './securityStorage';
-import { testStaffPinVerifier } from './securityEvents';
-import type { SecurityEventType, SecuritySnapshot, SecurityView, SnapshotAdapter, StaffPinVerifier } from './securityTypes';
-
-const initial = (): SecurityView => ({ session: { status: 'NOT_STARTED', eventCount: 0 }, events: [], phase: 'loading', error: null, storageHealthy: true });
+import { HttpError, request, type SessionState } from '../cloud/api';
+import type { SecurityEventType, SecurityView } from './securityTypes';
+import type { Attempt } from '../questions/attempts';
+import { eventTiming, theoryPhase, practicalPhase } from '../events/timing';
+const initial = (): SecurityView => ({ session: { status: 'NOT_STARTED', eventCount: 0 }, events: [], phase: 'loading', error: null, storageHealthy: true, server: null, recoveryReady: false });
+type Transport = typeof request;
+/** The server cookie is the authority. Browser state only makes access more restrictive. */
 export class SecurityController {
-  private view = initial();
-  private listeners = new Set<() => void>();
-  private generation = 0;
-  private queue: Promise<void> = Promise.resolve();
-  private initPromise?: Promise<void>;
-  private incidentAt = -Infinity;
-  private incidentId: string | undefined;
-  constructor(private adapter: SnapshotAdapter = new LocalStorageSnapshotAdapter(), private verifier: StaffPinVerifier = testStaffPinVerifier) {}
-  getSnapshot = () => this.view;
-  subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
-  private publish(view: SecurityView) { this.view = view; this.listeners.forEach(listener => listener()); }
-  private event(type: SecurityEventType) { return { id: crypto.randomUUID(), type, at: new Date().toISOString() }; }
-  private snapshot(view = this.view): SecuritySnapshot { return structuredClone({ version: 1, session: view.session, events: view.events }); }
-  private save(snapshot: SecuritySnapshot, guard?: () => boolean): Promise<boolean> {
-    const operation = this.queue.then(async () => { if (guard && !guard()) return false; await this.adapter.save(snapshot); return true; });
-    this.queue = operation.then(() => undefined, () => undefined);
-    return operation;
-  }
-  private failed() {
-    this.generation++;
-    const event = this.event('STORAGE_FAILURE');
-    const active = this.view.session.status === 'ACTIVE';
-    const events = active ? [...this.view.events, event] : this.view.events;
-    this.publish({ ...this.view, session: active ? { ...this.view.session, status: 'LOCKED', lockedAt: event.at, lockReason: event.type, eventCount: events.length } : this.view.session, events, phase: 'idle', storageHealthy: false, error: 'Session storage is unavailable or invalid. Competition content remains locked.' });
-  }
-  initialize = (): Promise<void> => this.initPromise ??= this.restore();
-  private async restore() {
-    const token = this.generation;
-    try {
-      const loaded = await this.adapter.load();
-      const stored = loaded === null ? null : validateSnapshot(loaded);
-      if (token !== this.generation) throw new Error('Storage changed during restoration');
-      if (stored?.session.status === 'ACTIVE') {
-        const event = this.event('SESSION_INTERRUPTED');
-        const events = [...stored.events, event];
-        const restored: SecurityView = { ...this.view, session: { ...stored.session, status: 'LOCKED', lockedAt: event.at, lockReason: event.type, eventCount: events.length }, events, phase: 'idle' };
-        // A persisted ACTIVE value is never published, even for one render.
-        this.publish(restored);
-        try { await this.save(this.snapshot()); } catch { this.failed(); }
-      } else {
-        this.publish({ ...this.view, ...(stored ? { session: stored.session, events: stored.events } : {}), phase: 'idle' });
-      }
-    } catch {
-      const event = this.event('STORAGE_FAILURE');
-      this.publish({ session: { status: 'LOCKED', eventCount: 1, lockedAt: event.at, lockReason: event.type }, events: [event], phase: 'idle', storageHealthy: false, error: 'Session storage is unavailable or invalid. Staff recovery is required.' });
+    private view = initial();
+    private listeners = new Set<() => void>();
+    private generation = 0;
+    private initialized?: Promise<void>;
+    private grant: string | null = null;
+    private checking: Promise<boolean> | null = null;
+    private clockDelta = 0;
+    private activationSent = false;
+    private scheduleState = '';
+    constructor(private transport: Transport = request) { }
+    getSnapshot = () => this.view;
+    subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
+    private publish(next: SecurityView) { this.view = next; this.listeners.forEach(fn => fn()); }
+    private event(type: SecurityEventType) { return { id: crypto.randomUUID(), type, at: new Date().toISOString() }; }
+    private valid(token: number) { return token === this.generation && (this.view.phase==='entering'||this.view.phase==='unlocking') && !document.hidden && document.hasFocus() && document.fullscreenElement === document.documentElement; }
+    private error(error: unknown) { return error instanceof Error ? error.message : 'The competition service is unavailable.'; }
+    private accept(server: SessionState, allowActive = false) {
+        if (!server || !['teacher', 'competitor'].includes(server.role) || !Number.isFinite(server.serverNow) || !Number.isFinite(server.expiresAt) || server.expiresAt <= server.serverNow || !server.competition || !['NOT_STARTED', 'ACTIVE', 'LOCKED'].includes(server.competition.status))
+            throw new Error('The server session could not be verified.');
+        this.clockDelta = Date.now() - server.serverNow;
+        const competitor = server.role === 'competitor';
+        let status = competitor ? server.competition.status : 'NOT_STARTED';
+        if (status === 'ACTIVE') {
+            if (this.eventClosed(server)) status = 'NOT_STARTED';
+            else if (!allowActive || document.fullscreenElement !== document.documentElement || !this.eventActive(server)) status = 'LOCKED';
+        }
+        this.publish({ ...this.view, server, session: { ...this.view.session, status, eventCount: this.view.events.length }, phase: 'idle', storageHealthy: true, error: null });
     }
-  }
-  interrupt = (reason: SecurityEventType) => {
-    // Ending remains gated; its fullscreen exit must not overwrite the saved end.
-    if (this.view.phase === 'ending') return;
-    const pending = this.view.phase === 'entering' || this.view.phase === 'unlocking';
-    if (!pending && this.view.session.status === 'LOCKED' && performance.now() - this.incidentAt <= 500) {
-      const incident = this.view.events.find(event => event.id === this.incidentId);
-      if (incident && incident.type !== reason && !incident.relatedSignals?.includes(reason)) {
-        const events = this.view.events.map(event => event.id === this.incidentId ? { ...event, relatedSignals: [...(event.relatedSignals ?? []), reason] } : event);
-        this.publish({ ...this.view, events });
-        void this.save(this.snapshot()).catch(() => this.failed());
-      }
-      return;
+    private acknowledgeBreach(server: SessionState) {
+        if (this.view.session.status === 'LOCKED' && server.competition.epoch >= (this.view.server?.competition.epoch ?? 0))
+            this.publish({ ...this.view, server });
     }
-    if (this.view.session.status !== 'ACTIVE' && !pending) return;
-    this.generation++;
-    const event = this.event(reason);
-    const wasActive = this.view.session.status === 'ACTIVE';
-    if (wasActive) { this.incidentAt = performance.now(); this.incidentId = event.id; }
-    const events = wasActive ? [...this.view.events, event] : this.view.events;
-    this.publish({ ...this.view, session: wasActive ? { ...this.view.session, status: 'LOCKED', lockedAt: event.at, lockReason: reason, eventCount: events.length } : this.view.session, events, phase: 'idle', error: pending ? 'Entry was interrupted. Try again when this page is visible and focused.' : null });
-    void this.save(this.snapshot()).catch(() => this.failed());
-  };
-  externalChange = (incoming?: string | null) => {
-    this.generation++;
-    if (this.view.phase === 'loading') return;
-    const newlyLocked = this.view.session.status !== 'LOCKED';
-    const event = this.event('CROSS_TAB_CONFLICT');
-    const events = newlyLocked ? [...this.view.events, event] : this.view.events;
-    this.publish({ ...this.view, session: { ...this.view.session, status: 'LOCKED', lockedAt: this.view.session.lockedAt ?? event.at, lockReason: this.view.session.lockReason ?? event.type, eventCount: events.length }, events, phase: 'idle', error: 'Shared session storage changed in another tab. Staff recovery is required.' });
-    let unsafeIncoming = incoming === null;
-    if (typeof incoming === 'string') {
-      try { unsafeIncoming = validateSnapshot(JSON.parse(incoming)).session.status !== 'LOCKED'; }
-      catch { unsafeIncoming = true; }
+    private async restoreLock(token:number){
+        try{
+            const server=await this.transport<SessionState>('session?restore=1');
+            if(token===this.generation)this.accept(server);
+        }catch(error){
+            if(token!==this.generation)return;
+            if(error instanceof HttpError&&error.status===401){this.grant=null;this.publish({...initial(),phase:'idle',error:this.error(error)});}
+            else this.publish({...this.view,phase:'idle',storageHealthy:false,error:'The activation result could not be verified. Staff recovery is required.'});
+        }
     }
-    // Repair cleared/unsafe storage even when already locked. Incoming locked
-    // snapshots are never echoed, so lock repairs cannot produce ping-pong.
-    if (newlyLocked || unsafeIncoming) void this.save(this.snapshot()).catch(() => this.failed());
-  };
-  private valid(token: number) { return token === this.generation && !document.hidden && document.hasFocus() && document.fullscreenElement === document.documentElement; }
-  private async activate(unlock: boolean) {
-    const token = ++this.generation;
-    this.publish({ ...this.view, phase: unlock ? 'unlocking' : 'entering', error: null });
-    try {
-      if (!document.documentElement.requestFullscreen) throw new Error('Fullscreen is not supported on this browser.');
-      // Called before the first await, preserving the start/unlock button's user gesture.
-      await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
-      if (!this.valid(token)) throw new Error('Entry was interrupted. Keep this page visible and focused.');
-      const event = this.event(unlock ? 'STAFF_UNLOCK' : 'COMPETITION_STARTED');
-      const events = [...this.view.events, event];
-      const candidate: SecurityView = { ...this.view, session: { status: 'ACTIVE', startedAt: this.view.session.startedAt ?? event.at, eventCount: events.length }, events, phase: 'idle', error: null };
-      let saved: boolean;
-      try { saved = await this.save(this.snapshot(candidate), () => this.valid(token)); }
-      catch { this.failed(); throw new Error('Session could not be saved. Competition remains gated.'); }
-      if (!saved || !this.valid(token)) {
-        // An interrupt already queues its gated snapshot. A stale attempt must
-        // never append a compensating write behind a newer activation.
-        if (token === this.generation) await this.save(this.snapshot(), () => token === this.generation);
-        throw new Error('Entry was interrupted before completion.');
-      }
-      this.publish(candidate);
-    } catch (error) {
-      if (token === this.generation) this.publish({ ...this.view, phase: 'idle', error: error instanceof Error ? error.message : 'Fullscreen entry failed.' });
+    initialize = () => this.initialized ??= this.restore();
+    private async restore() {
+        const token = ++this.generation;
+        try {
+            const server = await this.transport<SessionState>('session?restore=1');
+            if (token !== this.generation)
+                return;
+            this.accept(server);
+        }
+        catch (error) {
+            if (token !== this.generation)
+                return;
+            if (error instanceof HttpError && error.status === 401)
+                this.publish({ ...initial(), phase: 'idle' });
+            else
+                this.publish({ ...this.view, phase: 'idle', storageHealthy: false, error: this.error(error) });
+        }
     }
-  }
-  start = async () => { if (this.view.phase !== 'idle' || this.view.session.status !== 'NOT_STARTED' || !this.view.storageHealthy) return; await this.activate(false); };
-  unlock = async (pin: string) => {
-    if (this.view.phase !== 'idle' || this.view.session.status !== 'LOCKED' || !this.view.storageHealthy) return;
-    if (!this.verifier.verify(pin)) {
-      const events = [...this.view.events, this.event('INVALID_STAFF_PIN')];
-      this.publish({ ...this.view, events, session: { ...this.view.session, eventCount: events.length }, error: 'Incorrect staff PIN.' });
-      try { await this.save(this.snapshot()); } catch { this.failed(); }
-      return;
+    login = async (code: string, role: 'competitor' | 'teacher' = 'competitor') => {
+        if (this.view.phase !== 'idle')
+            return;
+        const token = ++this.generation;
+        this.publish({ ...this.view, phase: 'loading', error: null });
+        try {
+            const value = await this.transport<SessionState>('login', { code, role });
+            if (token === this.generation)
+                this.accept(value);
+        }
+        catch (error) {
+            if (token === this.generation)
+                this.publish({ ...this.view, phase: 'idle', error: this.error(error), storageHealthy: true });
+        }
+    };
+    refresh = (): Promise<boolean> => {
+        if(this.view.phase!=='idle')return Promise.resolve(false);
+        if (this.checking)
+            return this.checking;
+        const token = this.generation;
+        this.checking = (async () => {
+            try {
+                const server = await this.transport<SessionState>('session');
+                if (token !== this.generation)
+                    return false;
+                const wasActive = this.view.session.status === 'ACTIVE';
+                // A poll cannot unlock a locally locked session.
+                this.accept(server, wasActive);
+                if(server.role==='competitor'&&server.competition.status==='ACTIVE'&&!wasActive){await this.restoreLock(token);return false;}
+                return this.canAccess();
+            }
+            catch (error) {
+                if (token === this.generation) {
+                    if (error instanceof HttpError && error.status === 401) {
+                        this.generation++;
+                        this.grant = null;
+                        this.publish({ ...initial(), phase: 'idle', error: this.error(error) });
+                    }
+                    else {
+                        this.interrupt('SESSION_INTERRUPTED');
+                        this.publish({ ...this.view, storageHealthy: false, error: this.error(error) });
+                    }
+                }
+                return false;
+            }
+            finally {
+                this.checking = null;
+            }
+        })();
+        return this.checking;
+    };
+    private eventActive(server: SessionState) { const event = server.activeEvent, team = server.team; return !!event && event.status === 'active' && !!team && team.eventId === event.id && team.year === event.year && this.serverNow() < eventTiming(event).endsAt; }
+    private eventClosed(server: SessionState) { const event = server.activeEvent; return !event || event.status !== 'active' || this.serverNow() >= eventTiming(event).endsAt; }
+    private closeEvent() {
+        this.generation++; this.grant = null;
+        this.publish({ ...this.view, session: { ...this.view.session, status: 'NOT_STARTED' }, phase: 'idle', recoveryReady: false });
     }
-    await this.activate(true);
-  };
-  end = async (pin: string) => {
-    if (this.view.phase !== 'idle' || this.view.session.status !== 'LOCKED' || !this.view.storageHealthy) return;
-    if (!this.verifier.verify(pin)) {
-      // Reuse the existing invalid-PIN logging without attempting activation.
-      await this.unlock(pin);
-      return;
-    }
-    const token = ++this.generation;
-    this.publish({ ...this.view, phase: 'ending', error: null });
-    const events = [...this.view.events, this.event('COMPETITION_ENDED')];
-    const candidate: SecurityView = { ...this.view, session: { status: 'NOT_STARTED', eventCount: events.length }, events, phase: 'idle', error: null };
-    try {
-      const saved = await this.save(this.snapshot(candidate), () => token === this.generation);
-      if (!saved || token !== this.generation) return;
-      if (document.fullscreenElement) {
-        try { await document.exitFullscreen(); } catch { /* Ending does not require fullscreen. */ }
-      }
-      if (token === this.generation) { this.publish(candidate); return true; }
-    } catch { this.failed(); }
-  };
-  reset = async () => {
-    if (this.view.phase !== 'idle' || this.view.session.status !== 'NOT_STARTED') return;
-    const token = ++this.generation;
-    this.publish({ ...this.view, phase: 'entering', error: null });
-    const events = [this.event('SESSION_RESET')];
-    const view: SecurityView = { ...initial(), phase: 'idle', events, session: { status: 'NOT_STARTED', eventCount: events.length } };
-    try { await this.save(this.snapshot(view), () => token === this.generation); if (token === this.generation) this.publish(view); } catch { this.publish({ ...this.view, phase: 'idle' }); this.failed(); }
-  };
+    serverNow = () => Date.now() - this.clockDelta;
+    canAccessTheory = () => this.canAccess() && (this.view.server?.role === 'teacher' || theoryPhase(this.view.server?.activeEvent, this.serverNow()) === 'open');
+    canAccessPractical = () => this.canAccess() && (this.view.server?.role === 'teacher' || practicalPhase(this.view.server?.activeEvent, this.serverNow()) === 'open');
+    canAccess = () => this.view.storageHealthy && this.view.phase === 'idle' && !!this.view.server && Date.now() < this.view.server.expiresAt + this.clockDelta && (this.view.server.role === 'teacher' || (this.view.session.status === 'ACTIVE' && this.view.server.competition.status === 'ACTIVE' && this.eventActive(this.view.server) && document.fullscreenElement === document.documentElement));
+    checkBoundary = () => {
+        if (this.view.server?.role !== 'competitor') return;
+        if (this.eventClosed(this.view.server) && (this.view.session.status !== 'NOT_STARTED' || this.view.phase === 'entering' || this.view.phase === 'unlocking')) {
+            // A scheduled/manual end is not a competition-mode breach.
+            this.closeEvent();
+        } else if (this.view.session.status === 'ACTIVE' && !this.canAccess()) this.interrupt('SESSION_INTERRUPTED');
+        const phase = theoryPhase(this.view.server?.activeEvent, this.serverNow()) + ':' + practicalPhase(this.view.server?.activeEvent, this.serverNow());
+        if (this.scheduleState !== phase) {
+            this.scheduleState = phase;
+            this.publish({ ...this.view });
+        }
+    };
+    guard = async () => { if (!this.canAccess())
+        return false; return this.refresh(); };
+    guardTheory = async () => this.canAccessTheory() && await this.refresh() && this.canAccessTheory();
+    guardPractical = async () => this.canAccessPractical() && await this.refresh() && this.canAccessPractical();
+    claim = async (teamId: string) => {
+        const server = await this.transport<SessionState>('claim', { teamId, requestId: crypto.randomUUID() });
+        this.accept(server);
+    };
+    start = async () => {
+        if (this.view.phase !== 'idle' || this.view.server?.role !== 'competitor' || !this.view.server.team || this.view.session.status !== 'NOT_STARTED')
+            return;
+        const token = ++this.generation;
+        this.activationSent = false;
+        this.publish({ ...this.view, phase: 'entering', error: null });
+        try {
+            await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
+            if (!this.valid(token))
+                throw new Error('Entry was interrupted. Keep this tab visible and focused.');
+            this.activationSent = true;
+            const server = await this.transport<SessionState>('start', { epoch: this.view.server!.competition.epoch, requestId: crypto.randomUUID() });
+            if (!this.valid(token)) {
+                if (!this.eventClosed(server)) void this.transport<SessionState>('breach', { epoch: server.competition.epoch, reason: 'SESSION_INTERRUPTED', requestId: crypto.randomUUID() }).then(value => this.acknowledgeBreach(value)).catch(() => { });
+                return;
+            }
+            this.accept(server, true);
+        }
+        catch (error) {
+            if (token === this.generation){
+                if(this.activationSent){
+                    const event=this.event('SESSION_INTERRUPTED'),events=[...this.view.events,event];
+                    this.publish({...this.view,session:{...this.view.session,status:'LOCKED',lockedAt:event.at,lockReason:event.type,eventCount:events.length},events,phase:'unlocking',recoveryReady:false,error:'The start result was not confirmed.'});
+                    await this.restoreLock(token);
+                }else this.publish({ ...this.view, phase: 'idle', error: this.error(error) });
+            }
+        }
+    };
+    interrupt = (reason: SecurityEventType) => {
+        if (this.view.server?.role !== 'competitor')
+            return;
+        if (this.eventClosed(this.view.server)) { this.closeEvent(); return; }
+        if (this.view.session.status !== 'ACTIVE' && this.view.phase !== 'entering' && this.view.phase !== 'unlocking')
+            return;
+        this.generation++;
+        this.grant = null;
+        if (this.view.session.status === 'NOT_STARTED' && !this.activationSent) {
+            this.publish({ ...this.view, phase: 'idle', error: 'Entry was interrupted. Try again while this tab is visible and focused.' });
+            return;
+        }
+        const event = this.event(reason), events = [...this.view.events, event];
+        this.publish({ ...this.view, session: { ...this.view.session, status: 'LOCKED', lockedAt: event.at, lockReason: reason, eventCount: events.length }, events, phase: 'idle', recoveryReady: false });
+        void this.transport<SessionState>('breach', { epoch: this.view.server!.competition.epoch, reason, requestId: event.id }).then(server => {
+            // Report acknowledgements never activate content.
+            this.acknowledgeBreach(server);
+        }).catch(() => { this.publish({ ...this.view, storageHealthy: false, error: 'Connection lost. Staff recovery is required.' }); });
+    };
+    externalChange = (_incoming?: string | null) => this.interrupt('CROSS_TAB_CONFLICT');
+    unlock = async (code: string) => {
+        if (this.view.phase !== 'idle' || this.view.session.status !== 'LOCKED')
+            return;
+        const token = ++this.generation;
+        this.publish({ ...this.view, phase: 'unlocking', error: null, recoveryReady: false });
+        try {
+            const server=await this.transport<SessionState>('session?restore=1');
+            if(token!==this.generation)return;
+            this.accept(server);
+            if(server.competition.status==='NOT_STARTED')return;
+            this.publish({...this.view,phase:'unlocking'});
+            const result = await this.transport<{
+                grant: string;
+            }>('recovery', { code, expectedEpoch: this.view.server?.competition.epoch, requestId: crypto.randomUUID() });
+            if (token !== this.generation)
+                return;
+            this.grant = result.grant;
+            this.publish({ ...this.view, phase: 'idle', storageHealthy: true, recoveryReady: true });
+        }
+        catch (error) {
+            if (token === this.generation)
+                this.publish({ ...this.view, phase: 'idle', error: this.error(error) });
+        }
+    };
+    resume = async () => {
+        if (!this.grant || this.view.phase !== 'idle' || this.view.session.status !== 'LOCKED')
+            return;
+        const token = ++this.generation, grant = this.grant;
+        let resumeSent=false;
+        this.publish({ ...this.view, phase: 'unlocking', error: null });
+        try {
+            await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
+            if (!this.valid(token))
+                throw new Error('Resume was interrupted. Ask staff to verify again.');
+            resumeSent=true;
+            const server = await this.transport<SessionState>('resume', { grant, expectedEpoch: this.view.server?.competition.epoch, requestId: crypto.randomUUID() });
+            this.grant = null;
+            if (!this.valid(token)) {
+                if (!this.eventClosed(server)) void this.transport<SessionState>('breach', { epoch: server.competition.epoch, reason: 'SESSION_INTERRUPTED', requestId: crypto.randomUUID() }).then(value => this.acknowledgeBreach(value)).catch(() => { });
+                return;
+            }
+            this.accept(server, true);
+            this.publish({ ...this.view, recoveryReady: false });
+        }
+        catch (error) {
+            if (token === this.generation){
+                this.grant=null;
+                this.publish({ ...this.view, phase: resumeSent?'unlocking':'idle', recoveryReady: false, error: this.error(error) });
+                if(resumeSent)await this.restoreLock(token);
+            }
+        }
+    };
+    update = (server: SessionState) => {
+        if (server.team?.id === this.view.server?.team?.id && server.team?.claimGeneration === this.view.server?.team?.claimGeneration && server.competition.epoch < (this.view.server?.competition.epoch ?? 0))
+            return;
+        this.accept(server, this.view.session.status === 'ACTIVE');
+    };
+    recordQuestion = (id: string, attempt: Attempt, score: number) => {
+        if (!this.view.server)
+            return;
+        this.publish({ ...this.view, server: { ...this.view.server, score: this.view.server.role === 'competitor' ? score : 0, attempts: { ...this.view.server.attempts, [id]: attempt } } });
+    };
 }

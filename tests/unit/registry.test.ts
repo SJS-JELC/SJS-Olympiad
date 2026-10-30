@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { questionCatalog, findQuestion } from '../../src/questions/catalog';
-import { score, emptyAttempt, transition, type Answers } from '../../src/questions/attempts';
+import { serverDefinition, score, emptyAttempt, transition, type Answers } from './server-markers';
 import {pair} from '../fixtures/u5p2';
-import {solutions} from '../../src/questions/u5p7/model';
+import {solutions} from '../fixtures/u5p7';
 
 // Reuse the existing dedicated-question fixtures for newer drawing interactions.
 // These are lifecycle fixtures, not historical metadata.
@@ -27,7 +27,8 @@ describe('complete question registry', () => {
     expect(findQuestion('U5',8)?.definition.title).toBe('Boundaries');
   });
   // L6P8's private marking fixtures run in api/tests/service.test.mjs.
-  for(const {definition} of questionCatalog.filter(e=>!e.definition.reduce && e.definition.id !== 'L6P8')) {
+  for(const entry of questionCatalog.filter(e=>!['L5P9','L6P1','L6P3','U5P5'].includes(e.definition.id))) {
+    const definition=serverDefinition(entry.definition);
     it(definition.id+' source fixtures award exactly once and blanks are never correct',()=>{
       let accepted = interactionFixtures[definition.id];
       if (!accepted) {

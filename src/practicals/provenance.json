@@ -1,0 +1,27 @@
+{
+  "L5": {
+    "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp/Src/L5Practical.pa.yaml",
+    "sha256": "a5da35b88946cc9e4a950bccb2b54361b57065ce7593b5e19c70b2c8d4e17c4d",
+    "control": "L5PracticalProtocolText"
+  },
+  "L6": {
+    "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp/Src/L6Practical.pa.yaml",
+    "sha256": "bce87303432df0e8c774f9951f0bb356ab76988c3aa8174ca5c9f6d042cd8382",
+    "control": "L6PracticalProtocolText"
+  },
+  "U6": {
+    "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp/Src/U6Practical.pa.yaml",
+    "sha256": "801654dfe38671309018c2496bf6bec68fe96732e5790de225a4df9115c3037a",
+    "control": "U6PracticalProtocolText"
+  },
+  "mohr-crisps.svg": {
+    "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp/Assets/Images/b69ae247-8c0f-4e12-93cd-98552f6c6c44.svg",
+    "sha256": "7327afbbfc20109240ae2a105417e8fa6edb71c024baf2b87ae5cdfcc75a985d",
+    "media": "MohrCrisps"
+  },
+  "cuttlefish.png": {
+    "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp/Assets/Images/4b7c736d-6c83-462a-9bb2-ff0466b88b90.png",
+    "sha256": "e3310c681e65071510f588a9acbf32d6bc01c54384814195127488edd87d989a",
+    "media": "Cuttlefish"
+  }
+}

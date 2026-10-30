@@ -20,7 +20,7 @@ function VolumeReference({ onClose }: { onClose: () => void }) {
     <p className="u5p8-formula type-body" aria-label="V equals pi h squared times three R minus h, divided by three">V = πh²(3R − h)/3</p>
     <CapSketch />
     <p className="type-caption">R: sphere radius · h: cap height</p>
-    <button type="button" className="type-label" onClick={onClose}>Close reference</button>
+    <button type="button" className="ui-button type-label" onClick={onClose}>Close reference</button>
   </dialog>;
 }
 
@@ -37,7 +37,7 @@ export function U5Problem8({ attempt, onAction }: QuestionViewProps) {
       <div className="u5p8-prompt">{wording.map(text => <p className="type-body" key={text}>{text}</p>)}</div>
       <div className="u5p8-illustration">
         <FlaskDiagram />
-        <button ref={trigger} type="button" className="u5p8-reference-trigger type-label" aria-label="Open spherical cap volume reference"
+        <button ref={trigger} type="button" className="ui-button u5p8-reference-trigger type-label" aria-label="Open spherical cap volume reference"
           aria-haspopup="dialog" onClick={() => setReferenceOpen(true)}>?</button>
       </div>
     </section>

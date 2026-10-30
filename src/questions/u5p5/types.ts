@@ -13,7 +13,7 @@ export type GcInteraction = {
 export type GcAction =
   | {type: 'gc-delete-result'; id: number; now: number}
   | {type: 'gc-result-position'; id: number; position?: readonly [number, number]; now: number}
-  | {type: 'gc-load'; sample: SampleId; now: number}
+  | {type: 'gc-load'; sample: SampleId; concentration?: number; now: number}
   | {type: 'gc-dilute'; sample: AccordId; value: number; now: number}
   | {type: 'gc-result-interval'; id: number; interval: Interval; now: number}
   | { type: 'gc-enter'; now: number }

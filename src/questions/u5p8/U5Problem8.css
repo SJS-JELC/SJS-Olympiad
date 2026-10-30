@@ -1,16 +1,16 @@
 .u5p8-brief { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); align-items: center; gap: 1.5vw; }
 .u5p8-prompt { min-width: 0; }
-.u5p8-question .u5p8-prompt p { --text-size: clamp(16px, 2.45svh, 25px); --text-leading: 1.28; text-align: center; margin: 0 0 1.5svh; }
+.u5p8-question .u5p8-prompt p { --text-size: var(--text-size-question-dense); --text-leading: 1.28; text-align: center; margin: 0 0 1.5svh; }
 .u5p8-question .u5p8-prompt p:last-child { margin-bottom: 0; }
 .u5p8-illustration { position: relative; min-width: 0; width: 100%; display: flex; align-items: center; justify-content: center; }
 .u5p8-flask { display: block; width: 100%; max-height: 44svh; }
-.u5p8-reference-trigger { position: absolute; right: 2%; top: 1%; width: 4svh; height: 4svh; padding: 0; border: .25svh solid #152033; border-radius: 50%; color: #152033; background: #fff; cursor: pointer; }
+.u5p8-reference-trigger { position: absolute; right: 2%; top: 1%; width: 4svh; height: 4svh; padding: 0; border-radius: 50%; }
 .u5p8-answer { --answer-input-width: 24vw; display: flex; align-items: center; gap: 1vw; color: #152033; }
 .u5p8-answer > span:last-child { --text-size: 3.4svh; }
-.u5p8-reference { width: min(52vw, 560px); max-height: 78svh; overflow: auto; padding: 2.5svh 2vw; border: .3svh solid #152033; border-radius: 1svh; text-align: center; color: #152033; background: #fff; }
+.u5p8-reference { width: min(54vw, 76svh); max-height: 78svh; overflow: auto; padding: 2.5svh 2vw; border: var(--question-pane-border, .125svh solid #73829b); border-radius: var(--question-pane-radius, 1svh); text-align: center; color: #152033; background: #fff; }
 .u5p8-reference::backdrop { background: rgb(0 17 42 / 45%); }
-.u5p8-reference h2 { margin: 0 0 1svh; --text-size: 3svh; }
+.u5p8-reference h2 { margin: 0 0 1svh; --text-size: var(--text-size-heading-small); }
 .u5p8-reference p { margin: .5svh 0; }
-.u5p8-formula { --text-size: 3svh; }
+.u5p8-reference .u5p8-formula { --text-size: var(--text-size-question-large); }
 .u5p8-cap { display: block; width: 25svh; height: 15svh; margin: auto; }
-.u5p8-reference button { margin-top: 1svh; padding: .8svh 1.5vw; border: .2svh solid #152033; border-radius: .6svh; background: #e3eef8; color: #152033; cursor: pointer; }
+.u5p8-reference button { margin-top: 1svh; padding: .8svh 1.5vw; }

@@ -19,7 +19,7 @@
     "feedback": "Shared generic wrong submission cross, twenty-second cooldown, no per-component feedback; two points once"
   },
   "media": "Original UI/SVG code; no third-party or imported laboratory imagery",
-  "authority": "Frontend local demonstration; recipe and clock inspectable, no server claims",
+  "authority": "Private server recipe and marking; authorized trace datasets drive browser rendering and integration. This source-only scientific reference is not imported by the frontend or copied into public assets.",
   "scientificFixtures": {
     "pureTotalArea": 2000,
     "citrus": [
@@ -84,7 +84,7 @@
   "compactLaboratoryRevision": {
     "date": "2026-10-28",
     "source": "User-approved conversation plan",
-    "knownSamples": "0?100% scent in ethanol, half-percent steps; mystery undiluted",
+    "knownSamples": "0–100% scent in ethanol, half-percent steps; mystery undiluted",
     "results": "Eight captured injection snapshots; manual interval integration",
     "printStyle": "Original monochrome SVG, Courier report typography; ideal simulated signal retained"
   }

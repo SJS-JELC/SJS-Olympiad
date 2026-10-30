@@ -1,0 +1,20 @@
+{
+  "source": "Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "sourceSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "reference": "YAML Code/appCodexTheoryLeaderboard.txt and appCodexPracticalLeaderboard.txt (read-only originals)",
+  "treatment": "Unmodified original artwork retained for the teacher podium. Existing Asset 26 logo and 14 Equipment remain in src/assets/powerapp with their existing provenance.",
+  "assets": [
+    {
+      "name": "8 Equipment",
+      "file": "equipment-8.png",
+      "sourceEntry": "Assets/Images/73b1502e-8e69-4865-b630-4d36b108c087.png",
+      "sha256": "591908b0b55284c608a2969cec92319eb688ec6e114952b1c49e865a7497002f"
+    },
+    {
+      "name": "2 Equipment",
+      "file": "equipment-2.png",
+      "sourceEntry": "Assets/Images/32524c40-ee20-41ab-8930-16dda9d60b9f.png",
+      "sha256": "bd9a5827e1057fc7bdae08b7614ca97824fa80f680235d07492ed4752ea1270d"
+    }
+  ]
+}

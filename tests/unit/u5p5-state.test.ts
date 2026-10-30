@@ -1,5 +1,6 @@
+import { transition } from '../fixtures/custom-server';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Attempt } from '../../src/questions/attempts';
+import { emptyAttempt, score, type Attempt } from '../../src/questions/attempts';
 import { gcState, u5p5 } from '../../src/questions/u5p5/definition';
 const act = (state: Attempt, action: Parameters<typeof transition>[2]) => transition(u5p5,state,action);
 const enter = () => act(emptyAttempt(), { type:'gc-enter',now:0 });
@@ -49,7 +50,7 @@ describe('U5P5 retained laboratory and shared marking', () => {
   it('rejects malformed/negative/unsnapped compositions and no default marker is selected', () => {
     expect(gcState(emptyAttempt()).interval).toEqual([.5,.7]);
     for(const value of ['[]','[25,14,9,153]','[-1,50,50,101]','[25.5,14,9,151.5]','null']) expect(act(enter(),{type:'edit',field:'composition',value,now:0}).answers).toEqual({});
-    expect(u5p5.evaluate({})).toEqual({formulation:false});
+    expect(act(enter(),{type:'submit',now:0}).feedback).toEqual({question:false});
   });
 });
 

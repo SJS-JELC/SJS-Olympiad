@@ -6,8 +6,8 @@ import type {
   MoleculeState,
   Point,
 } from '../../contracts/molecule';
-import { blankMolecule, core, moleculeEngine } from '../../chemistry/molecule/engine';
-import type { MoleculeCommand } from '../../chemistry/molecule/engine';
+import { blankMolecule, core, applyMoleculeCommand } from '../../chemistry/molecule/engine';
+import type { MoleculeLimits, MoleculeCommand } from '../../chemistry/molecule/engine';
 import {
   applyTarget,
   destination,
@@ -19,8 +19,9 @@ import type { MoleculeTarget } from '../../chemistry/molecule/interaction';
 import { bondLines, thumbnailViewBox } from '../../chemistry/molecule/depiction';
 import type { Representation } from '../../chemistry/molecule/depiction';
 import { Structure } from './Structure';
-import { cameraViewBox, fitMoleculeCamera, panMoleculeCamera, zoomMoleculeCamera } from './camera';
+import { cameraViewBox, drawingScaleForHeight, fitMoleculeCamera, panMoleculeCamera, zoomMoleculeCamera } from './camera';
 import type { MoleculeCamera } from './camera';
+import { EditorViewControls } from '../EditorViewControls';
 import './molecule.css';
 const defaultElements: readonly MoleculeElement[] = ['C', 'O', 'N', 'Cl', 'F', 'H'];
 const defaultViews: readonly Representation[] = ['displayed', 'skeletal'];
@@ -61,6 +62,7 @@ export interface MoleculeEditorProps {
   readonly elements?: readonly MoleculeElement[];
   readonly representations?: readonly Representation[];
   readonly explicitHydrogensOnly?: boolean;
+  readonly limits?: MoleculeLimits;
 }
 interface Drag {
   pointerId: number;
@@ -79,6 +81,7 @@ export function MoleculeEditor({
   elements = defaultElements,
   representations = defaultViews,
   explicitHydrogensOnly = false,
+  limits = core.DEFAULT_LIMITS,
 }: MoleculeEditorProps) {
   const [element, setElement] = useState<MoleculeElement>('C'),
     [chain, setChain] = useState(false),
@@ -103,8 +106,9 @@ export function MoleculeEditor({
   locked.current = readOnly;
   const order = 1;
   const graph = value.graph,
-    valid = core.validate(graph),
-    currentCamera = camera ?? fitMoleculeCamera(openingGraph.current, size.w, size.h),
+    valid = core.validate(graph, false, limits),
+    drawingScale = drawingScaleForHeight(window.innerHeight),
+    currentCamera = camera ?? fitMoleculeCamera(openingGraph.current, size.w, size.h, drawingScale),
     viewport = cameraViewBox(currentCamera, size.w, size.h);
   const cancel = () => {
     const g = pan.current ?? gesture.current;
@@ -153,7 +157,7 @@ export function MoleculeEditor({
     if (locked.current) return false;
     try {
       const before = state.current,
-        next = moleculeEngine.apply(before, cmd);
+        next = applyMoleculeCommand(before, cmd, limits);
       if (next === before) {
         if (announcement) setMessage(announcement);
         return false;
@@ -200,6 +204,7 @@ export function MoleculeEditor({
       order,
       false,
       scale(),
+      limits,
     );
     if (commit(next, 'Bond added.'))
       focus({ kind: 'atom', id: destination(state.current.graph, start, end, scale()).id ?? next.atoms.at(-1)!.id });
@@ -210,7 +215,7 @@ export function MoleculeEditor({
   };
   const apply = (t: MoleculeTarget | null, p: Point) => {
     const before = state.current.graph,
-      next = applyTarget(before, t, p, element, erasing);
+      next = applyTarget(before, t, p, element, erasing, limits);
     if (
       commit(
         next,
@@ -223,8 +228,8 @@ export function MoleculeEditor({
     ) {
       if (!t) focus({ kind: 'atom', id: next.atoms.at(-1)!.id });
       else if (erasing) focus(null);
-    } else if (core.heavyCount(before) >= core.LIMIT)
-      setMessage('This canvas holds up to twenty heavy atoms. Erase an atom to make room.');
+    } else if (core.heavyCount(before) >= limits.maxHeavyAtoms)
+      setMessage(`This canvas holds up to ${limits.maxHeavyAtoms} heavy atoms. Erase an atom to make room.`);
   };
   const keyDown = (e: KeyboardEvent<SVGSVGElement>) => {
     if (panning && (e.key.startsWith('Arrow') || e.key === 'Enter' || e.key === ' ')) {
@@ -280,7 +285,7 @@ export function MoleculeEditor({
   };
   const preview = (() => {
     if (drag?.moved && !erasing && (chain || !drag.target))
-      return gestureGraph(graph, drag, drag.end, element, order, chain, scale());
+      return gestureGraph(graph, drag, drag.end, element, order, chain, scale(), limits);
     let start, end;
     if (drag?.moved && drag.target?.kind === 'atom' && !erasing) {
       start = graph.atoms.find((a) => a.id === (drag.target as { id: number }).id);
@@ -362,7 +367,7 @@ export function MoleculeEditor({
       return;
     if (g.moved && !erasing && (chain || !g.target)) {
       if (Math.hypot(e.clientX - g.screenX, e.clientY - g.screenY) >= 18) {
-        const next = gestureGraph(state.current.graph, g, end, element, order, chain, scale());
+        const next = gestureGraph(state.current.graph, g, end, element, order, chain, scale(), limits);
         if (
           commit(next, chain ? 'Carbon chain added. Undo removes this whole drag.' : 'Bond added.')
         )
@@ -446,7 +451,7 @@ export function MoleculeEditor({
                 <button
                   type="button"
                   key={e}
-                  className="tool atom-tool"
+                  className="ui-button tool atom-tool"
                   data-element={e}
                   disabled={readOnly}
                   aria-label={core.names[e]}
@@ -461,7 +466,7 @@ export function MoleculeEditor({
             <span className="divider" aria-hidden="true" />
             <button
               type="button"
-              className="tool"
+              className="ui-button tool"
               aria-label="Carbon chain"
               title="Toggle carbon chain (3)"
               disabled={readOnly}
@@ -474,7 +479,7 @@ export function MoleculeEditor({
             </button>
             <button
               type="button"
-              className="tool"
+              className="ui-button tool"
               aria-label="Erase"
               title="Erase (E)"
               disabled={readOnly}
@@ -491,7 +496,7 @@ export function MoleculeEditor({
             </button>
             <button
               type="button"
-              className="tool"
+              className="ui-button tool"
               aria-label="Undo"
               title="Undo (Ctrl+Z)"
               disabled={readOnly || !value.history.length}
@@ -507,7 +512,7 @@ export function MoleculeEditor({
           </div>
           <button
             type="button"
-            className="clean-button"
+            className="ui-button clean-button"
             disabled={readOnly || graph.atoms.length < 2}
             onClick={() => {
               cancel();
@@ -515,13 +520,14 @@ export function MoleculeEditor({
                 { kind: 'clean' },
                 'Layout tidied. Connections are unchanged. Undo restores the original layout.',
               );
+              setCamera(fitMoleculeCamera(state.current.graph, size.w, size.h, drawingScale));
             }}
           >
             Clean up
           </button>
           <button
             type="button"
-            className="clear-button"
+            className="ui-button clear-button"
             disabled={readOnly || !graph.atoms.length}
             onClick={() => {
               cancel();
@@ -535,6 +541,7 @@ export function MoleculeEditor({
               <button
                 type="button"
                 key={v}
+                className="ui-button"
                 data-view={v}
                 aria-pressed={view === v}
                 onClick={() => {
@@ -546,20 +553,8 @@ export function MoleculeEditor({
               </button>
             ))}
           </div>}
-          <div className="canvas-tools" role="group" aria-label="Canvas view">
-            <button type="button" className="tool" aria-label="Zoom in" title="Zoom in" onClick={() => zoom(1.25)} disabled={currentCamera.scale >= 4}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7" /><path d="m15 15 6 6M6 10h8M10 6v8" /></svg>
-            </button>
-            <button type="button" className="tool" aria-label="Zoom out" title="Zoom out" onClick={() => zoom(.8)} disabled={currentCamera.scale <= .15}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7" /><path d="m15 15 6 6M6 10h8" /></svg>
-            </button>
-            <button type="button" className="tool" aria-label="Pan canvas" title="Hand: drag to pan" aria-pressed={panning} onClick={togglePan}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12V5a1.5 1.5 0 0 1 3 0v6-8a1.5 1.5 0 0 1 3 0v8-6a1.5 1.5 0 0 1 3 0v7-4a1.5 1.5 0 0 1 3 0v7c0 4-2 7-6 7h-1c-2 0-3-1-4-2l-5-6a1.5 1.5 0 0 1 2-2l2 2" /></svg>
-            </button>
-            <button type="button" className="tool" aria-label="Fit molecule" title="Fit molecule" onClick={() => { cancel(); setCamera(fitMoleculeCamera(graph, size.w, size.h)); }}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M3 15v6h6M21 15v6h-6" /><circle cx="12" cy="12" r="3" /></svg>
-            </button>
-          </div>
+          <EditorViewControls scale={currentCamera.scale} panning={panning} onZoom={zoom}
+            onTogglePan={togglePan} onFit={() => { cancel(); setCamera(fitMoleculeCamera(graph, size.w, size.h, drawingScale)); }} />
         </div>
         <div className="canvas-wrap">
           <svg
@@ -624,7 +619,7 @@ export function MoleculeEditor({
           </svg>
         </div>
       </div>
-      <p className="drawing-instruction type-caption">
+      <p className="drawing-instruction molecule-announcement type-caption">
         Tap to place atoms; drag to bond. Tap a bond to cycle its order. {explicitHydrogensOnly
           ? 'Draw hydrogens explicitly. Select an element, then tap an atom to replace it.'
           : 'Hydrogens appear automatically.'}

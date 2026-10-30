@@ -1,5 +1,6 @@
 /* Source-authored content; shared shell/form own behavior and appearance. */
-.l6p9-question .question-brief p { white-space: pre-line; margin-bottom: 1.5svh; }
+.l6p9-question { --question-body-size: max(17px, 2.2svh); }
+.l6p9-question .question-brief p { --text-leading: 1.3; flex-shrink: 0; white-space: pre-line; margin-bottom: 1svh; }
 .l6p9-answer { --answer-input-width: 28vw; }
 .l6p9-question .question-brief { display: flex; flex-direction: column; }
 

@@ -1,30 +1,28 @@
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Attempt } from '../../src/questions/attempts';
-import { l6p3, normalizeName, selectRun, timedState } from '../../src/questions/l6p3/definition';
-import { oxyanions } from '../../src/questions/l6p3/data';
+import { emptyAttempt, score, type Attempt } from '../../src/questions/attempts';
+import { l6p3 } from '../../src/questions/l6p3/definition';
+import { transition, normalizeName, selectRun, timedState, privateRun, oxyanions } from '../fixtures/custom-server';
 import { barImage, timerColour } from '../../src/questions/l6p3/L6Problem3';
 const start = (now = 1_000) => transition(l6p3, emptyAttempt(), { type: 'start', now, random: [0, 0, 0, 0, 0] });
 const enter = (state: Attempt, value: string, now: number) => transition(l6p3, state, { type: 'edit', field: 'answer', value, now });
 const submit = (state: Attempt, now: number) => transition(l6p3, state, { type: 'submit', now });
-const solvePrompt = (state: Attempt, now: number) => submit(enter(state, timedState(state)!.run[timedState(state)!.step].name, now), now);
+const solvePrompt = (state: Attempt, now: number) => submit(enter(state, privateRun(state)[timedState(state)!.step].name, now), now);
 describe('L6P3 timed oxyanion challenge', () => {
   it('selects four distinct rows 16–60 and a final row 2–15', () => {
-    for (const draws of [[0, 0, 0, 0, 0], [.99999, .99999, .99999, .99999, .99999], [.5, .7, .2, .8, .4], [NaN, -1, 1, Infinity, 1]]) {
-      const run = selectRun(draws);
+    for (let iteration=0;iteration<100;iteration++) {
+      const run = selectRun();
       expect(run).toHaveLength(5);
-      expect(new Set(run.slice(0, 4).map(p => p.row)).size).toBe(4);
-      expect(run.slice(0, 4).every(p => p.row >= 16 && p.row <= 60)).toBe(true);
-      expect(run[4].row).toBeGreaterThanOrEqual(2); expect(run[4].row).toBeLessThanOrEqual(15);
+      expect(new Set(run.slice(0,4).map((p:{row:number})=>p.row)).size).toBe(4);
+      expect(run.slice(0,4).every((p:{row:number})=>p.row>=16&&p.row<=60)).toBe(true);
+      expect(run[4].row).toBeGreaterThanOrEqual(2);expect(run[4].row).toBeLessThanOrEqual(15);
     }
-    expect(selectRun([0, 0, 0, 0, 0]).map(p => p.row)).toEqual([16, 17, 18, 19, 2]);
-    expect(selectRun([1, 1, 1, 1, 1]).map(p => p.row)).toEqual([60, 59, 58, 57, 15]);
     expect(oxyanions).toHaveLength(62);
   });
   it('checks only on submit and normalizes source names without dropping oxidation state', () => {
     let state = start();
-    state = enter(state, '  N I T R I T E ( I I I )  ', 1_010);
+    state = enter(state, privateRun(state)[0].name.toUpperCase().split('').join(' '), 1_010);
     expect(timedState(state)!.step).toBe(0);
-    expect(normalizeName(state.answers.answer)).toBe('nitrite(iii)');
+    expect(normalizeName(state.answers.answer)).toBe(normalizeName(privateRun(state)[0].name));
     state = submit(state, 1_020);
     expect(timedState(state)!.step).toBe(1); expect(state.answers).toEqual({});
     expect(state.feedback).toEqual({}); expect(timedState(state)!.revealed).toBe(null);
@@ -43,7 +41,7 @@ describe('L6P3 timed oxyanion challenge', () => {
     const state = solvePrompt(start(), 2_000);
     const timedOut = transition(l6p3, state, { type: 'tick', now: 76_000 });
     expect(timedState(timedOut)!.active).toBe(false);
-    expect(timedState(timedOut)!.revealed).toBe('nitrate(V)'); expect(timedOut.answers).toEqual({});
+    expect(timedState(timedOut)!.revealed).toBe(privateRun(state)[1].name); expect(timedOut.answers).toEqual({});
     expect(timedOut.retryAt).toBe(96_000); expect(score([l6p3], { L6P3: timedOut })).toBe(0);
     expect(transition(l6p3, timedOut, { type: 'start', now: 95_999 })).toBe(timedOut);
     const restarted = transition(l6p3, timedOut, { type: 'start', now: 96_000, random: [0, 0, 0, 0, 0] });
@@ -52,7 +50,7 @@ describe('L6P3 timed oxyanion challenge', () => {
   it('uses the original deadline after navigation or lock with no delayed score or fresh cooldown', () => {
     const state = start();
     const afterAbsence = submit(enter(state, 'nitrite(III)', 75_999), 80_000);
-    expect(afterAbsence.retryAt).toBe(96_000); expect(timedState(afterAbsence)!.revealed).toBe('nitrite(III)');
+    expect(afterAbsence.retryAt).toBe(96_000); expect(timedState(afterAbsence)!.revealed).toBe(privateRun(state)[0].name);
     expect(afterAbsence.solvedAt).toBe(null);
     const muchLater = transition(l6p3, state, { type: 'tick', now: 100_000 });
     expect(muchLater.retryAt).toBe(96_000);

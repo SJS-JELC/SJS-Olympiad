@@ -15,59 +15,14 @@ export const TIME_MAX = 5.4;
 export const RETENTION_TIMES: readonly number[] = [1.1, 2.0, 2.8, 3.2, 3.4, 4.1, 4.8];
 
 const STEP = 0.002;
-const SIGMA = 0.025;
 const BASELINE = 7.5;
 const DEFAULT_COMPOSITION: Composition = [50, 50, 50, 50];
 
-// Each listed fraction is a share of a common 2000-area pure-sample response.
-// The overlapping 1.1 and 2.0 minute peaks intentionally add linearly.
-const RECIPE: Composition = [25, 14, 9, 152];
-const PURE_COMPONENTS: Record<AccordId, readonly { time: number; fraction: number }[]> = {
-  citrus: [
-    { time: 1.1, fraction: 0.4 },
-    { time: 2.0, fraction: 0.4 },
-    { time: 3.4, fraction: 0.2 },
-  ],
-  floral: [
-    { time: 2.0, fraction: 0.4 },
-    { time: 2.8, fraction: 0.3 },
-    { time: 4.1, fraction: 0.3 },
-  ],
-  woody: [
-    { time: 1.1, fraction: 0.4 },
-    { time: 3.2, fraction: 0.1 },
-    { time: 4.8, fraction: 0.5 },
-  ],
-
-};
-
-type TracePoint = { time: number; response: number };
-const TRACE_COUNT = Math.round(TIME_MAX / STEP);
-const TRACE_CACHE = new Map<SampleId, readonly TracePoint[]>();
-
-function makeTrace(sample: SampleId): readonly TracePoint[] {
-  const peaks = sample === 'mystery'
-    ? ACCORDS.flatMap((accord, index) => PURE_COMPONENTS[accord].map(peak => ({ ...peak, fraction: peak.fraction * RECIPE[index] / 200 })))
-    : PURE_COMPONENTS[sample];
-  return Array.from({ length: TRACE_COUNT + 1 }, (_, index) => {
-    const time = Number((index * STEP).toFixed(3));
-    const response = peaks.reduce((sum, peak) => {
-      const area = 2000 * peak.fraction;
-      const distance = (time - peak.time) / SIGMA;
-      return sum + (area / (SIGMA * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * distance * distance);
-    }, BASELINE);
-    return { time, response };
-  });
-}
-
-/** Deterministic, noise-free signal density, with shared peaks summed linearly. */
-export function getTrace(sample: SampleId): readonly TracePoint[] {
-  let trace = TRACE_CACHE.get(sample);
-  if (!trace) {
-    trace = makeTrace(sample);
-    TRACE_CACHE.set(sample, trace);
-  }
-  return trace;
+export type TracePoint = { time: number; response: number };
+export type TraceDataset = Partial<Record<SampleId, readonly TracePoint[]>>;
+/** Traces arrive only from an authorized question response. No recipe is shipped. */
+export function getTrace(sample: SampleId, data: TraceDataset = {}): readonly TracePoint[] {
+  return data[sample] ?? Array.from({length:Math.round(TIME_MAX/STEP)+1},(_,index)=>({time:index*STEP,response:BASELINE}));
 }
 
 function boundedInterval(interval: Interval): Interval {
@@ -90,11 +45,11 @@ function responseAt(trace: readonly TracePoint[], time: number): number {
 }
 
 /** Integrates a selected window with a constant-baseline correction and trapezoids. */
-export function integrate(sample: SampleId, interval: Interval): number {
+export function integrate(sample: SampleId, interval: Interval, data: TraceDataset = {}): number {
   const [start, end] = boundedInterval(interval);
   if (end <= start) return 0;
 
-  const trace = getTrace(sample);
+  const trace = getTrace(sample, data);
   const points: TracePoint[] = [{ time: start, response: responseAt(trace, start) }];
   const firstInterior = Math.floor(start / STEP) + 1;
   for (let index = firstInterior; index < trace.length && trace[index].time < end; index++) {
@@ -160,9 +115,4 @@ export function validComposition(units: unknown): units is Composition {
     && units.length === 4
     && units.every(value => Number.isInteger(value) && value >= 0 && value <= 200)
     && units.reduce<number>((sum, value) => sum + value, 0) === 200;
-}
-
-export function isCorrectComposition(units: unknown): boolean {
-  return validComposition(units)
-    && units.every((value, index) => value === RECIPE[index]);
 }

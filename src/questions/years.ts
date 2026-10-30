@@ -7,7 +7,7 @@ export function readTheoryYear(): TheoryYear {
   catch { return 'L6'; }
 }
 export function rememberTheoryYear(year: TheoryYear) {
-  try { localStorage.setItem(key, year); } catch { /* Gameplay remains local if preference storage is unavailable. */ }
+  try { localStorage.setItem(key, year); } catch { /* This optional preference cannot authorize an event or year. */ }
 }
 export function routeYear(options: URLSearchParams, selected: TheoryYear): TheoryYear | null {
   if (!options.has('year')) return selected;

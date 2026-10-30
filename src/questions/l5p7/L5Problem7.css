@@ -1,11 +1,11 @@
-.l5p7-question { gap: 1svh; }
-.l5p7-prompt { text-align: center; }
+.l5p7-question { --question-body-size: max(17px, 2.2svh); gap: 1svh; }
+.l5p7-prompt { flex-shrink: 0; text-align: center; }
+.l5p7-prompt p { --text-leading: 1.3; }
 .l5p7-question .question-brief { display: flex; flex-direction: column; }
-.l5p7-question .question-brief p { --text-size: clamp(19px, 2.8svh, 30px); }
 .l5p7-diagrams, .l5p7-answer-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4vw; }
 .l5p7-diagrams { flex: 1; min-height: 0; }
 .l5p7-question .l5p7-diagrams figure { width: 100%; height: 100%; min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
 .l5p7-question .l5p7-diagrams img { height: 100%; min-height: 0; }
-.l5p7-diagrams figcaption { --text-size: clamp(17px, 2.4svh, 26px); color: #152033; text-align: center; }
+.l5p7-diagrams figcaption { --text-size: max(16px, 2svh); --text-leading: 1.3; color: #152033; text-align: center; }
 .l5p7-answer { display: flex; justify-content: center; --answer-input-width: 12svh; }
 .l5p7-question .question-answer-form { gap: .5svh; }

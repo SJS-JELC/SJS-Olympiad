@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test('one viewport backdrop survives navigation without shifting', async ({ page }) => {
  await page.goto('/');

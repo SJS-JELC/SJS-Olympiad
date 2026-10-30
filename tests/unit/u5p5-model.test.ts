@@ -1,10 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import { getComposition, getTrace, integrate, isCorrectComposition, RETENTION_TIMES, RUN_MS, SAMPLE_LABELS, SAMPLES, snapInterval, TIME_MAX, validComposition } from '../../src/questions/u5p5/model';
+import { getComposition, RETENTION_TIMES, RUN_MS, SAMPLE_LABELS, SAMPLES, snapInterval, TIME_MAX, validComposition } from '../../src/questions/u5p5/model';
+import { integrate as integratePublic, getTrace as publicTrace } from '../../src/questions/u5p5/model';
+import { customData } from '../fixtures/custom-server';
 
+// @ts-expect-error Node-only private scientific reference for regression assertions.
+import { getTrace, integrate, isCorrectComposition } from '../../api/src/private-gc.mjs';
 const peakWindow = (time: number) => [time - 0.15, time + 0.15] as const;
 const closePeakWindow = (time: number) => [time - 0.099, time + 0.099] as const;
 
 describe('U5P5 deterministic GC model', () => {
+  it('renders and integrates authorized trace data without generating a private recipe', () => {
+    const traces = customData('U5P5').gcTraces;
+    for (const sample of SAMPLES) {
+      expect(publicTrace(sample,traces)).toBe(traces[sample]);
+      for (const range of [[0,TIME_MAX],[3.301,3.499],[2.651,2.949]] as const) {
+        expect(integratePublic(sample,range,traces)).toBeCloseTo(integrate(sample,range),8);
+      }
+      expect(integratePublic(sample,[0,TIME_MAX])).toBe(0);
+    }
+  });
   it('keeps four samples, pure accord labels, and a six-second run', () => {
     expect(SAMPLES).toEqual(['citrus', 'floral', 'woody', 'mystery']);
     expect(SAMPLE_LABELS.citrus).toMatch(/citrus scent/i);

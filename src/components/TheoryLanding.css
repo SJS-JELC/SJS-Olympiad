@@ -4,8 +4,7 @@
 /* Fit both SVG dimensions; width-only sizing overflows on wider landscapes. */
 .theory-title .olympiad-heading { width: 100%; height: 100%; min-width: 0; min-height: 0; }
 .theory-title .olympiad-heading__art { width: 100%; height: 100%; }
-.theory-back { position: absolute; right: 2.8%; top: 3.3%; width: 8.8%; height: 10.5%; padding: 0; background: transparent; border: 0; border-radius: 1svh; }
-.theory-back img { display: block; width: 100%; height: 100%; object-fit: contain; transform: rotate(180deg); }
+.theory-navigation { position:absolute; right:2.8%; top:3.3%; display:flex; align-items:center; gap:1.2svh; }
 .theory-band { position: absolute; height: 29%; pointer-events: none; }
 .theory-problem { pointer-events: auto; }
 .theory-band--1 { left: 8.4%; right: 8.4%; top: 24.6%; }
@@ -19,7 +18,8 @@
 .theory-message { position: absolute; z-index: 1; left: 50%; bottom: 7%; transform: translateX(-50%); margin: 0; padding: .6svh 1.2vw; border-radius: .7svh; background: #2d2832; color: white; }
 
 @media (hover: hover) { .theory-problem:hover { transform: translateY(-.4svh); } .theory-back:hover { background: #ffffff18; } }
-.theory-problem:active { transform: scale(.96); }
+.theory-problem:active:not(:disabled) { transform: scale(.96); }
+.theory-problem:disabled { cursor:default; }
 @media (prefers-reduced-motion: reduce) { .theory-problem { transition: none; } .theory-problem:hover, .theory-problem:active { transform: none; } }
 
 .theory-timer { --text-size: var(--text-size-heading-large); --text-leading: 1; }

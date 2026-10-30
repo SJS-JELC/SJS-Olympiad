@@ -19,8 +19,11 @@ describe('theory year routing and score isolation', () => {
     for (const invalid of ['U4', 'l6', '', '12']) expect(routeYear(new URLSearchParams('year='+invalid), 'L6')).toBeNull();
   });
   it('year-specific identities isolate attempts and award totals', () => {
-    const definitions: QuestionDefinition[] = ['L5','L6','U6'].map(year => ({ id: year+'P1',year,number:1,title:'fixture',points:1,cooldownMs:20000,lockCorrectParts:false,allowIncompleteSubmission:true,parts:[{id:'answer',label:'Answer',fields:[{id:'answer',label:'Answer'}]}],evaluate: a => ({answer:a.answer==='ok'}) }));
-    const state = transition(definitions[0], { ...emptyAttempt(), answers:{answer:'ok'} }, {type:'submit',now:1});
+    const definitions: QuestionDefinition[] = ['L5','L6','U6'].map(year => ({ id: year+'P1',year,number:1,title:'fixture',points:1,cooldownMs:20000,lockCorrectParts:false,allowIncompleteSubmission:true,parts:[{id:'answer',label:'Answer',fields:[{id:'answer',label:'Answer'}]}] }));
+    const draft = transition(definitions[0], emptyAttempt(), {type:'edit',field:'answer',value:'ok',now:1});
+    expect(transition(definitions[0],draft,{type:'submit',now:1})).toBe(draft);
+    // A server-confirmed solved snapshot contributes only to its full year/question identity.
+    const state = {...draft,solvedAt:1};
     const attempts = { L5P1: state };
     expect(score(definitions.filter(q=>q.year==='L5'), attempts)).toBe(1);
     expect(score(definitions.filter(q=>q.year==='L6'), attempts)).toBe(0);

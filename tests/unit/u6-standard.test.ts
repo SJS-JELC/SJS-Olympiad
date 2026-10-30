@@ -1,15 +1,25 @@
+import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from '../../src/questions/attempts';
-import { u6p1 } from '../../src/questions/u6p1/definition';
-import { u6p2 } from '../../src/questions/u6p2/definition';
-import { u6p3 } from '../../src/questions/u6p3/definition';
-import { u6p4 } from '../../src/questions/u6p4/definition';
-import { u6p5 } from '../../src/questions/u6p5/definition';
-import { u6p6 } from '../../src/questions/u6p6/definition';
-import { u6p7 } from '../../src/questions/u6p7/definition';
-import { u6p8 } from '../../src/questions/u6p8/definition';
+import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from './server-markers';
+import { u6p1 as public_u6p1 } from '../../src/questions/u6p1/definition';
+import { u6p2 as public_u6p2 } from '../../src/questions/u6p2/definition';
+import { u6p3 as public_u6p3 } from '../../src/questions/u6p3/definition';
+import { u6p4 as public_u6p4 } from '../../src/questions/u6p4/definition';
+import { u6p5 as public_u6p5 } from '../../src/questions/u6p5/definition';
+import { u6p6 as public_u6p6 } from '../../src/questions/u6p6/definition';
+import { u6p7 as public_u6p7 } from '../../src/questions/u6p7/definition';
+import { u6p8 as public_u6p8 } from '../../src/questions/u6p8/definition';
+const u6p1=serverDefinition(public_u6p1);
+const u6p2=serverDefinition(public_u6p2);
+const u6p3=serverDefinition(public_u6p3);
+const u6p4=serverDefinition(public_u6p4);
+const u6p5=serverDefinition(public_u6p5);
+const u6p6=serverDefinition(public_u6p6);
+const u6p7=serverDefinition(public_u6p7);
+const u6p8=serverDefinition(public_u6p8);
+
 
 const correct = { a: '4', b: '10', c: '8' };
 describe('U6P4 source marking and shared form lifecycle', () => {

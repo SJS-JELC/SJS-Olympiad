@@ -1,30 +1,22 @@
-import {test,expect} from '@playwright/test';
-test('online L6P8 joins, submits and restores score',async({page},testInfo)=>{
-  let joined=false, solved=false;
-  const snapshot=()=>({team:{id:'test-1',name:'Test team 1'},score:solved?3:0,solvedAt:solved?100000:null,retryAt:0,serverNow:Date.now(),eventEndsAt:Date.now()+3600000});
-  await page.route('**/api/olympiad/*',async route=>{
-    const action=route.request().url().split('/').at(-1);
-    if(action==='session'&&!joined){await route.fulfill({status:401,json:{error:'Join first.'}});return;}
-    if(action==='teams'){await route.fulfill({json:{teams:[{id:'test-1',name:'Test team 1'}]}});return;}
-    if(action==='claim')joined=true;
-    if(action==='submit'){expect(route.request().postDataJSON().questionId).toBe('L6P8');solved=true;}
-    await route.fulfill({json:{...snapshot(),correct:solved}});
-  });
-  await page.goto('/?theory&year=L6&question=8');
-  await page.getByLabel('Event code').fill('private-test-code');
-  await page.getByRole('button',{name:'Find teams'}).click();
-  await page.getByRole('button',{name:'Claim team'}).click();
-  await expect(page.getByRole('textbox',{name:'Equilibrium concentration of B',exact:true})).toBeVisible();
-  await page.screenshot({path:testInfo.outputPath('online-question.png'),fullPage:true});
-  await page.getByRole('textbox',{name:'Equilibrium concentration of B',exact:true}).fill('0.437');
-  await page.locator('form.question-answer-form').evaluate((form:HTMLFormElement)=>form.requestSubmit());
-  await expect(page.getByText('Correct — score saved.')).toBeVisible();
-  await page.reload();
-  await expect(page.getByText('3 points awarded.')).toBeVisible();
+import { test, expect, openCompetitorQuestion } from './fixtures';
+const competitor = test.extend({ accessRole: 'competitor' as const });
+competitor('all questions use the authoritative server adapter and replay failed submissions idempotently', async ({ page, api }) => {
+    await openCompetitorQuestion(page, api, 'L6', 8);
+    await page.getByRole('textbox', { name: 'Equilibrium concentration of B', exact: true }).fill('0.437');
+    api.lostResponses.add('submit');
+    await page.getByRole('button', { name: 'Check answers' }).click();
+    await expect(page.locator('.cloud-status')).toContainText('Not saved');
+    const first = api.requests.find(request => request.action === 'submit')!.body;
+    await page.getByRole('button', { name: 'Retry save' }).click();
+    await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 03');
+    const submitted = api.requests.filter(request => request.action === 'submit');
+    expect(submitted).toHaveLength(2);
+    expect(submitted[1].body).toEqual(first);
+    expect((await api.service.session(api.token)).score).toBe(3);
 });
-test('unavailable API reports a failure without local marking',async({page})=>{
-  await page.route('**/api/olympiad/*',route=>route.fulfill({status:503,json:{error:'The score service is unavailable.'}}));
-  await page.goto('/?theory&year=L6&question=8');
-  await expect(page.locator('.cloud-status')).toContainText('unavailable');
-  await expect(page.getByRole('textbox',{name:'Equilibrium concentration of B',exact:true})).toHaveCount(0);
-});
+test('unavailable restore fails closed without exposing any question', async ({ page, api }) => { api.fail.add('session'); await page.goto('/?theory&question=8'); await expect(page.getByRole('alert')).toContainText('unavailable'); await expect(page.locator('.question-content')).toHaveCount(0); });
+test('failed drafts keep navigation on the question with a retry indicator', async ({ page, api }) => { await page.goto('/?theory&question=6'); await page.locator('input[name="answer"]').fill('36'); api.fail.add('draft'); await page.getByRole('button', { name: 'Back to theory' }).click(); await expect(page.locator('.cloud-status')).toContainText('Not saved'); await expect(page.locator('input[name="answer"]')).toHaveValue('36'); await expect(page).toHaveURL(/question=6/); api.fail.delete('draft'); await page.getByRole('button', { name: 'Retry save' }).click(); await expect(page.locator('.cloud-status')).toHaveCount(0); await page.getByRole('button', { name: 'Back to theory' }).click(); await expect(page.locator('.theory-stage')).toBeVisible(); });
+test('delayed draft acknowledgements cannot overwrite a newer edit', async ({ page, api }) => { await page.goto('/?theory&question=6'); let release!: () => void; const wait = new Promise<void>(resolve => { release = resolve; }); let seen = false; await page.route('**/api/olympiad/draft', async (route) => { if (!seen) {
+    seen = true;
+    await wait;
+} await route.fallback(); }); await page.locator('input[name="answer"]').fill('3'); await expect.poll(() => seen).toBe(true); await page.locator('input[name="answer"]').fill('36'); release(); await expect(page.locator('input[name="answer"]')).toHaveValue('36'); await page.getByRole('button', { name: 'Back to theory' }).click(); const drafts = api.requests.filter(request => request.action === 'draft'); expect(drafts.at(-1)!.body.answers.answer).toBe('36'); });

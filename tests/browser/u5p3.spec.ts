@@ -1,4 +1,7 @@
-﻿import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './fixtures';
+import { openCompetitorQuestion, resumeCompetition } from './fixtures';
+const competitor = test.extend({accessRole:'competitor' as const});
+test.use({hasTouch:true});
 import { mockFullscreen, interrupt } from './fullscreen';
 
 const route = '/?theory&year=U5&question=3';
@@ -77,9 +80,9 @@ test('free canvas supports keyboard atoms, bond edits, undo, erase and navigatio
   await expect(atoms(page)).toHaveCount(1);
 });
 
-test('draws all monomers end-to-end, shared cooldown and once-only score', async ({ page }, testInfo) => {
+competitor('draws all monomers end-to-end, shared cooldown and once-only score', async ({ page, api }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 810 });
-  await page.clock.install(); await page.goto(route); await page.evaluate(() => document.fonts.ready);
+  await page.clock.install(); await openCompetitorQuestion(page,api,'U5',3); await page.evaluate(() => document.fonts.ready);
   const pane = await page.locator('.question-brief').boundingBox();
   await page.getByRole('button', { name: 'Check answers', exact: true }).click();
   await expect(page.locator('.incorrect-feedback')).toBeVisible();
@@ -94,7 +97,7 @@ test('draws all monomers end-to-end, shared cooldown and once-only score', async
   await page.getByRole('button', { name: 'Check answers', exact: true }).click();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 01');
   await expect(page.locator('[data-element="C"]')).toBeDisabled();
-  await page.getByRole('button', { name: 'Check answers', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Check answers', exact: true })).toBeDisabled();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 01');
   await page.clock.fastForward(1000);
   await page.screenshot({ path: testInfo.outputPath('u5p3-solved.png') });
@@ -104,11 +107,8 @@ test('draws all monomers end-to-end, shared cooldown and once-only score', async
   await expect(canvas(page).locator('.atom-node:not(.implicit-hydrogen)')).toHaveCount(17);
 });
 
-for (const reason of ['blur', 'hidden', 'fullscreen'] as const) test(`drawing unmounts synchronously on ${reason} and survives staff unlock`, async ({ page }) => {
-  await mockFullscreen(page); await page.goto('/?settings');
-  await page.getByRole('button', { name: 'Enter Competition Mode', exact: true }).click();
-  await page.getByRole('button', { name: 'Open problem testing', exact: true }).click();
-  await page.getByRole('button', { name: 'U5 Problem 3: Chainspotting', exact: true }).click();
+for (const reason of ['blur', 'hidden', 'fullscreen'] as const) competitor(`drawing unmounts synchronously on ${reason} and survives staff unlock`, async ({ page, api }) => {
+  await openCompetitorQuestion(page,api,'U5',3);
   await canvas(page).focus(); await canvas(page).press('Enter');
   await interrupt(page, reason);
   await expect(page.getByTestId('u5p3-content')).toHaveCount(0);
@@ -116,11 +116,10 @@ for (const reason of ['blur', 'hidden', 'fullscreen'] as const) test(`drawing un
     Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'visible' });
     Object.defineProperty(document, 'hidden', { configurable: true, get: () => false });
   });
-  await page.getByLabel('Staff PIN', { exact: true }).fill('1234');
-  await page.getByRole('button', { name: 'Staff unlock', exact: true }).click();
+  await resumeCompetition(page);
   await expect(atoms(page)).toHaveCount(1);
-  await page.getByRole('button', { name: 'Back to problem testing', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Problem testing', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Back to theory', exact: true }).click();
+  await expect(page.locator('.theory-title')).toContainText('U5');
 });
 
 test('displayed polymer and drawing canvas fit landscape and zoomed viewports', async ({ page }, testInfo) => {
@@ -137,11 +136,8 @@ test('displayed polymer and drawing canvas fit landscape and zoomed viewports', 
   }
 });
 
-test('cooldown deadline and drawing persist through navigation and staff unlock', async ({ page }) => {
-  await page.clock.install(); await mockFullscreen(page); await page.goto('/?settings');
-  await page.getByRole('button', { name: 'Enter Competition Mode', exact: true }).click();
-  await page.getByRole('button', { name: 'Open problem testing', exact: true }).click();
-  await page.getByRole('button', { name: 'U5 Problem 3: Chainspotting', exact: true }).click();
+competitor('cooldown deadline and drawing persist through navigation and staff unlock', async ({ page, api }) => {
+  await page.clock.install(); await openCompetitorQuestion(page,api,'U5',3);
   await canvas(page).focus(); await canvas(page).press('Enter');
   await atoms(page).first().focus(); await page.keyboard.press('ArrowRight'); await page.keyboard.press('Enter');
   const drawn=await depiction(page);
@@ -150,12 +146,11 @@ test('cooldown deadline and drawing persist through navigation and staff unlock'
   expect(await depiction(page)).toEqual(drawn);
   await expect(page.getByRole('button',{name:'Undo',exact:true})).toBeDisabled();
   await page.clock.fastForward(3000);
-  await page.getByRole('button', { name: 'Back to problem testing', exact: true }).click();
-  await page.getByRole('button', { name: 'U5 Problem 3: Chainspotting', exact: true }).click();
+  await page.getByRole('button', { name: 'Back to theory', exact: true }).click();
+  await page.getByRole('button', { name: 'Problem 3, 1 point, not yet solved', exact: true }).click();
   await expect(page.locator('.check-button')).toHaveAttribute('aria-label', 'Retry in 17 seconds');
   await interrupt(page, 'blur'); await page.clock.fastForward(2000);
-  await page.getByLabel('Staff PIN', { exact: true }).fill('1234');
-  await page.getByRole('button', { name: 'Staff unlock', exact: true }).click();
+  await resumeCompetition(page);
   await expect(page.locator('.check-button')).toHaveAttribute('aria-label', 'Retry in 15 seconds');
   await expect(canvas(page).locator('.atom-node')).toHaveCount(2);
   await page.clock.fastForward(15000); await expect(atoms(page)).toHaveCount(2);
@@ -165,9 +160,8 @@ test('cooldown deadline and drawing persist through navigation and staff unlock'
   await expect(atoms(page)).toHaveCount(1);
 });
 
-for (const input of ['mouse','keyboard','touch'] as const) test(`explicit hydrogen replacement works through ${input}`,async({browser})=>{
-  const context=await browser.newContext({hasTouch:input==='touch',viewport:{width:1200,height:800}});
-  const page=await context.newPage();await page.goto(route);
+for (const input of ['mouse','keyboard','touch'] as const) test(`explicit hydrogen replacement works through ${input}`,async({page})=>{
+  await page.setViewportSize({width:1200,height:800});await page.goto(route);
   await canvas(page).focus();await canvas(page).press('Enter');
   await choose(page,'H');
   await atoms(page).first().focus();await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');
@@ -186,7 +180,6 @@ for (const input of ['mouse','keyboard','touch'] as const) test(`explicit hydrog
     else await page.getByRole('button',{name:'Undo',exact:true}).click();
     await expect(hydrogen).toHaveAttribute('aria-label',/^Hydrogen atom 2/);
   }
-  await context.close();
 });
 
 test('cleanup retains an explicit halogenated alkene and fits landscape and zoom',async({page},testInfo)=>{
@@ -206,7 +199,7 @@ test('cleanup retains an explicit halogenated alkene and fits landscape and zoom
   expect(await canvas(page).locator('.molecule-structure').innerHTML()).toBe(before);
   await page.getByRole('button',{name:'Clean up',exact:true}).click();
   await page.getByRole('button',{name:'Fit molecule',exact:true}).click();
-  for (const [width,height] of [[1200,800],[1440,810],[960,640]]) {
+  for (const [width,height] of [[1200,800],[1440,810],[960,640],[1920,1080],[2560,1440]]) {
     await page.setViewportSize({width,height});await page.evaluate(()=>document.fonts.ready);
     await page.getByRole('button',{name:'Fit molecule',exact:true}).click();
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
@@ -214,9 +207,8 @@ test('cleanup retains an explicit halogenated alkene and fits landscape and zoom
   }
 });
 
-test('touch pointer drawing creates bonds and supports undo', async ({ browser }) => {
-  const context = await browser.newContext({ hasTouch: true, viewport: { width: 1200, height: 800 } });
-  const page = await context.newPage(); await page.goto(route); await expect(canvas(page)).toBeVisible();
+test('touch pointer drawing creates bonds and supports undo', async ({ page, context }) => {
+  await page.setViewportSize({ width: 1200, height: 800 }); await page.goto(route); await expect(canvas(page)).toBeVisible();
   const box = (await canvas(page).boundingBox())!;
   const cdp = await context.newCDPSession(page);
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + 150, y: box.y + box.height / 2 }] });
@@ -224,5 +216,4 @@ test('touch pointer drawing creates bonds and supports undo', async ({ browser }
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await expect(atoms(page)).toHaveCount(2);
   await page.getByRole('button', { name: 'Undo', exact: true }).tap(); await expect(atoms(page)).toHaveCount(0);
-  await context.close();
 });

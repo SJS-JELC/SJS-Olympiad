@@ -28,7 +28,7 @@ export function FormulationBar({ units, disabled, onChange }: { units: Compositi
     event.preventDefault(); move(index, target);
   };
   return <fieldset className="gc-formulation" disabled={disabled}>
-    <legend className="gc-visually-hidden">Perfume formulation</legend>
+    <legend className="gc-formulation-title type-label">Final perfume blend</legend>
     <div className="gc-mixture-labels">{NAMES.map((name, i) => <div key={name} className="type-label"><span className={'gc-swatch gc-swatch--' + i} />{name} <strong className="text-tabular">{percent(units[i])}</strong></div>)}</div>
     <div className="gc-mixture-bar" ref={bar} aria-label="Four component formulation">
       {units.map((value, i) => <span key={i} className={'gc-mixture-segment gc-mixture-segment--' + i} style={{ width: value / 2 + '%' }} />)}

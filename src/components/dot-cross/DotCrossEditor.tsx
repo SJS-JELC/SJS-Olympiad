@@ -12,7 +12,6 @@ import { dotCrossEngine, type DotCrossCommand } from './engine';
 import { createLayout, type ElectronRegion } from './layout.js';
 const editorLayoutQuestionId = (_id:string) => 'n2o';
 import {
-  adaptiveView,
   clampPoint,
   snapPoint,
   chargeDestination,
@@ -20,6 +19,9 @@ import {
   type ChargeDestination,
 } from './interaction';
 import { Diagram, type DrawingTool, type DiagramPreview } from './Diagram';
+import { EditorViewControls } from '../EditorViewControls';
+import { cameraViewBox, drawingScaleForHeight, fitMoleculeCamera, panMoleculeCamera, zoomMoleculeCamera } from '../molecule/camera';
+import type { MoleculeCamera } from '../molecule/camera';
 import './editor.css';
 // Original initial HTML palette followed by full-bank app.js append order; no atom-count hints.
 const palette: readonly DotCrossElement[] = [
@@ -125,11 +127,18 @@ export function DotCrossEditor({
     [message, setMessage] = useState('Select or drag an element to the canvas.');
   const svg = useRef<SVGSVGElement>(null),
     root = useRef<HTMLDivElement>(null),
-    viewport = useRef<HTMLDivElement>(null);
+    pan = useRef<{ pointerId:number; clientX:number; clientY:number; camera:MoleculeCamera } | null>(null);
   const drag = useRef<Drag | null>(null),
     [dragView, setDragView] = useState<Drag | null>(null),
-    [magnified, setMagnified] = useState(false);
-  const [view, setView] = useState({ x: 0, y: 0, width: 1000, height: 650 });
+    [panning, setPanning] = useState(false),
+    [panDragging, setPanDragging] = useState(false);
+  const [size, setSize] = useState({w:1000,h:650}),
+    [camera,setCamera] = useState<MoleculeCamera | null>(null),
+    openingAtoms = useRef(state.atoms);
+  const drawingScale = drawingScaleForHeight(window.innerHeight);
+  const fit = (atoms = state.atoms) => fitMoleculeCamera({atoms:atoms.map((a,i)=>({id:i,element:'N',x:a.x,y:a.y})),bonds:[]},size.w,size.h,drawingScale,{x:160,y:160});
+  const currentCamera = camera ?? (openingAtoms.current.length ? fit(openingAtoms.current) : {x:500,y:325,scale:drawingScale});
+  const view = cameraViewBox(currentCamera,size.w,size.h);
   const [x, setX] = useState(400),
     [y, setY] = useState(325),
     [first, setFirst] = useState(''),
@@ -141,12 +150,8 @@ export function DotCrossEditor({
     [electronId, setElectronId] = useState('');
   const circles = true,
     liveSelected = selected.filter((id) => state.atoms.some((a) => a.id === id));
-  const limits = {
-    left: view.x,
-    right: view.x + view.width,
-    top: view.y,
-    bottom: view.y + view.height,
-  };
+  // World bounds belong to the diagram, never to a zoomed or panned camera.
+  const limits = { left:-10000, right:10000, top:-10000, bottom:10000 };
   const touchTap = useRef<{ button: HTMLButtonElement; id: number; point: Point } | null>(null),
     touchClicks = useRef(new WeakMap<HTMLButtonElement, number>());
   useLayoutEffect(() => {
@@ -154,18 +159,13 @@ export function DotCrossEditor({
     if (!node) return;
     const update = () => {
       const b = node.getBoundingClientRect();
-      setView(adaptiveView(b.width, b.height));
+      setSize({w:b.width || 1000,h:b.height || 650});
     };
     update();
     const observer = new ResizeObserver(update);
     observer.observe(node);
     return () => observer.disconnect();
-  }, [magnified]);
-  useEffect(() => {
-    const node = viewport.current;
-    if (node)
-      node.scrollLeft = magnified ? Math.max(0, (node.scrollWidth - node.clientWidth) / 2) : 0;
-  }, [magnified]);
+  }, []);
   useEffect(() => {
     setToolState('atom');
     setElement('N');
@@ -199,6 +199,8 @@ export function DotCrossEditor({
     return true;
   };
   const setTool = (next: DrawingTool, nextElement = element, nextCharge = pendingCharge) => {
+    cancelPan();
+    setPanning(false);
     setToolState(next);
     setSelected([]);
     setHover(null);
@@ -317,6 +319,7 @@ export function DotCrossEditor({
     if (d.capture.hasPointerCapture(d.pointerId)) d.capture.releasePointerCapture(d.pointerId);
   };
   const cancelDrag = () => {
+    cancelPan();
     const d = drag.current;
     if (!d) return;
     drag.current = null;
@@ -349,7 +352,22 @@ export function DotCrossEditor({
     capture.setPointerCapture(event.pointerId);
     event.preventDefault();
   };
+  const cancelPan = () => {
+    const p = pan.current;
+    pan.current = null;
+    setPanDragging(false);
+    if (p && svg.current?.hasPointerCapture(p.pointerId)) svg.current.releasePointerCapture(p.pointerId);
+  };
   const canvasDown = (event: ReactPointerEvent<SVGSVGElement>) => {
+    if (panning && event.isPrimary && event.button === 0) {
+      cancelDrag();
+      event.preventDefault();
+      pan.current = {pointerId:event.pointerId,clientX:event.clientX,clientY:event.clientY,camera:currentCamera};
+      setPanDragging(true);
+      svg.current?.focus({preventScroll:true});
+      event.currentTarget.setPointerCapture(event.pointerId);
+      return;
+    }
     const hit = objects(targetElement(event.target)),
       e = stateRef.current.electrons.find((e) => e.id === hit.electronId),
       g = stateRef.current.groups.find((g) => g.id === hit.groupId);
@@ -363,6 +381,11 @@ export function DotCrossEditor({
     startDrag(event, details, event.currentTarget);
   };
   const move = (event: globalThis.PointerEvent) => {
+    const p = pan.current;
+    if (p?.pointerId === event.pointerId) {
+      setCamera(panMoleculeCamera(p.camera,event.clientX-p.clientX,event.clientY-p.clientY));
+      return;
+    }
     const d = drag.current;
     if (d) {
       if (event.pointerId !== d.pointerId) return;
@@ -413,6 +436,7 @@ export function DotCrossEditor({
       setHover(layout.regionAt(stateRef.current, at(event)));
   };
   const up = (event: globalThis.PointerEvent) => {
+    if (pan.current?.pointerId === event.pointerId) { move(event); cancelPan(); return; }
     const d = drag.current;
     if (!d || event.pointerId !== d.pointerId) return;
     drag.current = null;
@@ -518,9 +542,15 @@ export function DotCrossEditor({
     };
   }, []);
   useEffect(() => {
-    if (readOnly) cancelDrag();
+    if (readOnly) { cancelDrag(); cancelPan(); }
   }, [readOnly]);
   const keyboard = (event: KeyboardEvent<SVGSVGElement>) => {
+    if (panning && event.key.startsWith('Arrow')) {
+      event.preventDefault();
+      setCamera(panMoleculeCamera(currentCamera,event.key === 'ArrowLeft' ? -40 : event.key === 'ArrowRight' ? 40 : 0,event.key === 'ArrowUp' ? -40 : event.key === 'ArrowDown' ? 40 : 0));
+      return;
+    }
+    if (panning && ['Enter',' '].includes(event.key)) { event.preventDefault(); return; }
     if (readOnly) return;
     const target = targetElement(event.target),
       { atomId, electronId, groupId } = objects(target),
@@ -597,6 +627,7 @@ export function DotCrossEditor({
     const target = targetElement(event.target);
     if (!target) return;
     if (event.key === 'Escape') {
+      cancelPan();
       cancelDrag();
       setSelected([]);
       return;
@@ -713,7 +744,7 @@ export function DotCrossEditor({
         touchClicks.current.set(tap.button, performance.now());
         tap.button.click();
       }}
-      onPointerCancel={() => (touchTap.current = null)}
+      onPointerCancel={() => { touchTap.current = null; cancelPan(); }}
       onClickCapture={(event) => {
         const button = targetElement(event.target)?.closest<HTMLButtonElement>('button');
         if (
@@ -734,7 +765,7 @@ export function DotCrossEditor({
               <button
                 type="button"
                 key={value}
-                className="element-tool"
+                className="ui-button element-tool"
                 data-element={value}
                 aria-label={`${value} atom`}
                 title={`${names[value]} (${value})`}
@@ -767,7 +798,7 @@ export function DotCrossEditor({
                 <button
                   type="button"
                   key={value}
-                  className="tool symbol-tool"
+                  className="ui-button tool symbol-tool"
                   data-tool={value}
                   aria-label={`${value[0]!.toUpperCase() + value.slice(1)} electron`}
                   title={`Place a ${value} electron`}
@@ -786,7 +817,7 @@ export function DotCrossEditor({
               ))}
               <button
                 type="button"
-                className="tool erase-tool"
+                className="ui-button tool erase-tool"
                 data-tool="erase"
                 aria-label="Erase"
                 title="Erase an atom, electron or charge"
@@ -800,7 +831,7 @@ export function DotCrossEditor({
             <div className="palette-group history-tools" role="group" aria-label="Diagram history">
               <button
                 type="button"
-                className="tool history-tool"
+                className="ui-button tool history-tool"
                 disabled={readOnly || !state.history?.length}
                 onClick={() => apply({ type: 'undo' }, 'Last edit undone.')}
                 title="Undo the last edit"
@@ -809,7 +840,7 @@ export function DotCrossEditor({
               </button>
               <button
                 type="button"
-                className="tool history-tool"
+                className="ui-button tool history-tool"
                 disabled={readOnly || !state.future?.length}
                 onClick={() => apply({ type: 'redo' }, 'Edit restored.')}
                 title="Redo the last undone edit"
@@ -818,7 +849,7 @@ export function DotCrossEditor({
               </button>
               <button
                 type="button"
-                className="tool history-tool"
+                className="ui-button tool history-tool"
                 disabled={readOnly || !state.atoms.length}
                 onClick={() => {
                   apply({ type: 'clear' }, 'Canvas cleared. Undo restores your diagram.');
@@ -831,27 +862,29 @@ export function DotCrossEditor({
             </div>
 
           </div>
+          <EditorViewControls scale={currentCamera.scale} panning={panning}
+            onZoom={factor => {cancelDrag();cancelPan();setCamera(zoomMoleculeCamera(currentCamera,factor));}}
+            onTogglePan={() => {cancelDrag();cancelPan();setPanning(!panning);}}
+            onFit={() => {cancelDrag();cancelPan();setCamera(state.atoms.length ? fit() : {x:500,y:325,scale:drawingScale});}}
+            fitLabel="Fit diagram" />
         </div>
         <div className="workspace">
           <div className="drawing-area">
             <div
               className="canvas-wrap dc-viewport"
-              ref={viewport}
-              tabIndex={magnified ? 0 : -1}
-              aria-label={magnified ? 'Scrollable diagram viewport' : undefined}
             >
               <svg
                 ref={svg}
-                viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`}
-                className="dc-canvas"
+                viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
+                className={`dc-canvas${panning ? ' panning' : ''}${panDragging ? ' dragging' : ''}`}
                 tabIndex={0}
                 role="group"
                 aria-label="Dot-and-cross drawing canvas. Use arrow keys to move the drawing cursor and Space to place an atom."
-                style={magnified ? { width: 1000, minWidth: 1000 } : undefined}
                 onPointerDown={canvasDown}
                 onKeyDown={keyboard}
                 onLostPointerCapture={(event) => {
                   if (drag.current?.pointerId === event.pointerId) cancelDrag();
+                  if (pan.current?.pointerId === event.pointerId) cancelPan();
                 }}
                 onPointerLeave={() => {
                   if (!drag.current) {
@@ -876,7 +909,6 @@ export function DotCrossEditor({
               </svg>
               {!shownState.atoms.length && <div className="dc-empty-hint type-body">
                 <p>Build your diagram here</p>
-                <p>Drag an element here, or choose one and tap.</p>
               </div>}
             </div>
             <p className="status dc-status visually-hidden" role="status" aria-live="polite">

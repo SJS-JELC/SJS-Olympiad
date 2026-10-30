@@ -1,33 +1,41 @@
-# Azure one-question pilot
+# Azure deployment and migration
 
 ## Resources and configuration
 
 Site: https://olympiad.masters-of-chemistry.app (Azure default host lively-coast-06a373f0f.2.azurestaticapps.net). Storage: sjsolympiaddata, UK South. The user has saved OLYMPIAD_STORAGE_CONNECTION_STRING in the Static Web App's Production environment settings. Its value has not been accessed or copied into this repository.
 
-Add these additional backend environment settings in Azure:
+Backend configuration:
 
 | Name | Value |
 | --- | --- |
-| OLYMPIAD_EVENT_ID | pilot1 |
-| OLYMPIAD_EVENT_CODE | A private random code of at least 12 characters; no default |
-| OLYMPIAD_EVENT_END | A future ISO UTC time, for example 2026-11-30T23:59:00Z |
+| OLYMPIAD_STORAGE_CONNECTION_STRING | Server-only storage credential; never read into frontend code |
+| OLYMPIAD_EVENT_ID | Existing stable legacy event ID, used only for first bootstrap/migration |
+| OLYMPIAD_EVENT_END | Initial legacy event end as ISO UTC, used only for first bootstrap |
 
-All four settings are required. Missing configuration returns 503; expired events reject entry/submission. Set a new event ID to create a fresh set of test teams without deleting historical records. Never use real teams during this pilot. Do not share the production storage connection with PR preview environments; provision isolated test storage/settings before using a preview API. Only the two explicit production origins are accepted for writes.
+The obsolete OLYMPIAD_EVENT_CODE no longer authenticates roles. First bootstrap creates salted hashes for competitor code 1234 and teacher code 5678. Subsequent code/event changes live in the settings entities; restarting Functions or changing bootstrap variables must not overwrite them. Teachers create new named events through the application rather than changing the storage namespace. Do not share production storage with PR preview environments; use isolated test storage/settings. Only the two explicit production origins are accepted for writes.
 
 ## Deployment
 
 The existing Azure GitHub workflow now uses api_location: api, output_location: dist. api/package-lock.json pins the Table Storage SDK. public/staticwebapp.config.json selects Node 22 for managed Functions. The frontend build still uses Node 24. The validation workflow is .github/workflows/validation.yml; it does not publish. Azure deployment runs independently of that workflow. No credentials are embedded in these files.
 
-On first valid API access, the SDK creates the OlympiadPilot table if absent. Teams are created only when claimed. Per-team state and attempt rows share a partition, permitting an atomic conditional update plus attempt insert. ETags prevent two requests winning against the same state. A distributed counter limits event-entry requests; per-team counters limit submissions. Anonymous reads cannot retrieve a team record. Cookies are Secure, HttpOnly, host-only, SameSite Strict and expire with the test event.
+The SDK uses the existing OlympiadPilot table. Settings and named events use conditional updates. Team summaries, question state and idempotency receipts share per-team partitions and commit transactionally using ETags. Session ownership/security generations fence scoring, drafts and release/recovery races. Role cookies are Secure, HttpOnly, host-only and SameSite Strict; their lifetime is independent of editable event ends. Teacher sessions last eight hours. Authentication/recovery and gameplay requests are rate-limited. Anonymous or competitor calls cannot access teacher tools.
 
-The API is GET /api/olympiad/session and POST /api/olympiad/{teams,claim,submit}. Only L6P8 is accepted. No score, current time, correctness or team identity supplied by the browser is trusted. Claims include a random browser-generated secret to permit safe retry if the response is lost. Session cookies carry the team ID and secret; storage retains only the secret hash. A claim interrupted by refreshing before receiving a cookie can leave a team claimed; use a fresh event ID for pilot recovery. Staff recovery remains future work.
+See api-contract.md for authenticated role/event/team/question/recovery endpoints. All 33 markers are server-side. Browser-supplied scores, correctness, time, role and year never authorize writes. Accepted actions use the current settings snapshot and remain bound to their original event if a teacher ends it while work is in flight. No cross-partition global transaction is promised.
+
+Named events store UTC theory start/end and optional paired practical start/end. Forms interpret wall times explicitly in Europe/London, rejecting ambiguous/nonexistent daylight-saving times. Overall expiry is the latest configured end. Theory reads, drafts and actions require the theory window; claiming and fullscreen entry may precede it. Teacher preview bypasses this timing without scoring. Legacy records retain an unbounded theory start and inherit their old end, normalized on read without startup rewrites. Practical protocols and numerical responses use their own scheduled window, with local-only teacher practical previews and no automatic marking or theory-score updates.
+
+## Existing-data migration
+
+First migration retains the three existing team partitions and legacy attempt rows, assigns the legacy event to L6, and creates versioned L6P8 state from the stored score/solve/cooldown exactly once. It must not reset results, claim owners or ranking time. Missing legacy tokens never release teams. Valid legacy ownership may be restored only after competitor role authentication; confirmed teacher release revokes both legacy and new claims. Migration atomically retires the old authentication fields after preserving their values for the authenticated legacy exchange. Old in-flight writes lose their ETag and old-handler retries cannot authenticate. Reruns also fence partial version-two rows without reimporting results or reviving released ownership. Deployment still needs a controlled cutover and real runtime acceptance. This repository does not run migration against live Azure during development.
 
 ## Frontend
 
-Open `?theory&year=L6&question=8`, enter the event code, and claim one of three test teams. The existing question design remains in use. Check submits to the API; failures never fall back to local marking. The private key is in api/src/marking.mjs only, outside the frontend bundle. Refresh restores the saved result. The hub incorporates L6P8's saved solved state; other questions and their scores remain local demonstrations. This is not a complete competition backend, and the browser security lock is not yet mirrored server-side.
+Sign in, choose an available event team, then explicitly start fullscreen. The active event determines all competitor questions and scores. A breach immediately removes content locally and locks the server session; refresh requires teacher-code recovery and explicit Resume. Session checks run every 15 seconds and before protected actions; failures remain gated. Saved results and acknowledged semantic drafts restore; undo stacks are local. Teachers preview through isolated unscored contexts without teams/fullscreen and may inspect ended events read-only.
+
+The teacher leaderboard uses authoritative active-event summaries, excludes zero scores, and ranks by score descending then last successful scoring time ascending. It polls every three seconds only while visible. Presentation files are downloadable by design; marker keys and protected API operations remain server-side.
 
 ## Acceptance still required
 
-Run node --test api/tests/service.test.mjs, then the frontend typography/type/build checks. The new browser tests use mocked HTTP responses to check rendering, team entry, submission, refresh and outage handling; they do not establish Azure connectivity. Local store tests cover concurrent claims, retries, cooldown boundaries, once-only scoring, team isolation, expiry, distributed rate limits, origin checking and secret-free errors. Real Azure Table Storage and managed Functions runtime acceptance must be completed after publication.
+Run the full API, unit and browser suites, typography/type/build checks, private-bundle audit and independent security/chemistry/rendered reviews. Local stores and browser fixtures do not establish Azure connectivity. Real Table Storage and managed Functions acceptance remains a separate deployment gate.
 
-After deployment: verify an incorrect attempt starts a 15-second cooldown; a correct answer awards three points once; refresh restores state; another browser cannot claim the same team; an API outage shows an error; and built JS contains no L6P8 answer key. Only then record cloud acceptance.
+After an authorized deployment, verify bootstrap/migration preservation, code rotation/session lifetime, event transition rules, claims/release, fullscreen breach/recovery, saved drafts/results, representative ordinary/graph/timed/GC questions, once-only awards and ranking/polling against isolated test data before event use. Do not infer live acceptance from local success.

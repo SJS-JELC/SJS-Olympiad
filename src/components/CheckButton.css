@@ -1,5 +1,5 @@
 /* Standalone original-asset treatment; callers may set width for their layout. */
-.check-button {
+.check-button, .illustrated-action-button {
   position: relative;
   display: block;
   width: 19vw;
@@ -12,11 +12,19 @@
   background: transparent;
   cursor: pointer;
 }
-.check-button svg { display: block; width: 100%; height: auto; overflow: visible; }
+.check-button svg, .illustrated-action-button svg { display: block; width: 100%; height: auto; overflow: visible; }
+.illustrated-action-button { height: 8svh; width: calc(8svh * 150.33 / 42.52); }
+.illustrated-action-button--wide { width: calc(8svh * 300.33 / 42.52); }
+.illustrated-action-button svg { height: 100%; }
 .check-button__face { fill: #39ff14; }
-.check-button:disabled { opacity: 1; cursor: default; }
-.check-button:not(:disabled):not(.check-button--cooldown):hover .check-button__face { fill: #6aff4d; }
-.check-button:not(:disabled):not(.check-button--cooldown):active { transform: translateY(2px); }
+.illustrated-action-button--lilac .check-button__face { fill: #994cd2; }
+.check-button:disabled, .illustrated-action-button:disabled { opacity: 1; cursor: default; }
+.illustrated-action-button:disabled .check-button__face { fill: #9b9da0; }
+.check-button:not(:disabled):not(.check-button--cooldown):hover .check-button__face,
+.illustrated-action-button:not(:disabled):hover .check-button__face { fill: #6aff4d; }
+.illustrated-action-button--lilac:not(:disabled):hover .check-button__face { fill: #b16de4; }
+.check-button:not(:disabled):not(.check-button--cooldown):active,
+.illustrated-action-button:not(:disabled):active { transform: translateY(2px); }
 
 /* The face itself shows elapsed cooldown; lettering stays sharp above it. */
 .check-button--cooldown .check-button__face { fill: #9b9da0; }

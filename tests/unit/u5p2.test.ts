@@ -1,6 +1,7 @@
 import {describe,it,expect} from 'vitest';
-import {markDiagram,u5p2} from '../../src/questions/u5p2/definition';
-import {emptyAttempt,transition,score} from '../../src/questions/attempts';
+import {u5p2} from '../../src/questions/u5p2/definition';
+import {markDiagram} from '../../api/src/private/u5p2.mjs';
+import {emptyAttempt,transition,score} from './server-markers';
 import {fixture,pair} from '../fixtures/u5p2';
 describe('N2O',()=>{
  for(const double of [false,true])for(const flip of [false,true])it('accepts contributor and symbol inversion '+double+flip,()=>expect(markDiagram(JSON.stringify(pair(double,!double,flip)))).toBe(true));

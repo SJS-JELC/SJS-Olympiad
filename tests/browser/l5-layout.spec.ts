@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 1440, height: 900 }, { width: 1920, height: 1080 }]) {
   for (const question of [1, 2, 3, 4, 5, 6, 7, 8]) {
@@ -44,11 +44,11 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
   }
 }
 
-test('L5 controls remain visible at 125% desktop zoom equivalent', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ viewport: { width: 960, height: 640 }, deviceScaleFactor: 1.25 });
-  const page = await context.newPage();
+test.describe('L5 desktop zoom equivalent',()=>{
+test.use({viewport:{width:960,height:640},deviceScaleFactor:1.25});
+test('L5 controls remain visible at 125% desktop zoom equivalent', async ({ page }) => {
   for (const question of [1, 2, 3, 4, 5, 6, 7, 8]) {
-    await page.goto(`${baseURL}/?theory&year=L5&question=${question}`);
+    await page.goto(`/?theory&year=L5&question=${question}`);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.locator('.question-answer-form input').first()).toBeFocused();
     const check = await page.locator('.check-button').boundingBox();
@@ -57,5 +57,5 @@ test('L5 controls remain visible at 125% desktop zoom equivalent', async ({ brow
     expect(Math.abs(640 - check!.y - check!.height - 16)).toBeLessThan(.1);
     await page.screenshot({ path: `.verification/consistency-l5/l5p${question}-zoom125.png` });
   }
-  await context.close();
+});
 });

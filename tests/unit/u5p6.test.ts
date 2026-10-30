@@ -1,6 +1,9 @@
+import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition } from '../../src/questions/attempts';
-import { u5p6 } from '../../src/questions/u5p6/definition';
+import { emptyAttempt, score, transition } from './server-markers';
+import { u5p6 as public_u5p6 } from '../../src/questions/u5p6/definition';
+const u5p6=serverDefinition(public_u5p6);
+
 
 describe('U5P6 Cubane', () => {
   it.each(['485', '485.0', '4.85e2', '+485', ' 485 '])('accepts numeric equality %j', answer => {

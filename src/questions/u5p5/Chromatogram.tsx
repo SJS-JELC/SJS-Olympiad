@@ -1,11 +1,12 @@
 import { useId, useRef, type PointerEvent } from 'react';
-import { getTrace, integrate, RETENTION_TIMES, SAMPLE_LABELS, TIME_MAX } from './model';
+import { getTrace, RETENTION_TIMES, SAMPLE_LABELS, TIME_MAX } from './model';
+import type { TraceDataset } from './model';
 import type { Interval, SampleId } from './types';
 
 const LEFT = 58, RIGHT = 880, TOP = 22;
 const x = (time: number) => LEFT + time / TIME_MAX * (RIGHT - LEFT);
-export function Chromatogram({ sample, interval, onInterval, compact = false, concentration = 100 }: {
-  sample: SampleId; interval: Interval; onInterval?: (interval: Interval) => void; compact?: boolean; concentration?: number;
+export function Chromatogram({ sample, interval, onInterval, compact = false, concentration = 100, traces = {} }: {
+  sample: SampleId; interval: Interval; onInterval?: (interval: Interval) => void; compact?: boolean; concentration?: number; traces?: TraceDataset;
 }) {
   const id = useId().replaceAll(':', '');
   // Short plotting geometry preserves full-width lettering rather than shrinking a tall SVG.
@@ -13,7 +14,7 @@ export function Chromatogram({ sample, interval, onInterval, compact = false, co
   const height = BOTTOM + 38;
   const middle = (TOP + BOTTOM) / 2;
   const drag = useRef<{ start: number; edge: 0 | 1 | null; original: Interval; latest: Interval } | null>(null);
-  const trace = getTrace(sample).map(point => ({...point, response: 7.5 + (point.response - 7.5) * concentration / 100}));
+  const trace = getTrace(sample, traces).map(point => ({...point, response: 7.5 + (point.response - 7.5) * concentration / 100}));
   const maximum = 18000;
   const y = (response: number) => BOTTOM - response / maximum * (BOTTOM - TOP);
   const path = trace.map((point, i) => (i ? 'L' : 'M') + x(point.time).toFixed(2) + ' ' + y(point.response).toFixed(2)).join(' ');
@@ -34,8 +35,7 @@ export function Chromatogram({ sample, interval, onInterval, compact = false, co
     onInterval(active.latest);
   };
   return <figure className={'gc-chromatogram' + (compact ? ' gc-chromatogram--compact' : '')}>
-    {!compact && <figcaption className="gc-area-readout type-label">Area under peak: <strong>{(integrate(sample, interval) * concentration / 100).toFixed(3)}</strong></figcaption>}
-    {!compact && <div className="gc-area-note type-caption"><p>For a specific component, the area under the peak is proportional to the amount of that substance in the sample. Drag across a peak to see the area underneath it.</p></div>}
+    {!compact && <div className="gc-area-note type-caption"><p>For a specific component, the area under the signal's peak is proportional to the amount of that substance in the sample. Drag across the graph to see the area underneath it.</p><p>Compare the same peak in two reports: the ratio of the areas gives the ratio of that component's concentrations.</p></div>}
     <svg viewBox={'0 0 900 ' + height} className={onInterval ? 'gc-trace gc-trace--interactive' : 'gc-trace'} role={onInterval ? 'group' : 'img'} aria-label={SAMPLE_LABELS[sample] + ' chromatogram. Retention time in minutes; detector response. Vertical scale zero to ' + maximum}
       onPointerDown={onInterval ? event => {
         event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
@@ -62,7 +62,7 @@ export function Chromatogram({ sample, interval, onInterval, compact = false, co
         next[i] = Math.max(i === 0 ? 0 : interval[0] + .01, Math.min(i === 0 ? interval[1] - .01 : TIME_MAX, time + (event.key === 'ArrowLeft' ? -.01 : .01)));
         onInterval(next);
       }}><title>Drag to move this boundary</title><rect x={x(time)-10} y={TOP} width="20" height={BOTTOM-TOP+8} fill="transparent"/><line x1={x(time)} x2={x(time)} y1={TOP} y2={BOTTOM} stroke="#111" strokeWidth="2" /><path d={'M' + (x(time) - 5) + ' ' + (BOTTOM - 7) + 'l5 7 5 -7'} fill="#111" /></g>)}
-      <text x="17" y={middle} transform={'rotate(-90 17 ' + middle + ')'} textAnchor="middle" className="type-caption">Response</text>
+      <text x="8" y={middle} transform={'rotate(-90 8 ' + middle + ')'} textAnchor="middle" className="type-caption">Response</text>
       <text x="470" y={BOTTOM + 34} textAnchor="middle" className="type-caption">Retention time / min</text>
     </svg>
   </figure>;

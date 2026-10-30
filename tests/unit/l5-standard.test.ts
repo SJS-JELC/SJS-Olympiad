@@ -1,13 +1,22 @@
+import { serverDefinition } from './server-markers';
 import questionFixtures from '../fixtures/questions.json';
-import { l5p8 } from '../../src/questions/l5p8/definition';
-import { l5p7 } from '../../src/questions/l5p7/definition';
-import { l5p5 } from '../../src/questions/l5p5/definition';
-import { l5p4 } from '../../src/questions/l5p4/definition';
-import { l5p3 } from '../../src/questions/l5p3/definition';
-import { l5p2 } from '../../src/questions/l5p2/definition';
+import { l5p8 as public_l5p8 } from '../../src/questions/l5p8/definition';
+import { l5p7 as public_l5p7 } from '../../src/questions/l5p7/definition';
+import { l5p5 as public_l5p5 } from '../../src/questions/l5p5/definition';
+import { l5p4 as public_l5p4 } from '../../src/questions/l5p4/definition';
+import { l5p3 as public_l5p3 } from '../../src/questions/l5p3/definition';
+import { l5p2 as public_l5p2 } from '../../src/questions/l5p2/definition';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from '../../src/questions/attempts';
-import { l5p1 } from '../../src/questions/l5p1/definition';
+import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from './server-markers';
+import { l5p1 as public_l5p1 } from '../../src/questions/l5p1/definition';
+const l5p8=serverDefinition(public_l5p8);
+const l5p7=serverDefinition(public_l5p7);
+const l5p5=serverDefinition(public_l5p5);
+const l5p4=serverDefinition(public_l5p4);
+const l5p3=serverDefinition(public_l5p3);
+const l5p2=serverDefinition(public_l5p2);
+const l5p1=serverDefinition(public_l5p1);
+
 
 const case8 = questionFixtures.L5P8;
 const case7 = questionFixtures.L5P7;

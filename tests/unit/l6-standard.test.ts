@@ -1,10 +1,17 @@
+import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type QuestionDefinition } from '../../src/questions/attempts';
-import { l6p2 } from '../../src/questions/l6p2/definition';
-import { l6p6 } from '../../src/questions/l6p6/definition';
-import { l6p7 } from '../../src/questions/l6p7/definition';
-import { l6p8 } from '../../src/questions/l6p8/definition';
-import { l6p9 } from '../../src/questions/l6p9/definition';
+import { emptyAttempt, score, transition, type QuestionDefinition } from './server-markers';
+import { l6p2 as public_l6p2 } from '../../src/questions/l6p2/definition';
+import { l6p6 as public_l6p6 } from '../../src/questions/l6p6/definition';
+import { l6p7 as public_l6p7 } from '../../src/questions/l6p7/definition';
+import { l6p8 as public_l6p8 } from '../../src/questions/l6p8/definition';
+import { l6p9 as public_l6p9 } from '../../src/questions/l6p9/definition';
+const l6p2=serverDefinition(public_l6p2);
+const l6p6=serverDefinition(public_l6p6);
+const l6p7=serverDefinition(public_l6p7);
+const l6p8=serverDefinition(public_l6p8);
+const l6p9=serverDefinition(public_l6p9);
+
 const definitions: QuestionDefinition[] = [l6p2, l6p6, l6p7, l6p8, l6p9];
 const cases = {
   "2": {
@@ -126,5 +133,6 @@ it('retains source point bands and question-specific retry periods', () => {
   expect(definitions.map(d => [d.number, d.points, d.cooldownMs])).toEqual([[2, 1, 30_000], [6, 2, 20_000], [7, 2, 20_000], [8, 3, 15_000], [9, 3, 30_000]]);
 });
 it('cannot award L6P8 points with the browser evaluator', () => {
-  for (const answer of cases['8'].accepted) expect(l6p8.evaluate({answer})).toEqual({answer:false});
+  expect('evaluate' in public_l6p8).toBe(false);
+  for (const answer of cases['8'].accepted) expect(l6p8.evaluate({answer})).toEqual({answer:true});
 });

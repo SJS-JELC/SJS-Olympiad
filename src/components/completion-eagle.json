@@ -1,0 +1,10 @@
+{
+  "source": "src/assets/powerapp/flipped-eagle.svg",
+  "sourceSha256": "91efd2d1326d951a5fccb21a1886ff469c8abb3f2ce519c6c95f3e3555a0671f",
+  "grid": [
+    32,
+    18
+  ],
+  "alphaThreshold": 96,
+  "path": "M0 0h1v1h-1zM31 0h1v1h-1zM0 1h4v1h-4zM28 1h4v1h-4zM0 2h7v1h-7zM25 2h7v1h-7zM0 3h10v1h-10zM15 3h4v1h-4zM22 3h10v1h-10zM1 4h10v1h-10zM15 4h5v1h-5zM21 4h10v1h-10zM1 5h11v1h-11zM14 5h6v1h-6zM21 5h10v1h-10zM2 6h28v1h-28zM3 7h26v1h-26zM3 8h26v1h-26zM5 9h22v1h-22zM6 10h20v1h-20zM9 11h14v1h-14zM13 12h6v1h-6zM12 13h8v1h-8zM11 14h10v1h-10zM10 15h11v1h-11zM11 16h9v1h-9zM12 17h1v1h-1zM14 17h4v1h-4z"
+}

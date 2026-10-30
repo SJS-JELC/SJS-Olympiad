@@ -1,10 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, openCompetitorQuestion } from './fixtures';
+const competitor=test.extend({accessRole:'competitor' as const});
 
 for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }]) {
-  test(`S1 compact pilot at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+  competitor(`S1 compact pilot at ${viewport.width}x${viewport.height}`, async ({ page, api }) => {
     await page.setViewportSize(viewport);
     await page.clock.install();
-    await page.goto('/?theory&year=L5&question=1');
+    await openCompetitorQuestion(page,api,'L5',1);
     await page.evaluate(() => document.fonts.ready);
     const input = page.getByRole('textbox', { name: 'Name of the metal, M' });
     await expect(input).toBeFocused();
@@ -21,7 +22,14 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
     expect(check!.y + check!.height).toBeLessThan(viewport.height);
     expect(Math.abs(viewport.height - check!.y - check!.height - viewport.height * .025)).toBeLessThan(.1);
     await page.screenshot({ path: `.verification/s1-pilot-${viewport.width}x${viewport.height}.png` });
+    const submission=page.waitForResponse(response=>response.url().endsWith('/api/olympiad/submit')&&response.request().method()==='POST');
     await page.getByRole('button', { name: 'Check answers' }).click();
+    const marked=await (await submission).json();
+    expect(marked.attempt.feedback).toEqual({answer:false});
+    expect(marked.attempt.retryAt-marked.serverNow).toBe(30_000);
+    // Pending writes also disable fields; wait for the accepted server deadline before advancing time.
+    await expect(page.locator('.cloud-status')).toHaveText('Saved');
+    await expect(page.locator('.incorrect-feedback')).toBeVisible();
     await expect(input).toBeDisabled();
     await page.clock.fastForward(30_100);
     await expect(input).toBeEnabled();

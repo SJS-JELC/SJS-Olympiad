@@ -41,5 +41,34 @@
       "sha256": "ecea1adad1903d29e33b0d564243c38a61d99ae269d342fb689f5bb272b1f5ee"
     }
   ],
-  "adaptations": "N/O palette, two symbols, no charge toolbar, local props/contracts, shared typography"
+  "adaptations": "N/O palette, two symbols, no charge toolbar, local props/contracts, shared typography; shared presentation-only zoom/pan/fit controls; viewport-height camera scaling enlarges the original geometry without changing scientific coordinates; fixed world bounds independent of camera; shared pane tokens.; Review correction 1: all editor tool/action/view buttons consume the shared neutral ui-button palette; selected tools use a gray fill and white inset, disabled controls retain contrast. Canvas backgrounds and scientific glyph colors remain unchanged.",
+  "validation": [
+    "2026-10-30: strict N2O cases and camera/readOnly UI preservation passed within the 40-case focused editor suite; external browser validation is coordinated by foreman."
+  ],
+  "outputs": [
+    {
+      "path": "src/components/dot-cross/DotCrossEditor.tsx",
+      "sha256": "1326fcb79962f37772e51500d1720ed92bae05e0e9f5818eee3b9a00e5a13e93"
+    },
+    {
+      "path": "src/components/dot-cross/editor.css",
+      "sha256": "8f1cd751d7d38993e876af0e3f7898aba9b37dd95a93646787dcc00a049b042d"
+    },
+    {
+      "path": "src/components/EditorViewControls.tsx",
+      "sha256": "e28ae846d7c16530b59a9729c719fb669328da358fbc4d6f69568bf62c0b1320"
+    },
+    {
+      "path": "src/components/editor-view-controls.css",
+      "sha256": "a06b0c06b6f3a8a2a68f5a6cbd5143a404f107383d34ccfdc89e19084e666697"
+    },
+    {
+      "path": "tests/unit/dot-cross-editor-ui.test.ts",
+      "sha256": "20bb17854763f1696eea69be3e021c6282ee1807d39d37670ce0a1723803d783"
+    },
+    {
+      "path": "tests/browser/u5p2.spec.ts",
+      "sha256": "685d674d0f9c2b91e4d2528b6d3be66f07c3a9c5c9fde75ab818316634e98d93"
+    }
+  ]
 }

@@ -1,0 +1,11 @@
+.completion-stamp { position:fixed; z-index:50; top:50%; left:50%; width:min(70vw,98svh); transform:translate(-50%,-50%) rotate(-8deg); opacity:1; pointer-events:none; user-select:none; }
+.completion-stamp svg { display:block; width:100%; height:auto; overflow:visible; }
+.completion-stamp--entering { animation:completion-stamp-down 300ms cubic-bezier(.18,.72,.25,1) both; }
+@keyframes completion-stamp-down {
+  0% { opacity:0; transform:translate(-50%,-70%) rotate(-10deg) scale(1.6); }
+  55% { opacity:1; transform:translate(-50%,-50%) rotate(-8deg) scale(1.06,.9); }
+  70% { opacity:1; transform:translate(-50%,-51%) rotate(-6.6deg) scale(.99,1.04); }
+  85% { opacity:1; transform:translate(-50%,-50%) rotate(-8.6deg) scale(1.015,.985); }
+  100% { opacity:1; transform:translate(-50%,-50%) rotate(-8deg) scale(1); }
+}
+@media(prefers-reduced-motion:reduce) { .completion-stamp--entering { animation:none; } }

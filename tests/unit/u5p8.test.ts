@@ -1,7 +1,10 @@
+import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition } from '../../src/questions/attempts';
-import { u5p8 } from '../../src/questions/u5p8/definition';
+import { emptyAttempt, score, transition } from './server-markers';
+import { u5p8 as public_u5p8 } from '../../src/questions/u5p8/definition';
 import { wording } from '../../src/questions/u5p8/content';
+const u5p8=serverDefinition(public_u5p8);
+
 
 describe('U5P8 revised Boundaries volume question', () => {
   it.each(['159.5', '159.50', '0159.5', ' 159.5 ', '308.3', '308.30', '0308.3', ' 308.3 '])('accepts equivalent numeric cm³ value %s', answer => {

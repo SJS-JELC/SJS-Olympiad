@@ -1,6 +1,7 @@
 /** Source: molecule-builder/editor.js. Same 74px, 30° growth and collision policy. */
 import type { MoleculeElement, MoleculeGraph, Point } from '../../contracts/molecule';
 import core from './core.js';
+import type { MoleculeLimits } from './core.js';
 export const LENGTH = 74,
   STEP = Math.PI / 6;
 export type MoleculeTarget = { kind: 'atom'; id: number } | { kind: 'bond'; a: number; b: number };
@@ -30,7 +31,9 @@ export function gestureGraph(
   order: 1 | 2 | 3,
   chain: boolean,
   scale = 1,
+  limits: MoleculeLimits = core.DEFAULT_LIMITS,
 ): MoleculeGraph {
+  core.limitsFor(limits);
   let draft = graph;
   if (state.target && state.target.kind !== 'atom') return draft;
   let start = state.target
@@ -38,27 +41,26 @@ export function gestureGraph(
     : undefined;
   if (!start) {
     if (
-      (element !== 'H' && core.heavyCount(graph) >= core.LIMIT) ||
-      graph.atoms.length >= 100 ||
+      (element !== 'H' && core.heavyCount(graph) >= limits.maxHeavyAtoms) ||
+      graph.atoms.length >= limits.maxAtoms ||
       graph.atoms.some((a) => Math.hypot(a.x - state.start.x, a.y - state.start.y) < 42)
     )
       return draft;
-    draft = core.addAtom(draft, chain ? 'C' : element, state.start.x, state.start.y);
+    draft = core.addAtom(draft, chain ? 'C' : element, state.start.x, state.start.y, null, 1, limits);
     start = draft.atoms.at(-1)!;
   }
   const distance = Math.hypot(end.x - start.x, end.y - start.y),
     count = chain ? Math.max(1, Math.round(distance / (LENGTH * Math.cos(STEP)))) : 1;
   const axis = Math.round(Math.atan2(end.y - start.y, end.x - start.x) / STEP) * STEP;
-  for (let i = 0; i < Math.min(count, core.LIMIT); i++) {
-    if ((element !== 'H' && core.heavyCount(draft) >= core.LIMIT) || draft.atoms.length >= 100)
-      break;
+  for (let i = 0; i < Math.min(count, limits.maxHeavyAtoms); i++) {
     const angle = axis + (chain ? (i % 2 ? STEP : -STEP) : 0);
     const next = chain
       ? { x: start.x + LENGTH * Math.cos(angle), y: start.y + LENGTH * Math.sin(angle) }
       : destination(graph, start, end, scale);
-    if ('id' in next && next.id !== undefined) return core.addBond(draft, start.id, next.id, order);
+    if ('id' in next && next.id !== undefined) return core.addBond(draft, start.id, next.id, order, limits);
+    if (((chain || element !== 'H') && core.heavyCount(draft) >= limits.maxHeavyAtoms) || draft.atoms.length >= limits.maxAtoms || draft.bonds.length >= limits.maxBonds) break;
     if (draft.atoms.some((a) => Math.hypot(a.x - next.x, a.y - next.y) < 42)) break;
-    draft = core.addAtom(draft, chain ? 'C' : element, next.x, next.y, start.id, chain ? 1 : order);
+    draft = core.addAtom(draft, chain ? 'C' : element, next.x, next.y, start.id, chain ? 1 : order, limits);
     start = draft.atoms.at(-1)!;
   }
   return draft;
@@ -69,17 +71,18 @@ export function applyTarget(
   point: Point,
   element: MoleculeElement,
   erasing: boolean,
+  limits: MoleculeLimits = core.DEFAULT_LIMITS,
 ): MoleculeGraph {
   if (erasing) return target ? core.remove(graph, target) : graph;
-  if (target?.kind === 'atom') return core.setElement(graph, target.id, element);
+  if (target?.kind === 'atom') return core.setElement(graph, target.id, element, limits);
   if (target?.kind === 'bond') {
     const bond = graph.bonds.find(
       (b) => (b.a === target.a && b.b === target.b) || (b.b === target.a && b.a === target.b),
     );
     return bond
-      ? core.setBond(graph, target.a, target.b, ((bond.order % 3) + 1) as 1 | 2 | 3)
+      ? core.setBond(graph, target.a, target.b, ((bond.order % 3) + 1) as 1 | 2 | 3, limits)
       : graph;
   }
   if (graph.atoms.some((a) => Math.hypot(a.x - point.x, a.y - point.y) < 42)) return graph;
-  return core.addAtom(graph, element, point.x, point.y);
+  return core.addAtom(graph, element, point.x, point.y, null, 1, limits);
 }

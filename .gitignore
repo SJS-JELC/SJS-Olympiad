@@ -1,6 +1,10 @@
 node_modules/
 .npm-cache/
+.vite/
 .verification/
+.sjs-source-manifest.json
+__pycache__/
+*.pyc
 dist/
 coverage/
 playwright-report/
@@ -14,3 +18,9 @@ test-results/
 Thumbs.db
 *.log
 local.settings.json
+.azure/
+*.pem
+*.key
+*.p12
+*.pfx
+*.publishsettings

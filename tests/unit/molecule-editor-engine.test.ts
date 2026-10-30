@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { assertMoleculeState, blankMolecule, core, moleculeEngine } from '../../src/chemistry/molecule/engine';
+import { readFileSync } from 'node:fs';
+import { parseMoleculeAnswer as parsePrivateMolecule } from '../../api/src/private/molecule-validation.mjs';
+import { applyMoleculeCommand, assertMoleculeState, blankMolecule, core, moleculeEngine } from '../../src/chemistry/molecule/engine';
 import { applyTarget, destination, gestureGraph, LENGTH } from '../../src/chemistry/molecule/interaction';
 import { displayedGraph, labelFor } from '../../src/chemistry/molecule/depiction';
-import { cameraViewBox, fitMoleculeCamera, panMoleculeCamera, zoomMoleculeCamera } from '../../src/components/molecule/camera';
+import { cameraViewBox, drawingScaleForHeight, fitMoleculeCamera, panMoleculeCamera, zoomMoleculeCamera } from '../../src/components/molecule/camera';
 
 describe('reusable molecular drawing semantics', () => {
   it('commits a whole chain gesture once, preserves the input, and undoes it', () => {
@@ -118,4 +120,58 @@ describe('reusable molecular drawing semantics', () => {
     expect(panMoleculeCamera(camera,14,0).x).toBeCloseTo(90);
     expect(graph).toEqual(before);
   });
+});
+
+
+describe('per-question molecular limits', () => {
+  const limits = {maxHeavyAtoms:40,maxAtoms:100,maxBonds:150};
+  it('keeps Chainspotting defaults and passes larger limits through gestures, assertions, cleanup and undo', () => {
+    const gesture = {target:null,start:{x:0,y:0}};
+    const small = gestureGraph(core.empty(),gesture,{x:4000,y:0},'C',1,true);
+    const large = gestureGraph(core.empty(),gesture,{x:4000,y:0},'C',1,true,1,limits);
+    expect(small.atoms).toHaveLength(20);
+    const connectedAtCap = gestureGraph(large,{target:{kind:'atom',id:large.atoms[0].id},start:large.atoms[0]},large.atoms[2],'C',1,false,1,limits);
+    expect(connectedAtCap.bonds).toHaveLength(large.bonds.length+1);
+    expect(connectedAtCap.atoms).toHaveLength(40);
+    expect(large.atoms).toHaveLength(40);
+    const state = {...blankMolecule(),graph:large};
+    expect(() => assertMoleculeState(state)).toThrow();
+    expect(assertMoleculeState(state,limits)).toBe(state);
+    const cleaned = applyMoleculeCommand(state,{kind:'clean'},limits);
+    expect(cleaned.graph.atoms).toHaveLength(40);
+    expect(cleaned.graph.bonds).toEqual(large.bonds);
+    expect(applyMoleculeCommand(cleaned,{kind:'undo'},limits)).toEqual(state);
+    expect(applyTarget(large,null,{x:5000,y:0},'C',false,limits)).toBe(large);
+    const withH = applyTarget(large,null,{x:5000,y:0},'H',false,limits);
+    expect(withH.atoms).toHaveLength(41);
+    expect(core.setElement(withH,withH.atoms.at(-1)!.id,'C',limits)).toBe(withH);
+    expect(core.validate(large,true,limits).kind).toBe('valid');
+    expect(core.validate(withH,true,limits).kind).toBe('valence');
+  });
+  it('bounds total atoms and bonds as well as heavy atoms without inserting anything', () => {
+    const limits = {maxHeavyAtoms:3,maxAtoms:4,maxBonds:2};
+    let graph = core.addAtom(core.empty(),'C',0,0,null,1,limits);
+    graph = core.addAtom(graph,'H',74,0,1,1,limits);
+    graph = core.addAtom(graph,'H',-74,0,1,1,limits);
+    expect(core.addAtom(graph,'H',0,74,1,1,limits)).toBe(graph);
+    graph = core.addAtom(graph,'H',0,74,null,1,limits);
+    expect(core.addAtom(graph,'H',0,-74,null,1,limits)).toBe(graph);
+    expect(core.addBond(graph,1,4,1,limits)).toBe(graph);
+    expect(() => core.assertGraph({...graph,bonds:[...graph.bonds,{a:1,b:4,order:1}]},limits)).toThrow();
+  });
+  it('scales initial drawing glyphs by viewport height and retains world geometry', () => {
+    expect(drawingScaleForHeight(1440)/drawingScaleForHeight(1080)).toBeCloseTo(4/3);
+    expect(drawingScaleForHeight(640)).toBeGreaterThan(1);
+  });
+});
+
+
+it('keeps public/private generic core bytes identical and private parser limits scoped to each question', () => {
+  const publicCore=readFileSync(new URL('../../src/chemistry/molecule/core.js',import.meta.url));
+  const privateCore=readFileSync(new URL('../../api/src/private/molecule-core.mjs',import.meta.url));
+  expect(privateCore.equals(publicCore)).toBe(true);
+  const graph={atoms:Array.from({length:21},(_,i)=>({id:i,element:'C',x:i*74,y:0})),bonds:[]};
+  const value=JSON.stringify({...blankMolecule(),graph});
+  expect(parsePrivateMolecule(value)).toBeNull();
+  expect(parsePrivateMolecule(value,{maxHeavyAtoms:40,maxAtoms:100,maxBonds:150})).toMatchObject({graph});
 });

@@ -1,2 +1,15 @@
-.cut-question .question-brief { flex:0 1 auto; padding-block:1svh; }.cut-question p { margin:.3em 0; }.cut-products { text-align:center; }.cut-products span { display:block; margin-left:-12em; }.cut-editor { border:0; padding:0; min-width:0; background:white; border-radius:1svh; }.cut-tools { display:flex; flex-wrap:wrap; gap:.4em; padding:.4em; }.cut-tools button { border:1px solid #555; background:white; color:black; border-radius:.3em; cursor:pointer; }.cut-tools button[aria-pressed=true] { background:#bee8ff; }.cut-canvas { width:100%; height:30svh; touch-action:none; }.cut-editor p { color:black; text-align:center; }
-.cut-products { width:100%; height:12svh; }.cut-thumbnail { display:block; width:7em; height:2.5em; }.cut-tools button:disabled { opacity:.5; }
+/* Question composition; drawing behavior and controls are shared with U5P3. */
+.cut-question { gap: 1svh; }
+.cut-question > .question-brief { display: flex; flex: 0 0 auto; flex-direction: column; gap: .4svh; padding-block: 1svh; max-height: 35svh; }
+.cut-question .question-brief p { flex-shrink: 0; margin: 0; }
+.cut-products { width: 100%; height: 16svh; flex: 0 0 16svh; margin: 0; }
+.cut-products [data-label-kind="atom"] { --text-size: 40px; }
+.cut-form { flex: 1 1 0; min-height: 0; gap: 1svh; padding-inline: 0; }
+.cut-form > .molecule-editor { flex: 1 1 0; min-height: 0; }
+.cut-legacy { flex: 1 1 0; min-height: 0; overflow: auto; border: var(--question-pane-border); border-radius: var(--question-pane-radius); background: white; color: #152033; }
+.cut-legacy > p { padding-inline: 1svh; }
+.cut-legacy-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1svh; }
+.cut-legacy-grid svg { width: 100%; height: 12svh; }
+.cut-legacy-grid line { stroke: #152033; stroke-width: 2; }
+.cut-legacy-grid rect { fill: white; }
+.cut-legacy-grid text { --text-size: 20px; text-anchor: middle; }

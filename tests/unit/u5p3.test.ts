@@ -1,12 +1,15 @@
+import { serverDefinition } from './server-markers';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { emptyAttempt, score, transition, type Answers, type Attempt } from '../../src/questions/attempts';
+import { emptyAttempt, score, transition, type Answers, type Attempt } from './server-markers';
 import type { MoleculeAtom, MoleculeElement, MoleculeGraph, MoleculeState } from '../../src/contracts/molecule';
 import { blankMolecule } from '../../src/chemistry/molecule/engine';
-import { u5p3Definition } from '../../src/questions/u5p3/definition';
+import { u5p3Definition as public_u5p3Definition } from '../../src/questions/u5p3/definition';
 import { parseMoleculeAnswer, readMoleculeAnswer, serializeMoleculeAnswer } from '../../src/questions/u5p3/moleculeAnswer';
 import { polymerContinuations, polymerGraph, polymerSubstituentSequence } from '../../src/questions/u5p3/polymerGraph';
+const u5p3Definition=serverDefinition(public_u5p3Definition);
+
 
 const monomers: readonly (readonly MoleculeElement[])[] = [
   ['H', 'H', 'H', 'F'], ['H', 'Cl', 'F', 'F'], ['H', 'H', 'F', 'Cl'], ['H', 'F', 'Cl', 'Cl'],
@@ -123,7 +126,7 @@ describe('U5P3 free molecular drawing and ordinary attempt lifecycle', () => {
   it('does not restart cooldown or award twice, including at time zero', () => {
     const wrong = submit(emptyAttempt());
     expect(wrong.retryAt).toBe(21000);
-    expect(wrong.feedback).toEqual({ monomers: false });
+    expect(wrong.feedback).toEqual({ answer: false });
     expect(edit(wrong, serializeMoleculeAnswer(drawing()), 20999)).toBe(wrong);
     expect(submit(wrong, 20999)).toBe(wrong);
     const fixed = edit(wrong, serializeMoleculeAnswer(drawing()), 21000);

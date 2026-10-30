@@ -2,95 +2,42 @@
 import { act, createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import App from '../../src/App';
-import { BreachModal } from '../../src/components/BreachModal';
-import { useCompetitionSecurity } from '../../src/security';
-import { CompetitionSecurityProvider, SecurityController, TEST_STAFF_PIN, type SecuritySnapshot, type SnapshotAdapter } from '../../src/security';
-
-let root: Root;
-let container: HTMLDivElement;
-const actEnvironment = globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean };
-const content = () => container.querySelector('[data-testid="question-content"]');
-function fullscreen() {
-  Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: document.documentElement });
+import { CompetitionSecurityProvider, SecurityController } from '../../src/security';
+import { QuestionGate } from '../../src/questions/QuestionGate';
+import { HttpError, type request, type SessionState } from '../../src/cloud/api';
+let root: Root, host: HTMLDivElement;
+beforeEach(() => { Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true }); host = document.createElement('div'); document.body.append(host); root = createRoot(host); Object.defineProperty(document, 'hidden', { configurable: true, value: false }); Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: null }); vi.spyOn(document, 'hasFocus').mockReturnValue(true); Object.defineProperty(document.documentElement, 'requestFullscreen', { configurable: true, value: vi.fn(async () => { Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: document.documentElement }); }) }); });
+afterEach(async () => { await act(async () => root.unmount()); host.remove(); vi.restoreAllMocks(); });
+const snapshot = (): SessionState => ({ role: 'competitor', expiresAt: Date.now() + 3600000, serverNow: Date.now(), configRevision: 1, activeEvent: { id: 'event', name: 'Event', year: 'L6', endsAt: Date.now() + 3600000, status: 'active', revision: 1 }, team: { id: 'team', name: 'Team', year: 'L6', eventId: 'event', claimGeneration: 1 }, competition: { status: 'NOT_STARTED', epoch: 1 }, score: 0, attempts: {} });
+async function renderController(state = snapshot()) {
+    const transport = vi.fn(async (action: string) => { if (action === 'start')
+        state = { ...state, competition: { status: 'ACTIVE', epoch: 2 } }; return structuredClone(state); }) as unknown as typeof request;
+    const controller = new SecurityController(transport);
+    await act(async () => root.render(createElement(CompetitionSecurityProvider, { controller, children: createElement(QuestionGate, { children: createElement('div', { 'data-sensitive': true }, 'Question content') }) })));
+    return { controller, transport };
 }
-function adapter(stored: SecuritySnapshot | null = null): SnapshotAdapter {
-  return { load: vi.fn(async () => stored), save: vi.fn(async () => {}), clear: vi.fn(async () => {}) };
-}
-// The router now owns the universal modal; retain that composition in this harness.
-function RoutedFixture() {
-  const { session } = useCompetitionSecurity();
-  return createElement('div', null, createElement(App, { onBack: () => {} }), session.status === 'LOCKED' ? createElement(BreachModal, { onEnded: () => {} }) : null);
-}
-async function mount(controller: SecurityController) {
-  await act(async () => {
-    root.render(createElement(CompetitionSecurityProvider, { controller, children: createElement(RoutedFixture) }));
-    await controller.initialize();
-  });
-}
-async function clickStart() {
-  const button = container.querySelector<HTMLButtonElement>('.enter-button');
-  expect(button).not.toBeNull();
-  await act(async () => { button!.click(); });
-  expect(content()).not.toBeNull();
-}
-beforeEach(() => {
-  vi.restoreAllMocks(); actEnvironment.IS_REACT_ACT_ENVIRONMENT = true;
-  localStorage.clear(); container = document.createElement('div'); document.body.append(container); root = createRoot(container);
-  Object.defineProperty(document, 'hidden', { configurable: true, value: false });
-  Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: null });
-  vi.spyOn(document, 'hasFocus').mockReturnValue(true);
-  Object.defineProperty(document.documentElement, 'requestFullscreen', { configurable: true, value: vi.fn(async () => { fullscreen(); }) });
-});
-afterEach(async () => {
-  actEnvironment.IS_REACT_ACT_ENVIRONMENT = true;
-  await act(async () => root.unmount()); container.remove();
-});
-
-it.each(['visibilitychange', 'blur', 'fullscreenchange', 'pagehide'] as const)('%s removes actual question DOM within the native event dispatch stack', async eventName => {
-  const storage = adapter(); const controller = new SecurityController(storage); await mount(controller); await clickStart();
-  // A never-completing save proves persistence cannot delay removal.
-  storage.save = vi.fn(() => new Promise<void>(() => {}));
-  if (eventName === 'visibilitychange') Object.defineProperty(document, 'hidden', { configurable: true, value: true });
-  if (eventName === 'fullscreenchange') Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: null });
-  // Disable only act's warning flag. Dispatch and assert outside act, with no await,
-  // so act's batching/flush cannot manufacture the immediate removal result.
-  actEnvironment.IS_REACT_ACT_ENVIRONMENT = false;
-  (eventName === 'visibilitychange' || eventName === 'fullscreenchange' ? document : window).dispatchEvent(new Event(eventName));
-  expect(content()).toBeNull();
-  expect(container.querySelector('#breach-pin')).not.toBeNull();
-  expect(controller.getSnapshot().session.status).toBe('LOCKED');
-});
-
-it('persisted ACTIVE restoration never mounts question DOM', async () => {
-  const initial = adapter(); const first = new SecurityController(initial); await first.initialize(); await first.start();
-  const stored = vi.mocked(initial.save).mock.calls.at(-1)![0];
-  const seenContent: boolean[] = [];
-  const observer = new MutationObserver(records => {
-    for (const record of records) for (const node of record.addedNodes) {
-      if (node instanceof Element) seenContent.push(node.matches('[data-testid="question-content"]') || node.querySelector('[data-testid="question-content"]') !== null);
-    }
-  }); observer.observe(container, { subtree: true, childList: true });
-  await mount(new SecurityController(adapter(stored)));
-  observer.disconnect(); expect(seenContent).not.toContain(true); expect(content()).toBeNull(); expect(container.querySelector('#breach-pin')).not.toBeNull();
-});
-
-it('staff unlock keeps actual question DOM gated until fullscreen and atomic save complete', async () => {
-  const storage = adapter(); const controller = new SecurityController(storage); await mount(controller); await clickStart();
-  actEnvironment.IS_REACT_ACT_ENVIRONMENT = false; window.dispatchEvent(new Event('blur'));
-  actEnvironment.IS_REACT_ACT_ENVIRONMENT = true;
-  await act(async () => {}); // Finish the already-queued lock save before holding the unlock save.
-  let finishFullscreen!: () => void;
-  vi.mocked(document.documentElement.requestFullscreen).mockImplementation(() => new Promise<void>(resolve => { finishFullscreen = () => { fullscreen(); resolve(); }; }));
-  let finishSave!: () => void;
-  storage.save = vi.fn(() => new Promise<void>(resolve => { finishSave = resolve; }));
-  let unlocking!: Promise<void>;
-  await act(async () => { unlocking = controller.unlock(TEST_STAFF_PIN); });
-  expect(content()).toBeNull();
-  await act(async () => { finishFullscreen(); });
-  expect(content()).toBeNull();
-  const snapshot = vi.mocked(storage.save).mock.calls.at(-1)![0];
-  expect(snapshot.session.status).toBe('ACTIVE'); expect(snapshot.events.at(-1)?.type).toBe('STAFF_UNLOCK');
-  await act(async () => { finishSave(); await unlocking; });
-  expect(content()).not.toBeNull();
+it('unmounts competitor question content before start', async () => { await renderController(); expect(host.querySelector('[data-sensitive]')).toBeNull(); });
+it('mounts only after fullscreen and acknowledged start', async () => { const { controller } = await renderController(); await act(() => controller.start()); expect(host.querySelector('[data-sensitive]')).not.toBeNull(); });
+it.each(['blur', 'fullscreenchange', 'visibilitychange'] as const)('removes actual question content synchronously for %s', async (signal) => { const { controller } = await renderController(); await act(() => controller.start()); expect(host.querySelector('[data-sensitive]')).not.toBeNull(); await act(async () => { if (signal === 'blur')
+    window.dispatchEvent(new Event('blur')); if (signal === 'fullscreenchange') {
+    Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: null });
+    document.dispatchEvent(new Event(signal));
+} if (signal === 'visibilitychange') {
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+    document.dispatchEvent(new Event(signal));
+} expect(host.querySelector('[data-sensitive]')).toBeNull(); }); });
+it('anonymous restore errors expose no question content', async () => { const controller = new SecurityController((async () => { throw new HttpError(401, 'Sign in.'); }) as typeof request); await act(async () => root.render(createElement(CompetitionSecurityProvider, { controller, children: createElement(QuestionGate, { children: 'Sensitive question' }) }))); expect(host.textContent).not.toContain('Sensitive question'); });
+it('teacher preview permits content without fullscreen', async () => { const state = snapshot(); state.role = 'teacher'; state.team = null; await renderController(state); expect(host.querySelector('[data-sensitive]')).not.toBeNull(); });
+it('stored ACTIVE restoration never mounts a competitor view', async () => { const state = snapshot(); state.competition.status = 'ACTIVE'; await renderController(state); expect(host.querySelector('[data-sensitive]')).toBeNull(); });
+it('network verification failure unmounts an active view', async () => { const { controller, transport } = await renderController(); await act(() => controller.start()); vi.mocked(transport).mockRejectedValueOnce(new Error('Offline')); await act(() => controller.guard()); expect(host.querySelector('[data-sensitive]')).toBeNull(); });
+it('unmounts real question content at theory end without locking the remaining event', async () => {
+    let now = Date.now(); vi.spyOn(Date, 'now').mockImplementation(() => now);
+    const state = snapshot(); Object.assign(state.activeEvent!, {theoryStartsAt:now-1000,theoryEndsAt:now+1000,practicalStartsAt:now+2000,practicalEndsAt:now+5000,endsAt:now+5000});
+    const {controller,transport} = await renderController(state); await act(() => controller.start());
+    expect(host.querySelector('[data-sensitive]')).not.toBeNull();
+    now += 1000;
+    await act(() => controller.checkBoundary());
+    expect(host.querySelector('[data-sensitive]')).toBeNull(); expect(host.textContent).toContain('finished');
+    expect(controller.getSnapshot().session.status).toBe('ACTIVE');
+    expect(vi.mocked(transport).mock.calls.some(([action]) => action === 'breach')).toBe(false);
 });

@@ -1,12 +1,17 @@
 /* Shared question shell. Typography is defined in ../typography.css. */
-.question-page { height: 100svh; overflow: hidden; }
+.question-page {
+  --question-pane-border: .125svh solid #73829b;
+  --question-pane-radius: 1svh;
+  height: 100svh;
+  overflow: hidden;
+}
 .question-stage {
   --question-pane-padding: 2vw;
   --question-top-gap: 2.5svh;
   --question-bottom-padding: 1.5svh;
   --question-action-height: 8svh;
   --question-action-bottom: 2.5svh;
-  --question-body-size: clamp(19px, 2.8svh, 30px);
+  --question-body-size: var(--text-size-question);
   position: relative;
   width: 88%;
   height: 100svh;
@@ -20,10 +25,9 @@
 .question-header { flex-shrink: 0; display: grid; grid-template-columns: 1fr 2.5fr 1fr; align-items: center; gap: 3vw; margin-bottom: 1svh; }
 .question-identity { grid-column: 2; display: grid; justify-items: center; gap: 1svh; min-width: 0; }
 .question-eagle { display: block; width: 16svh; height: 8svh; object-fit: contain; }
-.question-title-panel, .question-brief { background: #fff; border: .125svh solid #73829b; border-radius: 1svh; }
+.question-title-panel, .question-brief { background: #fff; border: var(--question-pane-border); border-radius: var(--question-pane-radius); }
 .question-title-panel { width: 100%; min-height: 10svh; padding: 1svh 1.5vw; display: grid; align-items: center; }
-.question-back { justify-self: end; background: transparent; border: 0; padding: .5vw; width: 7vw; }
-.question-back img { width: 100%; transform: rotate(180deg); }
+.question-navigation { justify-self: end; display: flex; align-items: center; gap: 1.2svh; }
 
 /* Reserve the answer area; only excess question content scrolls. */
 .question-content { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 1.5svh; padding-bottom: calc(var(--question-action-bottom) - var(--question-bottom-padding)); }

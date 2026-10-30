@@ -7,6 +7,8 @@ import type {
   Point,
 } from '../../contracts/molecule';
 import core from './core.js';
+import type { MoleculeLimits } from './core.js';
+export type { MoleculeLimits } from './core.js';
 import { clean } from './layout';
 export { core };
 export const blankMolecule = (): MoleculeState => ({
@@ -27,13 +29,13 @@ export type MoleculeCommand =
   | { kind: 'hydrogens'; id: number; h: 0 | 1 | 2 | 3 | 4 | 'auto' }
   | { kind: 'undo' | 'clear' };
 /** Validate reference/annotation integrity, never reject an assessable valence mistake. */
-export function assertMoleculeGraph(value: unknown): MoleculeGraph {
-  const graph = core.assertGraph(value);
+export function assertMoleculeGraph(value: unknown, limits?: MoleculeLimits): MoleculeGraph {
+  const graph = core.assertGraph(value, limits);
   const fields = (v: object, allowed: readonly string[]) => {
     if (Object.keys(v).some((k) => !allowed.includes(k))) throw Error('Unknown molecule field.');
   };
   fields(graph, ['atoms', 'bonds', 'arrows']);
-  if (graph.bonds.length > 150) throw Error('Too many bonds.');
+  if (graph.bonds.length > core.limitsFor(limits).maxBonds) throw Error('Too many bonds.');
   const atoms = new Map(graph.atoms.map((a) => [a.id, a]));
   for (const a of graph.atoms) {
     fields(a, [
@@ -92,7 +94,7 @@ export function assertMoleculeGraph(value: unknown): MoleculeGraph {
   }
   return graph;
 }
-export function assertMoleculeState(value: unknown): MoleculeState {
+export function assertMoleculeState(value: unknown, limits?: MoleculeLimits): MoleculeState {
   const state = value as MoleculeState;
   if (
     !state ||
@@ -103,12 +105,12 @@ export function assertMoleculeState(value: unknown): MoleculeState {
     throw Error('Invalid molecule state/history.');
   if (Object.keys(state).some((k) => !['kind', 'graph', 'history'].includes(k)))
     throw Error('Unknown molecule state field.');
-  assertMoleculeGraph(state.graph);
-  state.history.forEach(assertMoleculeGraph);
+  assertMoleculeGraph(state.graph, limits);
+  state.history.forEach(graph => assertMoleculeGraph(graph, limits));
   return state;
 }
-function apply(state: MoleculeState, cmd: MoleculeCommand): MoleculeState {
-  assertMoleculeState(state);
+export function applyMoleculeCommand(state: MoleculeState, cmd: MoleculeCommand, limits?: MoleculeLimits): MoleculeState {
+  assertMoleculeState(state, limits);
   if (cmd.kind === 'undo') {
     const g = state.history.at(-1);
     return g
@@ -118,7 +120,7 @@ function apply(state: MoleculeState, cmd: MoleculeCommand): MoleculeState {
   let graph = structuredClone(state.graph);
   switch (cmd.kind) {
     case 'commit-graph':
-      graph = structuredClone(assertMoleculeGraph(cmd.graph));
+      graph = structuredClone(assertMoleculeGraph(cmd.graph, limits));
       break;
     case 'clean':
       graph = clean(graph);
@@ -131,17 +133,18 @@ function apply(state: MoleculeState, cmd: MoleculeCommand): MoleculeState {
         cmd.point.y,
         cmd.parent ?? null,
         cmd.order,
+        limits,
       );
       break;
     case 'element':
-      graph = core.setElement(graph, cmd.id, cmd.element);
+      graph = core.setElement(graph, cmd.id, cmd.element, limits);
       break;
     case 'bond':
       graph = graph.bonds.some(
         (b) => (b.a === cmd.a && b.b === cmd.b) || (b.a === cmd.b && b.b === cmd.a),
       )
-        ? core.setBond(graph, cmd.a, cmd.b, cmd.order)
-        : core.addBond(graph, cmd.a, cmd.b, cmd.order);
+        ? core.setBond(graph, cmd.a, cmd.b, cmd.order, limits)
+        : core.addBond(graph, cmd.a, cmd.b, cmd.order, limits);
       break;
     case 'move':
       graph = {
@@ -175,7 +178,7 @@ function apply(state: MoleculeState, cmd: MoleculeCommand): MoleculeState {
       };
       break;
   }
-  assertMoleculeGraph(graph);
+  assertMoleculeGraph(graph, limits);
   return JSON.stringify(graph) === JSON.stringify(state.graph)
     ? state
     : {
@@ -186,7 +189,7 @@ function apply(state: MoleculeState, cmd: MoleculeCommand): MoleculeState {
 }
 export const moleculeEngine: MoleculeEngine<MoleculeCommand> = {
   kind: 'molecule',
-  apply,
+  apply: applyMoleculeCommand,
   validate(state) {
     try {
       assertMoleculeState(state);

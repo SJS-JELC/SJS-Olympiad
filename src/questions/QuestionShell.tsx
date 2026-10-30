@@ -2,14 +2,14 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { Score } from '../components/Score';
 import { QuestionHeading } from '../components/QuestionHeading';
 import eagle from '../assets/powerapp/asset-30.svg';
-import backArrow from '../assets/powerapp/backarrow.svg';
+import { ArtworkBackButton, TeacherSettingsButton } from '../components/SharedNavigation';
 import type { QuestionDefinition } from './attempts';
 import '../background.css';
 import '../splash.css';
 import './questions.css';
 
-export function QuestionShell({ definition, score, onBack, backLabel = 'Back to theory', children }: {
-  definition: QuestionDefinition; score: number; onBack: () => void; backLabel?: string; children: ReactNode;
+export function QuestionShell({ definition, score, onBack, onSettings, backLabel = 'Back to theory', children }: {
+  definition: QuestionDefinition; score: number; onBack: () => void; onSettings?: () => void; backLabel?: string; children: ReactNode;
 }) {
   const pageRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -48,7 +48,7 @@ export function QuestionShell({ definition, score, onBack, backLabel = 'Back to 
     <main className="question-stage">
       <header className="question-header">
         <div className="question-identity"><img className={`question-eagle ${artwork?.className ?? ''}`} src={artwork?.src ?? eagle} alt={artwork?.alt ?? 'St John’s Olympiad eagle'} draggable={false} /><div className="question-title-panel"><QuestionHeading year={definition.year} number={definition.number} title={definition.title} /></div></div>
-        <button className="question-back" onClick={onBack} aria-label={backLabel}><img src={backArrow} alt="" /></button>
+        <div className="question-navigation">{onSettings && <TeacherSettingsButton onClick={onSettings} />}<ArtworkBackButton className="question-back" onClick={onBack} label={backLabel} /></div>
       </header>
       {children}
     </main>

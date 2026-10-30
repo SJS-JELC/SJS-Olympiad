@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, openCompetitorQuestion, type Page } from './fixtures';
+const competitor=test.extend({accessRole:'competitor' as const});
 
 async function selectedWindow(page: Page) {
   return page.locator('.u6p1-nmr-selection').evaluate(rect => ({
@@ -50,9 +51,9 @@ test('NMR magnifies X only and clamps direct overview pointer and keyboard selec
   await expect(answer).toHaveValue('retained');
 });
 
-test('NMR touch selection pans the original detail without changing an answer', async ({ browser }) => {
-  const context = await browser.newContext({ viewport: { width: 1200, height: 800 }, hasTouch: true });
-  const page = await context.newPage();
+test.describe('touch NMR preview',()=>{
+test.use({viewport:{width:1200,height:800},hasTouch:true});
+test('NMR touch selection pans the original detail without changing an answer', async ({ page }) => {
   await page.goto('/?theory&year=U6&question=1');
   await page.getByRole('textbox', { name: 'Molecule name' }).fill('retained');
   const box = await page.locator('.u6p1-nmr-overview').boundingBox();
@@ -62,13 +63,13 @@ test('NMR touch selection pans the original detail without changing an answer', 
   expect(selected.x).toBeCloseTo((321.8 - selected.width) / 2, 0);
   expect(selected.y).toBe(0); expect(selected.height).toBe(150.97);
   await expect(page.getByRole('textbox', { name: 'Molecule name' })).toHaveValue('retained');
-  await context.close();
+});
 });
 
-test('live rate table preserves source values, scientific units and marking', async ({ page }) => {
+competitor('live rate table preserves source values, scientific units and marking', async ({ page, api }) => {
   await page.clock.install();
   await page.setViewportSize({ width: 1200, height: 800 });
-  await page.goto('/?theory&year=U6&question=8');
+  await openCompetitorQuestion(page,api,'U6',8);
   const table = page.getByRole('table', { name: 'Initial rate data' });
   await expect(table.getByRole('columnheader')).toHaveText([
     'Experiment', '[CH₃CH₂Br] / mol dm−3', '[OH−] / mol dm−3', 'Rate / mol dm−3 s−1',
@@ -97,11 +98,11 @@ test('live rate table preserves source values, scientific units and marking', as
   expect(await pane.boundingBox()).toEqual(before);
 });
 
-test('U6 inline rows fit all requested viewports, with a white table and common Check baseline', async ({ browser }) => {
-  test.setTimeout(90_000); // Ten full-page loads across five viewport contexts.
-  for (const [width, height, scale] of [[1200, 800, 1], [1440, 900, 1], [1440, 810, 1], [1920, 1080, 1], [960, 640, 1.25]]) {
-    const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: scale });
-    const page = await context.newPage();
+for (const [width, height, scale] of [[1200, 800, 1], [1440, 900, 1], [1440, 810, 1], [1920, 1080, 1], [960, 640, 1.25]]) {
+test.describe(`U6 inline geometry ${width}x${height}`,()=>{
+  test.use({viewport:{width,height},deviceScaleFactor:scale});
+  test('U6 inline rows fit with a white table and common Check baseline', async ({ page }) => {
+    test.setTimeout(90_000);
     for (const number of [8, 9]) {
       await page.goto(`/?theory&year=U6&question=${number}`);
       await page.locator('.question-brief').waitFor();
@@ -122,9 +123,9 @@ test('U6 inline rows fit all requested viewports, with a white table and common 
         expect(await page.locator('.u6p8-answer').evaluateAll(labels => labels.every(label => label.firstElementChild!.getBoundingClientRect().right < label.querySelector('input')!.getBoundingClientRect().left))).toBe(true);
       }
     }
-    await context.close();
-  }
+  });
 });
+}
 
 test('U6 charge digits stay on the baseline and propane counts are subscripts', async ({ page }) => {
   await page.goto('/?theory&year=U6&question=6');

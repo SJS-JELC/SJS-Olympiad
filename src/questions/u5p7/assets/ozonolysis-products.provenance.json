@@ -1,0 +1,56 @@
+{
+  "generator": "scripts/generate-u5p7-products.py",
+  "source": "src/questions/u5p7/assets/ozonolysis-products.source.json",
+  "sourceSha256": "505ae7aa91c5966dafbe1af5257150f4c09f5ba8bfbbbf27bdfbf930bae2c207",
+  "rdkitVersion": "2025.09.1",
+  "rdkitDistributionVersion": "2025.9.1",
+  "license": "BSD-3-Clause",
+  "licenseUrl": "https://github.com/rdkit/rdkit/blob/master/license.txt",
+  "options": {
+    "fixedFontSize": 40,
+    "fixedBondLength": 66,
+    "bondLineWidth": 2.5,
+    "padding": 0.07,
+    "explicitHydrogens": true,
+    "allAtomLabels": true,
+    "canonOrient": true,
+    "monochrome": true
+  },
+  "presentation": "RDKit bond geometry with live C/H/O labels through ScientificDiagram; fixed public products only.",
+  "products": [
+    {
+      "name": "methanal",
+      "formula": "CH2O",
+      "canonicalSmiles": "C=O",
+      "atomCount": 4,
+      "bondCount": 3,
+      "sourceIdToRdkitIndex": {
+        "9": 0,
+        "13": 1
+      }
+    },
+    {
+      "name": "nine-carbon fragment with three carbonyl groups",
+      "formula": "C9H14O3",
+      "canonicalSmiles": "CC(=O)CCC(CC=O)C(C)=O",
+      "atomCount": 26,
+      "bondCount": 25,
+      "sourceIdToRdkitIndex": {
+        "0": 0,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 7,
+        "8": 8,
+        "10": 9,
+        "11": 10,
+        "12": 11
+      }
+    }
+  ],
+  "geometrySha256": "22df19a70b75a2d6770cad6aafcdf6d4418424d1a762490cc28bb4722f913ddd",
+  "labelsSha256": "5c62920ef2ee1b6c384dc0f7142a78a9c589ebd74114633772c24cb97955fa7a"
+}

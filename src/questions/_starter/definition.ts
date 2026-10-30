@@ -8,5 +8,4 @@ export const starterDefinition: QuestionDefinition = {
   parts: [{ id: 'answer', label: 'Answer', fields: [{
     id: 'answer', label: 'Answer', acceptsEdit: value => /^\d{0,3}$/.test(value),
   }] }],
-  evaluate: answers => ({ answer: answers.answer === '42' }),
 };

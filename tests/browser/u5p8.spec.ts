@@ -1,14 +1,11 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
+import { openCompetitorQuestion, resumeCompetition } from './fixtures';
+const competitor = test.extend({accessRole:'competitor' as const});
 
 const route = '/?theory&year=U5&question=8';
 
-test('Boundaries reference is keyboard accessible, contains only the formula aid and is removed on lock', async ({ page }) => {
-  await page.goto('/?settings');
-  await page.getByRole('button', { name: 'Enter Competition Mode' }).click();
-  await page.getByRole('link', { name: 'Back to landing' }).click();
-  await page.getByRole('button', { name: 'Theoretical Challenge' }).click();
-  // Internal navigation preserves the active provider and fullscreen session.
-  await page.evaluate(() => { history.pushState({}, '', '/?theory&year=U5&question=8'); window.dispatchEvent(new PopStateEvent('popstate')); });
+competitor('Boundaries reference is keyboard accessible, contains only the formula aid and is removed on lock', async ({ page, api }) => {
+  await openCompetitorQuestion(page,api,'U5',8);
   const trigger = page.getByRole('button', { name: 'Open spherical cap volume reference' });
   await trigger.focus();
   await page.keyboard.press('Enter');
@@ -36,9 +33,9 @@ test('Boundaries reference is keyboard accessible, contains only the formula aid
   await expect(page.getByRole('dialog', { name: 'COMPETITION MODE BREACHED' })).toBeVisible();
 });
 
-test('Boundaries standard submission rejects the old answer and preserves cooldown across navigation', async ({ page }) => {
+competitor('Boundaries standard submission rejects the old answer and preserves cooldown across navigation', async ({ page, api }) => {
   await page.clock.install();
-  await page.goto(route);
+  await openCompetitorQuestion(page,api,'U5',8);
   const answer = page.getByRole('textbox', { name: 'Volume of solution added in cm³' });
   await expect(answer).toBeFocused();
   await answer.fill('0.0325');
@@ -56,12 +53,12 @@ test('Boundaries standard submission rejects the old answer and preserves cooldo
   await page.getByRole('button', { name: 'Check answers' }).click();
   await expect(answer).toBeDisabled();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 03');
-  await page.getByRole('button', { name: 'Check answers' }).click();
+  await expect(page.getByRole('button', { name: 'Check answers' })).toBeDisabled();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 03');
 });
 
-test('Boundaries accepts the higher interface solution through the shared form', async ({ page }) => {
-  await page.goto(route);
+competitor('Boundaries accepts the higher interface solution through the shared form', async ({ page, api }) => {
+  await openCompetitorQuestion(page,api,'U5',8);
   const answer = page.getByRole('textbox', { name: 'Volume of solution added in cm³' });
   await answer.fill('308.3');
   await page.getByRole('button', { name: 'Check answers' }).click();
@@ -69,8 +66,8 @@ test('Boundaries accepts the higher interface solution through the shared form',
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 03');
 });
 
-for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 960, height: 640 }]) {
-  test(`Boundaries bounded layout at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 960, height: 640 }, {width:1920,height:1080}, {width:2560,height:1440}]) {
+  test(`Boundaries bounded layout at ${viewport.width}×${viewport.height}`, async ({ page }, testInfo) => {
     await page.setViewportSize(viewport);
     await page.goto(route);
     await page.evaluate(() => document.fonts.ready);
@@ -95,5 +92,8 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
         paneFits: pane.scrollHeight <= pane.clientHeight + 1 };
     });
     expect(bounds).toEqual({ pageFits: true, checkFits: true, answerFits: true, diagramFits: true, paneFits: true });
+    await page.getByRole('button',{name:'Open spherical cap volume reference'}).click();
+    await expect(page.getByRole('dialog',{name:'Spherical cap volume'})).toBeVisible();
+    await page.screenshot({path:testInfo.outputPath(`boundaries-reference-${viewport.width}.png`)});
   });
 }
