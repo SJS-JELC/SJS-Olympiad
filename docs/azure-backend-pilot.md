@@ -30,7 +30,7 @@ First migration retains the three existing team partitions and legacy attempt ro
 
 ## Frontend
 
-Sign in, choose an available event team, then explicitly start fullscreen. The active event determines all competitor questions and scores. A breach immediately removes content locally and locks the server session; refresh requires teacher-code recovery and explicit Resume. Session checks run every 15 seconds and before protected actions; failures remain gated. Saved results and acknowledged semantic drafts restore; undo stacks are local. Teachers preview through isolated unscored contexts without teams/fullscreen and may inspect ended events read-only.
+Sign in, choose an available event team, then use GO to enter fullscreen and hydrate the active year once. Ordinary edits/navigation are local; CHECK sends one direct submission. A breach within the open session immediately removes content and requires teacher-code recovery plus Resume. Refresh/reopening signs competitors out, retaining team reservations and checked results; staff must allow reselection before the old team is available again. There is no periodic session poll or separate preflight. Each protected endpoint still authenticates and checks ownership, security and event times. Teacher theory contexts hydrate once and remain unscored; teacher practical inputs are local-only. Unchecked theory answers/undo are not saved.
 
 The teacher leaderboard uses authoritative active-event summaries, excludes zero scores, and ranks by score descending then last successful scoring time ascending. It polls every three seconds only while visible. Presentation files are downloadable by design; marker keys and protected API operations remain server-side.
 
@@ -38,4 +38,4 @@ The teacher leaderboard uses authoritative active-event summaries, excludes zero
 
 Run the full API, unit and browser suites, typography/type/build checks, private-bundle audit and independent security/chemistry/rendered reviews. Local stores and browser fixtures do not establish Azure connectivity. Real Table Storage and managed Functions acceptance remains a separate deployment gate.
 
-After an authorized deployment, verify bootstrap/migration preservation, code rotation/session lifetime, event transition rules, claims/release, fullscreen breach/recovery, saved drafts/results, representative ordinary/graph/timed/GC questions, once-only awards and ranking/polling against isolated test data before event use. Do not infer live acceptance from local success.
+After an authorized deployment, verify bootstrap/migration preservation, code rotation/session lifetime, event transition rules, claims/release, fullscreen breach/recovery, checked-result restoration, practical autosave, one-time hydration/direct-CHECK request counts, representative ordinary/graph/timed/GC questions, once-only awards and ranking/polling against isolated test data before event use. Do not infer live acceptance from local success.

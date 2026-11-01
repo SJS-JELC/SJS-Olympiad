@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useCompetitionSecurity } from '../security';
+import { CodePanels } from './CodePanels';
 import { BreachBeacon } from './BreachBeacon';
 import './BreachModal.css';
 export function BreachModal() {
@@ -41,7 +42,7 @@ export function BreachModal() {
     <BreachBeacon /><h1 id="breach-title">COMPETITION MODE BREACHED</h1>
     <p id="breach-description">A member of staff must verify the teacher code before you can resume.</p>
     <form onSubmit={verify}>
-      {!security.recoveryReady && <><label htmlFor="breach-pin">Teacher code</label><div className="breach-pin"><input ref={input} id="breach-pin" type="password" autoComplete="off" value={code} onChange={event => setCode(event.target.value)} disabled={busy} maxLength={128}/></div><button className="breach-unlock" disabled={busy || !code.trim()}>{busy ? 'Verifying…' : 'Verify teacher code'}</button></>}
+      {!security.recoveryReady && <><CodePanels className="breach-pin" id="breach-pin" label="Teacher code" value={code} onChange={setCode} disabled={busy} inputRef={input}/><button className="breach-unlock" disabled={busy || !code.trim()}>{busy ? 'Verifying…' : 'CONFIRM'}</button></>}
       {security.recoveryReady && <><p>Staff verification accepted. Resume to enter fullscreen.</p><button autoFocus type="button" className="breach-unlock" disabled={busy} onClick={() => void security.resume()}>{busy ? 'Resuming…' : 'Resume competition'}</button></>}
       <div className="breach-error" role="alert">{security.error}</div>
     </form>

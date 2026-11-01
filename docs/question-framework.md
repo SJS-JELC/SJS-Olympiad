@@ -14,7 +14,7 @@ Read AGENTS.md for security, marking and approved layout contracts. Copy src/que
 | Paired angles | AnswerPart (L6P5 adapter) |
 | Public presentation/edit state | attempts.ts and question presentation definition |
 | All marking, cooldowns, saved results and once-only points | Private API question modules and transactional service |
-| Authenticated question/draft/action transport | Cloud question adapter |
+| One-time context hydration, direct CHECK/action transport | Cloud question adapter |
 | Typed definitions/views | catalog.ts |
 | Shared typography | typography.css |
 
@@ -31,11 +31,11 @@ Check remains clickable during cooldown without restarting deadlines. Confirmed 
 
 ## State
 
-Server attempts are keyed by event/team/question. All 33 questions obtain results and deadlines through the authenticated adapter. Compact semantic drafts autosave with revisions and flush on navigation/submission; pending/failed saves remain explicit, and reload restores acknowledged state. Undo history stays local. Never persist editor history as a scoring payload.
+Server attempts are keyed by event/team/question. GO hydrates all active-year question state/revisions and public custom data once. Teacher theory previews hydrate once per event/catalogue context. Ordinary edits and navigation stay in memory, with no autosave, pre-submit flush or session preflight. CHECK sends one frozen idempotent submission; uncertain retries reuse it. Reload discards unchecked answers and undo, signs competitors out and retains server-acknowledged results for a later authorized claim. Never persist editor history as a scoring payload.
 
 Custom client reducers update presentation only. Oxyanion selection, step and timeout are server-owned; return only the current formula and reveal its name only on timeout. GC keeps the recipe private and supplies authorized trace data; experiments remain optional for marking. Grouping validates exact unique items order-independently. Local ticks animate deadlines without repeated network requests. See api-contract.md and azure-backend-pilot.md.
 
-Overall event availability and theory availability are separate. Claims/fullscreen entry may precede theory; actual question reads, drafts, submissions and custom actions require its window. Use server-adjusted time; a scheduled close hides question content without simulating a security breach. Teacher previews remain unscored and independent of competition timing.
+Overall event availability and theory availability are separate. Claims/fullscreen entry may precede theory; actual theory submissions and custom actions require its window. Authorized GO hydration may precede it, while the UI keeps actual content gated until opening. Use server-adjusted time; a scheduled close hides question content without simulating a security breach. Teacher previews remain unscored and independent of competition timing.
 
 ## Layout
 

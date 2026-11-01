@@ -80,8 +80,8 @@ test('team names are event unique after normalization; draft year is inherited o
   await assert.rejects(f.api.teamAdd(f.staff,{name:'Test team 1',eventId:'pilot'}),{status:409});
   const state=await f.api.eventCreate(f.staff,{name:'Draft',year:'L5',theoryStartsAt:0,theoryEndsAt:300000}),id=state.events.at(-1).id;
   const list=await f.api.teamAdd(f.staff,{name:'Other Team',eventId:id});
-  await f.api.eventUpdate(f.staff,{eventId:id,year:'U6'});
-  await f.api.eventEnd(f.staff,{eventId:'pilot',confirm:true});await f.api.eventActivate(f.staff,{eventId:id});
+  const changed=await f.api.eventChangeYear(f.staff,{eventId:id,year:'U6',expectedRevision:1,requestId:'change-draft-year',confirm:true});
+  await f.api.eventEnd(f.staff,{eventId:'pilot',confirm:true});await f.api.eventActivate(f.staff,{eventId:changed.createdEventId});
   assert.equal((await f.api.claim(f.player,{teamId:list.teams[0].id})).team.year,'U6');
 });
 test('transactional submissions have canonical receipt binding, fixed cooldown and exactly once concurrent scores',async()=>{
@@ -115,7 +115,7 @@ test('draft revisions, semantic size limits, private state and year ownership fa
 });
 test('breach, refresh and recovery use fenced epochs and single-use short grants without promotion',async()=>{
   const f=await fixture();const started=await playing(f);
-  const locked=await f.api.session(f.player,{restore:true});assert.equal(locked.competition.status,'LOCKED');assert.deepEqual(locked.attempts,{});
+  const locked=await f.api.session(f.player,{interrupt:true});assert.equal(locked.competition.status,'LOCKED');assert.deepEqual(locked.attempts,{});
   await assert.rejects(f.api.question(f.player,{questionId:'L6P8'}),{status:423});
   await assert.rejects(f.api.start(f.player),{status:409});
   const grant=await f.api.recovery(f.player,{code:teacherCode,epoch:locked.competition.epoch});
@@ -173,12 +173,12 @@ test('legacy bootstrap preserves exact L6P8 state and receipts once; old cookie 
 test('HTTP validates origin, hides secrets, issues opaque HttpOnly cookie, restores, expires and rate-limits',async()=>{
   const f=await fixture();
   const req={method:'POST',params:{action:'login'},headers:{origin,'content-type':'application/json'},body:{role:'competitor',code}};
-  const response=await handle(req,async()=>f.api);assert.equal(response.status,200);assert.match(response.headers['Set-Cookie'],/__Host-olympiad-session=[a-f0-9]{64}; Secure; HttpOnly; SameSite=Strict; Path=\/; Max-Age=28800/);assert.ok(!JSON.stringify(response.body).includes('Hash'));
+  const response=await handle(req,async()=>f.api);assert.equal(response.status,200);assert.match(response.headers['Set-Cookie'],/__Host-olympiad-session=[a-f0-9]{64}; Secure; HttpOnly; SameSite=Strict; Path=\/$/);assert.ok(!JSON.stringify(response.body).includes('Hash'));
   assert.equal((await handle({...req,headers:{...req.headers,origin:'https://evil.invalid'}},async()=>f.api)).status,403);
   assert.equal((await handle({...req,body:'invalid'},async()=>f.api)).status,400);
   const failed=await handle(req,async()=>{throw Error('AccountKey=SECRET');});assert.equal(failed.status,503);assert.ok(!JSON.stringify(failed).includes('SECRET'));
   const cookie=response.headers['Set-Cookie'].split(';')[0];
-  assert.equal((await handle({method:'GET',params:{action:'session'},headers:{cookie},query:{restore:'1'}},async()=>f.api)).status,200);
+  const restored=await handle({method:'GET',params:{action:'session'},headers:{cookie},query:{restore:'1'}},async()=>f.api);assert.equal(restored.status,401);assert.match(restored.headers['Set-Cookie'],/Max-Age=0/);
   await f.api.throttle('small',1);await assert.rejects(f.api.throttle('small',1),{status:429});
   for(let n=0;n<10;n++)await handle({...req,body:{role:'teacher',code:'wrong'}},async()=>f.api);
   assert.equal((await handle(req,async()=>f.api)).status,429);

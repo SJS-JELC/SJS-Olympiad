@@ -3,7 +3,8 @@ import type { EventRecord, PracticalField, PracticalResult } from '../cloud/api'
 import { useCompetitionSecurity } from '../security';
 import { durationText, eventTiming, practicalPhase } from '../events/timing';
 import { ArtworkBackButton } from '../components/SharedNavigation';
-import { findPractical, practicalCatalog, validPracticalNumber, type PracticalDefinition } from './catalog';
+import { findPractical, validPracticalNumber, type PracticalDefinition } from './catalog';
+import { theoryYears } from '../questions/years';
 import { usePractical } from './usePractical';
 import eagle from '../assets/powerapp/asset-30.svg';
 import mohr from './assets/mohr-crisps.svg';
@@ -11,7 +12,8 @@ import cuttlefish from './assets/cuttlefish.png';
 import './practical.css';
 
 export function PracticalCatalogue({ onOpen }: { onOpen: (year: string) => void }) {
-  return <section className="practical-catalogue" aria-labelledby="practical-catalogue-title"><h3 id="practical-catalogue-title" className="type-heading">Practical</h3><div className="practical-catalogue-list">{practicalCatalog.map(item => <button key={item.year} className="ui-button" onClick={() => onOpen(item.year)} aria-label={`${item.year} practical: ${item.title}`}><span className="type-label">{item.year}</span> <span>{item.title}</span></button>)}</div></section>;
+  const labels = {L5:"Floaty",L6:"Mohr Crisps",U6:"Clippy"};
+  return <section className="practical-catalogue" aria-labelledby="practical-catalogue-title"><h3 id="practical-catalogue-title" className="type-heading">Practical</h3><div className="practical-catalogue-list">{theoryYears.map(year => { const item=findPractical(year); return item ? <button key={item.year} className="ui-button problem-testing-card" onClick={() => onOpen(item.year)} aria-label={`${item.year} practical: ${item.title}`}><span className="type-body problem-testing-title">{labels[item.year]}</span></button> : <div key={year} className="practical-catalogue-placeholder" aria-hidden="true"/>; })}</div></section>;
 }
 
 export function PracticalShell({ definition, onBack, backLabel, children }: { definition: PracticalDefinition; onBack: () => void; backLabel: string; children: ReactNode }) {
@@ -40,7 +42,7 @@ function LocalPractical(props: PracticalProps) {
 
 function SavedPractical(props: PracticalProps) {
   const security = useCompetitionSecurity(), { event, flushRef } = props;
-  const saved = usePractical(event.id, security.guard, security.canAccessPractical);
+  const saved = usePractical(event.id, security.canAccess, security.canAccessPractical, security.handleMutationError, security.captureAuthority);
   useEffect(() => { flushRef.current = saved.flush; return () => { flushRef.current = null; }; });
   return <PracticalContent {...props} saved={saved} teacher={false}/>;
 }

@@ -86,7 +86,17 @@ export function reduceCustomQuestion(id, previous, action, now) {
       if(!lab.activeRun&&samples.includes(action.sample)&&Number.isFinite(concentration)&&concentration>=0&&concentration<=100&&Number.isInteger(concentration*2)) save({...lab,loaded:{sample:action.sample,concentration}});
       break;
     }
-    case 'gc-run': if(lab.entered&&!lab.activeRun&&lab.loaded&&samples.includes(lab.loaded.sample)) save({...lab,activeRun:{id:lab.nextRunId,...lab.loaded,startedAt:now,deadline:now+RUN_MS},nextRunId:lab.nextRunId+1}); break;
+    case 'gc-run': {
+      // A new Run captures Enter/Load locally and sends only experiment input.
+      // Preserve the legacy payload-free path for existing clients.
+      if(action.sample!==undefined) {
+        const concentration=action.concentration;
+        if(!samples.includes(action.sample)||!Number.isFinite(concentration)||concentration<0||concentration>100||!Number.isInteger(concentration*2)||action.sample==='mystery'&&concentration!==100)throw new TypeError('Invalid captured sample.');
+        if(!lab.activeRun)lab={...lab,entered:true,loaded:{sample:action.sample,concentration}};
+      }
+      if(lab.entered&&!lab.activeRun&&lab.loaded&&samples.includes(lab.loaded.sample)) save({...lab,activeRun:{id:lab.nextRunId,...lab.loaded,startedAt:now,deadline:now+RUN_MS},nextRunId:lab.nextRunId+1});
+      break;
+    }
     case 'gc-delete-result': save({...lab,results:lab.results?.filter(row=>row.id!==action.id)}); break;
     case 'gc-result-position': {
       if(action.position&&(!Array.isArray(action.position)||action.position.length!==2||!action.position.every(Number.isFinite))) break;

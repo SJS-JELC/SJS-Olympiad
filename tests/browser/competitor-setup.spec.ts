@@ -1,0 +1,27 @@
+import {test,expect} from './fixtures';
+test('team grid handles a competing claim and opens a clean rules screen',async({page,api},testInfo)=>{
+ await page.setViewportSize({width:1920,height:1080});
+ const staff=await api.service.login({role:'teacher',code:'5678'}),event=(await api.service.session(staff.token)).activeEvent;
+ await api.service.teamAdd(staff.token,{eventId:event.id,name:'Taken team'});await api.service.teamAdd(staff.token,{eventId:event.id,name:'Racing team'});
+ const other=await api.service.login({role:'competitor',code:'1234'}),teams=(await api.service.teams(other.token)).teams;
+ await api.service.claim(other.token,{teamId:teams.find((team:any)=>team.name==='Taken team').id});
+ const racer=await api.service.login({role:'competitor',code:'1234'});
+ await page.goto('/');await page.getByLabel('Competitor code',{exact:true}).fill('1234');await page.locator('form').filter({has:page.getByLabel('Competitor code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Choose your team',exact:true})).toBeVisible();
+ await expect(page.getByRole('radio',{name:'Taken team Claimed'})).toBeDisabled();
+ await expect(page.getByRole('button',{name:'LOCK IN'})).toBeDisabled();
+ await expect(page.getByText('Competition rules',{exact:true})).toHaveCount(0);await expect(page.getByText(event.name,{exact:true})).toHaveCount(0);
+ await page.getByRole('radio',{name:'Racing team',exact:true}).check();
+ await page.screenshot({path:testInfo.outputPath('team-grid.png')});
+ const reads=api.requests.filter(r=>r.action==='teams').length;await page.clock.install();await page.clock.fastForward(15000);expect(api.requests.filter(r=>r.action==='teams')).toHaveLength(reads);
+ await api.service.claim(racer.token,{teamId:teams.find((team:any)=>team.name==='Racing team').id});
+ await page.getByRole('button',{name:'LOCK IN'}).click();
+ await expect(page.getByRole('alert')).toContainText('already claimed');await expect(page.getByRole('radio',{name:'Racing team Claimed'})).toBeDisabled();
+ await expect(page.getByRole('button',{name:'LOCK IN'})).toBeDisabled();
+ await page.getByRole('radio',{name:'Test team 1',exact:true}).check();await page.getByRole('button',{name:'LOCK IN'}).click();
+ await expect(page.getByRole('heading',{name:'Competition rules'})).toBeVisible();await expect(page.getByRole('alert')).toHaveCount(0);await expect(page.locator('.competitor-team-pill')).toHaveText('Test team 1');
+ await expect(page.getByText('Press GO to enter fullscreen.',{exact:true})).toBeVisible();await page.screenshot({path:testInfo.outputPath('rules.png')});expect(await page.locator('.competitor-setup__pane').evaluate(el=>el.getBoundingClientRect().bottom)).toBeLessThanOrEqual(1080);
+ await page.setViewportSize({width:1280,height:800});await page.screenshot({path:testInfo.outputPath('rules-small.png')});expect(await page.locator('.competitor-setup__pane').evaluate(el=>el.getBoundingClientRect().bottom)).toBeLessThanOrEqual(800);await page.setViewportSize({width:1920,height:1080});
+ await page.getByRole('button',{name:'GO',exact:true}).click();await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toBeVisible();
+ await expect(page.locator('.competitor-team-pill')).toHaveText('Test team 1');await page.getByRole('button',{name:'Theoretical challenge',exact:true}).click();await expect(page.locator('.competitor-team-pill')).toHaveText('Test team 1');
+});

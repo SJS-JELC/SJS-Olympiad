@@ -120,9 +120,9 @@ test('teacher catalogue and event preview are session-isolated and do not write 
   assert.equal((await f.api.teams(f.teacher,{eventId:f.eventId})).teams[0].practical.responses.numPracticalResponse4.value,5);
 });
 
-test('release, restore/recovery and deletion retain acknowledged responses and activity',async()=>{
+test('release, in-tab interruption/recovery and deletion retain acknowledged responses and activity',async()=>{
   const f=await fixture();await f.start();await f.save({numPracticalResponse4:'0'});
-  const locked=await f.api.session(f.player,{restore:true});
+  const locked=await f.api.session(f.player,{interrupt:true});
   await assert.rejects(f.api.practical(f.player,{}),{status:423});
   const grant=await f.api.recovery(f.player,{code:'5678',expectedEpoch:locked.competition.epoch});await f.api.resume(f.player,{grant:grant.grant,expectedEpoch:locked.competition.epoch});
   assert.equal((await f.api.practical(f.player,{})).responses.numPracticalResponse4.value,0);

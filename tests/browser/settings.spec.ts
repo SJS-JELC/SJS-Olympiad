@@ -6,7 +6,7 @@ test('lost deletion response keeps an actionable dialog and retries the same con
 });
 
 test('panel toggles are independent and preserve event and code edits while collapsed',async({page})=>{
- await page.goto('/?settings');const events=page.getByRole('button',{name:'Events',exact:true}),codes=page.getByRole('button',{name:'Access codes',exact:true}),questions=page.getByRole('button',{name:'Questions Preview',exact:true});
+ await page.goto('/?settings');const events=page.getByRole('button',{name:'Events',exact:true}),codes=page.getByRole('button',{name:'Access codes',exact:true}),questions=page.getByRole('button',{name:'Preview Questions',exact:true});
  await expect(events).toHaveAttribute('aria-expanded','true');await expect(codes).toHaveAttribute('aria-expanded','false');await expect(questions).toHaveAttribute('aria-expanded','false');
  await page.getByLabel('Event name',{exact:true}).fill('Pending name');await events.focus();await page.keyboard.press('Enter');await expect(page.getByRole('toolbar',{name:'Event actions'})).toHaveCount(0);await expect(page.getByLabel('Event name',{exact:true})).not.toBeVisible();
  await codes.focus();await page.keyboard.press('Space');await page.getByLabel('New teacher code').fill('pending-code');await codes.click();await expect(page.getByLabel('New teacher code')).not.toBeVisible();
@@ -24,7 +24,7 @@ test('event status selector uses confirmed forward lifecycle transitions and nam
  await status.selectOption('ended');await expect(page.getByRole('dialog')).toContainText('cannot restart');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(status).toHaveValue('ended');await expect(status).toBeDisabled();expect((await api.service.session(api.token)).activeEvent).toBeNull();
 });
 
-test('compact toolbar preserves native validation, errors, timing groups and automatic refresh',async({page,api})=>{
+test('compact toolbar preserves native validation, errors, timing groups and explicit metadata refresh',async({page,api})=>{
  await page.clock.install();await page.goto('/?settings');
  await expect(page.locator('.settings-message')).toHaveCount(0);await expect(page.getByRole('button',{name:'Refresh settings',exact:true})).toHaveCount(0);
  await expect(page.getByText(/^Active event:/)).toHaveCount(0);await expect(page.getByText('All event times use Europe/London (UK time). Practical timings are optional.')).toHaveCount(0);
@@ -36,15 +36,15 @@ test('compact toolbar preserves native validation, errors, timing groups and aut
  await page.getByLabel('Event name',{exact:true}).fill('');await save.click();expect(api.requests.filter(request=>request.action==='event-update')).toHaveLength(0);expect(await page.getByLabel('Event name',{exact:true}).evaluate((input:HTMLInputElement)=>input.validity.valueMissing)).toBe(true);
  await page.getByLabel('Event name',{exact:true}).fill('L6 fixture event');
  const state=await api.service.session(api.token);await api.service.eventUpdate(api.token,{eventId:'fixture-L6',expectedRevision:state.activeEvent.revision,name:'Automatic refresh'});
- await page.clock.fastForward(15000);await expect(page.getByLabel('Event name',{exact:true})).toHaveValue('Automatic refresh');
+ const sessionReads=api.requests.filter(request=>request.action==='session').length;await page.clock.fastForward(15000);await expect(page.getByLabel('Event name',{exact:true})).toHaveValue('L6 fixture event');expect(api.requests.filter(request=>request.action==='session')).toHaveLength(sessionReads);await page.reload();await expect(page.getByLabel('Event name',{exact:true})).toHaveValue('Automatic refresh');
  await page.getByRole('button',{name:'End event',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
  await expect(save).toBeDisabled();await expect(page.getByRole('button',{name:/Delete team/})).toBeDisabled();await expect(page.getByRole('button',{name:/Allow reselection for/})).toBeDisabled();
 });
 
-test('Questions Preview is collapsed, ordered, keyboard accessible and isolated from the selected event',async({page,api})=>{
+test('Preview Questions is collapsed, ordered, keyboard accessible and isolated from the selected event',async({page,api})=>{
  await page.goto('/?settings&eventId=fixture-U6');const before=await api.service.session(api.token);
  await expect(page.locator('.settings-panel').first()).toHaveClass(/settings-questions/);
- const toggle=page.getByRole('button',{name:'Questions Preview',exact:true});await expect(toggle).toHaveAttribute('aria-expanded','false');await expect(page.getByRole('button',{name:/^U5 Problem/})).toHaveCount(0);
+ const toggle=page.getByRole('button',{name:'Preview Questions',exact:true});await expect(toggle).toHaveAttribute('aria-expanded','false');await expect(page.getByRole('button',{name:/^U5 Problem/})).toHaveCount(0);
  await toggle.focus();await page.keyboard.press('Space');await expect(toggle).toHaveAttribute('aria-expanded','true');
  await expect(page.locator('.problem-testing-card')).toHaveCount(33);await expect(page.locator('.practical-catalogue-list button')).toHaveCount(3);
  for(const year of ['L5','L6','U5','U6']) {
@@ -53,7 +53,7 @@ test('Questions Preview is collapsed, ordered, keyboard accessible and isolated 
   for(let i=0;i<order.length;i++){await expect(buttons.nth(i).locator('.problem-testing-title')).toHaveCSS('text-transform','uppercase');await expect(buttons.nth(i).locator('.question-points')).toHaveClass(new RegExp(`question-points--${order[i]<=4?1:order[i]<=7?2:3}`));await expect(buttons.nth(i).locator('.question-points')).toHaveText(/^[123] points?$/);}
  }
  await page.getByRole('button',{name:'Events',exact:true}).click();await page.getByRole('button',{name:'Access codes',exact:true}).click();await page.getByRole('button',{name:'U5 Problem 6: Cubane',exact:true}).click();await expect(page.getByTestId('u5p6-content')).toBeVisible();await page.getByRole('textbox',{name:'Greatest hydrogen separation in pm',exact:true}).fill('485');await page.getByRole('button',{name:'Check answers',exact:true}).click();await expect(page.locator('.completion-stamp')).toBeVisible();
- await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.getByRole('button',{name:'Questions Preview',exact:true})).toHaveAttribute('aria-expanded','true');await expect(page.getByRole('button',{name:'Events',exact:true})).toHaveAttribute('aria-expanded','false');await expect(page.getByRole('button',{name:'Access codes',exact:true})).toHaveAttribute('aria-expanded','true');await expect(page.getByLabel('Selected event')).toHaveValue('fixture-U6');expect((await api.service.session(api.token)).events).toEqual(before.events);expect((await api.service.leaderboard(api.token)).entries).toEqual([]);
+ await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.getByRole('button',{name:'Preview Questions',exact:true})).toHaveAttribute('aria-expanded','true');await expect(page.getByRole('button',{name:'Events',exact:true})).toHaveAttribute('aria-expanded','false');await expect(page.getByRole('button',{name:'Access codes',exact:true})).toHaveAttribute('aria-expanded','true');await expect(page.getByLabel('Selected event')).toHaveValue('fixture-U6');expect((await api.service.session(api.token)).events).toEqual(before.events);expect((await api.service.leaderboard(api.token)).entries).toEqual([]);
 });
 
 test('team table confirms permanent draft deletion and retains active wrong-attempt records on removal',async({page,api})=>{

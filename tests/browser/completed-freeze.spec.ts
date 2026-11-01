@@ -3,7 +3,8 @@ import {test,expect} from './fixtures';
 
 async function restoreComplete(api:any,id:string){
  const eventId='catalogue-U5';await api.service.question(api.token,{eventId,questionId:id});
- const pk='preview-'+createHash('sha256').update(api.token).digest('hex')+'-'+eventId,q=await api.repo.get(pk,'q-'+id);
+ const pk='preview-'+createHash('sha256').update(api.token).digest('hex')+'-'+eventId,stored=await api.repo.get(pk,'q-'+id);
+ const view=await api.service.question(api.token,{eventId,questionId:id}),q=stored ?? {partitionKey:pk,rowKey:'q-'+id,kind:'question',questionId:id,revision:view.revision,state:view.attempt,privateState:{}};
  await api.repo.write({...q,state:{...q.state,solvedAt:Date.parse('2026-10-30T10:00:00Z')}},q.etag);
 }
 
@@ -11,7 +12,7 @@ test('completed Cubane rejects pointer and keyboard rotation while content and n
  await page.goto('/?theory&catalogue&year=U5&question=6');await page.getByRole('textbox',{name:'Greatest hydrogen separation in pm',exact:true}).fill('485');await page.getByRole('button',{name:'Check answers'}).click();await expect(page.locator('.completion-stamp')).toBeVisible();
  const model=page.getByRole('group',{name:/Cubane molecule/});await expect(model).toHaveAttribute('tabindex','-1');await expect(model).toHaveAttribute('aria-disabled','true');const before=await model.innerHTML(),box=(await model.boundingBox())!;
  await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width*.8,box.y+box.height*.8);await page.mouse.up();await model.dispatchEvent('keydown',{key:'ArrowRight'});expect(await model.innerHTML()).toBe(before);await model.focus();await expect(model).not.toBeFocused();await expect(page.getByRole('button',{name:'Check answers'})).toBeDisabled();
- await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.getByRole('button',{name:'Questions Preview',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.getByRole('button',{name:'Preview Questions',exact:true})).toBeVisible();
 });
 
 test('completed editor disables drawing, camera, keyboard and wheel without hiding its readable content',async({page,api})=>{
@@ -27,9 +28,10 @@ test('completed GC cannot run, drag/open reports or mutate formulation and emits
  await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.locator('.teacher-settings')).toBeVisible();
 });
 
-test('confirmed server completion restores its saved answer over newer unacknowledged draft edits',async({page,api})=>{
+test('confirmed server completion replaces an older pending CHECK with its canonical answer without draft writes',async({page,api})=>{
  await page.goto('/?theory&catalogue&year=U5&question=6');const answer=page.getByRole('textbox',{name:'Greatest hydrogen separation in pm',exact:true});let release!:()=>void,seen=false;const held=new Promise<void>(resolve=>{release=resolve;});
- await page.route('**/api/olympiad/draft',async route=>{if(!seen){seen=true;await held;}await route.fallback();});
- await answer.fill('48');await expect.poll(()=>seen).toBe(true);await answer.fill('49');await api.service.submit(api.token,{eventId:'catalogue-U5',questionId:'U5P6',requestId:'other-tab-complete',answers:{answer:'485'}});release();
- await expect(page.locator('.completion-stamp')).toBeVisible();await expect(answer).toHaveValue('485');await expect(answer).toBeDisabled();await page.waitForTimeout(650);expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(1);await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.locator('.teacher-settings')).toBeVisible();
+ await page.route('**/api/olympiad/submit',async route=>{if(!seen){seen=true;await held;}await route.fallback();});
+ await answer.fill('48');await page.getByRole('button',{name:'Check answers'}).click();await expect.poll(()=>seen).toBe(true);await expect(answer).toBeDisabled();
+ await api.service.submit(api.token,{eventId:'catalogue-U5',questionId:'U5P6',requestId:'other-tab-complete',answers:{answer:'485'}});release();
+ await expect(page.locator('.completion-stamp')).toBeVisible();await expect(answer).toHaveValue('485');await expect(answer).toBeDisabled();expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(0);await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.locator('.teacher-settings')).toBeVisible();
 });

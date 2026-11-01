@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createService} from '../src/service.mjs';
+import {memoryRepository} from './helpers.mjs';
+test('confirmed year change resets results and sessions while keeping names; retry is idempotent',async()=>{
+ const repo=memoryRepository(),api=createService(repo,{},()=>100000),staff=await api.login({role:'teacher',code:'5678'});
+ const created=await api.eventCreate(staff.token,{name:'Change year',year:'L6',theoryStartsAt:0,theoryEndsAt:400000}),event=created.events[0];
+ await api.teamAdd(staff.token,{eventId:event.id,name:'My team'});await api.eventActivate(staff.token,{eventId:event.id,expectedRevision:1});
+ const player=await api.login({role:'competitor',code:'1234'}),team=(await api.teams(player.token)).teams[0];await api.claim(player.token,{teamId:team.id});await api.start(player.token);
+ await api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'before-year-change'});
+ const input={eventId:event.id,year:'U6',expectedRevision:2,requestId:'change-year-request',confirm:true};
+ await assert.rejects(api.eventChangeYear(player.token,input),{status:403});await assert.rejects(api.eventChangeYear(staff.token,{...input,confirm:false}),{status:400});
+ await assert.rejects(api.eventChangeYear(staff.token,{...input,expectedRevision:1}),{status:409});
+ const result=await api.eventChangeYear(staff.token,input),replacement=result.events[0];
+ assert.equal(replacement.year,'U6');assert.equal(replacement.status,'draft');assert.equal(result.activeEvent,null);assert.notEqual(replacement.id,event.id);
+ const fresh=(await api.teams(staff.token,{eventId:replacement.id})).teams[0];assert.equal(fresh.name,'My team');assert.equal(fresh.year,'U6');assert.equal(fresh.score,0);assert.equal(fresh.claimed,false);assert.equal(fresh.practical,null);
+ await assert.rejects(api.session(player.token),{status:401});await assert.rejects(api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'stale-year'}),{status:401});
+ assert.equal((await api.eventChangeYear(staff.token,input)).createdEventId,replacement.id);
+ assert.equal((await api.login({role:'competitor',code:'1234'})).state.activeEvent.year,'U6');
+ await assert.rejects(api.eventChangeYear(staff.token,{...input,year:'L5'}),{status:409});
+});

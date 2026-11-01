@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto';
 import { createService, ApiError } from './service.mjs';
 const origins = new Set(['https://olympiad.masters-of-chemistry.app','https://lively-coast-06a373f0f.2.azurestaticapps.net']);
 const gets = new Set(['session','events','teams','leaderboard']);
-const posts = new Set(['login','logout','event-create','event-update','event-activate','event-end','codes-update','team-add','team-release','team-delete','claim','start','breach','recovery','resume','question','draft','submit','action','practical','practical-save']);
-const methods = {'event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
+const posts = new Set(['login','logout','event-create','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
+const methods = {'event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
 const COOKIE='__Host-olympiad-session';
 function validateBody(body) {
   if(!body || typeof body!=='object' || Array.isArray(body))throw new ApiError(400,'Invalid request.');
@@ -44,16 +44,20 @@ export async function handle(req,getService=service) {
     }
     const api=await getService(),token=cookie(requestHeaders.cookie,COOKIE);
     let body;
-    if(action==='login') {
+    if(action==='practice-start') {
+      await api.throttle('mutate-'+(token || 'anonymous'),180);
+      const result=await api.practiceStart(token,req.body);body=result.state;
+      headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/`;
+    } else if(action==='login') {
       const address=String(requestHeaders['x-forwarded-for'] || req.ip || 'unknown').split(',')[0];
       await api.throttle('login-global',120);
       await api.throttle('login-'+createHash('sha256').update(address).digest('hex'),10);
       const result=await api.login({...req.body,legacyToken:cookie(requestHeaders.cookie,'__Host-olympiad')});
       body=result.state;
-      headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800`;
+      headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/`;
     } else {
       if(method==='POST')await api.throttle((['recovery','resume'].includes(action)?'recovery-':'mutate-')+(token || 'anonymous'),['recovery','resume'].includes(action)?10:180);
-      if(action==='session')body=await api.session(token,{restore:req.query?.restore==='1' || req.query?.restore===1});
+      if(action==='session')body=await api.session(token,{restore:req.query?.restore==='1' || req.query?.restore===1,interrupt:req.query?.interrupt==='1' || req.query?.interrupt===1});
       else if(action==='logout') {
         body=await api.logout(token);
         headers['Set-Cookie']=`${COOKIE}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
@@ -61,6 +65,8 @@ export async function handle(req,getService=service) {
     }
     return {status:200,headers,body};
   } catch(error) {
+    const explicitClear=req.params?.action==='logout' || req.params?.action==='session' && (req.query?.restore==='1' || req.query?.restore===1);
+    if(error instanceof ApiError && error.status===401 && explicitClear)headers['Set-Cookie']=`${COOKIE}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
     if(error instanceof ApiError && error.status===429)headers['Retry-After']='60';
     return {status:error instanceof ApiError?error.status:503,headers,body:{error:error instanceof ApiError?error.message:'The score service is unavailable. Please retry shortly.'}};
   }

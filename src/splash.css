@@ -104,3 +104,6 @@
   .splash-settings { transition: none; }
   .splash-settings:hover, .splash-settings:active { scale: none; }
 }
+
+.challenge-banner{position:absolute;z-index:3;width:125%;padding:.5em .8em;background:rgba(241,244,249,.9);color:#00126b;transform:rotate(-12deg);border-block:2px solid #00126b;text-align:center;--text-size:clamp(14px,2.5svh,32px);pointer-events:none}
+.challenge-button:disabled{cursor:default;transform:none}

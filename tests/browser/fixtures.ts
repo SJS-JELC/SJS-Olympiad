@@ -73,7 +73,7 @@ export const test = base.extend<Options & {
                 const response = await handle({ method: route.request().method(), params: { action }, query: Object.fromEntries(url.searchParams), headers: { ...route.request().headers(), origin: 'https://olympiad.masters-of-chemistry.app', ...(api.token ? { cookie: '__Host-olympiad-session=' + api.token } : {}) }, body, rawBody: route.request().postData() ?? undefined }, () => service);
                 const cookie = response.headers['Set-Cookie'];
                 if (cookie)
-                    api.token = /__Host-olympiad-session=([a-f0-9]+)/.exec(cookie)?.[1] ?? null;
+                    api.token = /__Host-olympiad-session=([a-zA-Z0-9._-]+)/.exec(cookie)?.[1] ?? null;
                 if (api.lostResponses.delete(action)) {
                     await route.abort('failed');
                     return;
@@ -83,14 +83,23 @@ export const test = base.extend<Options & {
             await use(api);
         }, { auto: true }],
 });
-export async function claimAndStart(page: Page) {
-    await page.getByRole('button', { name: 'Claim team', exact: true }).click();
+export async function loginCompetitor(page: Page, draftId?: string) {
+    await expect(page.getByLabel('Competitor code')).toBeVisible();
+    await page.getByLabel('Competitor code').fill('1234');
+    await page.locator('form').filter({has:page.getByLabel('Competitor code',{exact:true})}).getByRole('button', { name:'GO',exact:true }).click();
+    if(draftId){await page.getByLabel('Draft event',{exact:true}).selectOption(draftId);await page.getByRole('button',{name:'Test draft',exact:true}).click();}
+    await expect(page.getByRole('button', {name:'LOCK IN',exact:true})).toBeVisible();
+    await page.locator('input[name=team]:not(:disabled)').first().check();
+}
+export async function claimAndStart(page: Page, draftId?: string) {
+    await loginCompetitor(page,draftId);
+    await page.getByRole('button', { name: 'LOCK IN', exact: true }).click();
     await page.getByRole('button', { name: 'GO', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Theoretical Challenge' })).toBeVisible();
 }
 export async function resumeCompetition(page: Page) {
     await page.getByLabel('Teacher code', { exact: true }).fill('5678');
-    await page.getByRole('button', { name: 'Verify teacher code' }).click();
+    await page.getByRole('button', { name: 'CONFIRM' }).click();
     await page.getByRole('button', { name: 'Resume competition' }).click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
 }

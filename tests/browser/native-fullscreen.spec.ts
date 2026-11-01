@@ -1,13 +1,14 @@
-import {test,expect} from './fixtures';
+import {test,expect,loginCompetitor} from './fixtures';
 
 const competitor=test.extend({accessRole:'competitor' as const});
 
 competitor('native fullscreen entry, exit and staff recovery preserve the server gate',async({page,api})=>{
   await page.goto('/');
+  await loginCompetitor(page);
   // This test deliberately uses Chromium's actual Fullscreen API, without the
   // deterministic event adapter used by interruption/race tests.
   expect(await page.evaluate(()=>HTMLElement.prototype.requestFullscreen.toString())).toContain('[native code]');
-  await page.getByRole('button',{name:'Claim team',exact:true}).click();
+  await page.getByRole('button',{name:'LOCK IN',exact:true}).click();
   await page.getByRole('button',{name:'GO',exact:true}).click();
   await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toBeVisible();
   expect(await page.evaluate(()=>document.fullscreenElement===document.documentElement)).toBe(true);
@@ -22,7 +23,7 @@ competitor('native fullscreen entry, exit and staff recovery preserve the server
   await expect(page.locator('.question-content')).toHaveCount(0);
   await expect.poll(async()=>(await api.service.session(api.token)).competition.status).toBe('LOCKED');
   await page.getByLabel('Teacher code',{exact:true}).fill('5678');
-  await page.getByRole('button',{name:'Verify teacher code',exact:true}).click();
+  await page.getByRole('button',{name:'CONFIRM',exact:true}).click();
   await expect(page.locator('.question-content')).toHaveCount(0);
   await page.getByRole('button',{name:'Resume competition',exact:true}).click();
   await expect(page.locator('.question-content')).toBeVisible();

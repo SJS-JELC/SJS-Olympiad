@@ -6,24 +6,27 @@ type Values = Partial<Record<PracticalField, string>>;
 const fromView = (view: PracticalView): Values => Object.fromEntries(Object.entries(view.responses).map(([key, value]) => [key, value?.text ?? '']));
 
 /** A single sequential queue. An uncertain response retries its original receipt ID. */
-export function usePractical(eventId: string, guard: () => Promise<boolean>, canEdit: () => boolean) {
+export function usePractical(eventId: string, canAccess: () => boolean, canEdit: () => boolean, handleMutationError: (error: { status?: number; message?: string }) => unknown, captureAuthority: () => (() => boolean) = () => () => true) {
   const [view, setView] = useState<PracticalView | null>(null), [values, setValues] = useState<Values>({});
   const [status, setStatus] = useState<'loading' | 'saved' | 'pending' | 'failed'>('loading'), [error, setError] = useState('');
   const state = useRef({ generation: 0, loadNonce: 0, loading: false, view: null as PracticalView | null, values: {} as Values, acknowledged: {} as Values, timer: 0, running: null as Promise<boolean> | null, receipt: null as { requestId: string; expectedRevision: number; changes: Partial<Record<PracticalField, string | null>> } | null });
-  const guardRef = useRef(guard); guardRef.current = guard;
+  const accessRef = useRef(canAccess); accessRef.current = canAccess;
+  const failureRef = useRef(handleMutationError); failureRef.current = handleMutationError;
+  const authorityRef = useRef(captureAuthority); authorityRef.current = captureAuthority;
   const canEditRef = useRef(canEdit); canEditRef.current = canEdit;
   const load = async () => {
     const current = state.current, generation = current.generation, nonce = ++current.loadNonce;
+    const hasAuthority = authorityRef.current();
     const latest = () => state.current === current && current.generation === generation && current.loadNonce === nonce;
     current.loading = true; window.clearTimeout(current.timer);
     setStatus('loading'); setError('');
     try {
-      if (!await guardRef.current()) throw new Error('The session could not be verified.');
+      if (!accessRef.current()) throw new Error('The session is not available.');
       const next = await request<PracticalView>('practical', { eventId });
       if (!latest()) return;
       current.view = next; current.values = fromView(next); current.acknowledged = { ...current.values };
       setView(next); setValues({ ...current.values }); setStatus('saved');
-    } catch (error) { if (latest()) { setStatus('failed'); setError(error instanceof Error ? error.message : 'Practical responses could not be loaded.'); } }
+    } catch (error) { if (latest()) { if (hasAuthority()) failureRef.current(error as { status?: number; message?: string }); setStatus('failed'); setError(error instanceof Error ? error.message : 'Practical responses could not be loaded.'); } }
     finally { if (latest()) current.loading = false; }
   };
   useEffect(() => {
@@ -48,9 +51,10 @@ export function usePractical(eventId: string, guard: () => Promise<boolean>, can
     if (!canEditRef.current()) return false;
     const generation = current.generation;
     current.running = (async () => {
+      const hasAuthority = authorityRef.current();
       setStatus('pending'); setError('');
       try {
-        if (!await guardRef.current() || !canEditRef.current()) throw new Error('The session or practical window could not be verified. Your changes have not been saved.');
+        if (!accessRef.current() || !canEditRef.current()) throw new Error('The session or practical window is not available. Your changes have not been saved.');
         current.receipt ??= { requestId: crypto.randomUUID(), expectedRevision: current.view!.revision, changes: pending };
         const receipt = current.receipt;
         const next = await request<PracticalView>('practical-save', { eventId, ...receipt });
@@ -59,7 +63,7 @@ export function usePractical(eventId: string, guard: () => Promise<boolean>, can
         for (const [key, text] of Object.entries(receipt.changes)) current.acknowledged[key as PracticalField] = text ?? '';
         current.view = next; current.receipt = null; setView(next); setStatus('saved'); return true;
       } catch (error) {
-        if (state.current === current && generation === current.generation) { setStatus('failed'); setError(error instanceof Error ? error.message : 'Your changes have not been saved.'); }
+        if (state.current === current && generation === current.generation) { if (hasAuthority()) failureRef.current(error as { status?: number; message?: string }); setStatus('failed'); setError(error instanceof Error ? error.message : 'Your changes have not been saved.'); }
         return false;
       } finally { current.running = null; }
     })();

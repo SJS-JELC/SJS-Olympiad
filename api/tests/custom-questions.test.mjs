@@ -45,11 +45,11 @@ test('five server-marked names award once with no future public names',()=>{
 });
 test('GC load precedes run, captures immutable concentrations and keeps eight compact snapshots',()=>{
   let result=act('U5P5',initial(),{type:'gc-enter'},0);
-  result=act('U5P5',result,{type:'gc-run',sample:'mystery'},0);assert.equal(result.state.interaction.activeRun,null);
+  result=act('U5P5',result,{type:'gc-run'},0);assert.equal(result.state.interaction.activeRun,null);
   for(let index=0;index<9;index++) {
     result=act('U5P5',result,{type:'gc-dilute',sample:'citrus',value:25.5},index*7000);
     result=act('U5P5',result,{type:'gc-load',sample:'citrus'},index*7000);
-    result=act('U5P5',result,{type:'gc-run',sample:'mystery',now:-999},index*7000);
+    result=act('U5P5',result,{type:'gc-run',now:-999},index*7000);
     assert.equal(result.state.interaction.activeRun.deadline,index*7000+6000);
     result=act('U5P5',result,{type:'gc-dilute',sample:'citrus',value:80},index*7000+1);
     result=act('U5P5',result,{type:'tick'},index*7000+6000);
@@ -74,7 +74,7 @@ test('GC load preserves click-time dilution through newer drafts and validates s
     result=act('U5P5',result,{type:'gc-load',sample:'citrus',concentration},4);
     assert.equal(result.state.interaction.loaded.concentration,20);
   }
-  result=act('U5P5',result,{type:'gc-run',sample:'citrus'},5);
+  result=act('U5P5',result,{type:'gc-run'},5);
   assert.equal(result.state.interaction.activeRun.concentration,20);
   result=act('U5P5',result,{type:'tick'},6005);
   assert.equal(result.state.interaction.results[0].concentration,20);

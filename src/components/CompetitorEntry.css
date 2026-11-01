@@ -1,0 +1,38 @@
+.competitor-setup { min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:48px 5vw 30px; }
+.competitor-setup__pane { position:relative;width:min(900px,90vw);padding:32px 40px;background:rgba(244,247,250,.97);color:#202733;border:2px solid #2d2832;border-radius:18px;text-align:center;box-shadow:0 12px 35px #16385425; }
+.competitor-setup__pane h1 { margin:0 32px 28px;--text-size:clamp(28px,4svh,44px); }
+.competitor-setup__pane form { display:grid;justify-items:center;gap:22px; }
+.competitor-setup__pane select { padding:12px;border:1px solid #73829b;border-radius:8px;max-width:100%; }
+.team-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:100%;max-height:32svh;overflow:auto;border:0;padding:18px;margin:0; }
+.team-tile { position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:92px;padding:16px 12px;border:2px solid #a2aab5;border-radius:12px;background:#fff;cursor:pointer;overflow-wrap:anywhere;--text-size:clamp(17px,2.5svh,25px); }
+.team-tile input { position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:inherit;margin:0; }
+.team-tile:not(.team-tile--claimed):hover { box-shadow:0 0 7px #ff14e270,0 0 14px #ff14e240; }
+.team-tile--selected { border-color:transparent;background:#ff14e2;color:#fff;box-shadow:0 0 7px #ff14e270,0 0 14px #ff14e240; }
+.team-tile:focus-within { outline:none;box-shadow:0 0 7px #ff14e290,0 0 14px #ff14e250; }
+.team-tile--claimed { color:#79818b;background:#e5e8ec;border-color:#ccd1d8;cursor:default; }
+
+.team-tile__status { --text-size:14px; }
+.team-refresh { position:absolute;top:18px;right:18px;display:grid;place-items:center;width:42px;height:42px;padding:9px;color:#45505e;border:1px solid #c6ced8;border-radius:9px;background:#f8fafc;cursor:pointer; }
+.team-refresh svg { width:100%;height:100%; }
+.team-refresh:hover { background:#dfe6ee; }
+.setup-action { display:grid;place-items:center;min-width:210px;min-height:64px;padding:12px 24px;border:1px solid #0c1119;border-radius:10px;background:#303742;color:#fff;box-shadow:0 4px 6px #0b21394d,inset 0 1px 0 #ffffff35;cursor:pointer;--text-size:26px; }
+.setup-action:hover:not(:disabled) {background:#414b59;}
+.setup-action:disabled {opacity:.5;cursor:default;}
+.setup-action:active:not(:disabled) {background:#252c36;box-shadow:inset 0 2px 4px #0005;}
+.setup-action:focus-visible,.team-refresh:focus-visible {outline:3px solid #b18b3a;outline-offset:4px;}
+.competitor-rules { width:min(1000px,90vw);padding:28px 40px;--text-size:clamp(21px,3svh,32px);--text-leading:1.5; }
+.competitor-rules p {margin:16px auto;max-width:32em;}
+.competitor-rules__lead {--text-size:clamp(25px,3.6svh,38px);}
+.competitor-rules__ready {color:#4b5969;}
+.setup-go { min-width:180px;min-height:76px;margin:24px auto 0;--text-size:38px; }
+.setup-error {color:#a62525;margin:22px 0 0;}
+.competitor-team-pill {position:fixed;z-index:12;top:1.2svh;right:2vw;max-width:min(34vw,420px);display:flex;align-items:center;gap:10px;padding:8px 18px;border:1px solid #ffffff50;border-radius:999px;background:#252c36;color:#fff;box-shadow:0 4px 14px #16385435;pointer-events:none;--text-size:clamp(14px,2svh,22px);}
+.competitor-team-pill__name {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.competitor-team-pill__practice {color:#ffe39b;--text-size:14px;}
+.competition-page--competitor .theory-navigation {top:max(64px,7svh);}
+@media (max-width:800px) {.team-grid {grid-template-columns:repeat(2,minmax(0,1fr));}.competitor-setup__pane,.competitor-rules {padding:24px;}}
+
+.competitor-setup > .competitor-setup__logo {width:min(42vw,42svh);height:26svh;flex-shrink:0;}
+
+.team-tile--claimed .team-tile__name { text-decoration:line-through; }
+

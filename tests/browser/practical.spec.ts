@@ -1,4 +1,4 @@
-import { test, expect, claimAndStart, resumeCompetition, type ApiHarness } from './fixtures';
+import { test, expect, claimAndStart, loginCompetitor, type ApiHarness } from './fixtures';
 import { mockFullscreen } from './fullscreen';
 
 async function schedule(api: ApiHarness, startsIn = -60000, endsIn = 3600000) {
@@ -10,7 +10,7 @@ for (const [year, title, count] of [['L5','FLOATY',4],['L6','MOHR CRISPS',2],['U
   test(`${year} teacher practical is local-only and navigates without the service`, async ({ page, api }) => {
     await page.clock.install();
     await page.goto('/?settings');
-    await page.getByRole('button', { name: 'Questions Preview', exact: true }).click();
+    await page.getByRole('button', { name: 'Preview Questions', exact: true }).click();
     await page.getByRole('button', { name: `${year} practical: ${title}`, exact: true }).click();
     await expect(page.getByRole('heading', { level: 1 })).toContainText(title);
     await expect(page.locator('.practical-responses input')).toHaveCount(count);
@@ -69,17 +69,19 @@ for (const viewport of [{width:1200,height:800},{width:1920,height:1080},{width:
 
 const competitor = test.extend({ accessRole:'competitor' as const });
 competitor('GO and practical countdown gate content; autosave flushes, clears and restores only acknowledged precision', async ({ page, api }) => {
-  await page.clock.install(); await schedule(api, 60000); await mockFullscreen(page); await page.goto('/?practical');
+  await page.clock.install(); await schedule(api, 60000); await mockFullscreen(page); await page.goto('/?practical'); await loginCompetitor(page);
   await expect(page.locator('.practical-protocol')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Claim team', exact: true }).click();
+  await page.getByRole('button', { name: 'LOCK IN', exact: true }).click();
   await expect(page.getByRole('button', { name: 'GO', exact: true })).toBeVisible();
   await expect(page.locator('.practical-protocol')).toHaveCount(0);
   await page.getByRole('button', { name: 'GO', exact: true }).click();
+  await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
   await expect(page.getByRole('heading', { name: /Practical opens in/ })).toBeVisible();
   expect(api.requests.some(item=>item.action==='practical')).toBe(false);
-  await schedule(api); await page.evaluate(async()=>{ await fetch('/api/olympiad/session'); });
-  // Session polling updates the independent practical schedule.
-  await page.clock.fastForward(15000);
+  // The already-known opening time advances locally, with no session poll.
+  const sessionReads=api.requests.filter(request=>request.action==='session').length;
+  await page.clock.fastForward(61000);
+  expect(api.requests.filter(request=>request.action==='session')).toHaveLength(sessionReads);
   await expect(page.locator('.practical-responses input')).toHaveCount(2, {timeout:20000});
   await page.locator('#practical-numPracticalResponse3').fill('2.500e1');
   await page.locator('#practical-numPracticalResponse4').fill('0');
@@ -92,8 +94,9 @@ competitor('GO and practical countdown gate content; autosave flushes, clears an
   await page.locator('#practical-numPracticalResponse3').fill('');
   await page.locator('#practical-numPracticalResponse3').blur();
   await expect.poll(()=>api.requests.filter(item=>item.action==='practical-save').at(-1)?.body.changes.numPracticalResponse3).toBe(null);
-  await page.reload(); await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.locator('.practical-protocol')).toHaveCount(0); await resumeCompetition(page);
+  const previous=(await api.service.session(api.token)).team;await page.reload();await expect(page.getByLabel('Competitor code')).toBeVisible();await expect(page.locator('.practical-protocol')).toHaveCount(0);
+  const staff=await api.service.login({role:'teacher',code:'5678'});await api.service.teamRelease(staff.token,{eventId:previous.eventId,teamId:previous.id,confirm:true});
+  await claimAndStart(page);await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
   await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('0');
 });
 
@@ -118,12 +121,11 @@ competitor('invalid input stays local and failed saves block navigation until an
 });
 
 competitor('practical closes read-only without a breach and retains its final result',async({page,api})=>{
-  await page.clock.install(); await schedule(api); await mockFullscreen(page); await page.goto('/'); await claimAndStart(page); await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
+  await page.clock.install(); await schedule(api,-60000,20000); await mockFullscreen(page); await page.goto('/'); await claimAndStart(page); await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
   await page.locator('#practical-numPracticalResponse4').fill('1.50'); await page.locator('#practical-numPracticalResponse4').blur();
   await expect(page.getByText('Saved',{exact:true})).toBeVisible();
   await page.locator('#practical-numPracticalResponse3').fill('1e-'); await page.locator('#practical-numPracticalResponse3').blur();
-  await schedule(api,-120000,-1000);
-  await page.clock.fastForward(15000);
+  await page.clock.fastForward(20001);
   await expect(page.locator('#practical-numPracticalResponse4')).toBeDisabled({timeout:20000});
   await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('1.50'); await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('button',{name:'Discard unsaved changes and reload',exact:true}).click();
@@ -144,13 +146,17 @@ test('teacher team result distinguishes intermediate work, zero final and comple
   await page.reload(); await expect(row.getByText('0.000 g',{exact:true})).toBeVisible(); await expect(page.getByText('This event is complete. Results are read-only.')).toBeVisible(); await expect(row.getByRole('button',{name:/Allow reselection/})).toBeDisabled();
 });
 
-competitor('a practical loaded closed reopens and actually saves when staff extend its deadline', async ({ page, api }) => {
+competitor('a fresh authorized entry loads a staff-extended practical deadline and saves', async ({ page, api }) => {
   await page.clock.install(); await schedule(api, -120000, -1000); await mockFullscreen(page);
   await page.goto('/'); await claimAndStart(page); await page.getByRole('button', { name: 'Practical challenge', exact: true }).click();
   const input = page.locator('#practical-numPracticalResponse4');
   await expect(input).toBeDisabled();
   expect((await api.service.practical(api.token)).readOnly).toBe(true);
-  await schedule(api); await page.clock.fastForward(15000);
+  const previous=(await api.service.session(api.token)).team;await schedule(api);
+  await page.clock.fastForward(15000);await expect(input).toBeDisabled();
+  await page.reload();await expect(page.getByLabel('Competitor code')).toBeVisible();
+  const staff=await api.service.login({role:'teacher',code:'5678'});await api.service.teamRelease(staff.token,{eventId:previous.eventId,teamId:previous.id,confirm:true});
+  await claimAndStart(page);await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
   await expect(input).toBeEnabled();
   await input.fill('1.2500'); await input.blur();
   await expect(page.getByText('Saved', { exact: true })).toBeVisible();
@@ -158,11 +164,11 @@ competitor('a practical loaded closed reopens and actually saves when staff exte
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 
-test('held practical reloads disable edits and an older read cannot overwrite edits after the latest read', async ({ page, api }) => {
-  await page.goto('/?practical&catalogue&year=L6');
+competitor('held practical reloads disable edits and an older read cannot overwrite edits after the latest read', async ({ page, api }) => {
+  await schedule(api);await mockFullscreen(page);await page.goto('/');await claimAndStart(page);await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
   const input = page.locator('#practical-numPracticalResponse4');
   await input.fill('1.00'); await input.blur();
-  await expect.poll(async () => (await api.service.practical(api.token, { eventId: 'catalogue-L6' })).responses.numPracticalResponse4?.text).toBe('1.00');
+  await expect.poll(async () => (await api.service.practical(api.token)).responses.numPracticalResponse4?.text).toBe('1.00');
   api.fail.add('practical-save'); await input.fill('2.00'); await input.blur();
   await expect(page.getByRole('button', { name: 'Retry save', exact: true })).toBeVisible();
   let reads = 0;
@@ -181,7 +187,7 @@ test('held practical reloads disable edits and an older read cannot overwrite ed
   releases[1]();
   await expect(input).toBeEnabled(); await expect(input).toHaveValue('1.00');
   api.fail.delete('practical-save'); await input.fill('3.00'); await input.blur();
-  await expect.poll(async () => (await api.service.practical(api.token, { eventId: 'catalogue-L6' })).responses.numPracticalResponse4?.text).toBe('3.00');
+  await expect.poll(async () => (await api.service.practical(api.token)).responses.numPracticalResponse4?.text).toBe('3.00');
   const olderResponse = page.waitForResponse(response => response.url().endsWith('/api/olympiad/practical'));
   releases[0](); await olderResponse;
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));

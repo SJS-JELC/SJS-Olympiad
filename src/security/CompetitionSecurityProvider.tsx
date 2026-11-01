@@ -27,7 +27,6 @@ export function CompetitionSecurityProvider({ children, controller: supplied }: 
     const pageshow = (event: PageTransitionEvent) => { if (event.persisted) lock('SESSION_INTERRUPTED'); };
     const storage = () => flushSync(() => controller.externalChange());
     const offline = () => lock('SESSION_INTERRUPTED');
-    const poll = window.setInterval(() => { void controller.refresh(); }, 15000);
     const boundary = window.setInterval(() => flushSync(()=>controller.checkBoundary()),250);
     document.addEventListener('visibilitychange', visibility);
     document.addEventListener('fullscreenchange', fullscreen);
@@ -49,7 +48,6 @@ export function CompetitionSecurityProvider({ children, controller: supplied }: 
       window.removeEventListener('pageshow', pageshow);
       window.removeEventListener('storage', storage);
       window.removeEventListener('offline', offline);
-      window.clearInterval(poll);
       window.clearInterval(boundary);
     };
   }, [controller]);
@@ -62,6 +60,6 @@ export function useCompetitionSecurity() {
   const start = () => { breachSiren.prepare(); return controller.start(); };
   const resume = () => { breachSiren.prepare(); return controller.resume(); };
   return { ...view, start, resume, unlock: controller.unlock,
-    login:controller.login, claim:controller.claim, refresh:controller.refresh, guard:controller.guard, guardTheory:controller.guardTheory, guardPractical:controller.guardPractical, update:controller.update, recordQuestion:controller.recordQuestion, canAccess:controller.canAccess, canAccessTheory:controller.canAccessTheory, canAccessPractical:controller.canAccessPractical, serverNow:controller.serverNow,
+    login:controller.login, chooseDraft:controller.chooseDraft, claim:controller.claim, refresh:controller.refresh, guard:controller.guard, guardTheory:controller.guardTheory, guardPractical:controller.guardPractical, captureAuthority:controller.captureAuthority, handleMutationError:controller.handleMutationError, update:controller.update, recordQuestion:controller.recordQuestion, canAccess:controller.canAccess, canAccessTheory:controller.canAccessTheory, canAccessPractical:controller.canAccessPractical, serverNow:controller.serverNow,
     failClosed:()=>flushSync(()=>controller.interrupt('SESSION_INTERRUPTED')) };
 }

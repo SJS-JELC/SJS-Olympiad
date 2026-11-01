@@ -4,6 +4,7 @@ import type { Attempt } from '../questions/attempts';
 import { eventTiming, theoryPhase, practicalPhase } from '../events/timing';
 const initial = (): SecurityView => ({ session: { status: 'NOT_STARTED', eventCount: 0 }, events: [], phase: 'loading', error: null, storageHealthy: true, server: null, recoveryReady: false });
 type Transport = typeof request;
+const authorityIdentity = (server: SessionState | null) => server ? [server.role,server.expiresAt,server.activeEvent?.id,server.team?.eventId,server.team?.id,server.team?.claimGeneration].join('|') : '';
 /** The server cookie is the authority. Browser state only makes access more restrictive. */
 export class SecurityController {
     private view = initial();
@@ -17,14 +18,27 @@ export class SecurityController {
     private scheduleState = '';
     constructor(private transport: Transport = request) { }
     getSnapshot = () => this.view;
+    captureAuthority = () => {
+        const generation=this.generation,identity=authorityIdentity(this.view.server);
+        return () => generation===this.generation && identity===authorityIdentity(this.view.server);
+    };
     subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
-    private publish(next: SecurityView) { this.view = next; this.listeners.forEach(fn => fn()); }
+    private publish(next: SecurityView) {
+        // A late lock response must not restart the dialog/alarm after all play ends.
+        if (next.server?.role === 'competitor' && this.eventClosed(next.server) && next.session.status === 'LOCKED') {
+            this.generation++; this.grant = null;
+            next = {...next, session:{...next.session,status:'NOT_STARTED'},phase:'idle',recoveryReady:false,error:null};
+        }
+        this.view = next; this.listeners.forEach(fn => fn());
+    }
     private event(type: SecurityEventType) { return { id: crypto.randomUUID(), type, at: new Date().toISOString() }; }
     private valid(token: number) { return token === this.generation && (this.view.phase==='entering'||this.view.phase==='unlocking') && !document.hidden && document.hasFocus() && document.fullscreenElement === document.documentElement; }
     private error(error: unknown) { return error instanceof Error ? error.message : 'The competition service is unavailable.'; }
     private accept(server: SessionState, allowActive = false) {
         if (!server || !['teacher', 'competitor'].includes(server.role) || !Number.isFinite(server.serverNow) || !Number.isFinite(server.expiresAt) || server.expiresAt <= server.serverNow || !server.competition || !['NOT_STARTED', 'ACTIVE', 'LOCKED'].includes(server.competition.status))
             throw new Error('The server session could not be verified.');
+        if(server.role==='competitor' && authorityIdentity(server)===authorityIdentity(this.view.server))
+            server={...server,score:Math.max(server.score,this.view.server!.score)};
         this.clockDelta = Date.now() - server.serverNow;
         const competitor = server.role === 'competitor';
         let status = competitor ? server.competition.status : 'NOT_STARTED';
@@ -35,12 +49,12 @@ export class SecurityController {
         this.publish({ ...this.view, server, session: { ...this.view.session, status, eventCount: this.view.events.length }, phase: 'idle', storageHealthy: true, error: null });
     }
     private acknowledgeBreach(server: SessionState) {
-        if (this.view.session.status === 'LOCKED' && server.competition.epoch >= (this.view.server?.competition.epoch ?? 0))
-            this.publish({ ...this.view, server });
+        if (this.view.session.status === 'LOCKED' && authorityIdentity(server)===authorityIdentity(this.view.server) && server.competition.epoch >= (this.view.server?.competition.epoch ?? 0))
+            this.publish({ ...this.view, server:{...server,score:Math.max(server.score,this.view.server!.score)} });
     }
     private async restoreLock(token:number){
         try{
-            const server=await this.transport<SessionState>('session?restore=1');
+            const server=await this.transport<SessionState>('session?interrupt=1');
             if(token===this.generation)this.accept(server);
         }catch(error){
             if(token!==this.generation)return;
@@ -52,10 +66,10 @@ export class SecurityController {
     private async restore() {
         const token = ++this.generation;
         try {
-            const server = await this.transport<SessionState>('session?restore=1');
+            await this.transport<SessionState>('session?restore=1');
             if (token !== this.generation)
                 return;
-            this.accept(server);
+            this.publish({ ...initial(), phase: 'idle' });
         }
         catch (error) {
             if (token !== this.generation)
@@ -67,8 +81,9 @@ export class SecurityController {
         }
     }
     login = async (code: string, role: 'competitor' | 'teacher' = 'competitor') => {
-        if (this.view.phase !== 'idle')
-            return;
+        await this.initialize();
+        if (!this.view.storageHealthy) { this.initialized = undefined; await this.initialize(); }
+        if (this.view.phase !== 'idle' || !this.view.storageHealthy) return;
         const token = ++this.generation;
         this.publish({ ...this.view, phase: 'loading', error: null });
         try {
@@ -121,13 +136,17 @@ export class SecurityController {
     private eventClosed(server: SessionState) { const event = server.activeEvent; return !event || event.status !== 'active' || this.serverNow() >= eventTiming(event).endsAt; }
     private closeEvent() {
         this.generation++; this.grant = null;
-        this.publish({ ...this.view, session: { ...this.view.session, status: 'NOT_STARTED' }, phase: 'idle', recoveryReady: false });
+        this.publish({ ...this.view, session: { ...this.view.session, status: 'NOT_STARTED' }, phase: 'idle', recoveryReady: false, error: null });
     }
     serverNow = () => Date.now() - this.clockDelta;
     canAccessTheory = () => this.canAccess() && (this.view.server?.role === 'teacher' || theoryPhase(this.view.server?.activeEvent, this.serverNow()) === 'open');
     canAccessPractical = () => this.canAccess() && (this.view.server?.role === 'teacher' || practicalPhase(this.view.server?.activeEvent, this.serverNow()) === 'open');
     canAccess = () => this.view.storageHealthy && this.view.phase === 'idle' && !!this.view.server && Date.now() < this.view.server.expiresAt + this.clockDelta && (this.view.server.role === 'teacher' || (this.view.session.status === 'ACTIVE' && this.view.server.competition.status === 'ACTIVE' && this.eventActive(this.view.server) && document.fullscreenElement === document.documentElement));
     checkBoundary = () => {
+        if (this.view.server && this.serverNow() >= this.view.server.expiresAt) {
+            this.handleMutationError({status:401,message:'Your session has expired. Sign in again.'});
+            return;
+        }
         if (this.view.server?.role !== 'competitor') return;
         if (this.eventClosed(this.view.server) && (this.view.session.status !== 'NOT_STARTED' || this.view.phase === 'entering' || this.view.phase === 'unlocking')) {
             // A scheduled/manual end is not a competition-mode breach.
@@ -139,13 +158,31 @@ export class SecurityController {
             this.publish({ ...this.view });
         }
     };
-    guard = async () => { if (!this.canAccess())
-        return false; return this.refresh(); };
-    guardTheory = async () => this.canAccessTheory() && await this.refresh() && this.canAccessTheory();
-    guardPractical = async () => this.canAccessPractical() && await this.refresh() && this.canAccessPractical();
+    guard = async () => this.canAccess();
+    guardTheory = async () => this.canAccessTheory();
+    guardPractical = async () => this.canAccessPractical();
+    handleMutationError = (error: { status?: number; message?: string } | unknown) => {
+        const failure = error as {status?:number;message?:string} | null;
+        if (!failure || ![401,403,423].includes(failure.status ?? 0)) return false;
+        this.generation++; this.grant=null;
+        if(failure.status===423 && this.view.server?.role==='competitor') {
+            this.publish({...this.view,session:{...this.view.session,status:'LOCKED'},phase:'idle',recoveryReady:false,error:failure.message ?? 'Competition mode is locked.'});
+        } else this.publish({...initial(),phase:'idle',error:failure.message ?? 'Sign in to continue.'});
+        return true;
+    };
+    chooseDraft = async (eventId: string) => {
+        if(this.view.phase!=='idle')return;
+        const current=this.captureAuthority();this.publish({...this.view,phase:'loading',error:null});
+        try {const server=await this.transport<SessionState>('practice-start',{eventId});if(current())this.accept(server);}
+        catch(error){if(current())this.publish({...this.view,phase:'idle',error:this.error(error)});}
+    };
     claim = async (teamId: string) => {
-        const server = await this.transport<SessionState>('claim', { teamId, requestId: crypto.randomUUID() });
-        this.accept(server);
+        const current=this.captureAuthority();
+        try {
+            const server = await this.transport<SessionState>('claim', { teamId, requestId: crypto.randomUUID() });
+            if(!current())return;
+            this.accept(server);
+        } catch(error) { if(!current())return;this.handleMutationError(error);throw error; }
     };
     start = async () => {
         if (this.view.phase !== 'idle' || this.view.server?.role !== 'competitor' || !this.view.server.team || this.view.session.status !== 'NOT_STARTED')
@@ -167,6 +204,7 @@ export class SecurityController {
         }
         catch (error) {
             if (token === this.generation){
+                if(this.handleMutationError(error))return;
                 if(this.activationSent){
                     const event=this.event('SESSION_INTERRUPTED'),events=[...this.view.events,event];
                     this.publish({...this.view,session:{...this.view.session,status:'LOCKED',lockedAt:event.at,lockReason:event.type,eventCount:events.length},events,phase:'unlocking',recoveryReady:false,error:'The start result was not confirmed.'});
@@ -189,10 +227,11 @@ export class SecurityController {
         }
         const event = this.event(reason), events = [...this.view.events, event];
         this.publish({ ...this.view, session: { ...this.view.session, status: 'LOCKED', lockedAt: event.at, lockReason: reason, eventCount: events.length }, events, phase: 'idle', recoveryReady: false });
+        const reportedGeneration=this.generation;
         void this.transport<SessionState>('breach', { epoch: this.view.server!.competition.epoch, reason, requestId: event.id }).then(server => {
             // Report acknowledgements never activate content.
             this.acknowledgeBreach(server);
-        }).catch(() => { this.publish({ ...this.view, storageHealthy: false, error: 'Connection lost. Staff recovery is required.' }); });
+        }).catch(error => { if(reportedGeneration!==this.generation)return; if(!this.handleMutationError(error))this.publish({ ...this.view, storageHealthy: false, error: 'Connection lost. Staff recovery is required.' }); });
     };
     externalChange = (_incoming?: string | null) => this.interrupt('CROSS_TAB_CONFLICT');
     unlock = async (code: string) => {
@@ -201,7 +240,7 @@ export class SecurityController {
         const token = ++this.generation;
         this.publish({ ...this.view, phase: 'unlocking', error: null, recoveryReady: false });
         try {
-            const server=await this.transport<SessionState>('session?restore=1');
+            const server=await this.transport<SessionState>('session?interrupt=1');
             if(token!==this.generation)return;
             this.accept(server);
             if(server.competition.status==='NOT_STARTED')return;
@@ -215,8 +254,10 @@ export class SecurityController {
             this.publish({ ...this.view, phase: 'idle', storageHealthy: true, recoveryReady: true });
         }
         catch (error) {
-            if (token === this.generation)
+            if (token === this.generation) {
+                if(error instanceof HttpError && error.status===401){this.handleMutationError(error);return;}
                 this.publish({ ...this.view, phase: 'idle', error: this.error(error) });
+            }
         }
     };
     resume = async () => {
@@ -241,6 +282,7 @@ export class SecurityController {
         }
         catch (error) {
             if (token === this.generation){
+                if(error instanceof HttpError && error.status===401){this.handleMutationError(error);return;}
                 this.grant=null;
                 this.publish({ ...this.view, phase: resumeSent?'unlocking':'idle', recoveryReady: false, error: this.error(error) });
                 if(resumeSent)await this.restoreLock(token);
@@ -255,6 +297,6 @@ export class SecurityController {
     recordQuestion = (id: string, attempt: Attempt, score: number) => {
         if (!this.view.server)
             return;
-        this.publish({ ...this.view, server: { ...this.view.server, score: this.view.server.role === 'competitor' ? score : 0, attempts: { ...this.view.server.attempts, [id]: attempt } } });
+        this.publish({ ...this.view, server: { ...this.view.server, score: this.view.server.role === 'competitor' ? Math.max(score,this.view.server.score) : 0, attempts: { ...this.view.server.attempts, [id]: attempt } } });
     };
 }

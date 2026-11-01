@@ -1,46 +1,88 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCompetitionSecurity } from '../security';
 import { request, type TeamRecord } from '../cloud/api';
+import { CodePanels } from './CodePanels';
 import { OlympiadLogo } from './OlympiadLogo';
-import { eventTiming, londonDateValue } from '../events/timing';
+import './CompetitorEntry.css';
+import { eventTiming } from '../events/timing';
 export function AccessGate() {
     const security = useCompetitionSecurity();
-    const [role, setRole] = useState<'competitor' | 'teacher'>('competitor'), [code, setCode] = useState('');
-    return <main className="access-page"><OlympiadLogo /><section className="access-card type-body"><h1 className="type-heading">Chemistry Olympiad</h1>
-    {security.phase === 'loading' ? <p role="status">Restoring session…</p> : <form onSubmit={event => { event.preventDefault(); const entered = code; setCode(''); void security.login(entered, role); }}>
-      <label className="type-label" htmlFor="access-role">Access</label><select id="access-role" value={role} onChange={event => setRole(event.target.value as typeof role)}><option value="competitor">Competitor</option><option value="teacher">Teacher</option></select>
-      <label className="type-label" htmlFor="access-code">{role === 'teacher' ? 'Teacher code' : 'Competitor code'}</label><input id="access-code" type="password" autoComplete="off" value={code} onChange={event => setCode(event.target.value)} maxLength={128}/><button type="submit" disabled={!code.trim()}>Enter Olympiad</button>
-    </form>}{security.error && <p role="alert">{security.error}</p>}</section></main>;
+    const [codes, setCodes] = useState({teacher:'',competitor:''});
+    const [busy, setBusy] = useState(false);
+    return <main className="access-page"><OlympiadLogo /><section className="access-card access-entry-card type-body" aria-label="Choose teacher or competitor">
+      <div className="access-options">{(['teacher','competitor'] as const).map(role => <form key={role} onSubmit={async event => {
+        event.preventDefault(); if(busy)return; setBusy(true); const code=codes[role];setCodes({teacher:'',competitor:''});
+        try { await security.login(code,role); } finally {setBusy(false);}
+      }}><h2 className="type-heading">{role==='teacher'?'TEACHER':'COMPETITOR'}</h2>
+      <CodePanels id={'access-'+role} label={role==='teacher'?'Teacher code':'Competitor code'} value={codes[role]} onChange={value=>setCodes({...codes,[role]:value})} disabled={busy}/>
+      <button className="access-go type-heading" type="submit" disabled={busy || !codes[role].trim()}><span>{busy?'...':'GO'}</span></button></form>)}</div>
+      {security.error && <p role="alert">{security.error}</p>}</section></main>;
+
 }
 export function CompetitorEntry() {
     const security = useCompetitionSecurity(), event = security.server?.activeEvent;
     const [teams, setTeams] = useState<TeamRecord[]>([]), [teamId, setTeamId] = useState(''), [message, setMessage] = useState(''), [busy, setBusy] = useState(false);
-    async function load() { try {
+    const [draftId,setDraftId]=useState('');
+    const drafts=security.server?.draftEvents ?? [];
+    const chosenDraft=drafts.some(draft=>draft.id===draftId)?draftId:drafts[0]?.id ?? '';
+    const [loading,setLoading]=useState(true);
+    const loadGeneration=useRef(0);
+    async function load(clearMessage=true) { setLoading(true);const authority=security.captureAuthority(),generation=++loadGeneration.current;const current=()=>authority() && generation===loadGeneration.current;try {
         const result = await request<{
             teams: TeamRecord[];
         }>('teams');
+        if(!current())return;
         setTeams(result.teams);
-        setTeamId(previous => result.teams.some(team => team.id === previous) ? previous : result.teams[0]?.id ?? '');
-        setMessage('');
+        setTeamId(previous => result.teams.some(team => team.id === previous && !team.claimed) ? previous : '');
+        if(clearMessage)setMessage('');
     }
     catch (error) {
+        if(!current())return;
+        security.handleMutationError(error);
         setMessage(error instanceof Error ? error.message : 'Teams are unavailable.');
-    } }
+    } finally {if(current())setLoading(false);} }
     useEffect(() => { if (!security.server?.team && event)
-        void load(); }, [event?.id, security.server?.team?.id]);
-    async function claim() { setBusy(true); try {
+        void load(); return ()=>{loadGeneration.current++;}; }, [event?.id, security.server?.team?.id]);
+    async function claim() { if(busy || loading || !teams.some(team=>team.id===teamId && !team.claimed))return;const current=security.captureAuthority();setMessage('');setBusy(true); try {
         await security.claim(teamId);
     }
     catch (error) {
+        if(!current())return;
         setMessage(error instanceof Error ? error.message : 'Team could not be claimed.');
-        void load();
+        await load(false);
     }
     finally {
-        setBusy(false);
+        if(current())setBusy(false);
     } }
     const closed = event && (event.status !== 'active' || security.serverNow() >= eventTiming(event).endsAt);
-    return <main className="access-page"><OlympiadLogo /><section className="access-card type-body"><h1 className="type-heading">{event?.name ?? 'Waiting for an event'}</h1>
-    {closed ? <p>This event has finished. Saved results are retained.</p> : event ? <><p>{event.year} · Ends {londonDateValue(eventTiming(event).endsAt).replace('T', ' ')} (Europe/London)</p>{security.server?.team ? <><h2 className="type-heading">{security.server.team.name}</h2><p>Competition rules: GO enters fullscreen. Leaving fullscreen, switching tabs or apps, or refreshing locks the competition. A teacher must verify the current teacher code so you can resume.</p><button disabled={security.phase !== 'idle'} onClick={() => void security.start()}>{security.phase === 'entering' ? 'Entering fullscreen…' : 'GO'}</button></> : <><p>Competition rules: stay in fullscreen and keep this tab visible. Switching tabs or apps, leaving fullscreen, or refreshing locks access until a teacher helps you resume.</p><form onSubmit={event => { event.preventDefault(); void claim(); }}><label htmlFor="team-select">Choose your team</label><select id="team-select" value={teamId} onChange={event => setTeamId(event.target.value)} disabled={busy}>{teams.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}</select><button disabled={!teamId || busy}>Claim team</button></form><button type="button" onClick={() => void load()}>Refresh teams</button>{!teams.length && <p>No teams are available. Ask a teacher for help.</p>}</>}</> : <p>Your teacher will activate the event shortly.</p>}
-    {(message || security.error) && <p role="alert">{message || security.error}</p>}
-  </section></main>;
+    const error=message || security.error;
+    return <main className="competitor-setup type-body"><OlympiadLogo className="competitor-setup__logo" />
+      <section className={'competitor-setup__pane'+(event && security.server?.team?' competitor-rules':'')}>
+        {closed ? <><h1 className="type-heading">Event complete</h1><p>Saved results are retained.</p></> : event ? security.server?.team ? <>
+          <h1 className="type-heading">Competition rules</h1>
+          <p className="competitor-rules__lead type-body">Press GO to enter fullscreen.</p>
+          <p className="type-body">Once you begin, do not switch tabs, open another app or leave fullscreen. A member of staff will need to unlock your machine if you do.</p>
+          <p className="competitor-rules__ready type-body">Get your team ready, then press GO. Good luck!</p>
+          <button className="setup-action setup-go type-heading" disabled={security.phase!=='idle'} onClick={()=>void security.start()}>{security.phase==='entering'?'Entering...':'GO'}</button>
+        </> : <>
+          <button type="button" className="team-refresh" aria-label="Refresh teams" title="Refresh teams" disabled={busy} onClick={()=>void load()}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.4 6.5M20 4v7h-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+          <h1 className="type-heading">Choose your team</h1>
+          <form onSubmit={event=>{event.preventDefault();void claim();}}>
+            <fieldset className="team-grid" aria-label="Teams" aria-busy={loading} disabled={busy}>
+              {teams.map(team=><label key={team.id} className={'team-tile'+(team.claimed?' team-tile--claimed':'')+(teamId===team.id?' team-tile--selected':'')}>
+                <input type="radio" name="team" value={team.id} checked={teamId===team.id} disabled={team.claimed} onChange={()=>setTeamId(team.id)}/>
+                <span className={"team-tile__name "+(teamId===team.id?"type-label":"type-body")}>{team.name}</span>{team.claimed && <><span className="team-tile__status type-caption">Claimed</span></>}
+              </label>)}
+            </fieldset>
+            {loading && <p className="type-caption" role="status">Loading teams...</p>}
+            {!loading && !teams.some(team=>!team.claimed) && <p role="status">No teams are available. Ask a teacher for help.</p>}
+            <button className="setup-action type-heading" disabled={!teamId || busy || loading}>{busy?'LOCKING IN...':'LOCK IN'}</button>
+          </form>
+        </> : drafts.length ? <>
+          <h1 className="type-heading">Choose a draft to test</h1>
+          <form onSubmit={event=>{event.preventDefault();void security.chooseDraft(chosenDraft);}}><label htmlFor="draft-select">Draft event</label><select id="draft-select" value={chosenDraft} onChange={event=>setDraftId(event.target.value)} disabled={security.phase!=='idle'}>{drafts.map(draft=><option key={draft.id} value={draft.id}>{draft.name} ({draft.year})</option>)}</select><p>Practice results are temporary. Fullscreen competition rules apply.</p><button className="setup-action" disabled={!chosenDraft || security.phase!=='idle'}>Test draft</button></form>
+        </> : <><h1 className="type-heading">Waiting for an event</h1><p>Your teacher will activate the event shortly.</p></>}
+        {error && <p className="setup-error" role="alert">{error}</p>}
+      </section>
+    </main>;
 }

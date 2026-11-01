@@ -20,7 +20,7 @@
 .practical-save-error p { margin: 0; }
 .practical-navigation { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 2vw; }
 .practical-countdown { --text-size: 2.4svh; margin: 0; color: #152033; }
-.practical-catalogue-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1vw; }
+.practical-catalogue-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.2svh; }
 .practical-catalogue-list button { text-align: left; }
 .practical-team-result strong { display: block; }
 .practical-team-result details { margin-top: .6svh; }

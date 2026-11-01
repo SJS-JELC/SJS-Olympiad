@@ -49,8 +49,8 @@ test('draft permanently deletes every team data row, retaining only minimal dele
 
 test('active draft-only data permanently deletes; rerun migration never resurrects the legacy team',async()=>{
   const f=await fixture();await start(f);
-  await f.api.question(f.player,{questionId:'L6P8'});
-  await f.api.draft(f.player,{questionId:'L6P8',requestId:'draft-only-0001',expectedRevision:1,answers:{answer:'0.4'}});
+  const question=await f.api.question(f.player,{questionId:'L6P8'});
+  await f.api.draft(f.player,{questionId:'L6P8',requestId:'draft-only-0001',expectedRevision:question.revision,answers:{answer:'0.4'}});
   const result=await f.api.teamDelete(f.staff,f.deletion());assert.equal(result.outcome,'deleted');
   assert.equal(await f.repo.get('pilot-test-1','team'),null);
   await assert.rejects(f.api.session(f.player),{status:401});

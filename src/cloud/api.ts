@@ -9,6 +9,7 @@ export type EventRecord = {
     practicalStartsAt?: number | null;
     practicalEndsAt?: number | null;
     status: 'draft' | 'active' | 'ended';
+    hasBeenActive?: boolean;
     revision: number;
 };
 export type TeamRecord = {
@@ -32,6 +33,8 @@ export type SessionState = {
     expiresAt: number;
     serverNow: number;
     configRevision: number;
+    draftEvents?: {id:string;name:string;year:string}[];
+    practice?: boolean;
     activeEvent: EventRecord | null;
     events?: EventRecord[];
     team: TeamRecord | null;
@@ -41,6 +44,16 @@ export type SessionState = {
     };
     score: number;
     attempts: Record<string, Attempt>;
+    hydration?: QuestionHydration;
+};
+/** Public, authorized state for every question in one event/year context. */
+export type QuestionHydration = {
+    eventId: string;
+    year: string;
+    serverNow: number;
+    eventEndsAt: number;
+    score: number;
+    questions: Record<string, { attempt: Attempt; revision: number; data?: unknown }>;
 };
 export type QuestionState = {
     attempt: Attempt;

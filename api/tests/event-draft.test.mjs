@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createService} from '../src/service.mjs';
+import {memoryRepository} from './helpers.mjs';
+test('confirmed active-to-draft preserves records and gates play; reactivation retains scores',async()=>{
+ const repo=memoryRepository(),api=createService(repo,{},()=>100000),staff=await api.login({role:'teacher',code:'5678'});
+ const state=await api.eventCreate(staff.token,{name:'Return to draft',year:'L6',theoryStartsAt:0,theoryEndsAt:400000}),id=state.events[0].id;
+ await api.eventActivate(staff.token,{eventId:id,expectedRevision:1});await api.teamAdd(staff.token,{eventId:id,name:'Team'});
+ const player=await api.login({role:'competitor',code:'1234'}),team=(await api.teams(player.token)).teams[0];
+ await api.claim(player.token,{teamId:team.id});await api.start(player.token);
+ await api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'solve-before-draft'});
+ const rows=()=>JSON.stringify([...repo.rows].filter(([key])=>key.startsWith(id+'-'))),before=rows();
+ await assert.rejects(api.eventDraft(player.token,{eventId:id,expectedRevision:2,confirm:true}),{status:403});
+ await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:2}),{status:400});
+ await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:1,confirm:true}),{status:409});
+ const draft=await api.eventDraft(staff.token,{eventId:id,expectedRevision:2,confirm:true});
+ assert.equal(draft.activeEvent,null);assert.equal(draft.events[0].status,'draft');assert.equal(rows(),before);
+ await assert.rejects(api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'while-draft'}),{status:403});
+ await assert.rejects(api.eventUpdate(staff.token,{eventId:id,expectedRevision:3,year:'U6'}),{status:409});
+ await api.eventActivate(staff.token,{eventId:id,expectedRevision:3});assert.equal((await api.session(player.token)).score,3);
+ await api.eventDraft(staff.token,{eventId:id,expectedRevision:4,confirm:true});
+ const deleted=await api.teamDelete(staff.token,{eventId:id,teamId:team.id,teamName:'Team',requestId:'retention-after-draft',confirm:true});assert.equal(deleted.outcome,'removed');
+ assert.ok(await repo.get(id+'-'+team.id,'q-L6P8'));
+ await api.eventActivate(staff.token,{eventId:id,expectedRevision:5});await api.eventEnd(staff.token,{eventId:id,expectedRevision:6,confirm:true});
+ await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:7,confirm:true}),{status:409});
+});

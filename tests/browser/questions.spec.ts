@@ -1,7 +1,7 @@
 import { test, expect, openCompetitorQuestion, resumeCompetition } from './fixtures';
 import { interrupt } from './fullscreen';
 const competitor = test.extend({ accessRole: 'competitor' as const });
-competitor('L6P5 preserves drafts through navigation and lock, then awards once', async ({ page, api }) => {
+competitor('L6P5 preserves local answers through navigation and lock, then awards once', async ({ page, api }) => {
     await page.clock.install();
     await openCompetitorQuestion(page, api, 'L6', 5);
     for (const [index, value] of ['300', '60', '300', '60', '60', '240'].entries())
@@ -54,12 +54,19 @@ test('shared feedback follows server deadlines without shifting or repeat-click 
     await expect(page.locator('.angle-input input').first()).toBeEnabled();
     expect(await page.locator('.question-brief').boundingBox()).toEqual(pane);
 });
-test('draft acknowledgements restore on reload and navigation flushes the latest typed value', async ({ page }) => {
+test('local theory edits survive navigation, reload discards unchecked values and retains CHECK results', async ({ page, api }) => {
     await page.goto('/?theory&question=6');
     await page.locator('input[name="answer"]').fill('36');
     await page.getByRole('button', { name: 'Back to theory' }).click();
-    await expect(page.locator('.theory-stage')).toBeVisible();
-    await page.reload();
     await page.getByRole('button', { name: /^Problem 6,/ }).click();
     await expect(page.locator('input[name="answer"]')).toHaveValue('36');
+    await page.reload();
+    await expect(page.locator('input[name="answer"]')).toHaveValue('');
+    await page.locator('input[name="answer"]').fill('36');
+    await page.getByRole('button',{name:'Check answers'}).click();
+    await expect(page.locator('.completion-stamp')).toBeVisible();
+    await page.reload();
+    await expect(page.locator('input[name="answer"]')).toHaveValue('36');
+    await expect(page.locator('.completion-stamp')).toBeVisible();
+    expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(0);
 });
