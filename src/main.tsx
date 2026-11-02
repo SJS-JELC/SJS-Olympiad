@@ -23,12 +23,12 @@ import './settings.css';
 export function AppRouter() {
     const [search, setSearch] = useState(''), [selectedId, setSelectedId] = useState<string>();
     const [navigationError, setNavigationError] = useState('');
-    const [settingsPanels,setSettingsPanels]=useState<SettingsPanels>({questions:false,events:false});
+    const [settingsPanels,setSettingsPanels]=useState<SettingsPanels>({questions:false,events:false,diagnostics:false});
     const security = useCompetitionSecurity(), server = security.server, teacher = server?.role === 'teacher';
     const signedIn = useRef(false);
     useEffect(() => {
         if (!server) { signedIn.current=false; setSelectedId(undefined); window.history.replaceState(null,'',window.location.pathname); setSearch(''); return; }
-        if (!signedIn.current) { signedIn.current=true; setSettingsPanels({questions:false,events:false}); const query=teacher?'?settings':''; window.history.replaceState(null,'',window.location.pathname+query);setSearch(query); }
+        if (!signedIn.current) { signedIn.current=true; setSettingsPanels({questions:false,events:false,diagnostics:false}); const query=teacher?'?settings':''; window.history.replaceState(null,'',window.location.pathname+query);setSearch(query); }
     }, [!!server,teacher]);
     const options = new URLSearchParams(search);
     const hintedEvent = server?.events?.find(event => event.id === options.get('eventId')) ?? server?.events?.find(event => event.year === options.get('year'));

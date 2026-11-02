@@ -43,6 +43,7 @@
 .text-tabular, .answer-input input, .breach-pin input, .breach-pin-slots span, .score-digit, .theory-timer { font-variant-numeric: tabular-nums; }
 .eyebrow, .olympiad-question-heading__number { text-transform: uppercase; letter-spacing: .08em; }
 .settings-questions .problem-testing-title { text-transform:uppercase; }
+.competitor-team-selection h1 { text-transform:uppercase; }
 .completion-stamp__time { font-size:70px; }
 .completion-stamp__word { font-size:78px; }
 .olympiad-question-heading__number { --text-size: var(--text-size-body); }

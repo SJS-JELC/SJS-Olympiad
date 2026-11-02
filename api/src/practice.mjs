@@ -3,7 +3,7 @@ import {memoryRepository} from './practice-memory.mjs';
 
 // Every practice game owns a wholly separate in-memory service/repository.
 // The real repository is read only here. Lost workers expire practice games.
-export function attachPractice(api,{settings,createService,now,ApiError}) {
+export function attachPractice(api,{settings,practiceTeams,createService,now,ApiError}) {
   const games=new Map();
   const prune=()=>{for(const [token,game] of games)if(game.expiresAt<=now())games.delete(token);};
   const decorate=(value)=>value && value.role ? {...value,practice:true} : value;
@@ -20,8 +20,13 @@ export function attachPractice(api,{settings,createService,now,ApiError}) {
     const innerToken=randomBytes(32).toString('hex');
     await store.write({partitionKey:'sessions',rowKey:createHash('sha256').update(innerToken).digest('hex'),kind:'session',role:'competitor',createdAt:now(),expiresAt,revoked:false,teamId:null,eventId:null,claimGeneration:null});
     const signed={token:innerToken,state:await isolated.session(innerToken)};
-    const team={partitionKey:event.id+'-practice',rowKey:'team',kind:'team',schemaVersion:2,eventId:event.id,teamId:'practice',name:'Practice team',year:event.year,score:0,lastScoringAt:null,claimGeneration:0,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,legacyExpires:0,recovery:null};
-    await store.write(team);
+    // Copy public roster identity only, never a durable claim, result, answer or
+    // security state. Each sign-in can hypothetically choose any configured team.
+    const roster=await practiceTeams(event.id);
+    for(const {id,name} of roster.length?roster:[{id:'practice',name:'Practice team'}]){
+      const team={partitionKey:event.id+'-'+id,rowKey:'team',kind:'team',schemaVersion:2,eventId:event.id,teamId:id,name,year:event.year,score:0,lastScoringAt:null,hasSubmittedActivity:false,claimGeneration:0,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,legacyExpires:0,recovery:null};
+      await store.write(team);
+    }
     const token='practice-'+randomBytes(32).toString('hex');
     games.set(token,{isolated,store,token:signed.token,eventId:event.id,revision:event.revision,expiresAt});
     return {token,state:decorate(signed.state)};

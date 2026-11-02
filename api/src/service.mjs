@@ -4,6 +4,7 @@ import { questionInfo, reduceQuestion, validateAnswers, questionData } from './q
 import { eventTiming, eventAvailable, theoryAvailable, updateTiming } from './event-timing.mjs';
 import { practicalFields, emptyPractical, practicalChanges } from './practical.mjs';
 import { retainedAttempt, retainedQuestion, retainedResponse } from './theory-retention.mjs';
+import { diagnosticSnapshot } from './diagnostics.mjs';
 export class ApiError extends Error { constructor(status,message,code) { super(message); this.status=status; this.code=code; } }
 const hash = value => createHash('sha256').update(value).digest('hex');
 const conflict = error => [409,412].includes(error.statusCode);
@@ -295,6 +296,10 @@ export function createService(repo,config={},now=Date.now) {
     });
   };
   const api={
+    async diagnostics(token){
+      const session=await authenticate(token);teacher(session);
+      return diagnosticSnapshot(await repo.get('system','settings'),config,now(),SESSION_MS);
+    },
     async throttle(bucket,maximum=60) {
       await bootstrap();const rowKey=hash(bucket);
       return retry(async()=>{const old=await repo.get('limits',rowKey),live=old && now()<old.until;const count=live?old.count+1:1;assert(count<=maximum,429,'Too many requests. Please wait a minute.');await repo.write({partitionKey:'limits',rowKey,kind:'limit',count,until:live?old.until:now()+60000},old?.etag);});
@@ -491,5 +496,6 @@ export function createService(repo,config={},now=Date.now) {
       return {event,activeEvent:event,entries,rows:entries.map(row=>({teamId:row.id,name:row.name,score:row.score,lastScoreAt:row.scoreReachedAt})),serverNow:now(),configRevision:s.revision};
     },
   };
-  return config.isolatedPractice ? api : attachPractice(api,{settings,createService,now,ApiError});
+  const practiceTeams=async eventId=>(await repo.list({kind:'team',eventId})).filter(team=>!team.removed).map(team=>({id:team.teamId,name:team.name}));
+  return config.isolatedPractice ? api : attachPractice(api,{settings,practiceTeams,createService,now,ApiError});
 }

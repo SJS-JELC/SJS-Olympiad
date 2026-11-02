@@ -84,3 +84,13 @@
 @media (prefers-reduced-motion:reduce) { .access-entry-card .access-go { transition:none; } }
 
 .settings-questions .practical-catalogue { margin-top:2.5svh; }
+.settings-diagnostics-content{margin-top:1svh;padding:1.2svh;background:#f4f5f7;color:#202733;border-radius:.7svh;overflow-wrap:anywhere}
+.settings-diagnostics-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1svh}
+.settings-diagnostics-toolbar p{margin:0}
+.settings-diagnostics-content td>span{display:block}
+.settings-diagnostics-snapshot span{display:block}
+.settings-diagnostics-content caption{text-align:left;--text-size:2.5svh}
+.settings-diagnostics-content h3{margin-top:2svh}
+.settings-diagnostic-event{margin-top:1.5svh;padding-top:1svh;border-top:.1svh solid #b6bec9}
+.settings-diagnostic-event h4,.settings-diagnostic-event p{margin:.4svh 0;--text-size:2svh}
+.settings-diagnostics-content th{vertical-align:top}

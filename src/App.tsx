@@ -6,8 +6,8 @@ import { eventTiming, londonDateValue, parseLondonDate } from './events/timing';
 import { theoryYears } from './questions/years';
 import { ProblemTesting } from './components/ProblemTesting';
 import { PracticalCatalogue, PracticalTeamResult } from './practicals/Practical';
-import { findPractical } from './practicals/catalog';
 import './settings.css';
+import {BackendDiagnostics} from './components/BackendDiagnostics';
 
 type Confirmation = { title: string; description: string; run: () => Promise<void>; success?: string };
 type EventForm = { name: string; year: string; theoryStart: string; theoryEnd: string; practicalStart: string; practicalEnd: string };
@@ -18,7 +18,7 @@ function eventForm(event: EventRecord): EventForm {
 }
 const scheduleKeys = ['theoryStart', 'theoryEnd', 'practicalStart', 'practicalEnd'] as const;
 const statusLabel = (status: EventRecord['status']) => ({ draft: 'Draft', active: 'Active', ended: 'Complete' })[status];
-export type SettingsPanels={questions:boolean;events:boolean};
+export type SettingsPanels={questions:boolean;events:boolean;diagnostics:boolean};
 
 export default function App({ eventId, onEventChange, onLeaderboard, onQuestionPreview,onPracticalPreview,panels,onPanelsChange }: {
     eventId?: string; onEventChange: (id: string) => void; onLeaderboard: () => void; onQuestionPreview: (year:string,number:number)=>void; onPracticalPreview: (year?:string)=>void;panels:SettingsPanels;onPanelsChange:(value:SettingsPanels)=>void;
@@ -143,10 +143,6 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
             <div className="settings-section-heading"><h2 id="settings-events-heading" className="type-heading"><PanelToggle label="Events" expanded={eventsOpen} controls="settings-event-content" onClick={()=>onPanelsChange({...panels,events:!eventsOpen})}/></h2>{eventsOpen && <div className="settings-toolbar" role="toolbar" aria-label="Event actions">
                 <button className="ui-button" disabled={busy || creating || !!currentEvent} title={currentEvent?'Complete the current event before creating another.':undefined} onClick={()=>changeMode(true)}>Create new event</button>
                 <button className="ui-button settings-save" type="submit" form="settings-event-form" aria-label={creating?'Create draft event':'Save event'} title={creating?'Create draft event':'Save event'} disabled={busy || ended || (!creating && !selected)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l4 4v14H3V3h1Zm3 0v7h10V3M7 21v-8h10v8" fill="none" stroke="currentColor" strokeWidth="2"/></svg></button>
-                {!creating && selected?.status==='draft' && <button className="ui-button" disabled={busy || dirty} onClick={()=>changeStatus('active')}>Activate event</button>}
-                {!creating && selected?.status==='active' && <button className="ui-button" disabled={busy || dirty} onClick={()=>changeStatus('draft')}>Return to draft</button>}
-                {!creating && selected && selected.status!=='ended' && <button className="ui-button" disabled={busy || dirty} onClick={()=>changeStatus('ended')}>End event</button>}
-                <button className="ui-button" disabled={busy || dirty || creating || !findPractical(selected?.year)} onClick={()=>onPracticalPreview()}>Preview practical</button>
                 <button className="ui-button" disabled={busy || dirty || !security.server.activeEvent} onClick={onLeaderboard}>Open leaderboard</button>
             </div>}</div>
             <div id="settings-event-content" hidden={!eventsOpen}>
@@ -170,6 +166,7 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
             </>}
             </div>
         </section>
+        <section className="settings-panel settings-diagnostics" aria-labelledby="settings-diagnostics-heading"><h2 id="settings-diagnostics-heading" className="type-heading"><PanelToggle label="Backend settings" expanded={panels.diagnostics} controls="settings-diagnostics-content" onClick={()=>onPanelsChange({...panels,diagnostics:!panels.diagnostics})}/></h2><BackendDiagnostics expanded={panels.diagnostics}/></section>
         {confirm && <SettingsConfirmation confirmation={confirm} error={message} busy={busy} onCancel={() => setConfirm(null)} onConfirm={() => void run(async () => { await confirm.run(); setConfirm(null); }, confirm.success)} />}
     </main>;
 }

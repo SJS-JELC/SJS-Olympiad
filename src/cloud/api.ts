@@ -23,6 +23,14 @@ export type TeamRecord = {
     hasSubmittedActivity?: boolean;
     practical?: PracticalResult | null;
 };
+export type DiagnosticSnapshot={
+ snapshotAt:number;nodeVersion:string;repository:'azure-table'|'memory'|'injected';storageConfigured:boolean|null;tableName:string|null;
+ configurationSource:string;sessionDurationMs:number;clockSource:string;settingsSource:string;settingsRevision:number;
+ accessCodes:{competitorConfigured:boolean;teacherConfigured:boolean};
+ legacyBootstrap:{eventId:string|null;eventIdStatus:string;endsAt:number|null;endStatus:string;purpose:string};
+ legacyTestingEventId:string|null;currentEventId:string|null;currentEventSource:string;
+ events:(EventRecord&{previousEventId:string|null;timingSource:{theoryStartsAt:string;theoryEndsAt:string;practical:string;endsAt:string}})[];
+};
 export type PracticalYear = 'L5' | 'L6' | 'U6';
 export type PracticalField = 'numPracticalResponse1' | 'numPracticalResponse2' | 'numPracticalResponse3' | 'numPracticalResponse4';
 export type PracticalResponse = { text: string; value: number };

@@ -32,12 +32,12 @@ test('compact toolbar preserves native validation, errors, timing groups and exp
  await expect(page.getByRole('group',{name:'Theory',exact:true}).getByLabel('Start',{exact:true})).toBeVisible();
  const toolbar=page.getByRole('toolbar',{name:'Event actions'}),save=toolbar.getByRole('button',{name:'Save event',exact:true});
  await expect(save).toHaveAttribute('title','Save event');await expect(save.locator('svg')).toHaveCount(1);
- await expect(toolbar.getByRole('button',{name:'Preview practical',exact:true})).toBeEnabled();
+ await expect(toolbar.getByRole('button',{name:'Preview practical',exact:true})).toHaveCount(0);
  await page.getByLabel('Event name',{exact:true}).fill('');await save.click();expect(api.requests.filter(request=>request.action==='event-update')).toHaveLength(0);expect(await page.getByLabel('Event name',{exact:true}).evaluate((input:HTMLInputElement)=>input.validity.valueMissing)).toBe(true);
  await page.getByLabel('Event name',{exact:true}).fill('L6 fixture event');
  const state=await api.service.session(api.token);await api.service.eventUpdate(api.token,{eventId:'fixture-L6',expectedRevision:state.activeEvent.revision,name:'Automatic refresh'});
  const sessionReads=api.requests.filter(request=>request.action==='session').length;await page.clock.fastForward(15000);await expect(page.getByLabel('Event name',{exact:true})).toHaveValue('L6 fixture event');expect(api.requests.filter(request=>request.action==='session')).toHaveLength(sessionReads);await page.reload();await expect(page.getByLabel('Event name',{exact:true})).toHaveValue('Automatic refresh');
- await page.getByRole('button',{name:'End event',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
+ await page.getByRole('combobox',{name:'Event status',exact:true}).selectOption('ended');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
  await expect(save).toBeDisabled();await expect(page.getByRole('button',{name:/Delete team/})).toBeDisabled();await expect(page.getByRole('button',{name:/Allow reselection for/})).toBeDisabled();
 });
 
@@ -78,10 +78,10 @@ test('creating another event requires completing existing events first', async (
  const state=await api.service.session(api.token),event=state.events.find((event:any)=>event.name==='New event');
  expect(event.status).toBe('draft');await expect(page.getByLabel('Selected event')).toHaveValue(event.id);
  await expect(page.getByRole('button',{name:'Create new event',exact:true})).toBeDisabled();
- await page.getByRole('button',{name:'Activate event',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();
+ await page.getByRole('combobox',{name:'Event status',exact:true}).selectOption('active');await page.getByRole('button',{name:'Confirm',exact:true}).click();
  await expect(page.getByRole('dialog')).toHaveCount(0);expect((await api.service.session(api.token)).activeEvent.id).toBe(event.id);
 });
-test('end requires confirmation and ended event has no restart or edit controls', async ({ page, api }) => { await page.goto('/?settings'); await page.getByRole('button', { name: 'End event', exact: true }).click(); await expect(page.getByRole('dialog')).toContainText('cannot restart'); await page.getByRole('button', { name: 'Confirm', exact: true }).click(); await expect(page.getByRole('dialog')).toHaveCount(0); await expect(page.getByLabel('Event name', { exact: true }).first()).toBeDisabled(); await expect(page.getByRole('button', { name: 'Activate event', exact: true })).toHaveCount(0); expect((await api.service.session(api.token)).activeEvent).toBeNull(); });
+test('end requires confirmation and ended event has no restart or edit controls', async ({ page, api }) => { await page.goto('/?settings'); await page.getByRole('combobox',{name:'Event status',exact:true}).selectOption('ended'); await expect(page.getByRole('dialog')).toContainText('cannot restart'); await page.getByRole('button', { name: 'Confirm', exact: true }).click(); await expect(page.getByRole('dialog')).toHaveCount(0); await expect(page.getByLabel('Event name', { exact: true }).first()).toBeDisabled(); await expect(page.getByRole('button', { name: 'Activate event', exact: true })).toHaveCount(0); expect((await api.service.session(api.token)).activeEvent).toBeNull(); });
 test('team names are unique and release confirms revocation while retaining results', async ({ page, api }) => {
     await page.goto('/?settings');
     await page.getByLabel('New team name').fill('New team');

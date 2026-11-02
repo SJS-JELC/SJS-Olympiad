@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { createService, ApiError } from './service.mjs';
 const origins = new Set(['https://olympiad.masters-of-chemistry.app','https://lively-coast-06a373f0f.2.azurestaticapps.net']);
-const gets = new Set(['availability','session','events','teams','leaderboard']);
+const gets = new Set(['availability','session','events','teams','leaderboard','diagnostics']);
 const posts = new Set(['login','logout','event-create','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
 const methods = {'event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
 const COOKIE='__Host-olympiad-session';
@@ -24,7 +24,8 @@ function validateBody(body) {
 let servicePromise;
 async function service() {
   if (!servicePromise) servicePromise = (async () => {
-    const config={eventId:process.env.OLYMPIAD_EVENT_ID,endsAt:Date.parse(process.env.OLYMPIAD_EVENT_END || '')};
+    const config={eventId:process.env.OLYMPIAD_EVENT_ID,endsAt:Date.parse(process.env.OLYMPIAD_EVENT_END || ''),
+      runtime:{repository:'azure-table',storageConfigured:!!process.env.OLYMPIAD_STORAGE_CONNECTION_STRING,source:'environment'}};
     const { connect }=await import('./storage.mjs');
     return createService(await connect(process.env.OLYMPIAD_STORAGE_CONNECTION_STRING),config);
   })().catch(error=>{servicePromise=undefined;throw error;});

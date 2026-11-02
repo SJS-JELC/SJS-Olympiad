@@ -47,4 +47,8 @@ Regression cases live in `tests/fixtures/`; meaningful unit and browser coverage
 
 Frontend, API, assets, generators and regression fixtures form one change: include all related modified, new and deleted files in the same commit before pushing. A partial commit can omit server modules or assets required by the new frontend. Local checks do not establish deployment or live storage acceptance.
 
-Shared access/recovery code fields ask browsers and supported password managers not to save shared codes, while keeping masking and normal editing. These hints are advisory; browser/extension save prompts remain under the user?s browser settings.
+Shared access/recovery code fields ask browsers and supported password managers not to save shared codes, while keeping masking and normal editing. These hints are advisory; browser/extension save prompts remain under the user's browser settings.
+
+Settings includes a collapsed Backend settings pane for teacher-only, read-only debugging. It loads on expansion and refreshes only when requested, showing safe runtime/bootstrap information and saved event settings with UTC/London times and source hints. Secret values and personal/team data are omitted; sensitive configuration is status-only. Event lifecycle changes use the status dropdown with the existing confirmations; practical previews remain in Preview Questions.
+
+Draft competitor testing uses the current draft's year and team-name roster when no event is active. Team selections, marking and practical responses remain isolated temporary practice data; real claims/results stay untouched. Practice ignores saved challenge dates (U5 has no practical), while active events retain their normal time gates. Team selection now uses a wider, denser grid and a decorative padlock beside LOCK IN.

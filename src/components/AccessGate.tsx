@@ -67,9 +67,10 @@ export function CompetitorEntry() {
         if(current())setBusy(false);
     } }
     const closed = event && (event.status !== 'active' || security.serverNow() >= eventTiming(event).endsAt);
+    const selectingTeam=!!event && !security.server?.team && !closed;
     const error=message || security.error;
-    return <main className="competitor-setup type-body"><OlympiadLogo className="competitor-setup__logo" />
-      <section className={'competitor-setup__pane'+(event && security.server?.team?' competitor-rules':'')}>
+    return <main className={'competitor-setup type-body'+(selectingTeam?' competitor-setup--selection':'')}><OlympiadLogo className="competitor-setup__logo" />
+      <section className={'competitor-setup__pane'+(selectingTeam?' competitor-team-selection':'')+(event && security.server?.team?' competitor-rules':'')}>
         {closed ? <><h1 className="type-heading">Event complete</h1><p>Saved results are retained.</p></> : event ? security.server?.team ? <>
           <h1 className="type-heading">Competition rules</h1>
           <p className="competitor-rules__lead type-body">Press GO to enter fullscreen.</p>
@@ -88,7 +89,7 @@ export function CompetitorEntry() {
             </fieldset>
             {loading && <p className="type-caption" role="status">Loading teams...</p>}
             {!loading && !teams.some(team=>!team.claimed) && <p role="status">No teams are available. Ask a teacher for help.</p>}
-            <button className="setup-action type-heading" disabled={!teamId || busy || loading}>{busy?'LOCKING IN...':'LOCK IN'}</button>
+            <button className="setup-action type-heading" disabled={!teamId || busy || loading}><svg className="setup-lock-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 10V7a5 5 0 0 1 10 0v3M6 10h12a1 1 0 0 1 1 1v9H5v-9a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{busy?'LOCKING IN...':'LOCK IN'}</span></button>
           </form>
         </> : <><h1 className="type-heading">Waiting for an event</h1><p>Your teacher will set up the event shortly.</p></>}
         {error && <p className="setup-error" role="alert">{error}</p>}

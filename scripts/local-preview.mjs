@@ -16,7 +16,7 @@ const localCookie = 'olympiad-local-preview-session' + (port === 5173 ? '' : `-$
 const productionCookie = '__Host-olympiad-session';
 const hosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
 const peers = new Set(['127.0.0.1', '::ffff:127.0.0.1', '::1']);
-const service = createService(memoryRepository());
+const service = createService(memoryRepository(),{runtime:{repository:'memory',storageConfigured:false,source:'local-preview'}});
 const teacher = await service.login({ role: 'teacher', code: '5678' });
 const seeded = await service.eventCreate(teacher.token, {
   name:'Upper 6th December 2026', year:'U6',
