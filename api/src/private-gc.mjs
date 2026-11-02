@@ -7,7 +7,7 @@ export const SAMPLE_LABELS = {
 };
 export const ACCORDS = ['citrus', 'floral', 'woody'];
 export const SAMPLES = ['citrus', 'floral', 'woody', 'mystery'];
-export const RUN_MS = 6000;
+export const RUN_MS = 4000;
 export const TIME_MAX = 5.4;
 export const RETENTION_TIMES = [1.1, 2.0, 2.8, 3.2, 3.4, 4.1, 4.8];
 const STEP = 0.002;

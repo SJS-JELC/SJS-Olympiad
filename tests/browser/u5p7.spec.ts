@@ -71,33 +71,29 @@ test('RDKit product artwork and shared canvas fit supported landscape viewports'
   }
 });
 
-test('legacy slots restore all three candidates without a migration write; oversized drafts remain intact', async ({ page, api }) => {
-  const original = JSON.stringify({ graphs: Array.from({length:5},()=>structuredClone(solutions[0])), selected:4 });
-  const saved = await api.service.draft(api.token, { eventId:'fixture-U5', questionId:'U5P7', requestId:'legacy-p7-draft', expectedRevision:0, answers:{drawings:original} });
-  await page.goto(route);
-  await expect(page.getByText(/exceed the canvas limit/)).toBeVisible();
-  await expect(page.locator('.cut-legacy-grid svg')).toHaveCount(5);
-  await expect(page.locator('.molecule-workspace')).toHaveCount(0);
+competitor('historical unfinished drawings stay stored but cannot restore a canvas or trigger a migration write',async({page,api})=>{
+  const original=JSON.stringify({graphs:Array.from({length:5},()=>structuredClone(solutions[0])),selected:4});
+  const team=(await api.repo.list({kind:'team',eventId:'fixture-U5'}))[0];
+  await api.repo.write({partitionKey:team.partitionKey,rowKey:'q-U5P7',kind:'question',questionId:'U5P7',revision:3,
+    state:{answers:{drawings:original},feedback:{},retryAt:0,solvedAt:null},privateState:{}});
+  await openCompetitorQuestion(page,api,'U5',7);
+  await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(0);
+  await expect(page.locator('.cut-legacy')).toHaveCount(0);
   expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(0);
-  const retained=await api.service.question(api.token,{eventId:'fixture-U5',questionId:'U5P7'});
-  expect(retained.attempt.answers.drawings).toBe(original);
-  await api.service.draft(api.token,{eventId:'fixture-U5',questionId:'U5P7',requestId:'legacy-p7-three',expectedRevision:retained.revision,answers:{drawings:JSON.stringify({graphs:solutions,selected:2})}});
-  await page.reload();
-  await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(30);
-  expect(saved.attempt.answers.drawings).toBe(original);
+  expect((await api.repo.get(team.partitionKey,'q-U5P7')).state.answers.drawings).toBe(original);
 });
 
-test('all 78 explicit atoms clean without insertion and submit through the private marker', async ({ page, api }, testInfo) => {
-  await api.service.draft(api.token,{eventId:'fixture-U5',questionId:'U5P7',requestId:'explicit-p7-78',expectedRevision:0,answers:{drawings:JSON.stringify(moleculeDrawing(true))}});
-  await page.goto(route); await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(78);
-  await page.getByRole('button',{name:'Clean up',exact:true}).click();
-  await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(78);
-  await page.screenshot({path:testInfo.outputPath('u5p7-three-explicit-candidates.png')});
-  await page.getByRole('button',{name:'Check answers',exact:true}).click();
-  await expect(page.locator('.completion-stamp')).toBeVisible();
+competitor('historical completed explicit drawings show the confirmed stamp with a blank frozen canvas',async({page,api},testInfo)=>{
+  const original=JSON.stringify(moleculeDrawing(true));
+  const team=(await api.repo.list({kind:'team',eventId:'fixture-U5'}))[0],solvedAt=Date.now()-1000;
+  await api.repo.write({partitionKey:team.partitionKey,rowKey:'q-U5P7',kind:'question',questionId:'U5P7',revision:4,
+    state:{answers:{drawings:original},feedback:{answer:true},retryAt:0,solvedAt},privateState:{}});
+  await openCompetitorQuestion(page,api,'U5',7);
+  await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(0);
+  await expect(page.locator('.completion-stamp')).toHaveAttribute('data-solved-at',String(solvedAt));
   await expect(page.locator('[data-element="C"]')).toBeDisabled();
-  const submitted=api.requests.filter(request=>request.action==='submit').at(-1)!;
-  expect(JSON.parse(submitted.body.answers.drawings).history).toEqual([]);
+  expect((await api.repo.get(team.partitionKey,'q-U5P7')).state.answers.drawings).toBe(original);
+  await page.screenshot({path:testInfo.outputPath('u5p7-confirmed-result-blank-canvas.png')});
 });
 
 competitor('drawing and cooldown survive navigation and a competition lock', async ({ page, api }) => {

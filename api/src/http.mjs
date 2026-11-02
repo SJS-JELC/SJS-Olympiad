@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { createService, ApiError } from './service.mjs';
 const origins = new Set(['https://olympiad.masters-of-chemistry.app','https://lively-coast-06a373f0f.2.azurestaticapps.net']);
-const gets = new Set(['session','events','teams','leaderboard']);
+const gets = new Set(['availability','session','events','teams','leaderboard']);
 const posts = new Set(['login','logout','event-create','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
 const methods = {'event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
 const COOKIE='__Host-olympiad-session';
@@ -68,6 +68,6 @@ export async function handle(req,getService=service) {
     const explicitClear=req.params?.action==='logout' || req.params?.action==='session' && (req.query?.restore==='1' || req.query?.restore===1);
     if(error instanceof ApiError && error.status===401 && explicitClear)headers['Set-Cookie']=`${COOKIE}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
     if(error instanceof ApiError && error.status===429)headers['Retry-After']='60';
-    return {status:error instanceof ApiError?error.status:503,headers,body:{error:error instanceof ApiError?error.message:'The score service is unavailable. Please retry shortly.'}};
+    return {status:error instanceof ApiError?error.status:503,headers,body:{error:error instanceof ApiError?error.message:'The score service is unavailable. Please retry shortly.',...(error instanceof ApiError && error.code?{code:error.code}:{})}};
   }
 }

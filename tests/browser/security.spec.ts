@@ -11,13 +11,13 @@ anonymous('every direct route is behind the role access gate', async ({ page }) 
 });
 anonymous('login verifies the selected server role before showing content', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Access', { exact: true }).selectOption('teacher');
     await page.getByLabel('Teacher code', { exact: true }).fill('1234');
-    await page.getByRole('button', { name: 'Enter Olympiad' }).click();
-    await expect(page.getByRole('alert')).toContainText('Code not recognised');
+    await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+    await expect(page.getByLabel('Teacher code',{exact:true})).toHaveAttribute('aria-invalid','true');
+    await expect(page.getByText('Code not recognised.')).toHaveCount(0);
     await page.getByLabel('Teacher code', { exact: true }).fill('5678');
-    await page.getByRole('button', { name: 'Enter Olympiad' }).click();
-    await expect(page.getByRole('button', { name: 'Settings', exact: true })).toBeVisible();
+    await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+    await expect(page.locator('.teacher-settings')).toBeVisible();
 });
 competitor('team choice does not expose question content until explicit fullscreen Start', async ({ page }) => {
     await mockFullscreen(page);
@@ -54,7 +54,8 @@ competitor('teacher verification grants no access until explicit Resume fullscre
     await interrupt(page, 'blur');
     await page.getByLabel('Teacher code', { exact: true }).fill('0000');
     await page.getByRole('button', { name: 'CONFIRM' }).click();
-    await expect(page.getByRole('dialog').getByRole('alert')).toContainText('not recognised');
+    await expect(page.getByRole('dialog').getByLabel('Teacher code',{exact:true})).toHaveAttribute('aria-invalid','true');
+    await expect(page.getByRole('dialog').getByText('Teacher code not recognised.')).toHaveCount(0);
     await page.getByLabel('Teacher code', { exact: true }).fill('5678');
     await page.getByRole('button', { name: 'CONFIRM' }).click();
     await expect(page.locator('.question-content')).toHaveCount(0);

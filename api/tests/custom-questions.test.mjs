@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { customInfo, customData, reduceCustomQuestion } from '../src/custom-questions.mjs';
+import {oxyanions} from '../src/private-oxyanions.mjs';
 const initial=()=>({state:{answers:{},feedback:{},retryAt:0,solvedAt:null},privateState:{}});
 const act=(id,previous,action,now)=>reduceCustomQuestion(id,previous,action,now);
 test('custom registry and unsupported question boundary',()=>{
@@ -21,7 +22,7 @@ test('grouping exact partition validation and reset cannot erase score/penalty',
 test('timed server sequence stays private, ignores client RNG/time and reveals only timeout prompt',()=>{
   let result=act('L6P3',initial(),{type:'start',now:0,random:[0,0,0,0,0],run:[]},1000);
   assert.equal(result.state.interaction.deadline,76000);
-  const run=result.privateState.run;
+  const run=result.privateState.run.map(id=>oxyanions.find(row=>row.row===id));
   assert.equal(new Set(run.slice(0,4).map(row=>row.row)).size,4);
   assert.ok(run.slice(0,4).every(row=>row.row>=16&&row.row<=60));assert.ok(run[4].row>=2&&run[4].row<=15);
   assert.equal(result.state.interaction.formula,run[0].formula);
@@ -38,7 +39,7 @@ test('timed server sequence stays private, ignores client RNG/time and reveals o
 test('five server-marked names award once with no future public names',()=>{
   let result=act('L6P3',initial(),{type:'start'},0);
   for(let step=0;step<5;step++) {
-    result=act('L6P3',result,{type:'submit',answers:{answer:result.privateState.run[step].name}},step+1);
+    result=act('L6P3',result,{type:'submit',answers:{answer:oxyanions.find(row=>row.row===result.privateState.run[step]).name}},step+1);
     assert.equal(result.award,step===4);assert.equal(result.state.interaction.run,undefined);
   }
   assert.equal(act('L6P3',result,{type:'submit',answers:{}},10).award,false);
@@ -50,9 +51,9 @@ test('GC load precedes run, captures immutable concentrations and keeps eight co
     result=act('U5P5',result,{type:'gc-dilute',sample:'citrus',value:25.5},index*7000);
     result=act('U5P5',result,{type:'gc-load',sample:'citrus'},index*7000);
     result=act('U5P5',result,{type:'gc-run',now:-999},index*7000);
-    assert.equal(result.state.interaction.activeRun.deadline,index*7000+6000);
+    assert.equal(result.state.interaction.activeRun.deadline,index*7000+4000);
     result=act('U5P5',result,{type:'gc-dilute',sample:'citrus',value:80},index*7000+1);
-    result=act('U5P5',result,{type:'tick'},index*7000+6000);
+    result=act('U5P5',result,{type:'tick'},index*7000+4000);
   }
   assert.equal(result.state.interaction.results.length,8);assert.equal(result.state.interaction.results[0].id,2);
   assert.ok(result.state.interaction.results.every(row=>row.concentration===25.5));

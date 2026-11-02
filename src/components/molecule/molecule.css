@@ -1,21 +1,23 @@
+@import '../editor-palette.css';
 /* Compact white adapter; chemistry and gesture geometry are inherited from the reference. */
 .molecule-editor {
  --ink:#171c22; --muted:#40516a; --line:#152033; --cyan:#155ec0; --error:#bc1e34;
  display:flex; flex-direction:column; height:32svh; min-height:0; min-width:0; max-width:100%; color:var(--ink);
 }
-.molecule-editor .drawing-card { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; border:var(--question-pane-border,.125svh solid #73829b); border-radius:var(--question-pane-radius,1svh); background:#fff; }
-.molecule-editor .editor-bar { display:flex; align-items:center; flex-wrap:wrap; gap:.3svh; padding:.4svh; border-bottom:1px solid #a8b1bd; background:#fff; }
-.molecule-editor .tools,.molecule-editor .tool-group { display:flex; align-items:center; gap:2px; }
+.molecule-editor .drawing-card { display:grid; grid-template-columns:var(--editor-rail-width) minmax(0,1fr); grid-template-rows:minmax(0,1fr); flex:1; min-height:0; overflow:hidden; border:var(--question-pane-border,.125svh solid #73829b); border-radius:var(--question-pane-radius,1svh); background:#fff; }
+.molecule-editor .editor-bar { display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; gap:var(--editor-rail-gap); padding:var(--editor-rail-padding); min-height:0; overflow:auto; border-right:1px solid #d8e3e9; border-bottom:0; }
+.molecule-editor .tools { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--editor-rail-gap); }
+.molecule-editor .tool-group { grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--editor-rail-gap); }
 .molecule-editor button { --text-size:max(12px,1.8svh); min-width:0; cursor:pointer; touch-action:manipulation; }
-.molecule-editor .tool { width:max(28px,3.7svh); height:max(30px,4svh); min-height:0; display:grid; place-items:center; flex-shrink:0; padding:0; border-radius:5px; }
+.molecule-editor .tool { width:100%; height:max(30px,3.6svh); min-height:0; display:grid; place-items:center; flex-shrink:0; padding:0; border-radius:5px; }
 .molecule-editor .tool svg { width:max(18px,2.2svh); height:max(18px,2.2svh); fill:none; stroke:currentColor; stroke-width:1.65; stroke-linecap:round; stroke-linejoin:round; }
-.molecule-editor .tool[aria-pressed='true']:not(:disabled) { background:var(--ui-button-hover); color:var(--ui-button-color); box-shadow:inset 0 0 0 .2svh var(--ui-button-color); }
-.molecule-editor .divider { width:1px; height:20px; background:#b2bac4; margin:0 2px; }
-.molecule-editor .clean-button,.molecule-editor .clear-button { min-height:max(30px,4svh); padding:0 .6svh; border-radius:5px; }
+.molecule-editor .divider { display:none; }
+.molecule-editor .clean-button,.molecule-editor .clear-button { min-height:max(30px,3.6svh); padding:.35svh .15svh; border-radius:5px;--text-size:max(12px,1.35svh); }
 .molecule-editor .view-switch { display:flex; gap:1px; padding:2px; border:1px solid #a0aab5; border-radius:5px; }
 .molecule-editor .view-switch button { min-height:max(26px,3.5svh); padding:0 .6svh; border-radius:3px; }
-.molecule-editor .view-switch button[aria-pressed='true']:not(:disabled) { background:var(--ui-button-hover); color:var(--ui-button-color); box-shadow:inset 0 0 0 .2svh var(--ui-button-color); }
-.molecule-editor .canvas-wrap { position:relative; flex:1; min-height:0; background:#fff; }
+.molecule-editor .canvas-wrap { position:relative; grid-column:2; grid-row:1; min-width:0; min-height:0; background:#fff; }
+.molecule-editor .editor-view-controls { margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--editor-rail-gap); }
+.molecule-editor .editor-view-tool { width:100%;height:max(30px,3.6svh); }
 .molecule-workspace { display:block; width:100%; height:100%; touch-action:none; outline:none; cursor:crosshair; }
 .molecule-editor .drawing-instruction { margin:.3svh 0 0; color:#263549; text-align:center; }
 .molecule-editor .molecule-announcement,.molecule-editor .molecule-readonly { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
@@ -38,4 +40,18 @@
 .molecule-workspace.panning,.molecule-workspace.panning .atom-node,.molecule-workspace.panning .bond-node { cursor:grab; }
 .molecule-workspace.panning.dragging,.molecule-workspace.panning.dragging .atom-node,.molecule-workspace.panning.dragging .bond-node { cursor:grabbing; }
 .molecule-gesture-preview { pointer-events:none; }
-@media (pointer:coarse) { .molecule-editor .tool { min-width:44px; min-height:44px; } }
+@media (pointer:coarse) {
+ .molecule-editor .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .molecule-editor .tool,.molecule-editor .clean-button,.molecule-editor .clear-button,.molecule-editor .editor-view-tool { min-width:44px; min-height:44px; }
+}
+/* Short touch viewports keep every tool reachable without consuming the canvas. */
+@media (pointer:coarse) and (max-height:700px) {
+ .molecule-editor .drawing-card{display:flex;flex-direction:column}
+ .molecule-editor .editor-bar{flex-direction:row;flex-wrap:wrap;align-items:center;overflow:visible;border-right:0;border-bottom:1px solid #d8e3e9}
+ .molecule-editor .tools,.molecule-editor .tool-group{display:flex;gap:var(--editor-rail-gap)}
+ .molecule-editor .tool{width:44px}
+ .molecule-editor .canvas-wrap{flex:1}
+ .molecule-editor .editor-view-controls{display:flex;margin-left:auto}
+ .molecule-editor .editor-view-tool{width:44px}
+ .molecule-editor .clean-button,.molecule-editor .clear-button{padding:.35svh .6svh}
+}

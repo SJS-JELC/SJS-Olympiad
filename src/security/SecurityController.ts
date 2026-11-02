@@ -34,6 +34,7 @@ export class SecurityController {
     private event(type: SecurityEventType) { return { id: crypto.randomUUID(), type, at: new Date().toISOString() }; }
     private valid(token: number) { return token === this.generation && (this.view.phase==='entering'||this.view.phase==='unlocking') && !document.hidden && document.hasFocus() && document.fullscreenElement === document.documentElement; }
     private error(error: unknown) { return error instanceof Error ? error.message : 'The competition service is unavailable.'; }
+    clearCodeError = () => { if(this.view.invalidCode)this.publish({...this.view,invalidCode:null}); };
     private accept(server: SessionState, allowActive = false) {
         if (!server || !['teacher', 'competitor'].includes(server.role) || !Number.isFinite(server.serverNow) || !Number.isFinite(server.expiresAt) || server.expiresAt <= server.serverNow || !server.competition || !['NOT_STARTED', 'ACTIVE', 'LOCKED'].includes(server.competition.status))
             throw new Error('The server session could not be verified.');
@@ -85,7 +86,7 @@ export class SecurityController {
         if (!this.view.storageHealthy) { this.initialized = undefined; await this.initialize(); }
         if (this.view.phase !== 'idle' || !this.view.storageHealthy) return;
         const token = ++this.generation;
-        this.publish({ ...this.view, phase: 'loading', error: null });
+        this.publish({ ...this.view, phase: 'loading', error: null, invalidCode:null });
         try {
             const value = await this.transport<SessionState>('login', { code, role });
             if (token === this.generation)
@@ -93,7 +94,7 @@ export class SecurityController {
         }
         catch (error) {
             if (token === this.generation)
-                this.publish({ ...this.view, phase: 'idle', error: this.error(error), storageHealthy: true });
+                this.publish({ ...this.view, phase: 'idle', error: error instanceof HttpError && error.code==='INVALID_CODE' ? null : this.error(error), invalidCode:error instanceof HttpError && error.code==='INVALID_CODE'?role:null, storageHealthy: true });
         }
     };
     refresh = (): Promise<boolean> => {
@@ -238,7 +239,7 @@ export class SecurityController {
         if (this.view.phase !== 'idle' || this.view.session.status !== 'LOCKED')
             return;
         const token = ++this.generation;
-        this.publish({ ...this.view, phase: 'unlocking', error: null, recoveryReady: false });
+        this.publish({ ...this.view, phase: 'unlocking', error: null, invalidCode:null, recoveryReady: false });
         try {
             const server=await this.transport<SessionState>('session?interrupt=1');
             if(token!==this.generation)return;
@@ -256,7 +257,7 @@ export class SecurityController {
         catch (error) {
             if (token === this.generation) {
                 if(error instanceof HttpError && error.status===401){this.handleMutationError(error);return;}
-                this.publish({ ...this.view, phase: 'idle', error: this.error(error) });
+                this.publish({ ...this.view, phase: 'idle', error:error instanceof HttpError && error.code==='INVALID_CODE'?null:this.error(error),invalidCode:error instanceof HttpError && error.code==='INVALID_CODE'?'recovery':null });
             }
         }
     };

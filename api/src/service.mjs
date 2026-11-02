@@ -3,7 +3,8 @@ import { attachPractice } from './practice.mjs';
 import { questionInfo, reduceQuestion, validateAnswers, questionData } from './questions.mjs';
 import { eventTiming, eventAvailable, theoryAvailable, updateTiming } from './event-timing.mjs';
 import { practicalFields, emptyPractical, practicalChanges } from './practical.mjs';
-export class ApiError extends Error { constructor(status,message) { super(message); this.status=status; } }
+import { retainedAttempt, retainedQuestion, retainedResponse } from './theory-retention.mjs';
+export class ApiError extends Error { constructor(status,message,code) { super(message); this.status=status; this.code=code; } }
 const hash = value => createHash('sha256').update(value).digest('hex');
 const conflict = error => [409,412].includes(error.statusCode);
 const empty = () => ({answers:{},feedback:{},retryAt:0,solvedAt:null});
@@ -146,7 +147,7 @@ export function createService(repo,config={},now=Date.now) {
     // Locked/not-started sessions expose no question answers or interaction.
     const event=team?s.events.find(item=>item.id===team.eventId):null;
     const rows=team?.securityStatus==='ACTIVE' && event && (hydrate || theoryAvailable(event,now())) ? await repo.list({partitionKey:team.partitionKey,kind:'question'}) : [];
-    if(event && theoryAvailable(event,now())) for(const q of rows) attempts[q.questionId]={...q.state,revision:q.revision};
+    if(event && theoryAvailable(event,now())) for(const q of rows) attempts[q.questionId]={...retainedAttempt(q.questionId,q.state),revision:q.revision};
     const accessible=event && eventAvailable(event,now());
     return {role:session.role,expiresAt:session.expiresAt,serverNow:now(),configRevision:s.revision,activeEvent:getActive(s),...(session.role==='teacher'?{events:s.events}:!getActive(s)?{draftEvents:s.events.filter(event=>event.status==='draft').map(({id,name,year})=>({id,name,year}))}:{}),team:publicTeam(team),competition:{status:accessible?team.securityStatus:'NOT_STARTED',epoch:team?.securityEpoch || 0},score:team?.score || 0,attempts,...(hydrate && accessible && team.securityStatus==='ACTIVE'?{hydration:bulkView({event,team,pk:team.partitionKey},rows)}:{})};
   };
@@ -171,7 +172,7 @@ export function createService(repo,config={},now=Date.now) {
     if(!hydrating)theoryForWrite(event);
     return {session,s,event,team,pk:team.partitionKey};
   };
-  const qView=(q,ctx,team=ctx.team)=>({attempt:q.state,revision:q.revision,score:team?.score || 0,serverNow:now(),eventEndsAt:ctx.event.theoryEndsAt,...(q.data===undefined?{}:{data:q.data})});
+  const qView=(q,ctx,team=ctx.team)=>({attempt:retainedAttempt(q.questionId,q.state),revision:q.revision,score:team?.score || 0,serverNow:now(),eventEndsAt:ctx.event.theoryEndsAt});
   // Practical has its own window and persistence, independent of theory marking.
   const practicalContext=async(token,input,write=false)=>{
     const session=await authenticate(token),s=await settings();
@@ -227,10 +228,10 @@ export function createService(repo,config={},now=Date.now) {
   // Public state is initialized/projected without creating questions or receipts.
   // Timeout projection may reveal only the current expired timed prompt.
   const publicQuestion=(ctx,id,rows)=>{
-    const q=rows.find(row=>row.questionId===id) ?? {state:empty(),privateState:{},revision:0};
+    const q=retainedQuestion(id,rows.find(row=>row.questionId===id) ?? {state:empty(),privateState:{},revision:0});
     const projected=Number.isFinite(q.state.solvedAt)?null:reduceQuestion(id,q,{type:'tick'},now());
     const data=questionData(id);
-    return {attempt:projected?.state ?? q.state,revision:q.revision,...(data?{data}:{})};
+    return {attempt:retainedAttempt(id,projected?.state ?? q.state),revision:q.revision,...(data?{data}:{})};
   };
   const bulkView=(ctx,rows)=>({eventId:ctx.event.id,year:ctx.event.year,serverNow:now(),eventEndsAt:ctx.event.theoryEndsAt,score:ctx.team?.score || 0,questions:Object.fromEntries(Array.from({length:9},(_,index)=>ctx.event.year+'P'+(index+1)).filter(id=>questionInfo(id)).map(id=>[id,publicQuestion(ctx,id,rows)]))});
   const mutateQuestion=async(token,input,operation)=>{
@@ -244,15 +245,7 @@ export function createService(repo,config={},now=Date.now) {
       payload={action};
     } else {
       payload={answers:answers(input.questionId,input.answers)};
-      if(operation==='draft') {
-        assert(Number.isInteger(input.expectedRevision) && input.expectedRevision>=0,400,'Invalid question revision.');
-        if(input.interaction!==undefined) {
-          assert(input.interaction && typeof input.interaction==='object' && !Array.isArray(input.interaction),400,'Invalid interaction draft.');
-          payload.interaction=semantic(input.interaction);
-          assert(Buffer.byteLength(JSON.stringify(payload.interaction))<=24000,400,'Invalid interaction draft.');
-        }
-        payload.expectedRevision=input.expectedRevision;
-      }
+
     }
     const fingerprint=hash(canonical({operation,questionId:input.questionId,...payload}));
     // Accepted event settings remain fixed for this operation. Team ETags and
@@ -266,11 +259,16 @@ export function createService(repo,config={},now=Date.now) {
         activeForWrite(ctx.event);theoryForWrite(ctx.event);
       }
       const receipt=await repo.get(ctx.pk,'receipt-'+input.requestId);
-      if(receipt) { assert(receipt.fingerprint===fingerprint,409,'This request identifier was used for different content.');return {...receipt.response,score:ctx.team?.score || 0,serverNow:now()}; }
-      const q=await loadQuestion(ctx,input.questionId);
+      if(receipt) { assert(receipt.fingerprint===fingerprint,409,'This request identifier was used for different content.');return {...retainedResponse(input.questionId,receipt.response),score:ctx.team?.score || 0,serverNow:now()}; }
+      const stored=await loadQuestion(ctx,input.questionId),q=retainedQuestion(input.questionId,stored);
       if(ctx.team) {
         const legacy=await repo.get(ctx.pk,'attempt-'+input.requestId);
         if(legacy) {assert(operation==='submit' && input.questionId==='L6P8' && payload.answers?.answer===legacy.answer,409,'This request identifier was used for different content.');return qView(q,ctx);}
+      }
+      if(operation==='action') {
+        const action=payload.action;
+        assert(input.questionId==='L6P3' && ['start','tick'].includes(action.type) || input.questionId==='U5P5' && ['gc-run','tick'].includes(action.type),410,'This presentation action is local only.');
+        if(action.type==='gc-run')assert(action.sample!==undefined,400,'A captured sample is required.');
       }
       let result;
       const completed=typeof q.state.solvedAt==='number' && Number.isFinite(q.state.solvedAt);
@@ -278,48 +276,20 @@ export function createService(repo,config={},now=Date.now) {
         // Freeze all saved interactions after completion, including GC runs.
         // New receipts still bind request IDs without changing the saved state.
         result={state:q.state,privateState:q.privateState,award:false};
-      } else if(operation==='draft') {
-        assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===q.revision,409,'This question changed. Refresh before saving your draft.');
-        result={state:q.state,privateState:q.privateState,award:false};
-        if(q.state.solvedAt===null && acceptedAt>=q.state.retryAt) {
-          result={...result,state:{...q.state,answers:payload.answers}};
-          const draft=payload.interaction;
-          const apply=action=>{result=reduceQuestion(input.questionId,{state:result.state,privateState:result.privateState},action,acceptedAt);};
-          if(draft?.kind==='grouping') {
-            assert(['L5P9','L6P1'].includes(input.questionId) && Array.isArray(draft.selected) && draft.selected.length<=9 && new Set(draft.selected).size===draft.selected.length && draft.selected.every(item=>typeof item==='string' && item.length<=16),400,'Invalid grouping draft.');
-            apply({type:'reset'});for(const item of draft.selected)apply({type:'select',item});
-          } else if(draft?.kind==='gc') {
-            assert(input.questionId==='U5P5',400,'Invalid laboratory draft.');
-            apply({type:'tick'});
-            if(draft.entered===true)apply({type:'gc-enter'});
-            for(const sample of ['citrus','floral','woody'])if(Number.isFinite(draft.concentrations?.[sample]))apply({type:'gc-dilute',sample,value:draft.concentrations[sample]});
-            if(draft.reference!==undefined)apply({type:'gc-reference',accord:draft.reference});
-            if(draft.interval!==undefined)apply({type:'gc-interval',interval:draft.interval});
-            if(draft.results!==undefined) {
-              assert(Array.isArray(draft.results) && draft.results.length<=8,400,'Invalid laboratory reports.');
-              const existing=result.state.interaction.results;
-              for(const report of existing)if(!draft.results.some(item=>item?.id===report.id))apply({type:'gc-delete-result',id:report.id});
-              for(const report of draft.results)if(existing.some(item=>item.id===report?.id)) {
-                if(report.position!==undefined)apply({type:'gc-result-position',id:report.id,position:report.position});
-                if(report.interval!==undefined)apply({type:'gc-result-interval',id:report.id,interval:report.interval});
-              }
-            }
-          } else assert(!draft || draft.kind==='timed' && input.questionId==='L6P3',400,'Invalid question draft.');
-          // Timed prompts, GC runs, snapshots and measurement results are always
-          // retained from server state; a draft never supplies authority fields.
-        }
+
       } else {
         const action=operation==='submit'?{type:'submit',answers:payload.answers}:payload.action;
         try {result=reduceQuestion(input.questionId,{state:q.state,privateState:q.privateState},action,acceptedAt);}
         catch(error) {if(error instanceof TypeError || error instanceof RangeError)throw new ApiError(400,'Invalid question action.');throw error;}
         assert(result && result.state,400,'Unsupported question action.');
       }
-      const updated=completed?q:{...q,state:result.state,privateState:result.privateState || {},revision:q.revision+1};
+      const updated=completed?stored:retainedQuestion(input.questionId,{...q,state:result.state,privateState:result.privateState || {},revision:q.revision+1});
       const team=ctx.team?{...ctx.team}:null;
       if(team && (operation==='submit' || operation==='action' && payload.action.type!=='tick'))team.hasSubmittedActivity=true;
       if(team && result.award && q.state.solvedAt===null && result.state.solvedAt!==null) {team.score+=info.points;team.lastScoringAt=acceptedAt;}
-      const response=qView(updated,ctx,team);
-      const receiptRow={partitionKey:ctx.pk,rowKey:'receipt-'+input.requestId,kind:'receipt',fingerprint,response,operation,actionType:payload.action?.type ?? null,createdAt:acceptedAt};
+      const finishedRun=q.state.interaction?.kind==='gc' && q.state.interaction.activeRun && acceptedAt>=q.state.interaction.activeRun.deadline && !completed ? q.state.interaction.activeRun.id : undefined;
+      const response={...qView(updated,ctx,team),...(finishedRun===undefined?{}:{gcCompletedRunId:finishedRun})};
+      const receiptRow={partitionKey:ctx.pk,rowKey:'receipt-'+input.requestId,kind:'receipt',questionId:input.questionId,fingerprint,response:retainedResponse(input.questionId,response,true),operation,actionType:payload.action?.type ?? null,createdAt:acceptedAt};
       await batch([...(team?[team]:[]),updated,receiptRow]);
       return response;
     });
@@ -331,7 +301,7 @@ export function createService(repo,config={},now=Date.now) {
     },
     async login({role,code,legacyToken}) {
       assert(['teacher','competitor'].includes(role),400,'Choose competitor or teacher.');
-      const s=await settings();assert(verify(code,s[role+'Hash']),403,'Code not recognised.');
+      const s=await settings();if(!verify(code,s[role+'Hash']))throw new ApiError(403,'Code not recognised.','INVALID_CODE');
       const token=randomBytes(32).toString('hex');
       let session={partitionKey:'sessions',rowKey:hash(token),kind:'session',role,createdAt:now(),expiresAt:now()+SESSION_MS,revoked:false,teamId:null,eventId:null,claimGeneration:null};
       await repo.write(session);session=await repo.get('sessions',session.rowKey);
@@ -359,7 +329,8 @@ export function createService(repo,config={},now=Date.now) {
       return snapshot(session,s);
     },
     async events(token) {const session=await authenticate(token);teacher(session);const s=await settings();return {events:s.events,activeEvent:getActive(s),configRevision:s.revision,serverNow:now()};},
-    eventCreate(token,input) {const id=randomUUID();return changeSettings(token,s=>{assert(YEARS.has(input.year),400,'Choose a valid year.');s.events.push(timings({id,name:name(input.name),year:input.year,status:'draft',revision:1},input,true));}).then(state=>({...state,createdEventId:id}));},
+    async availability() {const s=await settings();return {competitorAvailable:s.events.some(event=>event.status==='active' || event.status==='draft')};},
+    eventCreate(token,input) {const id=randomUUID();return changeSettings(token,s=>{assert(!s.events.some(event=>event.status==='active' || event.status==='draft'),409,'Complete the current draft or active event before creating another.');assert(YEARS.has(input.year),400,'Choose a valid year.');s.events.push(timings({id,name:name(input.name),year:input.year,status:'draft',revision:1},input,true));}).then(state=>({...state,createdEventId:id}));},
     async eventChangeYear(token,input) {
       const session=await authenticate(token);teacher(session);
       assert(confirmed(input),400,'Confirm resetting results and team sessions for the new year.');
@@ -383,9 +354,9 @@ export function createService(repo,config={},now=Date.now) {
       });
     },
     eventUpdate(token,input) {return changeSettings(token,s=>{const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status!=='ended',409,'Ended events cannot be changed.');if(input.year!==undefined && input.year!==event.year){assert(false,409,'Confirm a year change using the reset action.');}if(input.name!==undefined)event.name=name(input.name);Object.assign(event,timings(event,input));event.revision++;});},
-    eventActivate(token,input) {return changeSettings(token,s=>{const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='draft',409,'Only a draft event can be activated.');assert(!getActive(s),409,'End the active event before activating another.');assert(event.endsAt>now(),400,'The event end must be in the future.');event.status='active';event.hasBeenActive=true;if(s.testingEventId===event.id)s.testingEventId=null;event.revision++;});},
+    eventActivate(token,input) {return changeSettings(token,s=>{const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='draft',409,'Only a draft event can be activated.');assert(!s.events.some(other=>other.id!==event.id && (other.status==='active' || other.status==='draft')),409,'Complete the other unfinished events before activating this event.');assert(event.endsAt>now(),400,'The event end must be in the future.');event.status='active';event.hasBeenActive=true;if(s.testingEventId===event.id)s.testingEventId=null;event.revision++;});},
     eventDraft(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm returning this event to draft.');const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active',409,'Only an active event can return to draft.');event.status='draft';event.hasBeenActive=true;event.revision++;});},
-    eventEnd(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm ending this event.');const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active',409,'Only the active event can be ended.');event.status='ended';event.revision++;});},
+    eventEnd(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm ending this event.');const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active' || event.status==='draft',409,'Only a draft or active event can be completed.');event.status='ended';event.revision++;});},
     codesUpdate(token,input) {return changeSettings(token,s=>{
       expectedRevision(input.expectedConfigRevision,s.revision);
       const competitorCode=input.competitorCode,teacherCode=input.teacherCode;
@@ -490,7 +461,7 @@ export function createService(repo,config={},now=Date.now) {
       return snapshot(session,s);
     },
     async recovery(token,input) {
-      const session=await authenticate(token),s=await settings();assert(verify(input.code,s.teacherHash),403,'Teacher code not recognised.');const grant=randomBytes(32).toString('hex');
+      const session=await authenticate(token),s=await settings();if(!verify(input.code,s.teacherHash))throw new ApiError(403,'Teacher code not recognised.','INVALID_CODE');const grant=randomBytes(32).toString('hex');
       await retry(async()=>{const team=await ownedTeam(session);activeForWrite(eventById(s,team.eventId));assert(team.securityStatus==='LOCKED' && team.securityEpoch===epoch(input),409,'The competition state changed.');await write({...team,recovery:{hash:hash(grant),epoch:team.securityEpoch,until:now()+60000}});});
       return {grant,expiresAt:now()+60000,expectedEpoch:epoch(input)};
     },
@@ -510,7 +481,7 @@ export function createService(repo,config={},now=Date.now) {
     },
     async practical(token,input={}) {const ctx=await practicalContext(token,input);return practicalView(practicalSummary(await loadPractical(ctx)),ctx);},
     practicalSave:(token,input)=>savePractical(token,input),
-    draft:(token,input)=>mutateQuestion(token,input,'draft'),
+    draft:async(token,input)=>{await questionContext(token,input);throw new ApiError(410,'Theory working is kept only in this page.');},
     submit:(token,input)=>mutateQuestion(token,input,'submit'),
     action:(token,input)=>mutateQuestion(token,input,'action'),
     async leaderboard(token) {

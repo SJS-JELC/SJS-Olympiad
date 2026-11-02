@@ -23,7 +23,7 @@ type RecordState = {
     command?: boolean;
     focusTarget?: HTMLElement | null;
     completion?: {solvedAt:number;animate:boolean};
-    serverResultIds?: Set<number>;
+    loadError?: string;
 };
 export function compactAnswers(answers: Answers): Answers {
     const result: Record<string, string> = {};
@@ -59,20 +59,15 @@ function localEdit(definition: QuestionDefinition, attempt: Attempt, action: Att
     }
     return definition.reduce?.(attempt, action) ?? attempt;
 }
-function preserveHistory(incoming: Attempt, local: Attempt): Attempt {
-    const answers = { ...incoming.answers };
-    if (local.answers.history)
-        answers.history = local.answers.history;
-    for (const key of ['drawing', 'drawings', 'diagram']) {
-        try {
-            const next = JSON.parse(answers[key]), old = JSON.parse(local.answers[key]);
-            const semantic = (value: Record<string, unknown>) => { const { history: _history, past: _past, future: _future, ...rest } = value; return rest; };
-            if (next && old && JSON.stringify(semantic(next)) === JSON.stringify(semantic(old)) && old.history)
-                answers[key] = JSON.stringify({ ...next, history: old.history });
-        }
-        catch { /* ordinary answers */ }
+export function restoredAttempt(attempt: Attempt): Attempt {
+    const result = {...attempt,answers:{}};
+    if(attempt.interaction?.kind==='grouping')result.interaction={kind:'grouping',selected:[]};
+    if(attempt.interaction?.kind==='gc'){
+        const activeRun=attempt.solvedAt===null?attempt.interaction.activeRun:null;
+        result.interaction={kind:'gc',entered:!!activeRun,activeRun,nextRunId:attempt.interaction.nextRunId,
+            analyses:[],reference:'citrus',interval:[.5,.7],measurements:[],results:[]};
     }
-    return { ...incoming, answers };
+    return result;
 }
 /** Answers and presentation edits live only in this mounted router's memory. */
 export function useServerQuestions(eventId: string | undefined) {
@@ -97,12 +92,12 @@ export function useServerQuestions(eventId: string | undefined) {
         return value;
     };
     const bodyFor = (id: string) => ({ questionId: id, ...(security.server?.role === 'teacher' ? { eventId } : {}) });
-    function accept(id: string, value: QuestionState, edits: number, initial = false) {
+    function accept(id: string, value: QuestionState, edits: number, initial = false, pending?: Pending) {
         const record = get(id), previous = record.attempt, delta = Date.now() - value.serverNow;
         const solvedAt = value.attempt.solvedAt;
         record.completion = typeof solvedAt === 'number' && Number.isFinite(solvedAt) && solvedAt >= 0
             ? { solvedAt, animate: !initial && record.loaded && !record.completion } : undefined;
-        const attempt = { ...value.attempt, retryAt: value.attempt.retryAt ? value.attempt.retryAt + delta : 0 };
+        const attempt = { ...(initial ? restoredAttempt(value.attempt) : value.attempt), retryAt: value.attempt.retryAt ? value.attempt.retryAt + delta : 0 };
         if (attempt.interaction?.kind === 'timed')
             attempt.interaction = { ...attempt.interaction, deadline: attempt.interaction.deadline + delta, wrongUntil: attempt.interaction.wrongUntil ? attempt.interaction.wrongUntil + delta : 0 };
         if (attempt.interaction?.kind === 'gc' && attempt.interaction.activeRun)
@@ -111,23 +106,34 @@ export function useServerQuestions(eventId: string | undefined) {
         if (value.data !== undefined) record.data = value.data;
         const wasLoaded = record.loaded;
         record.loaded = true;
-        record.attempt = record.completion || !wasLoaded || record.edits === edits
-            ? preserveHistory(attempt, previous) : { ...attempt, answers: previous.answers, interaction: previous.interaction };
-        // GC run/results are authoritative; its camera, report placement, dilution,
-        // loaded snapshot and formulation remain local through action responses.
-        if (wasLoaded && attempt.interaction?.kind === 'gc' && previous.interaction?.kind === 'gc') {
-            const canonical = attempt.interaction, local = previous.interaction;
-            record.attempt = { ...record.attempt, answers: record.completion ? record.attempt.answers : previous.answers, interaction: {
-                ...canonical, entered: canonical.entered || local.entered, concentrations: local.concentrations,
-                loaded: local.activeRun && !canonical.activeRun ? null : local.loaded,
-                reference: local.reference, interval: local.interval, measurements: local.measurements,
-                results: canonical.results?.filter(row => !record.serverResultIds?.has(row.id) || local.results?.some(old => old.id === row.id)).map(row => {
-                    const display = local.results?.find(old => old.id === row.id);
-                    return display ? { ...row, position: display.position, layer: display.layer, interval: display.interval } : row;
-                }),
+        record.loadError = undefined;
+        // Response authority and page working are deliberately separate. Neither
+        // initial hydration nor historical responses may restore answer content.
+        record.attempt = { ...attempt, answers: initial || !wasLoaded ? {} : previous.answers };
+        if (!initial && wasLoaded && previous.interaction?.kind === 'grouping')
+            record.attempt = { ...record.attempt, interaction: previous.interaction };
+        if (attempt.interaction?.kind === 'timed' && previous.interaction?.kind === 'timed' &&
+            (attempt.interaction.step !== previous.interaction.step || !attempt.interaction.active))
+            record.attempt = { ...record.attempt, answers: {} };
+        if (attempt.interaction?.kind === 'gc') {
+            const canonical = attempt.interaction;
+            const local = !initial && wasLoaded && previous.interaction?.kind === 'gc' ? previous.interaction : undefined;
+            const run = canonical.activeRun;
+            const input = pending?.body.action as {type?:string;sample?:string;concentration?:number} | undefined;
+            const capture = local?.activeRun?.id === run?.id ? local?.activeRun : input?.type === 'gc-run' ? input : local?.loaded;
+            const activeRun = run && { ...capture, ...run,
+                sample: run.sample ?? capture?.sample, concentration: run.concentration ?? capture?.concentration };
+            const finished = local?.activeRun && value.gcCompletedRunId === local.activeRun.id ? local.activeRun : null;
+            const reports = [...(local?.results ?? [])];
+            if (finished && !reports.some(row => row.id === finished.id))
+                reports.push({id:finished.id,sample:finished.sample,concentration:finished.concentration ?? 100,interval:[0,0]});
+            record.attempt = { ...record.attempt, interaction: { ...canonical,
+                ...(local ? {concentrations:local.concentrations,loaded:finished ? null : local.loaded,
+                    reference:local.reference,interval:local.interval,measurements:local.measurements} : {}),
+                entered: !!activeRun || !!local?.entered, activeRun: activeRun as typeof canonical.activeRun,
+                results: reports.slice(-8),
             } };
         }
-        if (attempt.interaction?.kind === 'gc') record.serverResultIds = new Set(attempt.interaction.results?.map(row => row.id));
         record.dirty = !record.completion && record.edits !== edits;
         record.status = record.dirty ? 'Answer not submitted' : 'Saved';
         security.recordQuestion(id, value.attempt, value.score);
@@ -146,17 +152,19 @@ export function useServerQuestions(eventId: string | undefined) {
         // Seeding must not call React setters while the router renders.
         current.hydrated = true;
         for (const [id, state] of Object.entries(initial.questions)) {
-            const delta = Date.now() - initial.serverNow, attempt = { ...state.attempt, retryAt: state.attempt.retryAt ? state.attempt.retryAt + delta : 0 };
+            const delta = Date.now() - initial.serverNow, attempt = { ...restoredAttempt(state.attempt), retryAt: state.attempt.retryAt ? state.attempt.retryAt + delta : 0 };
             if (attempt.interaction?.kind === 'timed') attempt.interaction = { ...attempt.interaction, deadline: attempt.interaction.deadline + delta, wrongUntil: attempt.interaction.wrongUntil ? attempt.interaction.wrongUntil + delta : 0 };
             if (attempt.interaction?.kind === 'gc' && attempt.interaction.activeRun) attempt.interaction = { ...attempt.interaction, activeRun: { ...attempt.interaction.activeRun, startedAt: attempt.interaction.activeRun.startedAt + delta, deadline: attempt.interaction.activeRun.deadline + delta } };
             const solvedAt = attempt.solvedAt;
-            current.records.set(id, { attempt, revision: state.revision, data: state.data, loaded: true, dirty: false, edits: 0, status: 'Saved', serverResultIds: attempt.interaction?.kind === 'gc' ? new Set(attempt.interaction.results?.map(row => row.id)) : undefined, completion: typeof solvedAt === 'number' && Number.isFinite(solvedAt) && solvedAt >= 0 ? { solvedAt, animate: false } : undefined });
+            current.records.set(id, { attempt, revision: state.revision, data: state.data, loaded: true, dirty: false, edits: 0, status: 'Saved', completion: typeof solvedAt === 'number' && Number.isFinite(solvedAt) && solvedAt >= 0 ? { solvedAt, animate: false } : undefined });
         }
     }
     async function load(_id: string) {
         if (security.server?.role === 'teacher' && get(_id).loaded) return;
         if (current.hydrated) return;
         if (current.flight) { await current.flight; return; }
+        for(const record of current.records.values())if(!record.loaded){record.loadError=undefined;record.status='Loading saved results...';}
+        render();
         current.flight = (async () => {
             const hasAuthority = security.captureAuthority();
             try {
@@ -174,7 +182,7 @@ export function useServerQuestions(eventId: string | undefined) {
                 if (!stillAuthorized()) return false;
                 if (hasAuthority()) security.handleMutationError(error as { status?: number; message?: string });
                 current.error = error instanceof Error ? error.message : 'Unable to load saved results.';
-                for (const record of current.records.values()) record.status = current.error;
+                for (const record of current.records.values()) if(!record.loaded){record.status = current.error;record.loadError=current.error;}
                 render();
                 return false;
             } finally { current.flight = undefined; }
@@ -193,7 +201,7 @@ export function useServerQuestions(eventId: string | undefined) {
             const value = await request<QuestionState>(pending.endpoint, pending.body);
             if (!stillAuthorized()) return false;
             record.pending = undefined;
-            accept(id, value, pending.edits);
+            accept(id, value, pending.edits, false, pending);
             return true;
         } catch (error) {
             if (!stillAuthorized()) return false;
@@ -284,8 +292,8 @@ export function CloudQuestion({ entry, questions }: {
       if(target?.isConnected&&!target.matches(':disabled'))target.focus({preventScroll:true});
       record.focusTarget=null;
     },[record.revision,record.pending]);
-    return <div className="cloud-question cloud-question--joined">{(security.server?.role!=='teacher' || !['Saved','Answer not submitted'].includes(record.status)) && <p className="type-caption cloud-status" role="status">{record.status}{record.pending && <button type="button" onClick={() => void questions.flush(definition.id)}>Retry save</button>}</p>}
-    {record.loaded ? <fieldset ref={fields} className={'cloud-fields'+(complete?' cloud-fields--complete':'')} disabled={complete || !!record.pending} onClickCapture={blockCompleted} onDoubleClickCapture={blockCompleted} onPointerDownCapture={blockCompleted} onPointerMoveCapture={blockCompleted} onPointerUpCapture={blockCompleted} onDragStartCapture={blockCompleted} onKeyDownCapture={event=>{if(event.key!=='Tab')blockCompleted(event);}} onWheelCapture={event=>{if(complete)event.stopPropagation();}} onFocusCapture={event=>{if(complete)(event.target as HTMLElement).blur?.();}}><View attempt={record.attempt} onAction={action => {if(!complete)questions.action(definition, action);}} data={record.data}/></fieldset> : <div className="question-access" role="status">{record.status}<button type="button" onClick={() => void questions.load(definition.id)}>Retry</button></div>}
+    return <div className="cloud-question cloud-question--joined">{!record.loaded && !record.loadError && <div className="cloud-load-progress" role="progressbar" aria-label="Loading question" />} {record.loaded && (security.server?.role!=='teacher' || !['Saved','Answer not submitted'].includes(record.status)) && <p className="type-caption cloud-status" role="status">{record.status}{record.pending && <button type="button" onClick={() => void questions.flush(definition.id)}>Retry save</button>}</p>}
+    {record.loaded ? <fieldset ref={fields} className={'cloud-fields'+(complete?' cloud-fields--complete':'')} disabled={complete || !!record.pending} onClickCapture={blockCompleted} onDoubleClickCapture={blockCompleted} onPointerDownCapture={blockCompleted} onPointerMoveCapture={blockCompleted} onPointerUpCapture={blockCompleted} onDragStartCapture={blockCompleted} onKeyDownCapture={event=>{if(event.key!=='Tab')blockCompleted(event);}} onWheelCapture={event=>{if(complete)event.stopPropagation();}} onFocusCapture={event=>{if(complete)(event.target as HTMLElement).blur?.();}}><View attempt={record.attempt} onAction={action => {if(!complete)questions.action(definition, action);}} data={record.data}/></fieldset> : <>{record.loadError && <div className="cloud-load-error type-caption" role="alert">{record.loadError}<button className="ui-button" type="button" onClick={() => void questions.load(definition.id)}>Retry</button></div>}</>}
     {record.loaded && record.completion && security.canAccessTheory() && <CompletionStamp key={definition.id+'-'+record.completion.solvedAt} solvedAt={record.completion.solvedAt} animate={record.completion.animate} preview={security.server?.role==='teacher'} onShown={()=>{if(record.completion)record.completion.animate=false;}}/>}
   </div>;
 }

@@ -41,10 +41,10 @@ export function BreachModal() {
     return <div className="breach-overlay"><div ref={dialog} className="breach-dialog" role="dialog" aria-modal="true" aria-labelledby="breach-title" aria-describedby="breach-description" tabIndex={-1}>
     <BreachBeacon /><h1 id="breach-title">COMPETITION MODE BREACHED</h1>
     <p id="breach-description">A member of staff must verify the teacher code before you can resume.</p>
-    <form onSubmit={verify}>
-      {!security.recoveryReady && <><CodePanels className="breach-pin" id="breach-pin" label="Teacher code" value={code} onChange={setCode} disabled={busy} inputRef={input}/><button className="breach-unlock" disabled={busy || !code.trim()}>{busy ? 'Verifying…' : 'CONFIRM'}</button></>}
+    <form autoComplete="off" onSubmit={verify}>
+      {!security.recoveryReady && <><CodePanels className="breach-pin" id="breach-pin" label="Teacher code" value={code} invalid={security.invalidCode==='recovery'} onChange={value=>{security.clearCodeError();setCode(value);}} disabled={busy} inputRef={input}/><button className="breach-unlock" disabled={busy || !code.trim()}>{busy ? 'Verifying…' : 'CONFIRM'}</button></>}
       {security.recoveryReady && <><p>Staff verification accepted. Resume to enter fullscreen.</p><button autoFocus type="button" className="breach-unlock" disabled={busy} onClick={() => void security.resume()}>{busy ? 'Resuming…' : 'Resume competition'}</button></>}
-      <div className="breach-error" role="alert">{security.error}</div>
+      {security.error && <div className="breach-error" role="alert">{security.error}</div>}
     </form>
   </div></div>;
 }

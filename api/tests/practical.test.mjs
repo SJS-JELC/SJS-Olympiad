@@ -76,8 +76,8 @@ test('idempotency, stale revisions, concurrent changes and cross-operation reque
   assert.equal(results.filter(r=>r.status==='fulfilled').length,1);
   assert.equal(results.find(r=>r.status==='rejected').reason.status,409);
   f.setTime(210000);
-  await assert.rejects(f.api.draft(f.player,{questionId:'L6P8',requestId:'practical-request-0001',expectedRevision:0,answers:{answer:'0'}}),{status:409});
-  await f.api.draft(f.player,{questionId:'L6P8',requestId:'theory-request-000001',expectedRevision:0,answers:{answer:'0'}});
+  await assert.rejects(f.api.submit(f.player,{questionId:'L6P8',requestId:'practical-request-0001',answers:{answer:'0'}}),{status:409});
+  await f.api.submit(f.player,{questionId:'L6P8',requestId:'theory-request-000001',answers:{answer:'0'}});
   await assert.rejects(f.save({numPracticalResponse4:'2'},2,'theory-request-000001'),{status:409});
 });
 

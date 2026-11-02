@@ -5,8 +5,8 @@ import { reduceCustomQuestion, selectRun, normalizeName, customData } from '../.
 // @ts-expect-error Node backend module has no browser declaration.
 import { oxyanions } from '../../api/src/private-oxyanions.mjs';
 export { selectRun, normalizeName, customData, oxyanions };
-const secrets = new WeakMap<Attempt, {run?:{row:number;name:string;formula:string}[]}>();
-export const privateRun = (state:Attempt) => secrets.get(state)?.run ?? [];
+const secrets = new WeakMap<Attempt, {run?:(number|{row:number;name:string;formula:string})[]}>();
+export const privateRun = (state:Attempt) => (secrets.get(state)?.run ?? []).map(row=>typeof row==='number'?oxyanions.find((item:{row:number})=>item.row===row):row);
 export const l5p9Groups = [['ZnO2','MgO2','Na2O2'],['Fe3O4','V6O13','Ti4O7'],['TiO2','Al2O3','MgO']] as const;
 export const l6p1Groups = [['S','Zr','Th'],['Cu','Na','F'],['V','As','Ta']] as const;
 /** Explicit server fixture: test helpers retain private state outside the public attempt. */

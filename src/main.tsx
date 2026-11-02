@@ -27,12 +27,12 @@ export function AppRouter() {
     const security = useCompetitionSecurity(), server = security.server, teacher = server?.role === 'teacher';
     const signedIn = useRef(false);
     useEffect(() => {
-        if (!server) { signedIn.current=false; window.history.replaceState(null,'',window.location.pathname); setSearch(''); return; }
+        if (!server) { signedIn.current=false; setSelectedId(undefined); window.history.replaceState(null,'',window.location.pathname); setSearch(''); return; }
         if (!signedIn.current) { signedIn.current=true; setSettingsPanels({questions:false,events:false}); const query=teacher?'?settings':''; window.history.replaceState(null,'',window.location.pathname+query);setSearch(query); }
     }, [!!server,teacher]);
     const options = new URLSearchParams(search);
     const hintedEvent = server?.events?.find(event => event.id === options.get('eventId')) ?? server?.events?.find(event => event.year === options.get('year'));
-    const selectedRealEvent = teacher ? (options.has('catalogue')?server?.events?.find(event=>event.id===selectedId) ?? server?.activeEvent ?? server?.events?.[0]:hintedEvent ?? server?.events?.find(event => event.id === selectedId) ?? server?.activeEvent ?? server?.events?.[0]) : server?.activeEvent;
+    const selectedRealEvent = teacher ? (options.has('catalogue')?server?.events?.find(event=>event.id===selectedId) ?? server?.activeEvent ?? server?.events?.slice().reverse().find(event=>event.status==='draft') ?? server?.events?.[0]:hintedEvent ?? server?.events?.find(event => event.id === selectedId) ?? server?.activeEvent ?? server?.events?.slice().reverse().find(event=>event.status==='draft') ?? server?.events?.[0]) : server?.activeEvent;
     const catalogueYear=teacher && options.has('catalogue') && ['L5','U5','L6','U6'].includes(options.get('year') ?? '')?options.get('year')!:null;
     const selectedEvent=catalogueYear?{id:'catalogue-'+catalogueYear,name:catalogueYear+' question preview',year:catalogueYear,status:'draft' as const,revision:1,endsAt:server!.expiresAt,theoryEndsAt:server!.expiresAt}:selectedRealEvent;
     useEffect(() => { if (teacher && selectedRealEvent)

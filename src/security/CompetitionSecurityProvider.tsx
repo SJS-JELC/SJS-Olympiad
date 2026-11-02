@@ -60,6 +60,6 @@ export function useCompetitionSecurity() {
   const start = () => { breachSiren.prepare(); return controller.start(); };
   const resume = () => { breachSiren.prepare(); return controller.resume(); };
   return { ...view, start, resume, unlock: controller.unlock,
-    login:controller.login, chooseDraft:controller.chooseDraft, claim:controller.claim, refresh:controller.refresh, guard:controller.guard, guardTheory:controller.guardTheory, guardPractical:controller.guardPractical, captureAuthority:controller.captureAuthority, handleMutationError:controller.handleMutationError, update:controller.update, recordQuestion:controller.recordQuestion, canAccess:controller.canAccess, canAccessTheory:controller.canAccessTheory, canAccessPractical:controller.canAccessPractical, serverNow:controller.serverNow,
+    login:controller.login, clearCodeError:controller.clearCodeError, chooseDraft:controller.chooseDraft, claim:controller.claim, refresh:controller.refresh, guard:controller.guard, guardTheory:controller.guardTheory, guardPractical:controller.guardPractical, captureAuthority:controller.captureAuthority, handleMutationError:controller.handleMutationError, update:controller.update, recordQuestion:controller.recordQuestion, canAccess:controller.canAccess, canAccessTheory:controller.canAccessTheory, canAccessPractical:controller.canAccessPractical, serverNow:controller.serverNow,
     failClosed:()=>flushSync(()=>controller.interrupt('SESSION_INTERRUPTED')) };
 }

@@ -6,5 +6,6 @@
 .code-panels.code-panels input { color:transparent;caret-color:transparent;background:transparent;border:0;-webkit-text-fill-color:transparent; }
 .code-panels { transition:box-shadow 160ms ease,border-color 160ms ease; }
 .code-panels:focus-within { outline:none;border-color:#d4a643;box-shadow:0 0 9px #ffd66bba,0 0 25px #efb83e70,0 0 45px #efb83e35,inset 0 1px 0 #fff1b880; }
+.code-panels.code-panels--invalid { border-color:#e32b32; box-shadow:0 0 0 2px #e32b32; }
 @media (prefers-reduced-motion:reduce) { .code-panels { transition:none; } }
 .code-panels input::-ms-reveal,.code-panels input::-ms-clear {display:none;}

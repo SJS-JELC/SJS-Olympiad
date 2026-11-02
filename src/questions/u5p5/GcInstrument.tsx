@@ -24,7 +24,7 @@ const carrierDurationMs = RUN_MS * sampleTravelFraction / 1.02;
 const carrierSpacing = [26, 31, 39, 28, 35, 42, 30, 37, 32, 40,
   35, 28, 40, 31, 37, 26, 42, 32, 39, 30,
   32, 31, 39, 28, 35, 32, 30, 37, 26, 30];
-const carrierParticles = carrierSpacing.flatMap(spacing => [.2, spacing - .2]).join(' ');
+const carrierParticles = carrierSpacing.flatMap(spacing => [2, spacing - 2]).join(' ');
 
 /** Visual frames never mutate the question state or complete a run. */
 export function GcInstrument({ run, loaded }: { run: GcInteraction['activeRun']; loaded?: GcInteraction['loaded'] }) {
@@ -52,7 +52,7 @@ export function GcInstrument({ run, loaded }: { run: GcInteraction['activeRun'];
         {[150, 100, 55, 20].map((length, i) => <path key={length} d={sampleTube} pathLength="1000" fill="none" stroke={colour} strokeOpacity={.1 + i * .23} strokeWidth={i === 3 ? 5 : 10} strokeLinecap="round" strokeDasharray={length + ' 1000'} strokeDashoffset={length - travel * 1000} filter={i === 0 ? 'url(#' + id + 'glow)' : undefined} />)}
       </g>}
       <path className="gc-reduced-coil" d={sampleTube} fill="none" stroke={colour} strokeWidth="5" />
-      <g fill="none" stroke="#91a8b2" strokeOpacity=".75" strokeWidth="1.5" strokeLinecap="round" strokeDasharray={carrierParticles}>
+      <g fill="none" stroke="#6f8995" strokeOpacity=".65" strokeWidth="2" strokeLinecap="round" strokeDasharray={carrierParticles}>
         <path className="gc-carrier-flow gc-carrier-inlet" d="M-23 123 H105" pathLength="70" />
         <path className="gc-carrier-flow gc-carrier-common" d={sampleTube} pathLength="1000" />
       </g>

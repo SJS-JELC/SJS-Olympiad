@@ -65,7 +65,7 @@
     "Cleanup fits the actual returned graph after its single bounded undoable semantic commit; explicit atoms and connectivity remain unchanged.",
     "Optional per-question limits flow through generic core, assertions, interaction and command application. Chainspotting defaults remain 20 heavy atoms/100 total atoms/150 bonds; Cut and Shut opts into 40/100/150. Private generic core remains a byte-identical copy with question-scoped parser limits.",
     "Editor cards use shared question-pane border/radius tokens. Visible tap guidance is retained as accessible hidden text.",
-    "Review correction 1: all editor tool/action/view buttons consume the shared neutral ui-button palette; selected tools use a gray fill and white inset, disabled controls retain contrast. Canvas backgrounds and scientific glyph colors remain unchanged."
+    "Light translation of the Masters palette through shared editor-palette.css: pale toolbar, transparent tools, chemical element colours, thin borders and cyan selection; ordinary app actions remain dark. Approved compact left-palette placement is production CSS, with reduced padding/gaps, 44px coarse-pointer targets and a top-strip fallback on short touch viewports; no product preference or test-only placement override."
   ],
   "validation": [
     "TypeScript check passed after integration modules became available.",

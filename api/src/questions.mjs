@@ -63,7 +63,7 @@ export function reduceQuestion(id, previous, action, now) {
     correct = definition.parts.every(part => parts[part.id] === true);
   } catch { /* Malformed chemical graphs are wrong, never an unhandled exception. */ }
   return {
-    state: { ...state, answers, feedback: { answer: correct }, retryAt: correct ? 0 : now + definition.cooldownMs, solvedAt: correct ? now : null },
+    state: { ...state, answers: {}, feedback: { answer: correct }, retryAt: correct ? 0 : now + definition.cooldownMs, solvedAt: correct ? now : null },
     privateState,
     award: correct,
   };

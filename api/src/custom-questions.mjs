@@ -40,7 +40,7 @@ export function reduceCustomQuestion(id, previous, action, now) {
       const selection=typeof submitted==='string'?submitted.split(','):selected;
       if (selection.length!==9) return finish();
       const correct=matchesGroups(selection,info.items,info.key);
-      state={...state,interaction:{kind:'grouping',selected:selection},feedback:{question:correct},retryAt:correct?0:now+info.cooldownMs,solvedAt:correct?now:null};
+      state={...state,interaction:{kind:'grouping',selected:[]},feedback:{question:correct},retryAt:correct?0:now+info.cooldownMs,solvedAt:correct?now:null};
     }
     return finish();
   }
@@ -48,12 +48,14 @@ export function reduceCustomQuestion(id, previous, action, now) {
     if (wasSolved) return finish();
     let run=state.interaction?.kind==='timed'?state.interaction:null;
     if (run?.active&&now>=run.deadline) {
-      state={...state,answers:{},feedback:{},retryAt:run.deadline+20000,interaction:{...run,active:false,formula:null,wrongUntil:0,revealed:privateState.run?.[run.step]?.name??null}};
+      const row=privateState.run?.[run.step], prompt=typeof row==='number'?oxyanions.find(item=>item.row===row):row;
+      state={...state,answers:{},feedback:{},retryAt:run.deadline+20000,interaction:{...run,active:false,formula:null,wrongUntil:0,revealed:prompt?.name??null}};
+      privateState={};
       // A late submit cannot become a new run or advance the expired prompt.
       return finish();
     }
     if (action.type==='start'&&!run?.active&&now>=state.retryAt) {
-      const sequence=selectRun(); privateState={run:sequence};
+      const sequence=selectRun(); privateState={run:sequence.map(row=>row.row)};
       state={...state,answers:{},feedback:{},retryAt:0,interaction:{kind:'timed',formula:sequence[0].formula,step:0,deadline:now+75000,active:true,wrongUntil:0,revealed:null}};
       return finish();
     }
@@ -61,11 +63,14 @@ export function reduceCustomQuestion(id, previous, action, now) {
     if (action.type==='tick'&&run.wrongUntil>0&&now>=run.wrongUntil) state={...state,interaction:{...run,wrongUntil:0}};
     if (action.type==='submit') {
       const answer=action.answers?.answer??state.answers.answer??'';
-      const expected=privateState.run?.[run.step]?.name;
-      if (!expected || normalizeName(answer)!==normalizeName(expected)) state={...state,answers:{answer},interaction:{...run,wrongUntil:now+500}};
+      const row=privateState.run?.[run.step], prompt=typeof row==='number'?oxyanions.find(item=>item.row===row):row;
+      const expected=prompt?.name;
+      if (!expected || normalizeName(answer)!==normalizeName(expected)) state={...state,answers:{},interaction:{...run,wrongUntil:now+500}};
       else {
         const step=run.step+1, solved=step===5;
-        state={...state,answers:{},feedback:{},solvedAt:solved?now:null,interaction:{...run,step,formula:solved?null:privateState.run[step].formula,active:!solved,wrongUntil:0,revealed:null}};
+        const next=privateState.run[step], nextPrompt=typeof next==='number'?oxyanions.find(item=>item.row===next):next;
+        state={...state,answers:{},feedback:{},solvedAt:solved?now:null,interaction:{...run,step,formula:solved?null:nextPrompt.formula,active:!solved,wrongUntil:0,revealed:null}};
+        if(solved)privateState={};
       }
     }
     return finish();
@@ -111,7 +116,7 @@ export function reduceCustomQuestion(id, previous, action, now) {
     case 'submit': if(!wasSolved&&now>=state.retryAt) {
       const answers=action.answers??state.answers;let correct=false;
       try {correct=isCorrectComposition(JSON.parse(answers.composition??''));}catch { /* Invalid/blank is wrong. */ }
-      state={...state,answers,feedback:{question:correct},retryAt:correct?0:now+20000,solvedAt:correct?now:null};
+      state={...state,answers:{},feedback:{question:correct},retryAt:correct?0:now+20000,solvedAt:correct?now:null};
     } break;
   }
   state={...state,interaction:lab};return finish();

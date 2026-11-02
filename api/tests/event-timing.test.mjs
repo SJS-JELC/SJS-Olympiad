@@ -29,7 +29,11 @@ test('legacy timings normalize without rewriting settings, results or ownership'
 });
 
 test('new events require a theory pair, optional complete practical pair and independent valid windows', async () => {
-  const f = await fixture(), create = input => f.api.eventCreate(f.teacher,{name:'New',year:'L6',...input});
+  const f = await fixture(), create = async input => {
+    const current=(await f.api.events(f.teacher)).events.find(e=>e.status!=='ended');
+    if(current)await f.api.eventEnd(f.teacher,{eventId:current.id,expectedRevision:current.revision,confirm:true});
+    return f.api.eventCreate(f.teacher,{name:'New',year:'L6',...input});
+  };
   for (const input of [{endsAt:900000},{theoryStartsAt:null,theoryEndsAt:900000},{theoryStartsAt:300000,theoryEndsAt:300000},{theoryStartsAt:300000,theoryEndsAt:400000,practicalStartsAt:200000},{theoryStartsAt:300000,theoryEndsAt:400000,practicalStartsAt:300000,practicalEndsAt:200000}])
     await assert.rejects(create(input),{status:400});
   let result = await create({theoryStartsAt:300000,theoryEndsAt:400000});

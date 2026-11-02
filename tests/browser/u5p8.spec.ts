@@ -12,7 +12,7 @@ competitor('Boundaries reference is keyboard accessible, contains only the formu
   const dialog = page.getByRole('dialog', { name: 'Spherical cap volume' });
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText('V = πh²(3R − h)/3');
-  await expect(dialog).toContainText('R: sphere radius · h: cap height');
+  await expect(dialog).not.toContainText('R: sphere radius · h: cap height');
   await expect(dialog).not.toContainText(/159|rate|interface|area/);
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
@@ -20,7 +20,7 @@ competitor('Boundaries reference is keyboard accessible, contains only the formu
   await expect(trigger).toBeFocused();
   await page.keyboard.press('Space');
   await expect(dialog).toBeVisible();
-  await page.getByRole('button', { name: 'Close reference' }).click();
+  await page.getByRole('button', { name: 'Close spherical cap reference' }).click();
   await expect(page.locator('.u5p8-reference')).toHaveCount(0);
   await expect(trigger).toBeFocused();
   await page.keyboard.press('Space');

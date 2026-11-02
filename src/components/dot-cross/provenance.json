@@ -41,7 +41,7 @@
       "sha256": "ecea1adad1903d29e33b0d564243c38a61d99ae269d342fb689f5bb272b1f5ee"
     }
   ],
-  "adaptations": "N/O palette, two symbols, no charge toolbar, local props/contracts, shared typography; shared presentation-only zoom/pan/fit controls; viewport-height camera scaling enlarges the original geometry without changing scientific coordinates; fixed world bounds independent of camera; shared pane tokens.; Review correction 1: all editor tool/action/view buttons consume the shared neutral ui-button palette; selected tools use a gray fill and white inset, disabled controls retain contrast. Canvas backgrounds and scientific glyph colors remain unchanged.",
+  "adaptations": "N/O palette, two symbols, no charge toolbar, local props/contracts, shared typography; shared presentation-only zoom/pan/fit controls; viewport-height camera scaling enlarges the original geometry without changing scientific coordinates; fixed world bounds independent of camera; shared pane tokens.; Light translation of the Masters palette through shared editor-palette.css: pale toolbar, transparent tools, chemical element colours, thin borders and cyan selection; ordinary app actions remain dark. Approved compact left-palette placement is production CSS, with reduced padding/gaps, 44px coarse-pointer targets and a top-strip fallback on short touch viewports; no product preference or test-only placement override.",
   "validation": [
     "2026-10-30: strict N2O cases and camera/readOnly UI preservation passed within the 40-case focused editor suite; external browser validation is coordinated by foreman."
   ],

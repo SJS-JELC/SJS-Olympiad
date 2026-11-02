@@ -74,10 +74,10 @@ test('in-tab interruption preserves role and staff recovery; combined GC Run own
   await f.api.resume(f.player,{grant:recovery.grant,expectedEpoch:locked.competition.epoch});
   for(const [sample,concentration] of [['mystery',50],['citrus',12.3]])await assert.rejects(f.api.action(f.player,{questionId:'U5P5',requestId:'invalid-'+sample,action:{type:'gc-run',sample,concentration}}),{status:400});
   const run=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-run',action:{type:'gc-run',sample:'citrus',concentration:12.5,deadline:1,id:500}});
-  assert.equal(run.attempt.interaction.activeRun.deadline,106000);assert.equal(run.attempt.interaction.activeRun.id,1);assert.equal(run.attempt.interaction.activeRun.concentration,12.5);
-  f.setTime(106000);const projected=await f.api.hydrate(f.player);assert.equal(projected.questions.U5P5.attempt.interaction.results.length,1);
+  assert.equal(run.attempt.interaction.activeRun.deadline,104000);assert.equal(run.attempt.interaction.activeRun.id,1);assert.equal(run.attempt.interaction.activeRun.concentration,12.5);
+  f.setTime(104000);const projected=await f.api.hydrate(f.player);assert.equal(projected.questions.U5P5.attempt.interaction.results.length,0);
   const stored=await f.repo.get(f.eventId+'-'+f.teamId,'q-U5P5');assert.ok(stored.state.interaction.activeRun);
-  const finished=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-finish',action:{type:'tick'}});assert.equal(finished.attempt.interaction.results[0].concentration,12.5);
+  const finished=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-finish',action:{type:'tick'}});assert.equal(finished.gcCompletedRunId,1);assert.deepEqual(finished.attempt.interaction.results,[]);
   assert.equal((await f.api.leaderboard(f.staff)).entries.length,0);
 });
 

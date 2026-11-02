@@ -7,9 +7,9 @@ const enter = () => act(emptyAttempt(), { type:'gc-enter',now:0 });
 describe('U5P5 retained laboratory and shared marking', () => {
   it('completes one run through deadline reconciliation exactly once and prevents simultaneous starts', () => {
     const started=act(enter(),{type:'gc-run',sample:'mystery',now:100});
-    expect(gcState(started).activeRun?.deadline).toBe(6100);
+    expect(gcState(started).activeRun?.deadline).toBe(4100);
     expect(act(started,{type:'gc-run',sample:'citrus',now:500})).toBe(started);
-    expect(act(started,{type:'tick',now:6099})).toBe(started);
+    expect(act(started,{type:'tick',now:4099})).toBe(started);
     const completed=act(started,{type:'tick',now:8000});
     expect(gcState(completed).analyses).toEqual(['mystery']);
     expect(gcState(completed).activeRun).toBeNull();

@@ -16,7 +16,7 @@
     "canonOrient": true,
     "monochrome": true
   },
-  "presentation": "RDKit bond geometry with live C/H/O labels through ScientificDiagram; fixed public products only.",
+  "presentation": "Deterministic extension of retained RDKit geometry; C-C and C-O vectors x1.45, C-H vectors unchanged. No new RDKit execution is claimed.",
   "products": [
     {
       "name": "methanal",
@@ -51,6 +51,10 @@
       }
     }
   ],
-  "geometrySha256": "22df19a70b75a2d6770cad6aafcdf6d4418424d1a762490cc28bb4722f913ddd",
-  "labelsSha256": "5c62920ef2ee1b6c384dc0f7142a78a9c589ebd74114633772c24cb97955fa7a"
+  "geometrySha256": "22a09c39420cba86c571a7cbbad2e45e6f1c8c74298992de9a5fc37858784d9f",
+  "labelsSha256": "3bdc65e44d8f377b4a2bf439c6bf72a6f7ce0b5913d7daafb45c8283ecdefaf3",
+  "baseInputs": "scripts/u5p7-rdkit-base/",
+  "baseGeometrySha256": "22df19a70b75a2d6770cad6aafcdf6d4418424d1a762490cc28bb4722f913ddd",
+  "baseLabelsSha256": "5c62920ef2ee1b6c384dc0f7142a78a9c589ebd74114633772c24cb97955fa7a",
+  "heavyBondFactor": 1.45
 }

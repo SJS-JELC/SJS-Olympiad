@@ -45,12 +45,12 @@ test('role auth uses slow salted hashes, opaque sessions, expiration and saved c
 });
 test('named events have one active, immutable active year, explicit end, no restart and current end settings',async()=>{
   const f=await fixture();
+  await assert.rejects(f.api.eventCreate(f.staff,{name:'Blocked',year:'U5',theoryStartsAt:0,theoryEndsAt:300000}),{status:409});
+  await f.api.eventEnd(f.staff,{eventId:'pilot',confirmed:true});
   let state=await f.api.eventCreate(f.staff,{name:'New season',year:'U5',theoryStartsAt:0,theoryEndsAt:300000});
   const event=state.events.find(e=>e.name==='New season');
-  await assert.rejects(f.api.eventActivate(f.staff,{eventId:event.id}),{status:409});
   await assert.rejects(f.api.eventUpdate(f.staff,{eventId:'pilot',year:'U5'}),{status:409});
   await assert.rejects(f.api.eventEnd(f.staff,{eventId:'pilot'}),{status:400});
-  await f.api.eventEnd(f.staff,{eventId:'pilot',confirmed:true});
   await assert.rejects(f.api.eventActivate(f.staff,{eventId:'pilot'}),{status:409});
   await assert.rejects(f.api.teamRelease(f.staff,{eventId:'pilot',teamId:'test-1',confirm:true}),{status:409});
   state=await f.api.eventActivate(f.staff,{eventId:event.id});assert.equal(state.activeEvent.year,'U5');
@@ -78,10 +78,11 @@ test('team names are event unique after normalization; draft year is inherited o
   const f=await fixture();await f.api.teamAdd(f.staff,{name:'Other Team',eventId:'pilot'});
   await assert.rejects(f.api.teamAdd(f.staff,{name:' other TEAM ',eventId:'pilot'}),{status:409});
   await assert.rejects(f.api.teamAdd(f.staff,{name:'Test team 1',eventId:'pilot'}),{status:409});
+  await f.api.eventEnd(f.staff,{eventId:'pilot',confirm:true});
   const state=await f.api.eventCreate(f.staff,{name:'Draft',year:'L5',theoryStartsAt:0,theoryEndsAt:300000}),id=state.events.at(-1).id;
   const list=await f.api.teamAdd(f.staff,{name:'Other Team',eventId:id});
   const changed=await f.api.eventChangeYear(f.staff,{eventId:id,year:'U6',expectedRevision:1,requestId:'change-draft-year',confirm:true});
-  await f.api.eventEnd(f.staff,{eventId:'pilot',confirm:true});await f.api.eventActivate(f.staff,{eventId:changed.createdEventId});
+  await f.api.eventActivate(f.staff,{eventId:changed.createdEventId});
   assert.equal((await f.api.claim(f.player,{teamId:list.teams[0].id})).team.year,'U6');
 });
 test('transactional submissions have canonical receipt binding, fixed cooldown and exactly once concurrent scores',async()=>{
@@ -97,22 +98,18 @@ test('transactional submissions have canonical receipt binding, fixed cooldown a
   await assert.rejects(f.api.action(f.player,{questionId:'L6P8',requestId:'good-request-00001',action:{type:'tick'}}),{status:409});
   assert.equal((await f.api.leaderboard(f.staff)).rows[0].score,3);
 });
-test('draft revisions, semantic size limits, private state and year ownership fail closed',async()=>{
+test('retired drafts reject writes while private timer state and year ownership remain guarded',async()=>{
   const f=await fixture();await playing(f);
-  const q=await f.api.question(f.player,{questionId:'L6P8'});
-  const draft={questionId:'L6P8',requestId:'draft-request-001',expectedRevision:q.revision,answers:{answer:'0.4'}};
-  assert.equal((await f.api.draft(f.player,draft)).attempt.answers.answer,'0.4');
-  await assert.rejects(f.api.draft(f.player,{...draft,requestId:'draft-request-002'}),{status:409});
+  await assert.rejects(f.api.draft(f.player,{questionId:'L6P8',requestId:'draft-request-001',expectedRevision:0,answers:{answer:'0.4'}}),{status:410});
   await assert.rejects(f.api.question(f.player,{questionId:'U5P6'}),{status:404});
   await assert.rejects(f.api.question(f.player,{questionId:'L6P8',eventId:'another'}),{status:403});
-  await assert.rejects(f.api.draft(f.player,{...draft,answers:{answer:'a'.repeat(30000)}}),{status:400});
   const run=await f.api.action(f.player,{questionId:'L6P3',requestId:'timed-run-00001',action:{type:'start',random:[0],now:1}});
   assert.equal(run.attempt.interaction.deadline,175000);assert.ok(!JSON.stringify(run).includes('privateState'));
   assert.ok(!Object.hasOwn(run.attempt.interaction,'run'));
-  const incoming={...run.attempt.interaction,step:5,deadline:999999,active:false};
-  const saved=await f.api.draft(f.player,{questionId:'L6P3',requestId:'timed-draft-001',expectedRevision:run.revision,answers:{answer:''},interaction:incoming});
-  assert.equal(saved.attempt.interaction.step,0);assert.equal(saved.attempt.interaction.deadline,175000);
+  await assert.rejects(f.api.draft(f.player,{questionId:'L6P3',requestId:'timed-draft-001',expectedRevision:run.revision,answers:{answer:''},interaction:{...run.attempt.interaction,step:5,deadline:999999,active:false}}),{status:410});
+  assert.equal((await f.api.question(f.player,{questionId:'L6P3'})).attempt.interaction.step,0);
 });
+
 test('breach, refresh and recovery use fenced epochs and single-use short grants without promotion',async()=>{
   const f=await fixture();const started=await playing(f);
   const locked=await f.api.session(f.player,{interrupt:true});assert.equal(locked.competition.status,'LOCKED');assert.deepEqual(locked.attempts,{});
@@ -183,20 +180,20 @@ test('HTTP validates origin, hides secrets, issues opaque HttpOnly cookie, resto
   for(let n=0;n<10;n++)await handle({...req,body:{role:'teacher',code:'wrong'}},async()=>f.api);
   assert.equal((await handle(req,async()=>f.api)).status,429);
 });
-test('safe grouping/GC drafts persist presentation while timed/run authority cannot be injected',async()=>{
+test('legacy grouping/GC presentation writes are retired without creating state',async()=>{
   const f=await fixture();await playing(f);
-  let q=await f.api.question(f.player,{questionId:'L6P1'});
-  q=await f.api.draft(f.player,{questionId:'L6P1',requestId:'grouping-draft-01',expectedRevision:q.revision,answers:{},interaction:{kind:'grouping',selected:['Ta','S']}});
-  assert.deepEqual(q.attempt.interaction.selected,['Ta','S']);
-  const created=await f.api.eventCreate(f.staff,{name:'U5 preview',year:'U5',theoryStartsAt:0,theoryEndsAt:300000}),eventId=created.events.at(-1).id;
+  await assert.rejects(f.api.draft(f.player,{questionId:'L6P1',requestId:'grouping-draft-01',expectedRevision:0,answers:{},interaction:{kind:'grouping',selected:['Ta','S']}}),{status:410});
+  assert.equal((await f.api.question(f.player,{questionId:'L6P1'})).revision,0);
+  const eventId='catalogue-U5';
+  await assert.rejects(f.api.action(f.staff,{questionId:'U5P5',eventId,requestId:'gc-layout-00001',action:{type:'gc-dilute',sample:'citrus',value:25}}),{status:410});
   const gc=await f.api.question(f.staff,{questionId:'U5P5',eventId});assert.ok(gc.data.gcTraces);
-  const saved=await f.api.draft(f.staff,{questionId:'U5P5',eventId,requestId:'gc-draft-00001',expectedRevision:gc.revision,answers:{composition:''},interaction:{...gc.attempt.interaction,entered:true,activeRun:{deadline:999999,id:999},nextRunId:999,analyses:['mystery'],concentrations:{citrus:25},results:[{id:999,sample:'mystery',concentration:1}],interval:[1,2]}});
-  assert.equal(saved.attempt.interaction.activeRun,null);assert.equal(saved.attempt.interaction.nextRunId,1);assert.deepEqual(saved.attempt.interaction.analyses,[]);assert.deepEqual(saved.attempt.interaction.results,[]);assert.equal(saved.attempt.interaction.concentrations.citrus,25);assert.deepEqual(saved.attempt.interaction.interval,[1,2]);
+  assert.equal(gc.attempt.interaction.activeRun,null);assert.equal(gc.revision,0);
 });
+
 test('every registered question is served through year-bound teacher previews without team claims',async()=>{
   const f=await fixture();
   for(const [year,numbers] of [['L5',[1,2,3,4,5,6,7,8,9]],['L6',[1,2,3,4,5,6,7,8,9]],['U6',[1,2,3,4,5,6,7,8,9]],['U5',[2,3,5,6,7,8]]]) {
-    const created=await f.api.eventCreate(f.staff,{name:year+' preview',year,theoryStartsAt:0,theoryEndsAt:300000}),eventId=created.events.at(-1).id;
+    const eventId='catalogue-'+year;
     for(const number of numbers){const q=await f.api.question(f.staff,{questionId:year+'P'+number,eventId});assert.equal(q.score,0);assert.equal(q.attempt.solvedAt,null);}
   }
   assert.equal((await f.api.leaderboard(f.staff)).rows.length,0);
@@ -218,6 +215,7 @@ test('event edits and transitions reject missing or stale displayed revisions wi
   assert.equal(saved.revision,baseline.revision+1);
   await assert.rejects(api.eventEnd(f.staff,{eventId:'pilot',expectedRevision:baseline.revision,confirm:true}),{status:409});
   assert.deepEqual((await api.events(f.staff)).events.find(event=>event.id==='pilot'),saved);
+  await api.eventEnd(f.staff,{eventId:'pilot',expectedRevision:saved.revision,confirm:true});
   const created=await api.eventCreate(f.staff,{name:'Next event',year:'U5',theoryStartsAt:0,theoryEndsAt:300000}),draft=created.events.at(-1);
   await api.eventUpdate(f.staff,{eventId:draft.id,expectedRevision:draft.revision,name:'Updated next event'});
   await assert.rejects(api.eventActivate(f.staff,{eventId:draft.id,expectedRevision:draft.revision}),{status:409});
@@ -249,8 +247,8 @@ test('hostile deeply nested draft revisions and interactions return 400 without 
   const baseline=await f.repo.get('pilot-test-1','q-L6P8');
   let nested=0;for(let depth=0;depth<6000;depth++)nested=[nested];
   const base={questionId:'L6P8',requestId:'hostile-draft-001',expectedRevision:q.revision,answers:{answer:'0.4'}};
-  await assert.rejects(f.rawApi.draft(f.player,{...base,expectedRevision:nested}),{status:400});
-  await assert.rejects(f.rawApi.draft(f.player,{...base,interaction:{kind:'timed',nested}}),{status:400});
+  await assert.rejects(f.rawApi.draft(f.player,{...base,expectedRevision:nested}),{status:410});
+  await assert.rejects(f.rawApi.draft(f.player,{...base,interaction:{kind:'timed',nested}}),{status:410});
   let serviceCalls=0;
   const request={method:'POST',params:{action:'draft'},headers:{origin,'content-type':'application/json'},body:{...base,expectedRevision:nested},rawBody:'{"expectedRevision":'+'['.repeat(6000)+'0'+']'.repeat(6000)+'}'};
   assert.ok(Buffer.byteLength(request.rawBody)<64000);

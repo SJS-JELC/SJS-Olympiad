@@ -1,0 +1,21 @@
+/* Light translation of the Masters editors: quiet tools, chemical colour,
+   fine dividers and a restrained cyan selection. Other app actions stay dark. */
+.molecule-editor,.dot-cross-editor {
+ --editor-rail-width:max(92px,11.5svh);--editor-rail-gap:.4svh;--editor-rail-padding:.45svh;
+ --ui-button-background:transparent;--ui-button-color:#26364a;--ui-button-border:transparent;
+ --ui-button-hover:#e9f3f7;--ui-button-active:#d4e9f1;--ui-button-disabled:#f5f7f9;
+}
+.molecule-editor .editor-bar,.dot-cross-editor .toolbar { background:#f5f9fb;border-bottom:1px solid #d8e3e9; }
+.molecule-editor .tool,.dot-cross-editor .element-tool,.dot-cross-editor .tool,.editor-view-controls .editor-view-tool { border-width:1px; }
+.molecule-editor .tool[aria-pressed='true']:not(:disabled),
+.molecule-editor .view-switch button[aria-pressed='true']:not(:disabled),
+.dot-cross-editor button[aria-pressed='true']:not(:disabled),
+.molecule-editor .editor-view-tool[aria-pressed='true']:not(:disabled),
+.dot-cross-editor .editor-view-tool[aria-pressed='true']:not(:disabled) { background:#dceff5;color:#145b70;border-color:#88b7c9;box-shadow:none; }
+.molecule-editor button:disabled,.dot-cross-editor button:disabled { opacity:.42; }
+.molecule-editor [data-element='O'],.dot-cross-editor [data-element='O'] { --ui-button-color:#b44837; }
+.molecule-editor [data-element='N'],.dot-cross-editor [data-element='N'] { --ui-button-color:#296baa; }
+.molecule-editor [data-element='F'],.molecule-editor [data-element='Cl'] { --ui-button-color:#237c51; }
+.molecule-editor .clean-button { --ui-button-color:#176c80;--ui-button-border:#9ac5d0;--ui-button-background:#eef8fa; }
+.molecule-editor .clear-button { --ui-button-color:#ae4555;--ui-button-border:#dfb7be;--ui-button-background:#fcf3f5; }
+@media(pointer:coarse){.molecule-editor,.dot-cross-editor{--editor-rail-width:max(104px,11.5svh)}}

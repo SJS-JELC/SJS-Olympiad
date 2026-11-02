@@ -50,10 +50,13 @@ export const test = base.extend<Options & {
                     check(op.entity, op.etag); for (const op of operations)
                     op.remove ? rows.delete(key(op.entity.partitionKey,op.entity.rowKey)) : save(op.entity); }, list: async (filters: Record<string, unknown> = {}) => clone([...rows.values()].filter(row => Object.entries(filters).every(([key, value]) => row[key] === value))) };
             const service = createService(repo, {}, () => time), teacher = await service.login({ role: 'teacher', code: '5678' });
-            for (const year of ['L6', 'L5', 'U5', 'U6'])
-                await service.eventCreate(teacher.token, { name: year + ' fixture event', year, theoryStartsAt: time - 3600000, theoryEndsAt: time + 6 * 3600000 });
+            for (const year of ['L6', 'L5', 'U5', 'U6']) {
+                const created=await service.eventCreate(teacher.token, { name: year + ' fixture event', year, theoryStartsAt: time - 3600000, theoryEndsAt: time + 6 * 3600000 });
+                await service.eventEnd(teacher.token,{eventId:created.createdEventId,expectedRevision:1,confirm:true});
+            }
+            // Seed legacy multi-event records explicitly for historical inspection tests.
             const settings = await repo.get('system', 'settings');
-            settings!.events = (settings!.events as any[]).map(event => ({ ...event, id: 'fixture-' + event.year, status: event.year === 'L6' ? 'active' : 'draft' }));
+            settings!.events = (settings!.events as any[]).map(event => ({ ...event, id: 'fixture-' + event.year, revision:1, status: event.year === 'L6' ? 'active' : 'draft' }));
             await repo.write(settings!, settings!.etag);
             for (const event of settings!.events as any[])
                 await service.teamAdd(teacher.token, { eventId: event.id, name: 'Test team 1' });
@@ -107,8 +110,8 @@ export async function activateEvent(api: ApiHarness, year: string) {
     const staff = await api.service.login({ role: 'teacher', code: '5678' }), state = await api.service.session(staff.token);
     if (state.activeEvent?.year === year)
         return;
-    if (state.activeEvent)
-        await api.service.eventEnd(staff.token, { eventId: state.activeEvent.id, expectedRevision:state.activeEvent.revision,confirm: true });
+    for (const event of state.events.filter((event:any)=>event.id!=='fixture-'+year && event.status!=='ended'))
+        await api.service.eventEnd(staff.token, { eventId:event.id, expectedRevision:event.revision,confirm:true });
     await api.service.eventActivate(staff.token, { eventId: 'fixture-' + year,expectedRevision:state.events.find((event:any)=>event.id==='fixture-'+year).revision, confirm: true });
 }
 export async function openCompetitorQuestion(page: Page, api: ApiHarness, year: string, number?: number) {

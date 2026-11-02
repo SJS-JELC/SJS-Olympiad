@@ -9,22 +9,34 @@ export function AccessGate() {
     const security = useCompetitionSecurity();
     const [codes, setCodes] = useState({teacher:'',competitor:''});
     const [busy, setBusy] = useState(false);
+    const [available,setAvailable]=useState(false),[availabilityError,setAvailabilityError]=useState('');
+    useEffect(()=>{
+        let live=true,generation=0;
+        const check=()=>{
+            const requestGeneration=++generation;
+            setAvailable(false);
+            void request<{competitorAvailable:boolean}>('availability').then(value=>{
+                if(live && requestGeneration===generation){setAvailable(value.competitorAvailable===true);setAvailabilityError('');}
+            }).catch(()=>{
+                if(live && requestGeneration===generation){setAvailable(false);setAvailabilityError('Event availability could not be checked. Reload to retry.');}
+            });
+        };
+        check();window.addEventListener('focus',check);
+        return()=>{live=false;window.removeEventListener('focus',check);};
+    },[]);
     return <main className="access-page"><OlympiadLogo /><section className="access-card access-entry-card type-body" aria-label="Choose teacher or competitor">
-      <div className="access-options">{(['teacher','competitor'] as const).map(role => <form key={role} onSubmit={async event => {
-        event.preventDefault(); if(busy)return; setBusy(true); const code=codes[role];setCodes({teacher:'',competitor:''});
+      <div className="access-options">{(['teacher','competitor'] as const).map(role => <form key={role} autoComplete="off" onSubmit={async event => {
+        event.preventDefault(); if(busy || role==='competitor' && !available)return; setBusy(true); const code=codes[role];setCodes({teacher:'',competitor:''});
         try { await security.login(code,role); } finally {setBusy(false);}
       }}><h2 className="type-heading">{role==='teacher'?'TEACHER':'COMPETITOR'}</h2>
-      <CodePanels id={'access-'+role} label={role==='teacher'?'Teacher code':'Competitor code'} value={codes[role]} onChange={value=>setCodes({...codes,[role]:value})} disabled={busy}/>
-      <button className="access-go type-heading" type="submit" disabled={busy || !codes[role].trim()}><span>{busy?'...':'GO'}</span></button></form>)}</div>
-      {security.error && <p role="alert">{security.error}</p>}</section></main>;
+      <CodePanels id={'access-'+role} label={role==='teacher'?'Teacher code':'Competitor code'} value={codes[role]} invalid={security.invalidCode===role} onChange={value=>{security.clearCodeError();setCodes({...codes,[role]:value});}} disabled={busy}/>
+      <button className="access-go type-heading" type="submit" disabled={busy || !codes[role].trim() || role==='competitor' && !available}><span>{busy?'...':'GO'}</span></button></form>)}</div>
+      {availabilityError && <p role="alert">{availabilityError}</p>}{security.error && <p role="alert">{security.error}</p>}</section></main>;
 
 }
 export function CompetitorEntry() {
     const security = useCompetitionSecurity(), event = security.server?.activeEvent;
     const [teams, setTeams] = useState<TeamRecord[]>([]), [teamId, setTeamId] = useState(''), [message, setMessage] = useState(''), [busy, setBusy] = useState(false);
-    const [draftId,setDraftId]=useState('');
-    const drafts=security.server?.draftEvents ?? [];
-    const chosenDraft=drafts.some(draft=>draft.id===draftId)?draftId:drafts[0]?.id ?? '';
     const [loading,setLoading]=useState(true);
     const loadGeneration=useRef(0);
     async function load(clearMessage=true) { setLoading(true);const authority=security.captureAuthority(),generation=++loadGeneration.current;const current=()=>authority() && generation===loadGeneration.current;try {
@@ -78,10 +90,7 @@ export function CompetitorEntry() {
             {!loading && !teams.some(team=>!team.claimed) && <p role="status">No teams are available. Ask a teacher for help.</p>}
             <button className="setup-action type-heading" disabled={!teamId || busy || loading}>{busy?'LOCKING IN...':'LOCK IN'}</button>
           </form>
-        </> : drafts.length ? <>
-          <h1 className="type-heading">Choose a draft to test</h1>
-          <form onSubmit={event=>{event.preventDefault();void security.chooseDraft(chosenDraft);}}><label htmlFor="draft-select">Draft event</label><select id="draft-select" value={chosenDraft} onChange={event=>setDraftId(event.target.value)} disabled={security.phase!=='idle'}>{drafts.map(draft=><option key={draft.id} value={draft.id}>{draft.name} ({draft.year})</option>)}</select><p>Practice results are temporary. Fullscreen competition rules apply.</p><button className="setup-action" disabled={!chosenDraft || security.phase!=='idle'}>Test draft</button></form>
-        </> : <><h1 className="type-heading">Waiting for an event</h1><p>Your teacher will activate the event shortly.</p></>}
+        </> : <><h1 className="type-heading">Waiting for an event</h1><p>Your teacher will set up the event shortly.</p></>}
         {error && <p className="setup-error" role="alert">{error}</p>}
       </section>
     </main>;

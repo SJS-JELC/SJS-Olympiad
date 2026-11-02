@@ -39,7 +39,7 @@ test('permanent cleanup follows all team rows in Azure-sized conditional chunks'
 });
 
 test('draft permanently deletes every team data row, retaining only minimal deletion fencing',async()=>{
-  const f=await fixture(),state=await f.api.eventCreate(f.staff,{name:'Draft',year:'U6',theoryStartsAt:0,theoryEndsAt:300000});
+  const f=await fixture();const current=(await f.api.events(f.staff)).activeEvent;await f.api.eventEnd(f.staff,{eventId:current.id,expectedRevision:current.revision,confirm:true});const state=await f.api.eventCreate(f.staff,{name:'Draft',year:'U6',theoryStartsAt:0,theoryEndsAt:300000});
   const eventId=state.createdEventId,added=await f.api.teamAdd(f.staff,{eventId,name:'Draft team'}),team=added.teams[0],pk=eventId+'-'+team.id;
   await f.repo.write({partitionKey:pk,rowKey:'old-answer',kind:'question',state:{answers:{answer:'private'},solvedAt:90000}});
   const result=await f.api.teamDelete(f.staff,{eventId,teamId:team.id,teamName:team.name,requestId:'draft-delete-001',confirm:true});
@@ -50,7 +50,9 @@ test('draft permanently deletes every team data row, retaining only minimal dele
 test('active draft-only data permanently deletes; rerun migration never resurrects the legacy team',async()=>{
   const f=await fixture();await start(f);
   const question=await f.api.question(f.player,{questionId:'L6P8'});
-  await f.api.draft(f.player,{questionId:'L6P8',requestId:'draft-only-0001',expectedRevision:question.revision,answers:{answer:'0.4'}});
+  // Historical draft-only rows predate retirement of the draft endpoint.
+  const historical=await f.repo.get('pilot-test-1','q-L6P8');
+  await f.repo.write({...historical,revision:question.revision,state:{answers:{answer:'0.4'},feedback:{},retryAt:0,solvedAt:null}},historical.etag);
   const result=await f.api.teamDelete(f.staff,f.deletion());assert.equal(result.outcome,'deleted');
   assert.equal(await f.repo.get('pilot-test-1','team'),null);
   await assert.rejects(f.api.session(f.player),{status:401});

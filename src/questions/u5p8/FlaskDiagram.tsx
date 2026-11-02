@@ -40,7 +40,7 @@ export function CapSketch() {
   return <svg className="u5p8-cap scientific-diagram" viewBox="0 0 210 125" role="img" aria-label="A spherical cap. R is the sphere radius and h is the cap height.">
     <circle cx="75" cy="58" r="45" fill="none" stroke="#6a7984" strokeWidth="1.5" />
     <path d="M36.35 81A45 45 0 0 0 113.65 81Z" fill="#c3dfea" stroke="#526d7b" strokeWidth="1.5" />
-    <path d="M75 58 43 89.6M75 58h2M122 81H149M75 103H149M140 81V103" fill="none" stroke="#152033" strokeWidth="1.5" />
+    <path d="M75 58 43 89.6M122 81H149M75 103H149M140 81V103" fill="none" stroke="#152033" strokeWidth="1.5" />
     <g className="type-body" style={{ '--text-size': '15px' } as CSSProperties}>
       <text x="48" y="67">R</text><text x="154" y="95">h</text>
     </g>

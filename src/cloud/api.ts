@@ -62,14 +62,15 @@ export type QuestionState = {
     serverNow: number;
     eventEndsAt: number;
     data?: unknown;
+    gcCompletedRunId?: number;
 };
 export class HttpError extends Error {
-    constructor(public status: number, message: string) { super(message); }
+    constructor(public status: number, message: string, public code?: string) { super(message); }
 }
 export async function request<T>(action: string, body?: unknown): Promise<T> {
     const response = await fetch('/api/olympiad/' + action, { credentials: 'same-origin', cache: 'no-store', ...(body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }) });
     const value = await response.json().catch(() => { throw new Error('The competition service is unavailable.'); });
     if (!response.ok)
-        throw new HttpError(response.status, value.error || 'The request could not be completed.');
+        throw new HttpError(response.status, value.error || 'The request could not be completed.', value.code);
     return value;
 }

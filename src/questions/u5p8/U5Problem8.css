@@ -13,4 +13,4 @@
 .u5p8-reference p { margin: .5svh 0; }
 .u5p8-reference .u5p8-formula { --text-size: var(--text-size-question-large); }
 .u5p8-cap { display: block; width: 25svh; height: 15svh; margin: auto; }
-.u5p8-reference button { margin-top: 1svh; padding: .8svh 1.5vw; }
+.u5p8-reference .u5p8-reference-close { position:absolute;top:.6svh;right:.8svh;width:3svh;height:3svh;padding:0;--text-leading:1;border:.1svh solid #73829b;border-radius:.3svh;background:transparent;color:#152033;cursor:pointer;--text-size:var(--text-size-heading-small); }

@@ -30,14 +30,15 @@ export function attachPractice(api,{settings,createService,now,ApiError}) {
     const signed=await originalLogin(input);
     if(signed.state.role!=='competitor' || signed.state.activeEvent)return signed;
     const s=await settings(),drafts=s.events.filter(event=>event.status==='draft');
-    if(s.events.some(event=>event.status==='active') || drafts.length!==1)return signed;
-    const game=await createGame(s,drafts[0],signed.state.expiresAt);await api.logout(signed.token);return game;
+    if(s.events.some(event=>event.status==='active') || !drafts.length)return signed;
+    const game=await createGame(s,drafts.at(-1),signed.state.expiresAt);await api.logout(signed.token);return game;
   };
   result.practiceStart=async(token,input)=>{
     const session=await api.session(token),s=await settings();
     if(session.role!=='competitor' || session.team)throw new ApiError(403,'Sign in as a competitor to test a draft.');
     if(s.events.some(event=>event.status==='active'))throw new ApiError(409,'An event is now active. Sign in again to enter it.');
-    const event=s.events.find(event=>event.id===input.eventId && event.status==='draft');
+    const event=s.events.findLast(event=>event.status==='draft');
+    if(event?.id!==input.eventId)throw new ApiError(409,'Sign in again to enter the current event.');
     if(!event)throw new ApiError(409,'This draft is no longer available. Sign in again.');
     const game=await createGame(s,event,session.expiresAt);await api.logout(token);return game;
   };

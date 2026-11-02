@@ -16,11 +16,10 @@ function VolumeReference({ onClose }: { onClose: () => void }) {
   }, []);
   return <dialog ref={dialog} className="u5p8-reference" aria-labelledby="u5p8-reference-title"
     onCancel={event => { event.preventDefault(); onClose(); }}>
+    <button type="button" className="u5p8-reference-close type-heading" aria-label="Close spherical cap reference" onClick={onClose}>×</button>
     <h2 id="u5p8-reference-title" className="type-heading">Spherical cap volume</h2>
     <p className="u5p8-formula type-body" aria-label="V equals pi h squared times three R minus h, divided by three">V = πh²(3R − h)/3</p>
     <CapSketch />
-    <p className="type-caption">R: sphere radius · h: cap height</p>
-    <button type="button" className="ui-button type-label" onClick={onClose}>Close reference</button>
   </dialog>;
 }
 

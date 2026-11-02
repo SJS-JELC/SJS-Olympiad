@@ -14,7 +14,7 @@
       "100% Woody accord"
     ],
     "calibration": "No standards or curves",
-    "animation": "Original inline SVG injector/continuous coiled tube/detector; one six-second light-segment run",
+    "animation": "Original inline SVG injector/continuous coiled tube/detector; one four-second light-segment run with continuous visible subtle carrier particles",
     "quantification": "Area-normalized Gaussian constituents, identical injection volume, linear detector response, solvent signal omitted; composition %v/v idealized additive volumes",
     "feedback": "Shared generic wrong submission cross, twenty-second cooldown, no per-component feedback; two points once"
   },

@@ -10,7 +10,7 @@ export const SAMPLE_LABELS: Record<SampleId, string> = {
 
 export const ACCORDS: readonly AccordId[] = ['citrus', 'floral', 'woody'];
 export const SAMPLES: readonly SampleId[] = ['citrus', 'floral', 'woody', 'mystery'];
-export const RUN_MS = 6000;
+export const RUN_MS = 4000;
 export const TIME_MAX = 5.4;
 export const RETENTION_TIMES: readonly number[] = [1.1, 2.0, 2.8, 3.2, 3.4, 4.1, 4.8];
 

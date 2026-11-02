@@ -29,17 +29,13 @@ test('practice refresh, server restart and draft edits expire ephemeral games',a
  await assert.rejects(api.teams(second.token),{status:401});
 });
 
-test('all drafts are offered by default and selection is authenticated',async()=>{
+test('only one unfinished event is allowed and competitor login uses it automatically',async()=>{
  const {api,staff,event}=await setup();
- const added=await api.eventCreate(staff,{name:'Second draft',year:'U6',theoryStartsAt:200000,theoryEndsAt:400000});
- const second=added.events.find(e=>e.id!==event.id);
+ await assert.rejects(api.eventCreate(staff,{name:'Second draft',year:'U6',theoryStartsAt:200000,theoryEndsAt:400000}),{status:409});
  const player=await api.login({role:'competitor',code:'1234'});
- assert.equal(player.state.practice,undefined);assert.equal(player.state.draftEvents.length,2);
- await assert.rejects(api.practiceStart(staff,{eventId:event.id}),{status:403});
- await assert.rejects(api.practiceStart(player.token,{eventId:'missing'}),{status:409});
- const selected=await api.practiceStart(player.token,{eventId:second.id});assert.equal(selected.state.practice,true);assert.equal(selected.state.activeEvent.year,'U6');
- await assert.rejects(api.session(player.token),{status:401});
- const next=await api.login({role:'competitor',code:'1234'});
+ assert.equal(player.state.practice,true);assert.equal(player.state.activeEvent.id,event.id);
  await api.eventActivate(staff,{eventId:event.id,expectedRevision:1});
- await assert.rejects(api.practiceStart(next.token,{eventId:second.id}),{status:409});
+ await assert.rejects(api.eventCreate(staff,{name:'Second draft',year:'U6',theoryStartsAt:200000,theoryEndsAt:400000}),{status:409});
+ const live=await api.login({role:'competitor',code:'1234'});
+ assert.equal(live.state.practice,undefined);assert.equal(live.state.activeEvent.id,event.id);
 });
