@@ -107,7 +107,10 @@ competitor('historical completed explicit drawings show the confirmed stamp with
 competitor('drawing and cooldown survive navigation and a competition lock', async ({ page, api }) => {
   await page.clock.install(); await openCompetitorQuestion(page,api,'U5',9);
   const canvas=page.locator('.molecule-workspace'); await canvas.focus(); await canvas.press('Enter');
+  // Keep navigation and staff recovery from consuming the exact countdown under test.
+  await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now()) + 1000));
   await page.getByRole('button',{name:'Check answers',exact:true}).click();
+  await expect(page.locator('.check-button')).toHaveAttribute('aria-label','Retry in 20 seconds');
   await expect(page.locator('[data-element="C"]')).toBeDisabled();
   await page.clock.fastForward(3000);
   await page.getByRole('button',{name:'Back to theory',exact:true}).click();

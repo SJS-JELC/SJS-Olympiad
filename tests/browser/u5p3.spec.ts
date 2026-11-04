@@ -143,7 +143,10 @@ competitor('cooldown deadline and drawing persist through navigation and staff u
   await canvas(page).focus(); await canvas(page).press('Enter');
   await atoms(page).first().focus(); await page.keyboard.press('ArrowRight'); await page.keyboard.press('Enter');
   const drawn=await depiction(page);
+  // Keep navigation and staff recovery from consuming the exact countdown under test.
+  await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now()) + 1000));
   await page.getByRole('button', { name: 'Check answers', exact: true }).click();
+  await expect(page.locator('.check-button')).toHaveAttribute('aria-label', 'Retry in 20 seconds');
   await expect(canvas(page).locator('.atom-node')).toHaveCount(2);
   expect(await depiction(page)).toEqual(drawn);
   await expect(page.getByRole('button',{name:'Undo',exact:true})).toBeDisabled();
