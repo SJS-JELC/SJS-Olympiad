@@ -1,5 +1,6 @@
 import {test,expect} from './fixtures';
 const anonymous=test.extend({accessRole:null});
+const editorQuestionNumbers=[2,3,9] as const;
 
 async function enterTeacher(page:import('@playwright/test').Page){
   await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');
@@ -13,7 +14,7 @@ async function open(page:import('@playwright/test').Page,number:number){
 }
 for(const [width,height] of [[1920,1080],[2560,1440],[1366,768],[960,640]])anonymous(`approved left palette fits ${width}x${height}`,async({page},testInfo)=>{
   await page.setViewportSize({width,height});await enterTeacher(page);
-  for(const number of [2,3,7]){
+  for(const number of editorQuestionNumbers){
     const canvas=await open(page,number),toolbar=page.locator(number===2?'.dot-cross-editor .toolbar':'.molecule-editor .editor-bar');
     const rail=(await toolbar.boundingBox())!,drawing=(await canvas.boundingBox())!;
     expect(rail.x+rail.width).toBeLessThanOrEqual(drawing.x+1);
@@ -32,7 +33,7 @@ for(const [width,height] of [[1920,1080],[2560,1440],[1366,768],[960,640]])anony
 const touch=anonymous.extend({hasTouch:true,viewport:{width:960,height:640}});
 touch('short touch viewport retains 44px targets and reachable drawing area',async({page},testInfo)=>{
   await enterTeacher(page);
-  for(const number of [2,3,7]){
+  for(const number of editorQuestionNumbers){
     const canvas=await open(page,number),editor=page.locator(number===2?'.dot-cross-editor':'.molecule-editor');
     const tools=await editor.locator('button').evaluateAll(nodes=>nodes.filter(node=>node.getBoundingClientRect().width>0).map(node=>({name:node.getAttribute('aria-label')??node.textContent,width:node.getBoundingClientRect().width,height:node.getBoundingClientRect().height})));
     expect(tools.filter(tool=>tool.width<43.9||tool.height<43.9)).toEqual([]);

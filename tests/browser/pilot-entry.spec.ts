@@ -18,13 +18,13 @@ test('fresh teacher entry, collapsed settings, in-memory preview and reload',asy
  await expect(page.getByRole('button',{name:'Access codes',exact:true})).toHaveCount(0);
  await questions.click();
  const reads=api.requests.filter(r=>['hydrate','question'].includes(r.action)).length;
- await page.getByRole('button',{name:'U5 Problem 6: Cubane',exact:true}).click();
+ await page.getByRole('button',{name:'U5 Problem 6: Cubone',exact:true}).click();
  const answer=page.getByRole('textbox',{name:'Greatest hydrogen separation in pm',exact:true});
  await answer.fill('123');
  expect(api.requests.filter(r=>['hydrate','question'].includes(r.action)).length).toBe(reads);
  await page.getByRole('button',{name:'Back to settings',exact:true}).click();
  await expect(questions).toHaveAttribute('aria-expanded','true');
- await page.getByRole('button',{name:'U5 Problem 6: Cubane',exact:true}).click();
+ await page.getByRole('button',{name:'U5 Problem 6: Cubone',exact:true}).click();
  await expect(answer).toHaveValue('123');
  await page.getByRole('button',{name:'Back to settings',exact:true}).click();
  await page.getByRole('button',{name:/L6 practical:/}).click();await expect(page.getByRole('region',{name:'Practical protocol'})).toBeVisible();
