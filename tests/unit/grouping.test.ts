@@ -4,7 +4,11 @@ import { emptyAttempt, score, type Attempt } from '../../src/questions/attempts'
 import { l5p9, l5p9Items } from '../../src/questions/l5p9/definition';
 import { l6p1, l6p1Items } from '../../src/questions/l6p1/definition';
 
+import { doubleTrouble, doubleTroubleItems } from '../../src/questions/double-trouble/definition';
+import { doubleTroubleGroups } from '../fixtures/double-trouble';
+
 const cases = [
+  { definition: doubleTrouble, items: doubleTroubleItems, groups: doubleTroubleGroups },
   { definition: l5p9, items: l5p9Items, groups: l5p9Groups },
   { definition: l6p1, items: l6p1Items, groups: l6p1Groups },
 ];
@@ -55,10 +59,10 @@ for (const { definition, items, groups } of cases) {
       expect(submit(returned, 1001)).toBe(wrong);
       expect(returned.interaction).toEqual({ kind: 'grouping', selected: items });
     });
-    it('resets only local selections after solving and never permits another award', () => {
+    it('freezes local selections after solving and never permits another award', () => {
       const solved = submit(select(groups.flat()));
       const cleared = transition(definition, solved, { type: 'reset', now: 1001 });
-      expect(cleared.solvedAt).toBe(solved.solvedAt); expect(cleared.retryAt).toBe(0);
+      expect(cleared).toBe(solved); expect(cleared.solvedAt).toBe(solved.solvedAt); expect(cleared.retryAt).toBe(0);
       expect(cleared.feedback).toEqual(solved.feedback);
       expect(score([definition], { [definition.id]: cleared })).toBe(definition.points);
       expect(submit(cleared)).toBe(cleared);

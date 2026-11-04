@@ -133,8 +133,8 @@ export class SecurityController {
         })();
         return this.checking;
     };
-    private eventActive(server: SessionState) { const event = server.activeEvent, team = server.team; return !!event && event.status === 'active' && !!team && team.eventId === event.id && team.year === event.year && this.serverNow() < eventTiming(event).endsAt; }
-    private eventClosed(server: SessionState) { const event = server.activeEvent; return !event || event.status !== 'active' || this.serverNow() >= eventTiming(event).endsAt; }
+    private eventActive(server: SessionState) { const event = server.activeEvent, team = server.team; return !!event && event.status !== 'ended' && !!team && team.eventId === event.id && team.year === event.year && this.serverNow() < eventTiming(event).endsAt; }
+    private eventClosed(server: SessionState) { const event = server.activeEvent; return !event || event.status === 'ended' || this.serverNow() >= eventTiming(event).endsAt; }
     private closeEvent() {
         this.generation++; this.grant = null;
         this.publish({ ...this.view, session: { ...this.view.session, status: 'NOT_STARTED' }, phase: 'idle', recoveryReady: false, error: null });
@@ -170,12 +170,6 @@ export class SecurityController {
             this.publish({...this.view,session:{...this.view.session,status:'LOCKED'},phase:'idle',recoveryReady:false,error:failure.message ?? 'Competition mode is locked.'});
         } else this.publish({...initial(),phase:'idle',error:failure.message ?? 'Sign in to continue.'});
         return true;
-    };
-    chooseDraft = async (eventId: string) => {
-        if(this.view.phase!=='idle')return;
-        const current=this.captureAuthority();this.publish({...this.view,phase:'loading',error:null});
-        try {const server=await this.transport<SessionState>('practice-start',{eventId});if(current())this.accept(server);}
-        catch(error){if(current())this.publish({...this.view,phase:'idle',error:this.error(error)});}
     };
     claim = async (teamId: string) => {
         const current=this.captureAuthority();

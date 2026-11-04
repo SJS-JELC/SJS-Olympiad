@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect } from './fixtures';
 import { openCompetitorQuestion, resumeCompetition } from './fixtures';
 const competitor = test.extend({accessRole:'competitor' as const});
@@ -57,12 +58,13 @@ async function checkAndAcknowledge(page: import('@playwright/test').Page) {
 }
 
 test('GC laboratory completes runs through navigation and uses ordinary non-restarting cooldown', async ({ page }) => {
-  await page.clock.install(); await page.goto(route);
+  await page.clock.install(); await openTeacher(page, route);
   await page.getByRole('button',{name:'Enter Laboratory',exact:true}).click();
   await runSample(page,'mystery');
-  await page.getByRole('button',{name:'Back to theory'}).click();
+  await page.getByRole('button',{name:'Back to settings'}).click();
   await page.clock.fastForward(7000);
-  await page.getByRole('button',{name:'Problem 5, 2 points, not yet solved',exact:true}).click();
+  await page.getByRole('button',{name:'Preview Questions',exact:true}).click();
+  await page.getByRole('button',{name:/^U5 Problem 5:/,exact:true}).click();
   await expect(page.getByTestId('u5p5-content')).toBeVisible();
   await expect(printout(page,'mystery')).toHaveCount(1);
   await runSample(page,'citrus');
@@ -118,7 +120,7 @@ competitor('U5 formulation awards exactly once, stays isolated from L6 and secur
 
 
 test('paired run reports retain replaceable integration intervals and touch dividers stay ordered', async ({ page, context }) => {
-  await page.clock.install(); await page.goto(route);
+  await page.clock.install(); await openTeacher(page, route);
   await page.getByRole('button',{name:'Enter Laboratory',exact:true}).click();
   for(const sample of ['mystery','citrus'] as const) {
     await runSample(page,sample);
@@ -141,8 +143,9 @@ test('paired run reports retain replaceable integration intervals and touch divi
   // Replacing an interval remains a direct chromatogram interaction, then persists per report.
   await selectInterval(page,3.2,3.49);
   await page.getByRole('button',{name:'Close',exact:true}).click();
-  await page.getByRole('button',{name:'Back to theory',exact:true}).click();
-  await page.getByRole('button',{name:'Problem 5, 2 points, not yet solved',exact:true}).click();
+  await page.getByRole('button',{name:'Back to settings',exact:true}).click();
+  await page.getByRole('button',{name:'Preview Questions',exact:true}).click();
+  await page.getByRole('button',{name:/^U5 Problem 5:/,exact:true}).click();
   await openPrintout(page,'citrus');
   await expectInterval(page,3.2,3.49);
   await page.getByRole('button',{name:'Close',exact:true}).click();

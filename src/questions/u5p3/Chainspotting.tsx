@@ -15,7 +15,7 @@ export function Chainspotting({ attempt, onAction }: QuestionViewProps) {
       <p>This section was made from the fewest possible number of different alkene monomers. Decide how many and show the monomers below.</p>
     </section>
     <QuestionAnswerForm definition={u5p3Definition} attempt={attempt} onAction={onAction} layout="aligned" autoFocusAnswer={false} className="u5p3-form">
-      {({ disabled, onEdit }) => <MoleculeEditor value={drawing} readOnly={disabled}
+      {({ disabled, onEdit }) => <MoleculeEditor initialZoomOutSteps={2} value={drawing} readOnly={disabled}
         elements={['C', 'H', 'F', 'Cl']} representations={['displayed']} explicitHydrogensOnly
         label="Alkene monomers" onChange={value => onEdit('drawing', serializeMoleculeAnswer(value))} />}
     </QuestionAnswerForm>

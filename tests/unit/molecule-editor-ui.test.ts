@@ -137,3 +137,29 @@ it('cleanup fits the returned graph and makes exactly one undoable semantic edit
   }
   await key(svg(),'z',{ctrlKey:true});expect(state).toEqual(before);
 });
+
+it('enforces skeletal-only representation when an existing displayed editor is reconfigured',async()=>{
+  await key(svg(),'Enter');await key(atom(1),'ArrowRight');await key(atom(1),'Enter');
+  expect(container.querySelectorAll('.molecule-workspace .atom-label')).toHaveLength(2);
+  const original=JSON.stringify(state);
+  await act(async()=>root.render(createElement(MoleculeEditor,{
+    value:state,representations:['skeletal'],onChange:updates,
+  })));
+  expect(container.querySelectorAll('.molecule-workspace .atom-label')).toHaveLength(0);
+  expect(container.querySelectorAll('.molecule-workspace .implicit-hydrogen')).toHaveLength(0);
+  expect(container.querySelectorAll('.molecule-workspace .bond-line')).toHaveLength(1);
+  expect(JSON.stringify(state)).toBe(original);
+});
+
+it('can start two zoom-out clicks farther out without changing the molecular graph',async()=>{
+  const initial=svg().getAttribute('viewBox');
+  await act(async()=>container.querySelector<HTMLButtonElement>('[aria-label="Zoom out"]')!.click());
+  await act(async()=>container.querySelector<HTMLButtonElement>('[aria-label="Zoom out"]')!.click());
+  const zoomed=svg().getAttribute('viewBox');
+  expect(zoomed).not.toBe(initial);
+  await act(async()=>root.render(createElement(MoleculeEditor,{
+    key:'fresh',value:state,representations:['skeletal'],initialZoomOutSteps:2,onChange:updates,
+  })));
+  expect(svg().getAttribute('viewBox')).toBe(zoomed);
+  expect(updates).not.toHaveBeenCalled();
+});

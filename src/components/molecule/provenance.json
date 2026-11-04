@@ -170,5 +170,5 @@
       "sha256": "20bb17854763f1696eea69be3e021c6282ee1807d39d37670ce0a1723803d783"
     }
   ],
-  "sourceProjectRelativeTo": "NEW APP project root"
+  "sourceProjectRelativeTo": "application repository root"
 }

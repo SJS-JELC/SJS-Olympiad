@@ -20,7 +20,7 @@ export function PracticalShell({ definition, onBack, backLabel, children }: { de
   return <div className="splash-preview question-page practical-page"><main className="question-stage"><header className="question-header">{definition.year === 'L5' && <img className="practical-header-art" src={cuttlefish} alt="Cuttlefish" draggable={false}/>}<div className="question-identity"><img className="question-eagle" src={eagle} alt="St John’s Olympiad eagle" draggable={false}/><div className="question-title-panel"><h1 className="type-heading practical-title"><span className="type-caption">{definition.year} Practical</span>{definition.title}</h1></div></div><div className="question-navigation"><ArtworkBackButton className="question-back" onClick={onBack} label={backLabel}/></div></header>{children}</main></div>;
 }
 
-type PracticalProps = { definition: PracticalDefinition; event: EventRecord; flushRef: MutableRefObject<(() => Promise<boolean>) | null>; onTheory?: () => void };
+type PracticalProps = { definition: PracticalDefinition; event: EventRecord; flushRef: MutableRefObject<(() => Promise<boolean>) | null>; onTheory?: () => void; onNavigationReady?: () => void };
 type PracticalModel = Omit<ReturnType<typeof usePractical>, 'status'> & { status: ReturnType<typeof usePractical>['status'] | 'preview' };
 
 export function Practical(props: PracticalProps) {
@@ -44,6 +44,9 @@ function SavedPractical(props: PracticalProps) {
   const security = useCompetitionSecurity(), { event, flushRef } = props;
   const saved = usePractical(event.id, security.canAccess, security.canAccessPractical, security.handleMutationError, security.captureAuthority);
   useEffect(() => { flushRef.current = saved.flush; return () => { flushRef.current = null; }; });
+  // A successful retry or explicit discard resolves a previous navigation
+  // failure. Do not leave that stale alert covering the navigation controls.
+  useEffect(() => { if (saved.status === 'saved') props.onNavigationReady?.(); }, [saved.status, props.onNavigationReady]);
   return <PracticalContent {...props} saved={saved} teacher={false}/>;
 }
 

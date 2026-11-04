@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { expect, test } from './fixtures';
 import { openCompetitorQuestion, resumeCompetition } from './fixtures';
 const competitor = test.extend({accessRole:'competitor' as const});
@@ -50,7 +51,7 @@ competitor('Cubane uses a rotatable model, persists a non-restarting cooldown, a
 for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 960, height: 600 }, {width:1920,height:1080}, {width:2560,height:1440}]) {
   test(`Cubane keeps artwork and answer controls within ${viewport.width}×${viewport.height}`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto(route);
+    await openTeacher(page, route);
     await expect(page.getByTestId('u5p6-content')).toBeVisible();
     for (const selector of ['.question-brief', '.u5p6-diagram', '#u5p6-answer', '.check-button']) {
       const box = await page.locator(selector).boundingBox();
@@ -62,9 +63,10 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
     await expect(page.locator('.cubane-model text')).toHaveCount(0);
     await expect(page.locator('.cubane-model [data-atom^="C"] circle')).toHaveCount(8);
     await expect(page.locator('.cubane-model [data-atom^="H"] circle')).toHaveCount(8);
-    const colours=await page.locator('.cubane-model [data-atom] circle').evaluateAll(circles=>circles.map(circle=>circle.getAttribute('fill')));
-    expect(colours.filter(colour=>colour==='#8b9097')).toHaveLength(8);
-    expect(colours.filter(colour=>colour==='#fff')).toHaveLength(8);
+    for(const [element,kind,stops]of [['C','carbon',['#d7dade','#a0a6ad','#555e69']],['H','hydrogen',['#fff','#f9fbfc','#c7d0da']]] as const){
+      const gradient=page.locator(`.cubane-model radialGradient[id$="${kind}"]`),id=await gradient.getAttribute('id');expect(await gradient.locator('stop').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('stop-color')))).toEqual(stops);
+      for(const ball of await page.locator(`.cubane-model [data-atom^="${element}"] circle`).all())await expect(ball).toHaveAttribute('fill',`url(#${id})`);
+    }
     await page.screenshot({path:'test-results/cubane-3d-'+viewport.width+'.png'});
   });
 }

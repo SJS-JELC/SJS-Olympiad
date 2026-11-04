@@ -11,5 +11,8 @@ export const serverDefinition = (definition: PublicDefinition):QuestionDefinitio
 });
 export function transition(definition: PublicDefinition, state: Attempt, action: AttemptAction): Attempt {
   if(action.type !== 'submit')return editPresentation(definition,state,action);
-  return reduceQuestion(definition.id,{state,privateState:null},{type:'submit',answers:state.answers},action.now)!.state as Attempt;
+  const outcome=reduceQuestion(definition.id,{state,privateState:null},{type:'submit',answers:state.answers},action.now)!.state as Attempt;
+  // The API deliberately returns no raw working. The mounted page merges that
+  // authoritative outcome into its local answers rather than erasing other fields.
+  return outcome===state?state:{...outcome,answers:state.answers};
 }

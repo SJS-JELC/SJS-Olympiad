@@ -1,8 +1,9 @@
+import { openTeacher } from './teacher';
 import { test, expect } from './fixtures';
 
 const questions: readonly [string,number][] = [
   ...['L5','L6','U6'].flatMap(year=>Array.from({length:9},(_,index)=>[year,index+1] as [string,number])),
-  ...[2,3,5,6,7,8].map(number=>['U5',number] as [string,number]),
+  ...[2,3,4,5,6,7,8,9].map(number=>['U5',number] as [string,number]),
 ];
 
 for(const viewport of [{width:960,height:640},{width:1200,height:800},{width:1440,height:900},{width:1440,height:810},{width:1920,height:1080},{width:2560,height:1440}]) {
@@ -11,7 +12,7 @@ for(const viewport of [{width:960,height:640},{width:1200,height:800},{width:144
     await page.setViewportSize(viewport);
     for(const [year,number]of questions) {
       await test.step(`${year}P${number}`,async()=>{
-      await page.goto(`/?theory&year=${year}&question=${number}`);
+      await openTeacher(page, `/?theory&year=${year}&question=${number}`);
       await page.locator('.question-brief').waitFor();
       if(year==='U5'&&number===5){const enter=page.getByRole('button',{name:/Enter laboratory/i});if(await enter.count())await enter.click();}
       await expect(page.locator('.check-button,.l6p3-submit')).toBeVisible();
@@ -48,7 +49,7 @@ for(const viewport of [{width:1200,height:800},{width:960,height:640}]) {
 test(`teacher solved question hides routine footer clutter without moving Check at ${viewport.width}x${viewport.height}`,async({page},testInfo)=>{
   test.setTimeout(90_000);
     await page.setViewportSize(viewport);
-    await page.goto('/?theory&year=U6&question=8');
+    await openTeacher(page, '/?theory&year=U6&question=8');
     await page.locator('.question-brief').waitFor();
     await page.evaluate(()=>document.fonts.ready);
     const pane=await page.locator('.question-brief').boundingBox();

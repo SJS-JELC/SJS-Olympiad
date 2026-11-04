@@ -8,10 +8,10 @@ export function eventTiming(event) {
     endsAt: Math.max(theoryEndsAt, practicalEndsAt ?? theoryEndsAt) };
 }
 
-export const eventAvailable = (event, now) => event.status === 'active' && now < eventTiming(event).endsAt;
+export const eventAvailable = (event, now) => ['draft', 'active'].includes(event.status) && now < eventTiming(event).endsAt;
 export function theoryAvailable(event, now) {
   const timing = eventTiming(event);
-  return eventAvailable(timing, now) && (timing.theoryStartsAt === null || now >= timing.theoryStartsAt) && now < timing.theoryEndsAt;
+  return eventAvailable(timing, now) && (timing.status === 'draft' || timing.theoryStartsAt === null || now >= timing.theoryStartsAt) && now < timing.theoryEndsAt;
 }
 
 /** New schedules require a theory pair; null start is reserved for legacy events. */

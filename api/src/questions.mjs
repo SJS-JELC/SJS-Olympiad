@@ -26,9 +26,9 @@ export function validateAnswers(id, answers) {
   const fields = new Set(definition.parts.flatMap(part => part.fields.map(field => field.id)));
   const compact = {};
   for (const [key, value] of Object.entries(answers)) {
-    if (id === 'U5P7' && key === 'history') continue;
-    if (!fields.has(key) || typeof value !== 'string' || value.length > (['U5P2','U5P3','U5P7'].includes(id) ? 100000 : 1000)) throw new TypeError('Invalid answer.');
-    if ((id === 'U5P3' && key === 'drawing') || (id === 'U5P7' && key === 'drawings')) {
+    if (id === 'U5P9' && key === 'history') continue;
+    if (!fields.has(key) || typeof value !== 'string' || value.length > (['U5P2','U5P3','U5P9'].includes(id) ? 100000 : 1000)) throw new TypeError('Invalid answer.');
+    if ((id === 'U5P3' && key === 'drawing') || (id === 'U5P9' && key === 'drawings')) {
       try {
         const parsed = JSON.parse(value);
         if (parsed && typeof parsed === 'object' && parsed.kind === 'molecule') {

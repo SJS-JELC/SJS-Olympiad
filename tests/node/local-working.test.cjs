@@ -34,7 +34,7 @@ test('server outcomes do not wipe local drawings/undo, navigation cache or a com
  await send(ordinary,{type:'submit'});
  assert.equal(questions.get(ordinary.id).attempt.answers.drawing,drawing);
  assert.deepEqual(JSON.parse(requests[0].body.answers.drawing).history,[]);
- assert.equal(questions.get('U5P7').attempt.solvedAt,null);
+ assert.equal(questions.get('U5P9').attempt.solvedAt,null);
  assert.equal(questions.get(ordinary.id).attempt.answers.drawing,drawing);
  assert.ok(questions.get(ordinary.id).attempt.retryAt>Date.now());
  questions.get(ordinary.id).attempt.retryAt=0;

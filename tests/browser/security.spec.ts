@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect, openCompetitorQuestion, claimAndStart, resumeCompetition, loginCompetitor } from './fixtures';
 import { mockFullscreen, interrupt } from './fullscreen';
 const competitor = test.extend({ accessRole: 'competitor' as const });
@@ -93,8 +94,8 @@ competitor('reload requires access code, retains old claim, and cross-tab change
     await expect(api.service.session(oldToken)).rejects.toMatchObject({status:401});
     await page.evaluate(() => window.dispatchEvent(new StorageEvent('storage', { key: 'any-session-key', newValue: 'ACTIVE' })));
     await expect(page.locator('.question-content')).toHaveCount(0);
-    await loginCompetitor(page);
-    await expect(page.getByText('No teams are available. Ask a teacher for help.')).toBeVisible();
+    await page.getByLabel('Competitor code',{exact:true}).fill('1234');await page.locator('form').filter({has:page.getByLabel('Competitor code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+    await expect(page.getByText('No teams are available. Ask a teacher for help.')).toBeVisible();await expect(page.locator('input[name=team]')).toBeDisabled();await expect(page.getByRole('button',{name:'LOCK IN',exact:true})).toBeDisabled();
     const staff=await api.service.login({role:'teacher',code:'5678'});
     expect((await api.service.teams(staff.token)).teams[0].claimed).toBe(true);
 });
@@ -139,7 +140,7 @@ competitor('locked modal traps keyboard focus and cannot be dismissed by Escape 
     await expect(page.locator('.question-content')).toHaveCount(0);
 });
 test('teacher previews require neither fullscreen nor team claim', async ({ page }) => {
-    await page.goto('/?theory&year=L5&question=1');
+    await openTeacher(page, '/?theory&year=L5&question=1');
     await expect(page.locator('.question-brief')).toBeVisible();
     await interrupt(page, 'blur');
     await expect(page.locator('.question-brief')).toBeVisible();
@@ -158,10 +159,10 @@ competitor('fullscreen countdown opens theory and closes content without a breac
  const fixed=Date.now()+100;await page.clock.install({time:new Date(fixed)});await page.clock.pauseAt(new Date(fixed+1000));const now=await page.evaluate(()=>Date.now());api.setTime(now);
  const staff=await api.service.login({role:'teacher',code:'5678'}),state=await api.service.session(staff.token);
  await api.service.eventUpdate(staff.token,{eventId:'fixture-L6',expectedRevision:state.activeEvent.revision,theoryStartsAt:now+1500,theoryEndsAt:now+3000,practicalStartsAt:now+3500,practicalEndsAt:now+6000});
- await mockFullscreen(page);await page.goto('/');await claimAndStart(page);await expect(page.locator('.splash-timing').filter({hasText:'Theory opens in'})).toBeVisible();
- await page.getByRole('button',{name:'Theoretical Challenge'}).click();await expect(page.getByRole('button',{name:/^Problem 5,/})).toBeDisabled();await expect(page.locator('.question-content')).toHaveCount(0);
+ await mockFullscreen(page);await page.goto('/');await claimAndStart(page);await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toBeDisabled();await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toContainText('Opens in');
+ await page.evaluate(()=>{history.pushState(null,'','?theory');window.dispatchEvent(new PopStateEvent('popstate'));});await expect(page.getByRole('button',{name:/^Problem 5,/})).toBeDisabled();await expect(page.locator('.question-content')).toHaveCount(0);
  await page.clock.fastForward(1501);await expect(page.getByRole('button',{name:/^Problem 5,/})).toBeEnabled();await page.getByRole('button',{name:/^Problem 5,/}).click();await expect(page.locator('.question-content')).toBeVisible();
- await page.clock.fastForward(1500);await expect(page.locator('.question-content')).toHaveCount(0);await expect(page.locator('.question-access')).toContainText('finished');await expect(page.getByRole('dialog')).toHaveCount(0);
+ await page.clock.fastForward(1500);await expect(page.locator('.question-content')).toHaveCount(0);await expect(page.locator('.splash-stage')).toBeVisible();await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toBeDisabled();await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toContainText('COMPLETE');await expect(page.getByRole('dialog')).toHaveCount(0);
  expect(api.requests.some(request=>request.action==='breach')).toBe(false);api.setTime(await page.evaluate(()=>Date.now()));expect((await api.service.session(api.token)).competition.status).toBe('ACTIVE');
- await page.getByRole('button',{name:'Back to theory',exact:true}).click();await expect(page.locator('.theory-timer')).toContainText('finished');
+ await page.clock.fastForward(1000);await expect(page.getByRole('button',{name:'Practical challenge',exact:true})).toBeEnabled();await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toBeDisabled();
 });

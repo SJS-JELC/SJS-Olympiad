@@ -12,7 +12,7 @@ test('confirmed year change resets results and sessions while keeping names; ret
  await assert.rejects(api.eventChangeYear(player.token,input),{status:403});await assert.rejects(api.eventChangeYear(staff.token,{...input,confirm:false}),{status:400});
  await assert.rejects(api.eventChangeYear(staff.token,{...input,expectedRevision:1}),{status:409});
  const result=await api.eventChangeYear(staff.token,input),replacement=result.events[0];
- assert.equal(replacement.year,'U6');assert.equal(replacement.status,'draft');assert.equal(result.activeEvent,null);assert.notEqual(replacement.id,event.id);
+ assert.equal(replacement.year,'U6');assert.equal(replacement.status,'draft');assert.equal(result.activeEvent.id,replacement.id);assert.notEqual(replacement.id,event.id);
  const fresh=(await api.teams(staff.token,{eventId:replacement.id})).teams[0];assert.equal(fresh.name,'My team');assert.equal(fresh.year,'U6');assert.equal(fresh.score,0);assert.equal(fresh.claimed,false);assert.equal(fresh.practical,null);
  await assert.rejects(api.session(player.token),{status:401});await assert.rejects(api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'stale-year'}),{status:401});
  assert.equal((await api.eventChangeYear(staff.token,input)).createdEventId,replacement.id);

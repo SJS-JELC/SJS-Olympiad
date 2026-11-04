@@ -8,16 +8,16 @@ const submit=(id,answers,now=1000,previous=initial())=>reduceQuestion(id,previou
 const answerObject=(id,value)=>typeof value==='string' ? id==='L6P4'
   ? Object.fromEntries(value.split('/').flatMap((orbital,i)=>[...orbital].map((phase,n)=>[(i?'LUMO':'HOMO')+(n+1),phase]))) : {answer:value} : value;
 
-test('all33 identities initialize through the deployable plain JavaScript boundary',()=>{
+test('all35 identities initialize through the deployable plain JavaScript boundary',()=>{
   let count=0;
   for(const year of ['L5','L6','U5','U6'])for(let n=1;n<=9;n++){
     const id=year+'P'+n,info=questionInfo(id);
-    if(year==='U5'&&[1,4,9].includes(n)){assert.equal(info,null);continue;}
+    if(year==='U5'&&[1].includes(n)){assert.equal(info,null);continue;}
     count++;assert.equal(info.id,id);assert.equal(info.year,year);
     const result=reduceQuestion(id,null,{type:'tick',now:-999999},500);
     assert.equal(result.award,false);assert.equal(result.state.solvedAt,null);
   }
-  assert.equal(count,33);
+  assert.equal(count,35);
   for(const bad of ['__proto__','constructor','L6P0','l6p8','L6P10',null,{},1])assert.equal(questionInfo(bad),null);
   for(const bad of ['__proto__','constructor','unknown'])assert.throws(()=>validateAnswers(bad,{}),TypeError);
   for(const id of ['L5P1','L5P9','L6P3','U5P5'])for(const action of [null,[],42,{},'submit'])assert.equal(reduceQuestion(id,null,action,0).award,false);
@@ -50,11 +50,11 @@ test('malformed graph snapshots reject gracefully within fixed object limits',()
   for(const [id,field,value]of [
     ['U5P2','diagram',{kind:'dot-and-cross',atoms:Array(500).fill({}),electrons:[],groups:[]}],
     ['U5P3','drawing',{kind:'molecule',graph:{atoms:Array(101).fill({}),bonds:[]},history:[]}],
-    ['U5P7','drawings',{graphs:Array(21).fill({atoms:[],bonds:[]})}],
+    ['U5P9','drawings',{graphs:Array(21).fill({atoms:[],bonds:[]})}],
   ]){
     const result=submit(id,{[field]:JSON.stringify(value)});assert.equal(result.award,false);assert.equal(result.state.solvedAt,null);assert.equal(result.state.retryAt,21000);
   }
-  for(const id of ['U5P2','U5P3','U5P7'])for(const value of ['null','{}','[]','{'])assert.equal(submit(id,{[id==='U5P2'?'diagram':id==='U5P3'?'drawing':'drawings']:value}).award,false);
+  for(const id of ['U5P2','U5P3','U5P9'])for(const value of ['null','{}','[]','{'])assert.equal(submit(id,{[id==='U5P2'?'diagram':id==='U5P3'?'drawing':'drawings']:value}).award,false);
 });
 
 test('semantic persistence removes undo history, rejects unknown/oversized fields, preserves approved chemistry',()=>{
@@ -62,7 +62,7 @@ test('semantic persistence removes undo history, rejects unknown/oversized field
   drawing.history=[structuredClone(drawing.graph)];
   const answers=validateAnswers('U5P3',{drawing:JSON.stringify(drawing)});
   assert.deepEqual(JSON.parse(answers.drawing).history,[]);assert.equal(submit('U5P3',answers).award,true);
-  assert.deepEqual(validateAnswers('U5P7',{drawings:'{}',history:'arbitrary local undo text'}),{drawings:'{}'});
+  assert.deepEqual(validateAnswers('U5P9',{drawings:'{}',history:'arbitrary local undo text'}),{drawings:'{}'});
   for(const answers of [null,[],{unexpected:'x'},{answer:42},{answer:'x'.repeat(1001)}])assert.throws(()=>validateAnswers('L5P1',answers),TypeError);
   assert.throws(()=>validateAnswers('U5P3',{drawing:'x'.repeat(100001)}),TypeError);
   const malformed=submit('L5P1',{answer:5});assert.equal(malformed.award,false);assert.equal(malformed.state.retryAt,0);

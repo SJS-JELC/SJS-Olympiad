@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect, openCompetitorQuestion } from './fixtures';
 const competitor=test.extend({accessRole:'competitor' as const});
 
@@ -38,7 +39,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
     await input.fill('vanadium');
     await page.getByRole('button', { name: 'Check answers' }).click();
     await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 01');
-    await page.getByRole('button', { name: 'Check answers' }).click();
+    await expect(page.getByRole('button', { name: 'Check answers' })).toBeDisabled();
     await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 01');
   });
 }
@@ -46,7 +47,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
 for (const year of ['L5', 'L6']) {
   test(`S1 ${year} grouping tiles retain appearance after selecting and clearing`, async ({ page }) => {
     await page.setViewportSize({ width: 1200, height: 800 });
-    await page.goto(`/?theory&year=${year}&question=${year === 'L5' ? 9 : 1}`);
+    await openTeacher(page, `/?theory&year=${year}&question=${year === 'L5' ? 9 : 1}`);
     const tiles = page.locator('.grouping-item');
     const first = tiles.first();
     const box = await first.boundingBox();

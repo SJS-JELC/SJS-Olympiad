@@ -7,7 +7,7 @@ const files=directory=>readdirSync(directory,{withFileTypes:true}).flatMap(entry
 const failures=[];
 const privateIdentifiers=/\b(?:expectedMonomers|matchesMonomers|matchesContributor|markDiagram|fragmentKeys|orbitalKeys|pointGroupKeys)\b/;
 // Distinct textual keys, never common scientific numbers or visible source formulae.
-const privateText=/vanadium|bicyclo\[4\.3\.1\]decane|4-hydroxycyclohexanone|6-methylspiro\[2\.3\]hexan-4-ol|zbut2enedioicacid|H,H=F,H/i;
+const privateText=/1,4-oxazepine|vanadium|bicyclo\[4\.3\.1\]decane|4-hydroxycyclohexanone|6-methylspiro\[2\.3\]hexan-4-ol|zbut2enedioicacid|H,H=F,H/i;
 for(const path of files(resolve(root,'src')).filter(path=>/\.[cm]?[jt]sx?$/.test(path)&&!path.endsWith('.d.ts'))){
  const source=readFileSync(path,'utf8');
  const compiled=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;

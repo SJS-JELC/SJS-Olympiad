@@ -1,6 +1,7 @@
+import { openTeacher } from './teacher';
 import {test,expect} from './fixtures';
 test('compact lab loads a captured dilution and opens its report',async({page})=>{
- await page.clock.install(); await page.goto('/?theory&year=U5&question=5');
+ await page.clock.install(); await openTeacher(page, '/?theory&year=U5&question=5');
  await page.getByRole('button',{name:'Enter Laboratory',exact:true}).click();
  await expect(page.getByText('Select a sample above to add it to the injector.')).toBeVisible();
  await expect(page.locator('.gc-sample').first()).toContainText('Mystery sample');
@@ -18,8 +19,9 @@ test('compact lab loads a captured dilution and opens its report',async({page})=
  await page.mouse.down();await page.mouse.move(original.x+original.width/2-180,original.y+original.height/2+50,{steps:10});await page.mouse.up();
  await expect(page.getByRole('dialog')).toHaveCount(0);
  const movedPaper=(await paper.boundingBox())!;expect(movedPaper.x).toBeLessThan(original.x-100);
- await page.getByRole('button',{name:'Back to theory'}).click();
- await page.getByRole('button',{name:'Problem 5, 2 points, not yet solved',exact:true}).click();
+ await page.getByRole('button',{name:'Back to settings'}).click();
+ await page.getByRole('button',{name:'Preview Questions',exact:true}).click();
+  await page.getByRole('button',{name:/^U5 Problem 5:/,exact:true}).click();
  expect((await paper.boundingBox())!.x).toBeCloseTo(movedPaper.x,0);
  await paper.focus();await page.keyboard.press('ArrowLeft');
  expect((await paper.boundingBox())!.x).toBeLessThan(movedPaper.x);
@@ -53,7 +55,7 @@ test('compact lab loads a captured dilution and opens its report',async({page})=
 
 for (const viewport of [{width:960,height:600},{width:1200,height:800},{width:1440,height:810},{width:1920,height:1080},{width:2560,height:1440}]) {
  test(`GC briefing and equal sample cards fit at ${viewport.width}`,async({page},testInfo)=>{
-  await page.setViewportSize(viewport); await page.clock.install(); await page.goto('/?theory&year=U5&question=5');
+  await page.setViewportSize(viewport); await page.clock.install(); await openTeacher(page, '/?theory&year=U5&question=5');
   await page.evaluate(()=>document.fonts.ready);
   await expect(page.getByText('Every run injects the same volume.',{exact:false})).toHaveCount(0);
   const enter=page.getByRole('button',{name:'Enter Laboratory',exact:true});
@@ -127,7 +129,7 @@ for (const viewport of [{width:960,height:600},{width:1200,height:800},{width:14
 for (const viewport of [{width:1200,height:800},{width:1440,height:810}]) {
  test(`delete bins remove specific piled reports at ${viewport.width}`,async({page})=>{
   await page.setViewportSize(viewport); await page.clock.install();
-  await page.goto('/?theory&year=U5&question=5');
+  await openTeacher(page, '/?theory&year=U5&question=5');
   await page.getByRole('button',{name:'Enter Laboratory',exact:true}).click();
   for(let id=1;id<=4;id++){
    await page.getByRole('button',{name:'Add Mystery sample to injector'}).click();

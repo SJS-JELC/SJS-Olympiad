@@ -7,7 +7,7 @@ import type {
   ElectronSymbol,
   Point,
 } from './contracts';
-interface EditorSurfaceProps { part: {kind:'dot-and-cross'; initial:DotCrossState; markingPolicyId:string}; response:DotCrossState; readOnly:boolean; onResponse:(state:DotCrossState)=>void; workspaceAside?:import('react').ReactNode }
+interface EditorSurfaceProps { part: {kind:'dot-and-cross'; initial:DotCrossState; markingPolicyId:string}; response:DotCrossState; readOnly:boolean; onResponse:(state:DotCrossState)=>void; workspaceAside?:import('react').ReactNode; initialZoomOutSteps?:number }
 import { dotCrossEngine, type DotCrossCommand } from './engine';
 import { createLayout, type ElectronRegion } from './layout.js';
 const editorLayoutQuestionId = (_id:string) => 'n2o';
@@ -96,6 +96,7 @@ export function DotCrossEditor({
   readOnly,
   onResponse,
   workspaceAside,
+  initialZoomOutSteps = 0,
 }: EditorSurfaceProps) {
   if (part.kind !== 'dot-and-cross') throw Error('DotCrossEditor needs a dot-and-cross part.');
   const parentState = response?.kind === 'dot-and-cross' ? response : part.initial;
@@ -137,7 +138,9 @@ export function DotCrossEditor({
     openingAtoms = useRef(state.atoms);
   const drawingScale = drawingScaleForHeight(window.innerHeight);
   const fit = (atoms = state.atoms) => fitMoleculeCamera({atoms:atoms.map((a,i)=>({id:i,element:'N',x:a.x,y:a.y})),bonds:[]},size.w,size.h,drawingScale,{x:160,y:160});
-  const currentCamera = camera ?? (openingAtoms.current.length ? fit(openingAtoms.current) : {x:500,y:325,scale:drawingScale});
+  let initialCamera = openingAtoms.current.length ? fit(openingAtoms.current) : {x:500,y:325,scale:drawingScale};
+  for (let step = 0; step < initialZoomOutSteps; step++) initialCamera = zoomMoleculeCamera(initialCamera, .8);
+  const currentCamera = camera ?? initialCamera;
   const view = cameraViewBox(currentCamera,size.w,size.h);
   const [x, setX] = useState(400),
     [y, setY] = useState(325),

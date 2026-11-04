@@ -192,7 +192,7 @@ test('legacy grouping/GC presentation writes are retired without creating state'
 
 test('every registered question is served through year-bound teacher previews without team claims',async()=>{
   const f=await fixture();
-  for(const [year,numbers] of [['L5',[1,2,3,4,5,6,7,8,9]],['L6',[1,2,3,4,5,6,7,8,9]],['U6',[1,2,3,4,5,6,7,8,9]],['U5',[2,3,5,6,7,8]]]) {
+  for(const [year,numbers] of [['L5',[1,2,3,4,5,6,7,8,9]],['L6',[1,2,3,4,5,6,7,8,9]],['U6',[1,2,3,4,5,6,7,8,9]],['U5',[2,3,4,5,6,7,8,9]]]) {
     const eventId='catalogue-'+year;
     for(const number of numbers){const q=await f.api.question(f.staff,{questionId:year+'P'+number,eventId});assert.equal(q.score,0);assert.equal(q.attempt.solvedAt,null);}
   }

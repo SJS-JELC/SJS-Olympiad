@@ -1,3 +1,4 @@
+import { openTeacher, reloadTeacher } from './teacher';
 import { test, expect, openCompetitorQuestion, resumeCompetition } from './fixtures';
 import { interrupt } from './fullscreen';
 const competitor = test.extend({ accessRole: 'competitor' as const });
@@ -24,22 +25,22 @@ competitor('L6P5 preserves local answers through navigation and lock, then award
     await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 02');
     await expect(page.locator('.angle-input input').first()).toBeDisabled();
 });
-test('teacher L6P5 preview remains unscored and shares score placement with the hub', async ({ page }) => {
-    await page.goto('/?theory&question=5');
+test('teacher L6P5 preview remains unscored and shares score placement across catalogue previews', async ({ page }) => {
+    await openTeacher(page, '/?theory&question=5');
     for (const [index, value] of ['300', '60', '300', '120', '60', '240'].entries())
         await page.locator('.angle-input input').nth(index).fill(value);
     await page.getByRole('button', { name: 'Check answers' }).click();
     await expect(page.locator('.completion-stamp')).toBeVisible();
     await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 00');
     const question = await page.locator('.score').boundingBox();
-    await page.getByRole('button', { name: 'Back to theory' }).click();
-    await expect(page.locator('.theory-stage')).toBeVisible();
+    await page.getByRole('button', { name: 'Back to settings' }).click();
+    await expect(page.locator('.teacher-settings')).toBeVisible();await page.getByRole('button',{name:'Preview Questions',exact:true}).click();await page.getByRole('button',{name:/^U5 Problem 6:/}).click();
     const hub = await page.locator('.score').boundingBox();
     expect(hub).toEqual(question);
 });
 test('shared feedback follows server deadlines without shifting or repeat-click extensions', async ({ page }) => {
     await page.clock.install();
-    await page.goto('/?theory&question=5');
+    await openTeacher(page, '/?theory&question=5');
     await page.locator('.question-brief').waitFor();
     await page.evaluate(() => document.fonts.ready);
     const pane = await page.locator('.question-brief').boundingBox();
@@ -54,19 +55,19 @@ test('shared feedback follows server deadlines without shifting or repeat-click 
     await expect(page.locator('.angle-input input').first()).toBeEnabled();
     expect(await page.locator('.question-brief').boundingBox()).toEqual(pane);
 });
-test('local theory edits survive navigation, reload discards unchecked values and retains CHECK results', async ({ page, api }) => {
-    await page.goto('/?theory&question=6');
+test('teacher theory working survives navigation and a fresh sign-in clears preview working and results', async ({ page, api }) => {
+    await openTeacher(page, '/?theory&question=6');
     await page.locator('input[name="answer"]').fill('36');
-    await page.getByRole('button', { name: 'Back to theory' }).click();
-    await page.getByRole('button', { name: /^Problem 6,/ }).click();
+    await page.getByRole('button', { name: 'Back to settings' }).click();
+    await page.getByRole('button',{name:'Preview Questions',exact:true}).click();await page.getByRole('button', { name: /^L6 Problem 6:/ }).click();
     await expect(page.locator('input[name="answer"]')).toHaveValue('36');
-    await page.reload();
+    await reloadTeacher(page);
     await expect(page.locator('input[name="answer"]')).toHaveValue('');
     await page.locator('input[name="answer"]').fill('36');
     await page.getByRole('button',{name:'Check answers'}).click();
     await expect(page.locator('.completion-stamp')).toBeVisible();
-    await page.reload();
-    await expect(page.locator('input[name="answer"]')).toHaveValue('36');
-    await expect(page.locator('.completion-stamp')).toBeVisible();
+    await reloadTeacher(page);
+    await expect(page.locator('input[name="answer"]')).toHaveValue('');
+    await expect(page.locator('.completion-stamp')).toHaveCount(0);
     expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(0);
 });

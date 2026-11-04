@@ -2,32 +2,32 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { questionCatalog, findQuestion } from '../../src/questions/catalog';
 import { serverDefinition, score, emptyAttempt, transition, type Answers } from './server-markers';
-import {pair} from '../fixtures/u5p2';
+import {triple} from '../fixtures/u5p2';
 import {solutions} from '../fixtures/u5p7';
 
 // Reuse the existing dedicated-question fixtures for newer drawing interactions.
 // These are lifecycle fixtures, not historical metadata.
 const interactionFixtures: Record<string, Answers[]> = {
-  U5P2: [{diagram:JSON.stringify(pair())}],
-  U5P7: [{drawings:JSON.stringify({graphs:solutions})}],
+  U5P2: [{diagram:JSON.stringify(triple())}],
+  U5P9: [{drawings:JSON.stringify({graphs:solutions})}],
 };
 
 describe('complete question registry', () => {
-  it('contains nine entries per original year and the six approved U5 questions', () => {
-    expect(questionCatalog).toHaveLength(33);
-    expect(new Set(questionCatalog.map(e=>e.definition.id)).size).toBe(33);
-    expect(new Set(questionCatalog.map(e=>e.definition.year+':'+e.definition.number)).size).toBe(33);
+  it('contains nine entries per original year and the eight approved U5 questions', () => {
+    expect(questionCatalog).toHaveLength(35);
+    expect(new Set(questionCatalog.map(e=>e.definition.id)).size).toBe(35);
+    expect(new Set(questionCatalog.map(e=>e.definition.year+':'+e.definition.number)).size).toBe(35);
     for (const year of ['L5','L6','U6']) for(let number=1;number<=9;number++) {
       const entry=findQuestion(year,number); expect(entry).toBeDefined();
       expect(entry?.definition.points).toBe(number<=4?1:number<=7?2:3);
     }
-    for (const [number, points] of [[2,1],[3,1],[5,2],[6,2],[7,2],[8,3]]) expect(findQuestion('U5',number)?.definition.points).toBe(points);
-    for (const number of [1,4,9]) expect(findQuestion('U5',number)).toBeUndefined(); expect(findQuestion('EXAMPLE',0)).toBeUndefined();
-    expect(findQuestion('U5',7)?.definition.title).toBe('Cut and Shut');
+    for (const [number, points] of [[2,1],[3,1],[4,1],[5,2],[6,2],[7,2],[8,3],[9,3]]) expect(findQuestion('U5',number)?.definition.points).toBe(points);
+    for (const number of [1]) expect(findQuestion('U5',number)).toBeUndefined(); expect(findQuestion('EXAMPLE',0)).toBeUndefined();
+    expect(findQuestion('U5',9)?.definition.title).toBe('Cut and Shut');
     expect(findQuestion('U5',8)?.definition.title).toBe('Boundaries');
   });
   // L6P8's private marking fixtures run in api/tests/service.test.mjs.
-  for(const entry of questionCatalog.filter(e=>!['L5P9','L6P1','L6P3','U5P5'].includes(e.definition.id))) {
+  for(const entry of questionCatalog.filter(e=>!['L5P9','L6P1','L6P3','U5P5','U5P7'].includes(e.definition.id))) {
     const definition=serverDefinition(entry.definition);
     it(definition.id+' source fixtures award exactly once and blanks are never correct',()=>{
       let accepted = interactionFixtures[definition.id];

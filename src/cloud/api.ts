@@ -42,7 +42,6 @@ export type SessionState = {
     serverNow: number;
     configRevision: number;
     draftEvents?: {id:string;name:string;year:string}[];
-    practice?: boolean;
     activeEvent: EventRecord | null;
     events?: EventRecord[];
     team: TeamRecord | null;

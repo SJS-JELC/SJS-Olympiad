@@ -5,7 +5,7 @@ import {oxyanions} from '../src/private-oxyanions.mjs';
 const initial=()=>({state:{answers:{},feedback:{},retryAt:0,solvedAt:null},privateState:{}});
 const act=(id,previous,action,now)=>reduceCustomQuestion(id,previous,action,now);
 test('custom registry and unsupported question boundary',()=>{
-  for(const [id,points] of [['L5P9',3],['L6P1',1],['L6P3',1],['U5P5',2]])assert.equal(customInfo(id).points,points);
+  for(const [id,points] of [['L5P9',3],['L6P1',1],['L6P3',1],['U5P5',2],['U5P7',2]])assert.equal(customInfo(id).points,points);
   assert.equal(customInfo('unknown'),null);assert.equal(act('unknown',initial(),{},0),null);
 });
 test('grouping exact partition validation and reset cannot erase score/penalty',()=>{

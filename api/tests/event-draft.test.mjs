@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
 import {memoryRepository} from './helpers.mjs';
-test('confirmed active-to-draft preserves records and gates play; reactivation retains scores',async()=>{
+test('confirmed active-to-draft preserves records and permits durable play; reactivation retains scores',async()=>{
  const repo=memoryRepository(),api=createService(repo,{},()=>100000),staff=await api.login({role:'teacher',code:'5678'});
  const state=await api.eventCreate(staff.token,{name:'Return to draft',year:'L6',theoryStartsAt:0,theoryEndsAt:400000}),id=state.events[0].id;
  await api.eventActivate(staff.token,{eventId:id,expectedRevision:1});await api.teamAdd(staff.token,{eventId:id,name:'Team'});
@@ -14,8 +14,8 @@ test('confirmed active-to-draft preserves records and gates play; reactivation r
  await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:2}),{status:400});
  await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:1,confirm:true}),{status:409});
  const draft=await api.eventDraft(staff.token,{eventId:id,expectedRevision:2,confirm:true});
- assert.equal(draft.activeEvent,null);assert.equal(draft.events[0].status,'draft');assert.equal(rows(),before);
- await assert.rejects(api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'while-draft'}),{status:403});
+ assert.equal(draft.activeEvent.status,'draft');assert.equal(draft.events[0].status,'draft');assert.equal(rows(),before);
+ assert.equal((await api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'while-draft'})).score,3);
  await assert.rejects(api.eventUpdate(staff.token,{eventId:id,expectedRevision:3,year:'U6'}),{status:409});
  await api.eventActivate(staff.token,{eventId:id,expectedRevision:3});assert.equal((await api.session(player.token)).score,3);
  await api.eventDraft(staff.token,{eventId:id,expectedRevision:4,confirm:true});

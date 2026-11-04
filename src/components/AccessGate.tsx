@@ -66,7 +66,7 @@ export function CompetitorEntry() {
     finally {
         if(current())setBusy(false);
     } }
-    const closed = event && (event.status !== 'active' || security.serverNow() >= eventTiming(event).endsAt);
+    const closed = event && (event.status === 'ended' || security.serverNow() >= eventTiming(event).endsAt);
     const selectingTeam=!!event && !security.server?.team && !closed;
     const error=message || security.error;
     return <main className={'competitor-setup type-body'+(selectingTeam?' competitor-setup--selection':'')}><OlympiadLogo className="competitor-setup__logo" />

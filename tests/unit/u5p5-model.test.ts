@@ -19,12 +19,12 @@ describe('U5P5 deterministic GC model', () => {
       expect(integratePublic(sample,[0,TIME_MAX])).toBe(0);
     }
   });
-  it('keeps four samples, pure accord labels, and a six-second run', () => {
+  it('keeps four samples, pure accord labels, and a four-second run', () => {
     expect(SAMPLES).toEqual(['citrus', 'floral', 'woody', 'mystery']);
     expect(SAMPLE_LABELS.citrus).toMatch(/citrus scent/i);
     expect(SAMPLE_LABELS.floral).toMatch(/floral scent/i);
     expect(SAMPLE_LABELS.woody).toMatch(/woody scent/i);
-    expect(RUN_MS).toBe(6000);
+    expect(RUN_MS).toBe(4000);
     expect(TIME_MAX).toBe(5.4);
   });
 

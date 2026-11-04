@@ -1,6 +1,7 @@
+import { openTeacher } from './teacher';
 import {test,expect} from './fixtures';
 for(const viewport of [{width:1200,height:800},{width:1440,height:810},{width:960,height:600},{width:1920,height:1080},{width:2560,height:1440}])test('N2O editor '+viewport.width,async({page})=>{
- await page.setViewportSize(viewport);await page.clock.install();await page.goto('/?theory&year=U5&question=2');
+ await page.setViewportSize(viewport);await page.clock.install();await openTeacher(page, '/?theory&year=U5&question=2');
  await expect(page.locator('.dot-cross-editor')).toBeVisible();
  await expect(page.getByText('Keyboard and non-drag controls')).toHaveCount(0);
  expect(await page.locator('.dc-canvas').evaluate(el=>getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
@@ -24,7 +25,7 @@ for(const viewport of [{width:1200,height:800},{width:1440,height:810},{width:96
 
 
 test('dot-cross camera controls preserve atoms and history and remain usable during cooldown',async({page})=>{
- await page.goto('/?theory&year=U5&question=2');
+ await openTeacher(page, '/?theory&year=U5&question=2');
  const canvas=page.locator('.dc-canvas');
  await canvas.focus();await page.keyboard.press('Space');
  const before=await canvas.locator('.atom').innerHTML();

@@ -100,7 +100,7 @@ describe('P7 shared editor, compatibility and compact persistence', () => {
   it('strips plural-field undo locally and at the server boundary, keeping the semantic snapshot below 24KB', () => {
     const state=moleculeDrawing(true), withHistory={...state,history:[state.graph,state.graph]};
     const input={drawings:serializeP7Drawing(withHistory),history:'old local history'};
-    const compact=compactAnswers(input), server=validateAnswers('U5P7',input);
+    const compact=compactAnswers(input), server=validateAnswers('U5P9',input);
     expect(JSON.parse(compact.drawings).history).toEqual([]);
     expect(server).toEqual(compact);
     expect(JSON.parse(input.drawings).history).toHaveLength(2);
@@ -118,16 +118,16 @@ describe('P7 shared editor, compatibility and compact persistence', () => {
     expect(parsed.state.history).toHaveLength(100);
     const compact=compactAnswers({drawings:raw});
     expect(Buffer.byteLength(JSON.stringify(compact))).toBeLessThan(24000);
-    expect(correct(validateAnswers('U5P7',compact).drawings)).toBe(true);
+    expect(correct(validateAnswers('U5P9',compact).drawings)).toBe(true);
   });
-  it('preserves the twenty-second server cooldown and awards two points once', () => {
-    const wrong=reduceQuestion('U5P7',null,{type:'submit',answers:{}},1000)!;
+  it('preserves the twenty-second server cooldown and awards three points once', () => {
+    const wrong=reduceQuestion('U5P9',null,{type:'submit',answers:{}},1000)!;
     expect(wrong.state.retryAt).toBe(21000); expect(wrong.award).toBe(false);
     const answers={drawings:serializeP7Drawing(moleculeDrawing())};
-    expect(reduceQuestion('U5P7',wrong,{type:'submit',answers},20999)!.award).toBe(false);
-    const right=reduceQuestion('U5P7',wrong,{type:'submit',answers},21000)!;
+    expect(reduceQuestion('U5P9',wrong,{type:'submit',answers},20999)!.award).toBe(false);
+    const right=reduceQuestion('U5P9',wrong,{type:'submit',answers},21000)!;
     expect(right.award).toBe(true); expect(right.state.solvedAt).toBe(21000);
-    expect(reduceQuestion('U5P7',right,{type:'submit',answers},22000)!.award).toBe(false);
+    expect(reduceQuestion('U5P9',right,{type:'submit',answers},22000)!.award).toBe(false);
   });
   it('records the unchanged products and hashes of generated RDKit geometry/labels', () => {
     const base=new URL('../../src/questions/u5p7/assets/',import.meta.url);

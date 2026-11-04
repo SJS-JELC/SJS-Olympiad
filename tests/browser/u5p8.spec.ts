@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { expect, test } from './fixtures';
 import { openCompetitorQuestion, resumeCompetition } from './fixtures';
 const competitor = test.extend({accessRole:'competitor' as const});
@@ -69,7 +70,7 @@ competitor('Boundaries accepts the higher interface solution through the shared 
 for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 960, height: 640 }, {width:1920,height:1080}, {width:2560,height:1440}]) {
   test(`Boundaries bounded layout at ${viewport.width}×${viewport.height}`, async ({ page }, testInfo) => {
     await page.setViewportSize(viewport);
-    await page.goto(route);
+    await openTeacher(page, route);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.locator('.u5p8-flask')).toBeVisible();
     await expect(page.locator('.u5p8-flask')).toContainText('10.0 cm');

@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect } from './fixtures';
 import { openCompetitorQuestion, resumeCompetition } from './fixtures';
 const competitor = test.extend({accessRole:'competitor' as const});
@@ -47,14 +48,14 @@ for (const fixture of [
 test('all question answer inputs and selects retain accessible names, uppercase headings and image optouts', async ({ page }) => {
   test.setTimeout(90_000);
   for (const year of ['L5','L6','U6']) for (let number=1;number<=9;number++) {
-    await page.goto(`/?theory&year=${year}&question=${number}`);
+    await openTeacher(page, `/?theory&year=${year}&question=${number}`);
     await page.locator('.question-brief').waitFor();
     const title=await page.locator('.olympiad-question-heading__title').innerText();
     expect(title).toBe(title.toLocaleUpperCase('en-GB'));
     for (const control of await page.locator('.question-content input:not([type="range"]),.question-content select').all()) await expect(control).toHaveAccessibleName(/.+/);
     await expect(page.locator('.question-page [title],.question-page svg>title')).toHaveCount(0);
   }
-  await page.goto('/?theory&year=U5&question=5');
+  await openTeacher(page, '/?theory&year=U5&question=5');
   await expect(page.locator('.olympiad-question-heading__title')).toHaveText('SCENTS AND SCENTSIBILITY');
   const prevented=await page.locator('.question-eagle').evaluate(el=>{
     const event=new MouseEvent('contextmenu',{bubbles:true,cancelable:true});
@@ -86,9 +87,9 @@ competitor('timed naming focuses on GO and preserves run, wrong, timeout and sol
   await expect(page.locator('.l6p3-feedback')).toBeVisible();
   await expect(page.locator('.l6p3-reveal')).toHaveCount(0);
   await page.screenshot({path:testInfo.outputPath('L6P3-wrong.png')});
-  const wrongFlashAcknowledged=page.waitForResponse(response=>response.url().endsWith('/api/olympiad/action')&&response.request().postDataJSON()?.action?.type==='tick');
+  const actionsBeforeFlash=api.requests.filter(request=>request.action==='action').length;
   await page.clock.fastForward(600);
-  await wrongFlashAcknowledged;
+  expect(api.requests.filter(request=>request.action==='action')).toHaveLength(actionsBeforeFlash);
   await expect(page.locator('.cloud-status')).toHaveText('Saved');
   await expect(page.locator('.l6p3-feedback')).toHaveCount(0);
   await expect(submit).toBeFocused();

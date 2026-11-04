@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createService } from '../api/src/service.mjs';
 import { handle } from '../api/src/http.mjs';
-import { memoryRepository } from '../api/tests/helpers.mjs';
+import { memoryRepository } from '../api/src/memory-storage.mjs';
 
 // Development-only adapter. It never opens Azure storage or changes the
 // production handler's origin, cookie, authentication or marking contracts.

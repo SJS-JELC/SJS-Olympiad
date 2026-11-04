@@ -46,9 +46,8 @@ export async function handle(req,getService=service) {
     const api=await getService(),token=cookie(requestHeaders.cookie,COOKIE);
     let body;
     if(action==='practice-start') {
-      await api.throttle('mutate-'+(token || 'anonymous'),180);
-      const result=await api.practiceStart(token,req.body);body=result.state;
-      headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/`;
+      await api.session(token);
+      throw new ApiError(410,'Isolated practice is retired. Sign in to the current event.');
     } else if(action==='login') {
       const address=String(requestHeaders['x-forwarded-for'] || req.ip || 'unknown').split(',')[0];
       await api.throttle('login-global',120);

@@ -3,6 +3,7 @@ import { oxyanions } from './private-oxyanions.mjs';
 import { getTrace, integrate, isCorrectComposition, RUN_MS, TIME_MAX } from './private-gc.mjs';
 
 const groups = {
+  U5P7: { year:'U5', points:2, cooldownMs:20000, items:['C4H8','C3H4O','C10H22O','C2H2O','C4H11N','C2H6','C5H10','C2H5N','C50H98'], key:[['C2H6','C10H22O','C4H11N'],['C4H8','C5H10','C2H5N'],['C3H4O','C2H2O','C50H98']] },
   L5P9: { year:'L5', points:3, cooldownMs:30000, items:['ZnO2','TiO2','Fe3O4','MgO2','Al2O3','V6O13','Na2O2','MgO','Ti4O7'], key:[['ZnO2','MgO2','Na2O2'],['Fe3O4','V6O13','Ti4O7'],['TiO2','Al2O3','MgO']] },
   L6P1: { year:'L6', points:1, cooldownMs:20000, items:['Ta','S','As','Cu','V','Zr','F','Th','Na'], key:[['S','Zr','Th'],['Cu','Na','F'],['V','As','Ta']] },
 };

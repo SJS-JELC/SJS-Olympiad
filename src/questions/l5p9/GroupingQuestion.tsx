@@ -4,7 +4,7 @@ import { QuestionAnswerForm } from '../QuestionAnswerForm';
 import clearButton from '../../assets/powerapp/reset-button.svg';
 import './GroupingQuestion.css';
 
-type GroupingItem = { id: string; label: string; image: string; presentation?: 'element' };
+type GroupingItem = { id: string; label: string; image?: string; presentation?: 'element' };
 
 /** Bespoke grouping UI; the shared form owns feedback and the retry deadline display. */
 export function GroupingQuestion({ attempt, onAction, definition, wording, items }: QuestionViewProps & {
@@ -26,7 +26,8 @@ export function GroupingQuestion({ attempt, onAction, definition, wording, items
                 data-group={group} aria-label={item.label + (group ? ', group ' + group : ', unselected')}
                 aria-pressed={group > 0} disabled={disabled || group > 0}
                 onClick={() => onAction({ type: 'select', item: item.id, now: Date.now() })}>
-                <img src={item.image} className={item.presentation === 'element' ? 'grouping-element' : undefined} alt="" />
+                {item.image ? <img src={item.image} className={item.presentation === 'element' ? 'grouping-element' : undefined} alt="" />
+                  : <span className="grouping-formula type-body" aria-hidden="true">{item.label}</span>}
               </button>;
             })}
           </div>

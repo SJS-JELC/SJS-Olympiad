@@ -5,6 +5,8 @@ import { request, type QuestionHydration, type QuestionState } from './api';
 import { useCompetitionSecurity } from '../security';
 import './cloud.css';
 import {CompletionStamp} from '../components/CompletionStamp';
+import { reconcileQuestion } from './question-state';
+export { restoredAttempt } from './question-state';
 type Pending = {
     endpoint: string;
     body: Record<string, unknown>;
@@ -59,16 +61,6 @@ function localEdit(definition: QuestionDefinition, attempt: Attempt, action: Att
     }
     return definition.reduce?.(attempt, action) ?? attempt;
 }
-export function restoredAttempt(attempt: Attempt): Attempt {
-    const result = {...attempt,answers:{}};
-    if(attempt.interaction?.kind==='grouping')result.interaction={kind:'grouping',selected:[]};
-    if(attempt.interaction?.kind==='gc'){
-        const activeRun=attempt.solvedAt===null?attempt.interaction.activeRun:null;
-        result.interaction={kind:'gc',entered:!!activeRun,activeRun,nextRunId:attempt.interaction.nextRunId,
-            analyses:[],reference:'citrus',interval:[.5,.7],measurements:[],results:[]};
-    }
-    return result;
-}
 /** Answers and presentation edits live only in this mounted router's memory. */
 export function useServerQuestions(eventId: string | undefined) {
     const security = useCompetitionSecurity();
@@ -93,47 +85,14 @@ export function useServerQuestions(eventId: string | undefined) {
     };
     const bodyFor = (id: string) => ({ questionId: id, ...(security.server?.role === 'teacher' ? { eventId } : {}) });
     function accept(id: string, value: QuestionState, edits: number, initial = false, pending?: Pending) {
-        const record = get(id), previous = record.attempt, delta = Date.now() - value.serverNow;
-        const solvedAt = value.attempt.solvedAt;
-        record.completion = typeof solvedAt === 'number' && Number.isFinite(solvedAt) && solvedAt >= 0
-            ? { solvedAt, animate: !initial && record.loaded && !record.completion } : undefined;
-        const attempt = { ...(initial ? restoredAttempt(value.attempt) : value.attempt), retryAt: value.attempt.retryAt ? value.attempt.retryAt + delta : 0 };
-        if (attempt.interaction?.kind === 'timed')
-            attempt.interaction = { ...attempt.interaction, deadline: attempt.interaction.deadline + delta, wrongUntil: attempt.interaction.wrongUntil ? attempt.interaction.wrongUntil + delta : 0 };
-        if (attempt.interaction?.kind === 'gc' && attempt.interaction.activeRun)
-            attempt.interaction = { ...attempt.interaction, activeRun: { ...attempt.interaction.activeRun, startedAt: attempt.interaction.activeRun.startedAt + delta, deadline: attempt.interaction.activeRun.deadline + delta } };
+        const record = get(id);
+        const next = reconcileQuestion(!initial && record.loaded ? record : undefined, value, Date.now(), pending?.body.action);
+        record.attempt = next.attempt;
+        record.completion = next.completion;
         record.revision = value.revision;
         if (value.data !== undefined) record.data = value.data;
-        const wasLoaded = record.loaded;
         record.loaded = true;
         record.loadError = undefined;
-        // Response authority and page working are deliberately separate. Neither
-        // initial hydration nor historical responses may restore answer content.
-        record.attempt = { ...attempt, answers: initial || !wasLoaded ? {} : previous.answers };
-        if (!initial && wasLoaded && previous.interaction?.kind === 'grouping')
-            record.attempt = { ...record.attempt, interaction: previous.interaction };
-        if (attempt.interaction?.kind === 'timed' && previous.interaction?.kind === 'timed' &&
-            (attempt.interaction.step !== previous.interaction.step || !attempt.interaction.active))
-            record.attempt = { ...record.attempt, answers: {} };
-        if (attempt.interaction?.kind === 'gc') {
-            const canonical = attempt.interaction;
-            const local = !initial && wasLoaded && previous.interaction?.kind === 'gc' ? previous.interaction : undefined;
-            const run = canonical.activeRun;
-            const input = pending?.body.action as {type?:string;sample?:string;concentration?:number} | undefined;
-            const capture = local?.activeRun?.id === run?.id ? local?.activeRun : input?.type === 'gc-run' ? input : local?.loaded;
-            const activeRun = run && { ...capture, ...run,
-                sample: run.sample ?? capture?.sample, concentration: run.concentration ?? capture?.concentration };
-            const finished = local?.activeRun && value.gcCompletedRunId === local.activeRun.id ? local.activeRun : null;
-            const reports = [...(local?.results ?? [])];
-            if (finished && !reports.some(row => row.id === finished.id))
-                reports.push({id:finished.id,sample:finished.sample,concentration:finished.concentration ?? 100,interval:[0,0]});
-            record.attempt = { ...record.attempt, interaction: { ...canonical,
-                ...(local ? {concentrations:local.concentrations,loaded:finished ? null : local.loaded,
-                    reference:local.reference,interval:local.interval,measurements:local.measurements} : {}),
-                entered: !!activeRun || !!local?.entered, activeRun: activeRun as typeof canonical.activeRun,
-                results: reports.slice(-8),
-            } };
-        }
         record.dirty = !record.completion && record.edits !== edits;
         record.status = record.dirty ? 'Answer not submitted' : 'Saved';
         security.recordQuestion(id, value.attempt, value.score);
@@ -152,11 +111,8 @@ export function useServerQuestions(eventId: string | undefined) {
         // Seeding must not call React setters while the router renders.
         current.hydrated = true;
         for (const [id, state] of Object.entries(initial.questions)) {
-            const delta = Date.now() - initial.serverNow, attempt = { ...restoredAttempt(state.attempt), retryAt: state.attempt.retryAt ? state.attempt.retryAt + delta : 0 };
-            if (attempt.interaction?.kind === 'timed') attempt.interaction = { ...attempt.interaction, deadline: attempt.interaction.deadline + delta, wrongUntil: attempt.interaction.wrongUntil ? attempt.interaction.wrongUntil + delta : 0 };
-            if (attempt.interaction?.kind === 'gc' && attempt.interaction.activeRun) attempt.interaction = { ...attempt.interaction, activeRun: { ...attempt.interaction.activeRun, startedAt: attempt.interaction.activeRun.startedAt + delta, deadline: attempt.interaction.activeRun.deadline + delta } };
-            const solvedAt = attempt.solvedAt;
-            current.records.set(id, { attempt, revision: state.revision, data: state.data, loaded: true, dirty: false, edits: 0, status: 'Saved', completion: typeof solvedAt === 'number' && Number.isFinite(solvedAt) && solvedAt >= 0 ? { solvedAt, animate: false } : undefined });
+            const next = reconcileQuestion(undefined, { ...state, serverNow: initial.serverNow }, Date.now());
+            current.records.set(id, { ...next, revision: state.revision, data: state.data, loaded: true, dirty: false, edits: 0, status: 'Saved' });
         }
     }
     async function load(_id: string) {

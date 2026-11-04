@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect } from './fixtures';
 
 for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810 }, { width: 1440, height: 900 }, { width: 1920, height: 1080 }]) {
@@ -6,7 +7,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
       const errors: string[] = [];
       page.on('pageerror', error => errors.push(error.message));
       await page.setViewportSize(viewport);
-      await page.goto(`/?theory&year=L5&question=${question}`);
+      await openTeacher(page, `/?theory&year=L5&question=${question}`);
       await page.evaluate(() => document.fonts.ready);
       const inputs = page.locator('.question-answer-form input');
       await expect(inputs.first()).toBeFocused();
@@ -48,7 +49,7 @@ test.describe('L5 desktop zoom equivalent',()=>{
 test.use({viewport:{width:960,height:640},deviceScaleFactor:1.25});
 test('L5 controls remain visible at 125% desktop zoom equivalent', async ({ page }) => {
   for (const question of [1, 2, 3, 4, 5, 6, 7, 8]) {
-    await page.goto(`/?theory&year=L5&question=${question}`);
+    await openTeacher(page, `/?theory&year=L5&question=${question}`);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.locator('.question-answer-form input').first()).toBeFocused();
     const check = await page.locator('.check-button').boundingBox();

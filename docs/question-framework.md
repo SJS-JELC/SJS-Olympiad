@@ -15,6 +15,7 @@ Read AGENTS.md for security, marking and approved layout contracts. Copy src/que
 | Public presentation/edit state | attempts.ts and question presentation definition |
 | All marking, cooldowns, saved results and once-only points | Private API question modules and transactional service |
 | One-time context hydration, direct CHECK/action transport | Cloud question adapter |
+| Server outcome/page-working reconciliation and fresh restoration | cloud/question-state.ts, used by hydration, CHECK and test adapters |
 | Typed definitions/views | catalog.ts |
 | Shared typography | typography.css |
 
@@ -49,11 +50,11 @@ Typography and control geometry scale with viewport height at 1920×1080 and 256
 
 ## Bespoke interactions
 
-Grouping is limited to L5P9/L6P1; timed oxyanions, U5 drawing editors, GC laboratory and numeric questions retain their contracts in AGENTS.md. U5P7 is Cut and Shut (two points), U5P8 is Boundaries (three). Current U5 slots are 2, 3, 5, 6, 7, 8; other slots remain unavailable.
+Grouping is used by L5P9/L6P1/U5P7; timed oxyanions, U5 drawing editors, GC laboratory and numeric questions retain their contracts in AGENTS.md. U5P9 is Cut and Shut (three points), U5P8 is Boundaries (three). Current U5 slots are 2, 3, 4, 5, 6, 7, 8, 9; other slots remain unavailable.
 
-P2/P3 share view controls while retaining their own chemistry engines. Camera movement is presentation-only and must not alter answers, history or world editing limits. P3 cleanup fits the returned graph without adding atoms/H or introducing an extra undo step. P7 reuses the molecule editor with its own 40-heavy-atom policy, while P3 stays at 20; plural `drawings` supports dual legacy/new serialization and local-history compaction. Product generation uses scripts/generate-u5p7-products.py and retained source/provenance; its standard-library pass extends C-C/C-O vectors in the retained RDKit base while preserving C-H vectors, with no browser RDKit runtime.
+P2/P3 share view controls while retaining their own chemistry engines. Camera movement is presentation-only and must not alter answers, history or world editing limits. P3 cleanup fits the returned graph without adding atoms/H or introducing an extra undo step. P9 reuses the molecule editor with its own 40-heavy-atom policy, while P3 stays at 20; plural `drawings` supports dual legacy/new serialization and local-history compaction. Cut and Shut now fixes the editor to skeletal view and renders product graphs from the original source JSON using the shared Structure renderer. Historical displayed-product assets and scripts/generate-u5p7-products.py remain unchanged as provenance; there is no browser RDKit runtime.
 
-CloudQuestion freezes every view interaction after confirmed completion, using a disabled fieldset plus pointer/keyboard/focus guards for custom SVG controls while preserving readable content. Keep header navigation and the shared stamp outside that lock; completed server state/revision is immutable and completed custom timers stop issuing actions. Teacher problem screens show the back arrow only and omit routine bottom badges/status, retaining pending/failure/retry feedback. Teacher settings controls remain on splash and theory hub.
+CloudQuestion freezes every view interaction after confirmed completion, using a disabled fieldset plus pointer/keyboard/focus guards for custom SVG controls while preserving readable content. Keep header navigation and the shared stamp outside that lock; completed server state/revision is immutable and completed custom timers stop issuing actions. Teacher problem screens show the back arrow only and omit routine bottom badges/status, retaining pending/failure/retry feedback. Teacher navigation is rooted in Settings; all previews return there directly. Pupil splash and theory hub have no Settings controls.
 
 ## Practical
 
@@ -63,4 +64,6 @@ Practical protocols use the shared backdrop/header with a scrollable full-width 
 
 For future changes run focused marking tests, typography audit, typecheck and build unless instructed otherwise. Browser checks should cover changed layout and gating/navigation/cooldown behaviour. Security-controller changes require broader persistence/interruption/race checks. Keep screenshots in ignored test output. Report unrun or failing checks accurately; local/mock success does not establish live Azure acceptance.
 
-U5 P2/P3/P7 editors use a compact left palette. The rail owns its fine dividers/spacing and preserves 44px coarse-pointer targets; short touch layouts use a top-strip fallback to keep canvas height. P3/P7 answer forms use question-scoped zero horizontal padding so diagram and drawing card edges match. No injected test CSS or stored placement setting is needed.
+U5 P2/P3/P9 editors use a compact left palette. The rail owns its fine dividers/spacing and preserves 44px coarse-pointer targets; short touch layouts use a top-strip fallback to keep canvas height. P3/P9 answer forms use question-scoped zero horizontal padding so diagram and drawing card edges match. No injected test CSS or stored placement setting is needed.
+
+U5P2, U5P3 and U5P9 start with two extra Zoom out steps (0.8 squared scale). This changes only their initial camera; molecular coordinates, saved working, manual zoom and Fit remain independent. The molecule editor enforces the currently permitted representation even if a mounted editor retains an earlier view preference.

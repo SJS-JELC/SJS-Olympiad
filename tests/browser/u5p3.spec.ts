@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect, type Page } from './fixtures';
 import { openCompetitorQuestion, resumeCompetition } from './fixtures';
 const competitor = test.extend({accessRole:'competitor' as const});
@@ -60,7 +61,7 @@ async function solveByDrawing(page: Page) {
 }
 
 test('free canvas supports keyboard atoms, bond edits, undo, erase and navigation', async ({ page }) => {
-  await page.goto(route); await expect(canvas(page)).toBeVisible();
+  await openTeacher(page, route); await expect(canvas(page)).toBeVisible();
   await expect(page.getByRole('slider')).toHaveCount(0);
   await expect(page.locator('.u5p3-monomer')).toHaveCount(0);
   await expect(page.locator('.view-switch')).toHaveCount(0);
@@ -75,8 +76,9 @@ test('free canvas supports keyboard atoms, bond edits, undo, erase and navigatio
   await expect(bond).toHaveAttribute('aria-label', /^Single bond/);
   await atoms(page).last().focus(); await page.keyboard.press('Delete');
   await expect(atoms(page)).toHaveCount(1);
-  await page.getByRole('button', { name: 'Back to theory', exact: true }).click();
-  await page.getByRole('button', { name: 'Problem 3, 1 point, not yet solved', exact: true }).click();
+  await page.getByRole('button', { name: 'Back to settings', exact: true }).click();
+  await page.getByRole('button',{name:'Preview Questions',exact:true}).click();
+  await page.getByRole('button', { name: /^U5 Problem 3:/, exact: true }).click();
   await expect(atoms(page)).toHaveCount(1);
 });
 
@@ -124,7 +126,7 @@ for (const reason of ['blur', 'hidden', 'fullscreen'] as const) competitor(`draw
 
 test('displayed polymer and drawing canvas fit landscape and zoomed viewports', async ({ page }, testInfo) => {
   for (const [width, height] of [[1200, 800], [1440, 810], [960, 640]]) {
-    await page.setViewportSize({ width, height }); await page.goto(route); await page.evaluate(() => document.fonts.ready);
+    await page.setViewportSize({ width, height }); await openTeacher(page, route); await page.evaluate(() => document.fonts.ready);
     await expect(page.locator('.u5p3-polymer svg')).toBeVisible();
     await expect(page.locator('.u5p3-polymer img')).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight)).toBe(true);
@@ -161,7 +163,7 @@ competitor('cooldown deadline and drawing persist through navigation and staff u
 });
 
 for (const input of ['mouse','keyboard','touch'] as const) test(`explicit hydrogen replacement works through ${input}`,async({page})=>{
-  await page.setViewportSize({width:1200,height:800});await page.goto(route);
+  await page.setViewportSize({width:1200,height:800});await openTeacher(page, route);
   await canvas(page).focus();await canvas(page).press('Enter');
   await choose(page,'H');
   await atoms(page).first().focus();await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');
@@ -183,7 +185,7 @@ for (const input of ['mouse','keyboard','touch'] as const) test(`explicit hydrog
 });
 
 test('cleanup retains an explicit halogenated alkene and fits landscape and zoom',async({page},testInfo)=>{
-  await page.setViewportSize({width:1440,height:810});await page.goto(route);
+  await page.setViewportSize({width:1440,height:810});await openTeacher(page, route);
   await canvas(page).focus();await canvas(page).press('Enter');
   await atoms(page).first().focus();await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');
   const bond=canvas(page).locator('[data-bond="1:2"]');await bond.focus();await bond.press('Enter');
@@ -208,7 +210,7 @@ test('cleanup retains an explicit halogenated alkene and fits landscape and zoom
 });
 
 test('touch pointer drawing creates bonds and supports undo', async ({ page, context }) => {
-  await page.setViewportSize({ width: 1200, height: 800 }); await page.goto(route); await expect(canvas(page)).toBeVisible();
+  await page.setViewportSize({ width: 1200, height: 800 }); await openTeacher(page, route); await expect(canvas(page)).toBeVisible();
   const box = (await canvas(page).boundingBox())!;
   const cdp = await context.newCDPSession(page);
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + 150, y: box.y + box.height / 2 }] });

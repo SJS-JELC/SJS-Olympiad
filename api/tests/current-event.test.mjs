@@ -30,6 +30,6 @@ test('concurrent creates commit only one draft and do not lose event history',as
   assert.equal(results.find(result=>result.status==='rejected').reason.status,409);
   assert.equal((await api.events(staff.token)).events.length,1);
   const login=await api.login({role:'competitor',code:'1234'});
-  assert.equal(login.state.practice,true);
+  assert.equal(login.state.activeEvent.status,'draft');
   assert.equal(login.state.activeEvent.id,(await api.events(staff.token)).events[0].id);
 });

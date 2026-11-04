@@ -29,12 +29,19 @@ const commands = new Set(['setup', 'migrate', 'dev', 'local-preview', 'typecheck
 async function collectFiles(directory = sourceRoot, relative = '') {
   const files = [];
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
-    if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
+    if (ignoredDirectories.has(entry.name)) continue;
     if (ignoredFiles.has(entry.name) || entry.name.endsWith('.tsbuildinfo')) continue;
     const nextRelative = path.join(relative, entry.name);
     const fullPath = path.join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...await collectFiles(fullPath, nextRelative));
-    else if (entry.isFile()) files.push([nextRelative, fullPath]);
+    // Windows cloud placeholders may be reported as links by readdir even
+    // though stat exposes the regular source file. Never silently omit them:
+    // the mirror would interpret an omitted file as a source deletion.
+    const resolved = await fs.realpath(fullPath);
+    if (!resolved.startsWith(`${sourceRoot}${path.sep}`))
+      throw new Error(`Source link leaves the application: ${nextRelative}`);
+    const stat = await fs.stat(fullPath);
+    if (stat.isDirectory()) files.push(...await collectFiles(fullPath, nextRelative));
+    else if (stat.isFile()) files.push([nextRelative, fullPath]);
   }
   return files;
 }
@@ -60,7 +67,10 @@ async function syncSource() {
   const previous = await readManifest();
   const next = {};
   let copied = 0;
-  for (const [relative, source] of await collectFiles()) {
+  const sourceFiles = await collectFiles();
+  if (!sourceFiles.some(([relative]) => relative === 'package.json'))
+    throw new Error('Incomplete source inventory; refusing to update the mirror.');
+  for (const [relative, source] of sourceFiles) {
     const stat = await fs.stat(source);
     const stamp = `${stat.size}:${stat.mtimeMs}`;
     const destination = safeDestination(relative);
@@ -109,7 +119,7 @@ async function installIfNeeded() {
 }
 
 async function migrateGeneratedFiles() {
-  const names = ['node_modules', '.npm-cache', '.verification', 'dist', 'test-results', 'playwright-report', 'coverage'];
+  const names = ['node_modules', '.npm-cache', '.verification', '.vite', 'dist', 'test-results', 'playwright-report', 'coverage', 'tsconfig.tsbuildinfo'];
   const backup = path.join(localRoot, 'previous-project-artifacts', new Date().toISOString().replaceAll(':', '-'));
   let moved = 0;
   for (const name of names) {

@@ -63,6 +63,7 @@ export interface MoleculeEditorProps {
   readonly representations?: readonly Representation[];
   readonly explicitHydrogensOnly?: boolean;
   readonly limits?: MoleculeLimits;
+  readonly initialZoomOutSteps?: number;
 }
 interface Drag {
   pointerId: number;
@@ -82,11 +83,12 @@ export function MoleculeEditor({
   representations = defaultViews,
   explicitHydrogensOnly = false,
   limits = core.DEFAULT_LIMITS,
+  initialZoomOutSteps = 0,
 }: MoleculeEditorProps) {
   const [element, setElement] = useState<MoleculeElement>('C'),
     [chain, setChain] = useState(false),
     [erasing, setErasing] = useState(false),
-    [view, setView] = useState<Representation>(representations[0] ?? 'displayed'),
+    [preferredView, setView] = useState<Representation>(representations[0] ?? 'displayed'),
     [panning, setPanning] = useState(false),
     [panDragging, setPanDragging] = useState(false),
     [message, setMessage] = useState(''),
@@ -102,13 +104,17 @@ export function MoleculeEditor({
     gesture = useRef<Drag | null>(null),
     state = useRef(value),
     locked = useRef(readOnly);
+  // Enforce the current question's allowed view even when React preserves editor state.
+  const view = representations.includes(preferredView) ? preferredView : representations[0] ?? 'displayed';
   state.current = value;
   locked.current = readOnly;
   const order = 1;
   const graph = value.graph,
     valid = core.validate(graph, false, limits),
-    drawingScale = drawingScaleForHeight(window.innerHeight),
-    currentCamera = camera ?? fitMoleculeCamera(openingGraph.current, size.w, size.h, drawingScale),
+    drawingScale = drawingScaleForHeight(window.innerHeight);
+  let initialCamera = fitMoleculeCamera(openingGraph.current, size.w, size.h, drawingScale);
+  for (let step = 0; step < initialZoomOutSteps; step++) initialCamera = zoomMoleculeCamera(initialCamera, .8);
+  const currentCamera = camera ?? initialCamera,
     viewport = cameraViewBox(currentCamera, size.w, size.h);
   const cancel = () => {
     const g = pan.current ?? gesture.current;
@@ -622,7 +628,7 @@ export function MoleculeEditor({
       <p className="drawing-instruction molecule-announcement type-caption">
         Tap to place atoms; drag to bond. Tap a bond to cycle its order. {explicitHydrogensOnly
           ? 'Draw hydrogens explicitly. Select an element, then tap an atom to replace it.'
-          : 'Hydrogens appear automatically.'}
+          : view === 'skeletal' ? 'Unlabelled corners and ends are carbon atoms; hydrogens on carbon are implied.' : 'Hydrogens appear automatically.'}
       </p>
       <p className="molecule-announcement type-caption" role="status" aria-live="polite">
         {message}

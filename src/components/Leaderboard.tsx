@@ -25,7 +25,7 @@ export async function loadLeaderboard(signal: AbortSignal): Promise<LeaderboardS
   return snapshot;
 }
 
-/** Teacher route only. The server always chooses the active event and ranking. */
+/** Teacher route only. The server chooses the active event, otherwise the latest draft and ranking. */
 export function Leaderboard({ activeEvent, onBack, onSettings, visible = true }: {
   activeEvent: LeaderboardEvent | null;
   onBack: () => void;
@@ -81,7 +81,7 @@ export function Leaderboard({ activeEvent, onBack, onSettings, visible = true }:
     <img className="leaderboard-art leaderboard-art--centre" src={equipment14} alt="" />
     <img className="leaderboard-art leaderboard-art--right" src={equipment8} alt="" />
     <p className={`leaderboard-status type-label${stale ? ' leaderboard-status--stale' : ''}`} role="status">
-      {stale ? (snapshot ? 'Updates paused — showing last received results' : 'Leaderboard unavailable — retrying') : !snapshot ? 'Loading leaderboard…' : !event ? 'Activate an event in teacher settings to show results.' : rows.length === 0 ? 'Waiting for the first points' : 'Live results'}
+      {stale ? (snapshot ? 'Updates paused — showing last received results' : 'Leaderboard unavailable — retrying') : !snapshot ? 'Loading leaderboard…' : !event ? 'Create an event in teacher settings to show results.' : rows.length === 0 ? 'Waiting for the first points' : 'Live results'}
       {fullscreenError && <span> · {fullscreenError}</span>}
     </p>
   </section>;

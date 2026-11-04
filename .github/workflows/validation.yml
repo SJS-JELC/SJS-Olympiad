@@ -1,15 +1,14 @@
 name: Olympiad validation
 
 on:
-  push:
-    branches: [main]
+  workflow_call:
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: validation
+  group: validation-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -27,6 +26,7 @@ jobs:
       - run: npm run typecheck
       - run: node --test api/tests/*.test.mjs
       - run: npm test
+      - run: npm run test:contracts
       - name: Install browser test runtime
         run: npx playwright install --with-deps chromium
       - run: npm run test:browser

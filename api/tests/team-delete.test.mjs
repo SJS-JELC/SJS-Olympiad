@@ -38,10 +38,10 @@ test('permanent cleanup follows all team rows in Azure-sized conditional chunks'
   assert.deepEqual((await f.repo.list({partitionKey:'pilot-test-1'})).map(row=>row.kind).sort(),['admin-receipt','team-deletion']);
 });
 
-test('draft permanently deletes every team data row, retaining only minimal deletion fencing',async()=>{
+test('draft permanently deletes unsubmitted working, retaining only minimal deletion fencing',async()=>{
   const f=await fixture();const current=(await f.api.events(f.staff)).activeEvent;await f.api.eventEnd(f.staff,{eventId:current.id,expectedRevision:current.revision,confirm:true});const state=await f.api.eventCreate(f.staff,{name:'Draft',year:'U6',theoryStartsAt:0,theoryEndsAt:300000});
   const eventId=state.createdEventId,added=await f.api.teamAdd(f.staff,{eventId,name:'Draft team'}),team=added.teams[0],pk=eventId+'-'+team.id;
-  await f.repo.write({partitionKey:pk,rowKey:'old-answer',kind:'question',state:{answers:{answer:'private'},solvedAt:90000}});
+  await f.repo.write({partitionKey:pk,rowKey:'old-answer',kind:'question',state:{answers:{answer:'private'},solvedAt:null}});
   const result=await f.api.teamDelete(f.staff,{eventId,teamId:team.id,teamName:team.name,requestId:'draft-delete-001',confirm:true});
   assert.equal(result.outcome,'deleted');assert.equal(result.teams.length,0);
   assert.deepEqual((await f.repo.list({partitionKey:pk})).map(row=>row.kind).sort(),['admin-receipt','team-deletion']);

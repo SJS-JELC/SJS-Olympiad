@@ -7,7 +7,7 @@ const numericValue = (value) => {
     return Number.isFinite(result) ? result : null;
 };
 export const u5p6 = {
-    id: 'U5P6', number: 6, title: 'Cubane', year: 'U5',
+    id: 'U5P6', number: 6, title: 'Cubone', year: 'U5',
     points: 2, cooldownMs: 20_000,
     lockCorrectParts: false, allowIncompleteSubmission: true,
     parts: [{ id: 'answer', label: 'Greatest hydrogen separation in pm', fields: [{

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { eventTiming, londonDateValue, parseLondonDate, theoryPhase } from '../../src/events/timing';
+import { eventTiming, londonDateValue, parseLondonDate, theoryPhase, practicalPhase } from '../../src/events/timing';
 import type { EventRecord } from '../../src/cloud/api';
 
 describe('London event wall times', () => {
@@ -23,6 +23,14 @@ describe('theory window presentation', () => {
         expect(theoryPhase(event,99)).toBe('waiting'); expect(theoryPhase(event,100)).toBe('open');
         expect(theoryPhase(event,299)).toBe('open'); expect(theoryPhase(event,300)).toBe('closed');
         expect(eventTiming(event).endsAt).toBe(500);
+    });
+    it('draft bypasses starts but preserves both configured end boundaries', () => {
+        const draft={...event,status:'draft'} as EventRecord;
+        expect(theoryPhase(draft,0)).toBe('open');expect(practicalPhase(draft,0)).toBe('open');
+        expect(theoryPhase(draft,300)).toBe('closed');expect(practicalPhase(draft,300)).toBe('open');
+        expect(practicalPhase(draft,500)).toBe('closed');
+        expect(practicalPhase({...draft,practicalStartsAt:null,practicalEndsAt:null},0)).toBe('closed');
+        expect(theoryPhase({...draft,status:'ended'},0)).toBe('closed');
     });
     it('preserves legacy immediate availability without modifying the record', () => {
         const legacy: EventRecord = {id:'old',name:'Legacy',year:'L6',status:'active',revision:1,endsAt:300};

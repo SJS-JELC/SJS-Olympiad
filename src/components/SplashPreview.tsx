@@ -7,14 +7,14 @@ import '../background.css';
 import '../splash.css';
 
 /** Landing template with internal navigation; no gameplay writes. */
-export function SplashPreview({ onTheory, onPractical, practicalStartsAt, practicalEndsAt, teacher = true, theoryStartsAt, theoryEndsAt, serverNow = Date.now }: { onTheory: () => void; onPractical?: () => void; practicalStartsAt?: number|null; practicalEndsAt?: number|null; teacher?: boolean; theoryStartsAt?: number|null; theoryEndsAt?: number; serverNow?:()=>number }) {
+export function SplashPreview({ onTheory, onPractical, practicalStartsAt, practicalEndsAt, teacher = true, allowEarlyAccess = false, theoryStartsAt, theoryEndsAt, serverNow = Date.now }: { onTheory: () => void; onPractical?: () => void; practicalStartsAt?: number|null; practicalEndsAt?: number|null; teacher?: boolean; allowEarlyAccess?: boolean; theoryStartsAt?: number|null; theoryEndsAt?: number; serverNow?:()=>number }) {
   const [now,setNow] = useState(serverNow);
   useEffect(()=>{const timer=window.setInterval(()=>setNow(serverNow()),1000);return()=>window.clearInterval(timer);},[serverNow]);
   const banner = (start: number|null|undefined, end: number|null|undefined, available=true) => {
     if (!available) return 'UNAVAILABLE';
     if (teacher) return undefined;
     if (end != null && now >= end) return 'COMPLETE';
-    if (start != null && now < start) {
+    if (!allowEarlyAccess && start != null && now < start) {
       const seconds=Math.ceil((start-now)/1000),days=Math.floor(seconds/86400),hours=Math.floor(seconds%86400/3600),minutes=Math.floor(seconds%3600/60);
       return `Opens in ${days?days+'d ':''}${hours?hours+'h ':''}${minutes}m ${seconds%60}s`;
     }

@@ -1,3 +1,7 @@
+import { doubleTrouble } from './double-trouble/definition';
+import { DoubleTrouble } from './double-trouble/DoubleTrouble';
+import { u5p4 } from './u5p4/definition';
+import { U5Problem4 } from './u5p4/U5Problem4';
 import { u5p8 } from './u5p8/definition';
 import { U5Problem8 } from './u5p8/U5Problem8';
 import { u5p2 } from './u5p2/definition';
@@ -70,6 +74,8 @@ export type QuestionViewProps = { attempt: Attempt; onAction: (action: AttemptAc
 export type QuestionEntry = { definition: QuestionDefinition; View: ComponentType<QuestionViewProps> };
 /** Explicit year + number identity; other year groups must never silently fall back to L6. */
 export const questionCatalog: readonly QuestionEntry[] = [
+  { definition: doubleTrouble, View: DoubleTrouble },
+  { definition: u5p4, View: U5Problem4 },
   { definition: u5p2, View: CrossYourFingers },
   { definition: u5p5, View: ScentsAndScentsibility },
   { definition: u5p3Definition, View: Chainspotting },

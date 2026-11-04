@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { test, expect, openCompetitorQuestion, type Page } from './fixtures';
 const competitor=test.extend({accessRole:'competitor' as const});
 
@@ -10,7 +11,7 @@ async function selectedWindow(page: Page) {
 
 test('NMR magnifies X only and clamps direct overview pointer and keyboard selection', async ({ page }) => {
   await page.setViewportSize({ width: 1200, height: 800 });
-  await page.goto('/?theory&year=U6&question=1');
+  await openTeacher(page, '/?theory&year=U6&question=1');
   const answer = page.getByRole('textbox', { name: 'Molecule name' });
   await expect(answer).toBeFocused();
   await answer.fill('retained');
@@ -54,7 +55,7 @@ test('NMR magnifies X only and clamps direct overview pointer and keyboard selec
 test.describe('touch NMR preview',()=>{
 test.use({viewport:{width:1200,height:800},hasTouch:true});
 test('NMR touch selection pans the original detail without changing an answer', async ({ page }) => {
-  await page.goto('/?theory&year=U6&question=1');
+  await openTeacher(page, '/?theory&year=U6&question=1');
   await page.getByRole('textbox', { name: 'Molecule name' }).fill('retained');
   const box = await page.locator('.u6p1-nmr-overview').boundingBox();
   if (!box) throw Error('No overview bounds');
@@ -93,7 +94,7 @@ competitor('live rate table preserves source values, scientific units and markin
   await sn1.fill('60.3'); await sn2.fill('39.7');
   await page.getByRole('button', { name: 'Check answers' }).click();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 03');
-  await page.getByRole('button', { name: 'Check answers' }).click();
+  await expect(page.getByRole('button', { name: 'Check answers' })).toBeDisabled();
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label', 'Score: 03');
   expect(await pane.boundingBox()).toEqual(before);
 });
@@ -104,7 +105,7 @@ test.describe(`U6 inline geometry ${width}x${height}`,()=>{
   test('U6 inline rows fit with a white table and common Check baseline', async ({ page }) => {
     test.setTimeout(90_000);
     for (const number of [8, 9]) {
-      await page.goto(`/?theory&year=U6&question=${number}`);
+      await openTeacher(page, `/?theory&year=U6&question=${number}`);
       await page.locator('.question-brief').waitFor();
       await page.evaluate(() => document.fonts.ready);
       const geometry = await page.locator('.question-content').evaluate(content => {
@@ -128,8 +129,8 @@ test.describe(`U6 inline geometry ${width}x${height}`,()=>{
 }
 
 test('U6 charge digits stay on the baseline and propane counts are subscripts', async ({ page }) => {
-  await page.goto('/?theory&year=U6&question=6');
+  await openTeacher(page, '/?theory&year=U6&question=6');
   await expect(page.locator('.question-brief sup')).toHaveText(['+', '+', '+']);
-  await page.goto('/?theory&year=U6&question=7');
+  await openTeacher(page, '/?theory&year=U6&question=7');
   await expect(page.locator('.question-brief sub')).toHaveText(['3', '8']);
 });

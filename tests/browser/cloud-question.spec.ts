@@ -1,3 +1,4 @@
+import { openTeacher, reloadTeacher } from './teacher';
 ﻿import { test, expect, openCompetitorQuestion } from './fixtures';
 const competitor = test.extend({ accessRole: 'competitor' as const });
 
@@ -61,8 +62,8 @@ test('unavailable restore fails closed without exposing any question', async ({ 
     api.fail.add('session'); await page.goto('/?theory&question=8'); await expect(page.getByRole('alert')).toContainText('unavailable'); await expect(page.locator('.question-content')).toHaveCount(0);
 });
 
-test('teacher contexts hydrate once and unfinished edits remain only in memory', async ({ page, api }) => {
-    await page.goto('/?settings');
+test('teacher contexts start blank and unfinished edits remain only in memory', async ({ page, api }) => {
+    await openTeacher(page, '/?settings');
     await page.getByRole('button', { name: 'Preview Questions', exact: true }).click();
     await page.getByRole('button', { name: /^L6 Problem 6:/ }).click();
     await page.locator('input[name="answer"]').fill('3');
@@ -72,14 +73,14 @@ test('teacher contexts hydrate once and unfinished edits remain only in memory',
     await page.getByRole('button', { name: 'Back to settings', exact: true }).click();
     await page.getByRole('button', { name: /^L6 Problem 6:/ }).click();
     await expect(page.locator('input[name="answer"]')).toHaveValue('3');
-    expect(api.requests.filter(item => item.action === 'hydrate').map(item => item.body.eventId)).toEqual(['catalogue-L6', 'catalogue-U5']);
+    expect(api.requests.filter(item => item.action === 'hydrate')).toEqual([]);
     expect(api.requests.filter(item => item.action === 'question' || item.action === 'draft')).toEqual([]);
-    await page.reload(); await expect(page.locator('input[name="answer"]')).toHaveValue('');
-    expect(api.requests.filter(item => item.action === 'hydrate')).toHaveLength(3);
+    await reloadTeacher(page); await expect(page.locator('input[name="answer"]')).toHaveValue('');
+    expect(api.requests.filter(item => item.action === 'hydrate')).toEqual([]);
 });
 
 test('GC setup and report work stay local around one Run and one deadline reconciliation', async ({ page, api }) => {
-    await page.clock.install(); await page.goto('/?theory&catalogue&year=U5&question=5');
+    await page.clock.install(); await openTeacher(page, '/?theory&catalogue&year=U5&question=5');
     await page.getByRole('button', { name: 'Enter Laboratory', exact: true }).click();
     const before = api.requests.length;
     const dilution = page.getByRole('slider', { name: 'citrus concentration', exact: true });
@@ -100,7 +101,7 @@ test('GC setup and report work stay local around one Run and one deadline reconc
 });
 
 test('timed challenge sends one GO and name CHECK, with a local wrong flash and one timeout tick', async ({ page, api }) => {
-    await page.clock.install(); await page.goto('/?theory&catalogue&year=L6&question=3');
+    await page.clock.install(); await openTeacher(page, '/?theory&catalogue&year=L6&question=3');
     await expect(page.getByRole('button', { name: 'GO: start oxyanion challenge', exact: true })).toBeVisible();
     const before = api.requests.length;
     await page.getByRole('button', { name: 'GO: start oxyanion challenge', exact: true }).click();

@@ -13,3 +13,18 @@ export function pair(firstDouble=false, secondDouble=true, flip=false) {
  b.electrons.forEach(e=>{e.id+='b'; if(e.anchor.kind==='atom')e.anchor.atomId+='2';else {e.anchor.a+='2';e.anchor.b+='2'}});
  return {...a,atoms:[...a.atoms,...b.atoms],electrons:[...a.electrons,...b.electrons]};
 }
+
+// Oxygen donates one pair to each N: each double bond contains 3 O electrons and 1 N electron.
+export function oxygenMiddle(flip=false) {
+ const s=fixture(true,flip);
+ s.atoms[1].element='O';s.atoms[2].element='N';
+ const bond=s.electrons.filter(e=>e.anchor.kind==='bond' && e.anchor.a==='mid');
+ bond[1].symbol=flip?'dot':'cross';
+ return s;
+}
+export function triple(firstDouble=false, secondDouble=true, flip=false, oxygenFlip=false) {
+ const a=pair(firstDouble,secondDouble,flip), b=oxygenMiddle(oxygenFlip);
+ b.atoms.forEach(atom=>{atom.id+='3';atom.y+=400});
+ b.electrons.forEach(e=>{e.id+='c';if(e.anchor.kind==='atom')e.anchor.atomId+='3';else {e.anchor.a+='3';e.anchor.b+='3'}});
+ return {...a,atoms:[...a.atoms,...b.atoms],electrons:[...a.electrons,...b.electrons]};
+}

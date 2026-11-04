@@ -1,5 +1,4 @@
 import { createHash, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
-import { attachPractice } from './practice.mjs';
 import { questionInfo, reduceQuestion, validateAnswers, questionData } from './questions.mjs';
 import { eventTiming, eventAvailable, theoryAvailable, updateTiming } from './event-timing.mjs';
 import { practicalFields, emptyPractical, practicalChanges } from './practical.mjs';
@@ -95,7 +94,7 @@ export function createService(repo,config={},now=Date.now) {
     await bootPromise;
   };
   const settings=async()=>{await bootstrap();const value=await repo.get('system','settings');return {...value,events:value.events.map(eventTiming)};};
-  const getActive=s=>s.events.find(event=>event.status==='active') || null;
+  const getCurrentEvent=s=>s.events.find(event=>event.status==='active') ?? s.events.findLast(event=>event.status==='draft') ?? null;
   const eventById=(s,id)=>{const event=s.events.find(item=>item.id===id);assert(event,404,'Event not found.');return event;};
   const teamById=(eventId,id)=>repo.get(partition(eventId,id),'team');
   const submittedActivity=async team=>{
@@ -150,7 +149,7 @@ export function createService(repo,config={},now=Date.now) {
     const rows=team?.securityStatus==='ACTIVE' && event && (hydrate || theoryAvailable(event,now())) ? await repo.list({partitionKey:team.partitionKey,kind:'question'}) : [];
     if(event && theoryAvailable(event,now())) for(const q of rows) attempts[q.questionId]={...retainedAttempt(q.questionId,q.state),revision:q.revision};
     const accessible=event && eventAvailable(event,now());
-    return {role:session.role,expiresAt:session.expiresAt,serverNow:now(),configRevision:s.revision,activeEvent:getActive(s),...(session.role==='teacher'?{events:s.events}:!getActive(s)?{draftEvents:s.events.filter(event=>event.status==='draft').map(({id,name,year})=>({id,name,year}))}:{}),team:publicTeam(team),competition:{status:accessible?team.securityStatus:'NOT_STARTED',epoch:team?.securityEpoch || 0},score:team?.score || 0,attempts,...(hydrate && accessible && team.securityStatus==='ACTIVE'?{hydration:bulkView({event,team,pk:team.partitionKey},rows)}:{})};
+    return {role:session.role,expiresAt:session.expiresAt,serverNow:now(),configRevision:s.revision,activeEvent:getCurrentEvent(s),...(session.role==='teacher'?{events:s.events}:!getCurrentEvent(s)?{draftEvents:s.events.filter(event=>event.status==='draft').map(({id,name,year})=>({id,name,year}))}:{}),team:publicTeam(team),competition:{status:accessible?team.securityStatus:'NOT_STARTED',epoch:team?.securityEpoch || 0},score:team?.score || 0,attempts,...(hydrate && accessible && team.securityStatus==='ACTIVE'?{hydration:bulkView({event,team,pk:team.partitionKey},rows)}:{})};
   };
   const changeSettings=async(token,update)=>{
     const session=await authenticate(token);teacher(session);
@@ -162,7 +161,7 @@ export function createService(repo,config={},now=Date.now) {
     const session=await authenticate(token), s=await settings();
     if(session.role==='teacher') {
       const catalogueYear=typeof input.eventId==='string' && input.eventId.startsWith('catalogue-')?input.eventId.slice(10):null;
-      const event=catalogueYear && YEARS.has(catalogueYear)?{id:input.eventId,name:catalogueYear+' question preview',year:catalogueYear,status:'draft',theoryStartsAt:null,theoryEndsAt:session.expiresAt,endsAt:session.expiresAt,revision:1}:input.eventId?eventById(s,input.eventId):getActive(s); assert(event,409,'Choose an event first.');
+      const event=catalogueYear && YEARS.has(catalogueYear)?{id:input.eventId,name:catalogueYear+' question preview',year:catalogueYear,status:'draft',theoryStartsAt:null,theoryEndsAt:session.expiresAt,endsAt:session.expiresAt,revision:1}:input.eventId?eventById(s,input.eventId):getCurrentEvent(s); assert(event,409,'Choose an event first.');
       return {session,s,event,team:null,pk:'preview-'+session.rowKey+'-'+event.id};
     }
     const team=await ownedTeam(session),event=eventById(s,team.eventId);
@@ -179,7 +178,7 @@ export function createService(repo,config={},now=Date.now) {
     const session=await authenticate(token),s=await settings();
     if(session.role==='teacher') {
       const year=typeof input.eventId==='string' && input.eventId.startsWith('catalogue-')?input.eventId.slice(10):null;
-      const event=year && practicalFields(year)?{id:input.eventId,year,practicalEndsAt:session.expiresAt}:input.eventId?eventById(s,input.eventId):getActive(s);
+      const event=year && practicalFields(year)?{id:input.eventId,year,practicalEndsAt:session.expiresAt}:input.eventId?eventById(s,input.eventId):getCurrentEvent(s);
       assert(event && practicalFields(event.year),404,'This practical is unavailable for this event.');
       return {session,event,team:null,pk:'preview-'+session.rowKey+'-'+event.id};
     }
@@ -189,7 +188,7 @@ export function createService(repo,config={},now=Date.now) {
     assert(team.year===event.year,403,'Your team belongs to a different year.');
     assert(team.securityStatus==='ACTIVE',423,'Competition mode is locked or has not started.');
     activeForWrite(event);
-    assert(now()>=event.practicalStartsAt && (!write || now()<event.practicalEndsAt),403,'The practical challenge is outside its scheduled times.');
+    assert((event.status==='draft' || now()>=event.practicalStartsAt) && (!write || now()<event.practicalEndsAt),403,'The practical challenge is outside its scheduled times.');
     return {session,event,team,pk:team.partitionKey};
   };
   const practicalView=(value,ctx)=>({...value,serverNow:now(),eventEndsAt:ctx.event.practicalEndsAt ?? null,readOnly:!!ctx.team && now()>=ctx.event.practicalEndsAt});
@@ -333,7 +332,7 @@ export function createService(repo,config={},now=Date.now) {
       if(interrupt && session.role==='competitor' && session.teamId) await retry(async()=>{const current=await authenticate(token),team=await ownedTeam(current);if(team.securityStatus==='ACTIVE')await write({...team,securityStatus:'LOCKED',securityEpoch:team.securityEpoch+1,recovery:null});});
       return snapshot(session,s);
     },
-    async events(token) {const session=await authenticate(token);teacher(session);const s=await settings();return {events:s.events,activeEvent:getActive(s),configRevision:s.revision,serverNow:now()};},
+    async events(token) {const session=await authenticate(token);teacher(session);const s=await settings();return {events:s.events,activeEvent:getCurrentEvent(s),configRevision:s.revision,serverNow:now()};},
     async availability() {const s=await settings();return {competitorAvailable:s.events.some(event=>event.status==='active' || event.status==='draft')};},
     eventCreate(token,input) {const id=randomUUID();return changeSettings(token,s=>{assert(!s.events.some(event=>event.status==='active' || event.status==='draft'),409,'Complete the current draft or active event before creating another.');assert(YEARS.has(input.year),400,'Choose a valid year.');s.events.push(timings({id,name:name(input.name),year:input.year,status:'draft',revision:1},input,true));}).then(state=>({...state,createdEventId:id}));},
     async eventChangeYear(token,input) {
@@ -373,14 +372,14 @@ export function createService(repo,config={},now=Date.now) {
     });},
     async teams(token,input={}) {
       const session=await authenticate(token),s=await settings();
-      const event=session.role==='teacher' && input.eventId?eventById(s,input.eventId):getActive(s);assert(event,409,'There is no active event.');
+      const event=session.role==='teacher' && input.eventId?eventById(s,input.eventId):getCurrentEvent(s);assert(event,409,'There is no unfinished event.');
       const teams=await repo.list({kind:'team',eventId:event.id});
       const visible=teams.filter(team=>!team.removed);
       const result=await Promise.all(visible.map(async team=>({...publicTeam(team),year:event.year,claimed:!!(team.owner || team.legacySessionHash),...(session.role==='teacher'?{score:team.score,hasSubmittedActivity:await submittedActivity(team),practical:team.practical ?? null,competition:{status:team.securityStatus,epoch:team.securityEpoch}}:{})})));
       return {event,teams:result.sort((a,b)=>a.name.localeCompare(b.name))};
     },
     async teamAdd(token,input) {
-      const session=await authenticate(token);teacher(session);const s=await settings(),event=eventById(s,input.eventId || getActive(s)?.id);assert(event.status!=='ended',409,'Teams cannot be added to an ended event.');
+      const session=await authenticate(token);teacher(session);const s=await settings(),event=eventById(s,input.eventId || getCurrentEvent(s)?.id);assert(event.status!=='ended',409,'Teams cannot be added to an ended event.');
       const teamName=name(input.name),id=hash(teamName.normalize('NFKC').toLocaleLowerCase('en-GB')).slice(0,24);
       const existing=await repo.list({kind:'team',eventId:event.id});
       assert(!existing.some(team=>team.name.normalize('NFKC').trim().toLocaleLowerCase('en-GB')===teamName.normalize('NFKC').toLocaleLowerCase('en-GB')),409,'That team name already exists in this event.');
@@ -397,7 +396,7 @@ export function createService(repo,config={},now=Date.now) {
       return api.teams(token,{eventId:event.id});
     },
     async teamRelease(token,input) {
-      const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm releasing this team.');const s=await settings(),event=eventById(s,input.eventId || getActive(s)?.id);
+      const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm releasing this team.');const s=await settings(),event=eventById(s,input.eventId || getCurrentEvent(s)?.id);
       assert(event.status!=='ended',409,'Ended event results are read-only.');
       await retry(async()=>{const team=await teamById(event.id,input.teamId);assert(team && !team.removed,404,'Team not found.');await write({...team,owner:null,legacySessionHash:null,claimGeneration:team.claimGeneration+1,securityEpoch:team.securityEpoch+1,securityStatus:'NOT_STARTED',recovery:null});});
       return api.teams(token,{eventId:event.id});
@@ -414,7 +413,7 @@ export function createService(repo,config={},now=Date.now) {
         const team=await teamById(event.id,input.teamId);
         assert(team && !team.removed,404,'Team not found.');
         assert(input.teamName===team.name,409,'The team name changed. Check the selected team before deleting it.');
-        const retained=(event.status==='active' || event.hasBeenActive) && await submittedActivity(team);
+        const retained=await submittedActivity(team);
         const fenced={...team,removed:true,owner:null,legacySessionHash:null,legacyExpires:0,claimGeneration:team.claimGeneration+1,securityEpoch:team.securityEpoch+1,securityStatus:'NOT_STARTED',recovery:null,deletionReceipt:receiptKey};
         const receiptRow={partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',eventId:event.id,name:team.name,outcome:retained?'removed':'deleted',complete:retained};
         const marker=await repo.get(pk,'deleted-team');
@@ -425,7 +424,7 @@ export function createService(repo,config={},now=Date.now) {
       return {...await api.teams(token,{eventId:event.id}),outcome:outcome.outcome};
     },
     async claim(token,input) {
-      const session=await authenticate(token);assert(session.role==='competitor',403,'Only competitors claim teams.');const s=await settings(),event=getActive(s);assert(event,409,'There is no active event.');activeForWrite(event);assert(validId(input.teamId),400,'Choose a team.');
+      const session=await authenticate(token);assert(session.role==='competitor',403,'Only competitors claim teams.');const s=await settings(),event=getCurrentEvent(s);assert(event,409,'There is no unfinished event.');activeForWrite(event);assert(validId(input.teamId),400,'Choose a team.');
       if(session.teamId) {assert(session.teamId===input.teamId && session.eventId===event.id,409,'This session already chose a team.');const current=await teamById(event.id,input.teamId);if(current?.owner===session.rowKey && current.claimGeneration===session.claimGeneration)return snapshot(session,s,current);}
       const available=await teamById(event.id,input.teamId);
       assert(available && !available.removed,404,'Team not found.');
@@ -490,12 +489,11 @@ export function createService(repo,config={},now=Date.now) {
     submit:(token,input)=>mutateQuestion(token,input,'submit'),
     action:(token,input)=>mutateQuestion(token,input,'action'),
     async leaderboard(token) {
-      const session=await authenticate(token);teacher(session);const s=await settings(),event=getActive(s);assert(event,409,'There is no active event.');
+      const session=await authenticate(token);teacher(session);const s=await settings(),event=getCurrentEvent(s);assert(event,409,'There is no unfinished event.');
       const all=await repo.list({kind:'team',eventId:event.id});
       const entries=all.filter(team=>!team.removed && team.score>0).sort((a,b)=>b.score-a.score || (a.lastScoringAt || 0)-(b.lastScoringAt || 0) || a.teamId.localeCompare(b.teamId)).slice(0,3).map((team,index)=>({id:team.teamId,name:team.name,score:team.score,scoreReachedAt:team.lastScoringAt,position:index+1}));
       return {event,activeEvent:event,entries,rows:entries.map(row=>({teamId:row.id,name:row.name,score:row.score,lastScoreAt:row.scoreReachedAt})),serverNow:now(),configRevision:s.revision};
     },
   };
-  const practiceTeams=async eventId=>(await repo.list({kind:'team',eventId})).filter(team=>!team.removed).map(team=>({id:team.teamId,name:team.name}));
-  return config.isolatedPractice ? api : attachPractice(api,{settings,practiceTeams,createService,now,ApiError});
+  return api;
 }

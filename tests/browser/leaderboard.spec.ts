@@ -1,3 +1,4 @@
+import { openTeacher } from './teacher';
 import { expect, test } from './fixtures';
 
 const event = { id: 'autumn', name: 'Autumn Olympiad', year: 'L6', status: 'active', revision: 1, endsAt: 1900000000000 };
@@ -10,7 +11,7 @@ test('teacher leaderboard keeps the original podium and artwork in landscape', a
   ] } }));
   for (const [width, height] of [[1368, 912], [1600, 900]]) {
     await page.setViewportSize({ width, height });
-    await page.goto('/?leaderboard');
+    await openTeacher(page, '/?leaderboard');
     await expect(page.getByRole('heading', { name: 'Leaderboard', exact: true })).toBeAttached();
     await expect(page.getByRole('status')).toContainText('Live results');
     await page.evaluate(() => document.fonts.ready.then(() => undefined));
@@ -44,7 +45,7 @@ test('hidden document pauses polling, resuming refreshes immediately and stale r
       ? route.fulfill({ status: 503, json: { error: 'Unavailable' } })
       : route.fulfill({ json: { activeEvent: event, rows: [{ teamId: 'eagles', name: 'Eagles', score: calls > 2 ? 9 : 8 }] } });
   });
-  await page.goto('/?leaderboard');
+  await openTeacher(page, '/?leaderboard');
   await expect(page.locator('.leaderboard-place--1')).toContainText('Eagles');
   await expect(page.getByRole('status')).toHaveText('Live results');
   expect(calls).toBe(1);

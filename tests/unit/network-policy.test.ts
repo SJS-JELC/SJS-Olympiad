@@ -53,15 +53,17 @@ describe('theory network policy', () => {
     await run(() => questions.flush('L6P8'));
     expect(fetcher).toHaveBeenCalledTimes(2); expect(bodies[1]).toEqual(bodies[0]); expect(questions.get('L6P8').completion?.solvedAt).toBe(Date.now());
   });
-  it('hydrates each teacher context once, retains unfinished edits on return and clears all contexts on auth change', async () => {
+  it('starts ordinary teacher contexts blank without reads, retains unfinished edits on return and clears all contexts on auth change', async () => {
     security.server = { ...security.server!, role: 'teacher', hydration: undefined };
     const fetcher = vi.fn(async (_url: string, options: RequestInit) => reply(hydration(JSON.parse(options.body as string).eventId)));
     vi.stubGlobal('fetch', fetcher); await mount('catalogue-L6'); await run(() => questions.load('L6P8'));
     await run(() => questions.action(ordinary, { type: 'edit', field: 'answer', value: 'unfinished', now: Date.now() }));
     await mount('catalogue-U6'); await run(() => questions.load('L6P8')); await mount('catalogue-L6'); await run(() => questions.load('L6P8'));
-    expect(fetcher).toHaveBeenCalledTimes(2); expect(questions.get('L6P8').attempt.answers.answer).toBe('unfinished');
+    expect(fetcher).not.toHaveBeenCalled(); expect(questions.get('L6P8').attempt.answers.answer).toBe('unfinished');
     security.server = { ...security.server!, expiresAt: security.server!.expiresAt + 1 }; await mount('catalogue-L6'); await run(() => questions.load('L6P8'));
-    expect(fetcher).toHaveBeenCalledTimes(3); expect(questions.get('L6P8').attempt.answers.answer).toBeUndefined();
+    expect(fetcher).not.toHaveBeenCalled(); expect(questions.get('L6P8').attempt.answers.answer).toBeUndefined();
+    fetcher.mockImplementation(async()=>reply(response(emptyAttempt())));
+    await run(()=>questions.load('U5P5'));await run(()=>questions.load('U5P5'));expect(fetcher).toHaveBeenCalledTimes(1);
   });
   it('loses unfinished edits on router reload while restoring confirmed completion from hydration', async () => {
     vi.stubGlobal('fetch', vi.fn()); await mount(); await run(() => questions.action(ordinary, { type: 'edit', field: 'answer', value: 'unfinished', now: Date.now() }));
@@ -98,7 +100,7 @@ describe('theory network policy', () => {
     const fetcher = vi.fn(async (_url: string, options: RequestInit) => {
       const { action } = JSON.parse(options.body as string);
       if (!action) return reply(response({ ...emptyAttempt(), solvedAt: Date.now(), interaction: { ...lab, entered: true, results: [{ id: 1, sample: 'citrus', concentration: 20, interval: [0, 1] }] } }));
-      return reply(response({ ...emptyAttempt(), interaction: { ...lab, entered: true, nextRunId: 2, activeRun: action.type === 'gc-run' ? { id: 1, sample: action.sample, concentration: action.concentration, startedAt: Date.now(), deadline: Date.now() + 6000 } : null, results: action.type === 'tick' ? [{ id: 1, sample: 'citrus', concentration: 20, interval: [0, 1] }] : [] } }));
+      return reply({...response({ ...emptyAttempt(), interaction: { ...lab, entered: true, nextRunId: 2, activeRun: action.type === 'gc-run' ? { id: 1, sample: action.sample, concentration: action.concentration, startedAt: Date.now(), deadline: Date.now() + 4000 } : null, results: [] } }),...(action.type==='tick'?{gcCompletedRunId:1}:{})});
     });
     vi.stubGlobal('fetch', fetcher); await mount();
     await run(() => questions.action(u5p5, { type: 'gc-enter', now: Date.now() }));
@@ -107,7 +109,7 @@ describe('theory network policy', () => {
     await run(() => questions.action(u5p5, { type: 'gc-run', sample: 'citrus', now: Date.now() }));
     expect(JSON.parse(fetcher.mock.calls[0][1].body as string).action).toEqual({ type: 'gc-run', sample: 'citrus', concentration: 20 });
     expect(gcState(questions.get('U5P5').attempt).concentrations?.citrus).toBe(30);
-    await run(() => vi.advanceTimersByTimeAsync(6250)); expect(fetcher).toHaveBeenCalledTimes(2); expect(gcState(questions.get('U5P5').attempt).results).toHaveLength(1);
+    await run(() => vi.advanceTimersByTimeAsync(4250)); expect(fetcher).toHaveBeenCalledTimes(2); expect(gcState(questions.get('U5P5').attempt).results).toHaveLength(1);
     await run(() => questions.action(u5p5, { type: 'gc-delete-result', id: 1, now: Date.now() })); expect(fetcher).toHaveBeenCalledTimes(2);
     await run(() => questions.action(u5p5, { type: 'submit', now: Date.now() }));
     expect(questions.get('U5P5').completion).toBeDefined(); expect(gcState(questions.get('U5P5').attempt).results).toHaveLength(0);

@@ -1058,5 +1058,31 @@
       "records": []
     },
     "sourceSha256": "b4ac90d5ebcd6b0d557b3c3df3fbb1313cb5daf69e743747e50f5358235fd910"
+  },
+  "U5P4": {
+    "fieldId": "answer",
+    "fixtures": {
+      "correct": [
+        {
+          "answer": "1,4-oxazepine"
+        },
+        {
+          "answer": " 1,4-OXAZEPINE "
+        }
+      ],
+      "wrong": [
+        {
+          "answer": "1,3-oxazepine"
+        },
+        {
+          "answer": "1,4-oxazine"
+        }
+      ],
+      "blank": [
+        {
+          "answer": ""
+        }
+      ]
+    }
   }
 }
