@@ -4,6 +4,8 @@ import {createService} from '../src/service.mjs';
 import {handle} from '../src/http.mjs';
 import {memoryRepository} from './helpers.mjs';
 
+const upperFifthQuestionIds=['U5P2','U5P3','U5P4','U5P5','U5P6','U5P7','U5P8','U5P9'];
+
 async function fixture(year='L6',startsAt=0) {
   const repo=memoryRepository();let time=100000;
   const api=createService(repo,{},()=>time),staff=await api.login({role:'teacher',code:'5678'});
@@ -16,7 +18,7 @@ async function fixture(year='L6',startsAt=0) {
 }
 
 test('GO bulk-hydrates every registered question with one partition list and no question writes',async()=>{
-  for(const [year,count] of [['L5',9],['U5',6],['L6',9],['U6',9]]) {
+  for(const [year,count] of [['L5',9],['U5',8],['L6',9],['U6',9]]) {
     const f=await fixture(year);const lists=[],gets=[],writes=[];
     const list=f.repo.list.bind(f.repo),get=f.repo.get.bind(f.repo),write=f.repo.write.bind(f.repo);
     f.repo.list=async filter=>{lists.push(filter);return list(filter);};
@@ -29,7 +31,10 @@ test('GO bulk-hydrates every registered question with one partition list and no 
     assert.equal(writes.filter(row=>row.kind==='question'||row.kind==='receipt').length,0);
     assert.ok(!JSON.stringify(hydration).includes('privateState'));
     for(const entry of Object.values(hydration.questions))assert.equal(entry.revision,0);
-    if(year==='U5')assert.ok(hydration.questions.U5P5.data.gcTraces.mystery.length>100);
+    if(year==='U5') {
+      assert.deepEqual(Object.keys(hydration.questions).sort(),upperFifthQuestionIds);
+      assert.ok(hydration.questions.U5P5.data.gcTraces.mystery.length>100);
+    }
   }
 });
 
@@ -45,7 +50,7 @@ test('prestart hydration is allowed after GO but question content/actions stay s
 test('teacher bulk previews remain isolated and readonly and reject invalid catalogue years',async()=>{
   const f=await fixture();const before=JSON.stringify([...f.repo.rows]);
   const hydration=await f.api.hydrate(f.staff,{eventId:'catalogue-U5'});
-  assert.equal(hydration.score,0);assert.equal(Object.keys(hydration.questions).length,6);
+  assert.equal(hydration.score,0);assert.deepEqual(Object.keys(hydration.questions).sort(),upperFifthQuestionIds);
   assert.equal(JSON.stringify([...f.repo.rows]),before);
   await assert.rejects(f.api.hydrate(f.staff,{eventId:'catalogue-U4'}),{status:404});
   const readsBefore=JSON.stringify([...f.repo.rows]);await f.api.question(f.staff,{eventId:'catalogue-U5',questionId:'U5P5'});assert.equal(JSON.stringify([...f.repo.rows]),readsBefore);
