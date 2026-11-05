@@ -473,6 +473,7 @@ export function createService(repo,config={},now=Date.now) {
     async schools(token,input={}){const session=await authenticate(token);teacher(session);if(input.eventId)eventById(await settings(),input.eventId);return schools.list(input.eventId);},
     async schoolCreate(token,input){const session=await authenticate(token);teacher(session);return schools.create(input);},
     async schoolRename(token,input){const session=await authenticate(token);teacher(session);return schools.rename(input);},
+    async schoolDelete(token,input){const session=await authenticate(token);teacher(session);return schools.remove(input);},
     async schoolColours(token,input){const session=await authenticate(token);teacher(session);return schools.setColours(input);},
     async schoolTeams(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.ensure(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
     async schoolLink(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.link(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
@@ -498,9 +499,20 @@ export function createService(repo,config={},now=Date.now) {
       return api.teams(token,{eventId:event.id});
     },
     async teamRelease(token,input) {
-      const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm releasing this team.');const s=await settings(),event=eventById(s,input.eventId || getCurrentEvent(s)?.id);
-      assert(event.status!=='ended',409,'Ended event results are read-only.');
-      await retry(async()=>{const team=await teamById(event.id,input.teamId);assert(team && !team.removed,404,'Team not found.');await write({...team,owner:null,legacySessionHash:null,claimGeneration:team.claimGeneration+1,securityEpoch:team.securityEpoch+1,securityStatus:'NOT_STARTED',recovery:null});});
+      const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm releasing this team.');
+      const s=await settings(),event=eventById(s,input.eventId || getCurrentEvent(s)?.id),pk=partition(event.id,input.teamId);
+      const receipted=input.requestId!==undefined;
+      if(receipted)assert(validId(input.requestId) && input.requestId.length>=8 && Number.isSafeInteger(input.expectedClaimGeneration) && input.expectedClaimGeneration>=0,400,'A request identifier and current claim generation are required.');
+      await retry(async()=>{
+        const receiptKey='release-'+input.requestId,receipt=receipted?await repo.get(pk,receiptKey):null;
+        if(receipt){assert(receipt.expectedClaimGeneration===input.expectedClaimGeneration,409,'This release identifier was used for a different claim.');return;}
+        const current=eventById(await settings(),event.id);assert(current.status!=='ended',409,'Ended event results are read-only.');noRosterReset(current);
+        const team=await teamById(event.id,input.teamId);assert(team && !team.removed,404,'Team not found.');
+        if(receipted)assert(team.claimGeneration===input.expectedClaimGeneration,409,'This team claim changed. Refresh before allowing reselection.');
+        const released={...team,owner:null,legacySessionHash:null,claimGeneration:team.claimGeneration+1,securityEpoch:team.securityEpoch+1,securityStatus:'NOT_STARTED',recovery:null};
+        if(receipted)await batch([released,{partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',eventId:event.id,expectedClaimGeneration:input.expectedClaimGeneration}]);
+        else await write(released);
+      });
       return api.teams(token,{eventId:event.id});
     },
     async teamDelete(token,input) {

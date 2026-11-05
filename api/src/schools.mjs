@@ -4,7 +4,7 @@ import { schoolColours, validSchoolColours } from './school-colours.mjs';
 const digest=value=>createHash('sha256').update(value).digest('hex');
 export const schoolNameKey=value=>value.normalize('NFKC').trim().replace(/\s+/gu,' ').replace(/[’‘]/gu,"'").toLocaleLowerCase('en-GB');
 const HOST_ID='host-st-johns';
-const schoolView=school=>({id:school.id,name:school.name,isHostSchool:school.isHostSchool,revision:school.revision,colours:schoolColours(school)});
+const schoolView=school=>({id:school.id,name:school.name,isHostSchool:school.isHostSchool,revision:school.revision,...(school.deleted?{deleted:true}:{}),colours:schoolColours(school)});
 const directoryKey={partitionKey:'system',rowKey:'schools'};
 const journalKey=(eventId,schoolId)=>({partitionKey:'system',rowKey:'school-roster-'+eventId+'-'+schoolId});
 const operationKey=(eventId,schoolId,requestId)=>({partitionKey:'system',rowKey:'school-operation-'+digest(JSON.stringify([eventId,schoolId,requestId]))});
@@ -49,7 +49,7 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
   };
   const reserve=async(input,kind)=>retry(async()=>{
     const currentSettings=await settings(),event=eventById(currentSettings,input.eventId);assert(event.status!=='ended',409,'Completed event rosters are read-only.');assert(!event.rosterResetRequestId,409,'Finish the pending year reset before changing this roster.');requestId(input.requestId);
-    const dir=await directory();getSchool(dir,input.schoolId);
+    const dir=await directory();assert(!getSchool(dir,input.schoolId).deleted,409,'This school has been deleted.');
     const row=await journal(input.eventId,input.schoolId),fingerprint=digest(JSON.stringify([kind,input.eventId,input.schoolId,input.targetCount ?? null,input.teamId ?? null,input.teamNumber ?? null]));
     const previous=await operation(input.eventId,input.schoolId,input.requestId);
     if(previous){assert(previous.fingerprint===fingerprint,409,'This request identifier was used for different roster changes.');assert(!previous.failed,409,'This team changed before linking. Choose an unlinked team and a new request.');return previous;}
@@ -111,9 +111,27 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
       return retry(async()=>{
         const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-colours-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);
         if(receipt){assert(receipt.fingerprint===fingerprint,409,'This colour request was already used.');return {school:schoolView(school)};}
+        assert(!school.deleted,409,'This school has been deleted.');
         assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Reload its colours before saving.');
         school.colours=colours;school.revision++;dir.revision++;
         await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-colours-receipt',fingerprint}}]);
+        return {school:schoolView(school)};
+      });
+    },
+    async remove(input){
+      requestId(input.requestId);assert(input.confirm===true,400,'Confirm deleting this school.');
+      const fingerprint=digest(JSON.stringify([input.schoolId,input.expectedRevision]));
+      return retry(async()=>{
+        const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-delete-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);
+        if(receipt){assert(receipt.fingerprint===fingerprint,409,'This school deletion request was already used.');return {school:schoolView(school)};}
+        assert(!school.isHostSchool,409,'The host school is required for new events and cannot be deleted.');
+        assert(!school.deleted && school.revision===input.expectedRevision,409,'This school changed. Refresh before deleting it.');
+        const current=await settings(),unfinished=new Set(current.events.filter(e=>e.status!=='ended').map(e=>e.id));
+        assert(!(await repo.list({kind:'team'})).some(team=>team.schoolId===school.id && !team.removed && unfinished.has(team.eventId)),409,'Delete this school?s teams from unfinished events first.');
+        assert(!(await repo.list({kind:'school-operation'})).some(op=>op.schoolId===school.id && !op.complete),409,'Finish this school?s pending team setup before deleting it.');
+        school.deleted=true;school.revision++;dir.revision++;
+        // Fence reservations and lifecycle/reset changes in the same system transaction.
+        await repo.batch([await settingsGuard(current),{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-delete-receipt',fingerprint}}]);
         return {school:schoolView(school)};
       });
     },
@@ -128,7 +146,8 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
     async releaseLegacyName(eventId,teamId,generation){return retry(async()=>{const old=await repo.get('system',legacyNameKey(eventId,teamId).rowKey);if(old && old.generation===generation)await repo.batch([{entity:old,etag:old.etag,remove:true}]);});},
     async list(eventId){const dir=await directory();const progress=[];if(eventId)for(const op of await repo.list({kind:'school-operation',eventId}))if(!op.complete)progress.push(await summary(op));return {schools:dir.schools.map(schoolView),progress};},
     async create(input){requestId(input.requestId);const value=schoolName(input.name);return retry(async()=>{const dir=await directory(),old=dir.schools.find(s=>s.createRequestId===input.requestId);if(old){assert(old.createName===value,409,'This school request was already used.');return {school:schoolView(old)};}assert(!dir.schools.some(s=>schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');const school={id:randomUUID(),name:value,isHostSchool:false,revision:1,createRequestId:input.requestId,createName:value};dir.schools.push(school);dir.revision++;await write(dir);return {school:schoolView(school)};});},
-    async rename(input){requestId(input.requestId);const value=schoolName(input.name),fingerprint=digest(JSON.stringify([input.schoolId,value,input.expectedRevision]));return retry(async()=>{const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-rename-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);if(receipt){assert(receipt.fingerprint===fingerprint,409,'This school rename request was already used.');return {school:schoolView(school)};}assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Refresh before renaming it.');assert(!dir.schools.some(s=>s.id!==school.id && schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');school.name=value;school.revision++;dir.revision++;const teams=[...await repo.list({kind:'team'}),...(await repo.list({kind:'legacy-team-name'})).map(row=>({...row,teamId:'reservation-'+row.teamId}))],rosters=await repo.list({kind:'school-roster'});for(const row of rosters.filter(r=>r.schoolId===school.id))for(const [number,id] of Object.entries(row.allocations)){assert((school.name+' '+number).length<=80,400,'The school name and team number must fit within 80 characters.');assert(!teams.some(t=>t.eventId===row.eventId && t.teamId!==id && schoolNameKey(display(t,dir))===schoolNameKey(school.name+' '+number)),409,'That school name conflicts with an existing team name.');}await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-rename-receipt',fingerprint}}]);return {school:schoolView(school)};});},
+    async rename(input){requestId(input.requestId);const value=schoolName(input.name),fingerprint=digest(JSON.stringify([input.schoolId,value,input.expectedRevision]));return retry(async()=>{const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-rename-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);if(receipt){assert(receipt.fingerprint===fingerprint,409,'This school rename request was already used.');return {school:schoolView(school)};}assert(!school.deleted,409,'This school has been deleted.');
+        assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Refresh before renaming it.');assert(!dir.schools.some(s=>s.id!==school.id && schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');school.name=value;school.revision++;dir.revision++;const teams=[...await repo.list({kind:'team'}),...(await repo.list({kind:'legacy-team-name'})).map(row=>({...row,teamId:'reservation-'+row.teamId}))],rosters=await repo.list({kind:'school-roster'});for(const row of rosters.filter(r=>r.schoolId===school.id))for(const [number,id] of Object.entries(row.allocations)){assert((school.name+' '+number).length<=80,400,'The school name and team number must fit within 80 characters.');assert(!teams.some(t=>t.eventId===row.eventId && t.teamId!==id && schoolNameKey(display(t,dir))===schoolNameKey(school.name+' '+number)),409,'That school name conflicts with an existing team name.');}await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-rename-receipt',fingerprint}}]);return {school:schoolView(school)};});},
     async nameReserved(eventId,value){const dir=await directory(),key=schoolNameKey(value);return (await repo.list({kind:'school-roster',eventId})).some(row=>Object.keys(row.allocations).some(number=>schoolNameKey(getSchool(dir,row.schoolId).name+' '+number)===key));},
     async ensure(input){return materialize(await reserve(input,'generate'));},
     async link(input){return materialize(await reserve(input,'link'));},

@@ -14,7 +14,7 @@ export type EventRecord = {
     hostSetup?: {schoolId:string;requestId:string;status:'pending'|'complete'};
     rosterResetInput?: {eventId:string;requestId:string;year:string;expectedRevision:number;confirm?:boolean;confirmed?:boolean;name?:string;theoryStartsAt?:number|null;theoryEndsAt?:number;practicalStartsAt?:number|null;practicalEndsAt?:number|null;endsAt?:number};
 };
-export type SchoolRecord={id:string;name:string;isHostSchool:boolean;revision:number;colours?:string[]};
+export type SchoolRecord={id:string;name:string;isHostSchool:boolean;deleted?:boolean;revision:number;colours?:string[]};
 export type SchoolProgress={requestId:string;schoolId:string;eventId:string;targetCount:number|null;kind:'generate'|'link';total:number;completed:number;status:'pending'|'complete'};
 export type TeamRecord = {
     id: string;

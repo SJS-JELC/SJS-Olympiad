@@ -38,13 +38,13 @@ export function createPilot({repo,retry,assert,schools,currentEvent,now}) {
     return value;
   });
   const status=c=>c.status==='open'?'open':'off';
-  const names=async()=>(await schools.directory()).schools.map(s=>({id:s.id,name:s.name,colours:schoolColours(s)}));
+  const names=async()=>(await schools.directory()).schools.map(s=>({id:s.id,name:s.name,deleted:!!s.deleted,colours:schoolColours(s)}));
   const eligible=async()=>{
     const event=await currentEvent();
     if(!event)return {eventId:null,schools:[]};
     const teams=await repo.list({kind:'team',eventId:event.id});
     const ids=new Set(teams.filter(t=>!t.removed && t.schoolId).map(t=>t.schoolId));
-    return {eventId:event.id,schools:(await names()).filter(s=>ids.has(s.id))};
+    return {eventId:event.id,schools:(await names()).filter(s=>!s.deleted && ids.has(s.id)).map(({deleted,...school})=>school)};
   };
   const state=async()=>{const c=await config();return {status:status(c),revision:c.revision};};
   const attempts=()=>repo.list({partitionKey:pk,kind:'pilot-attempt'});

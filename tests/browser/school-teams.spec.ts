@@ -32,7 +32,7 @@ test('blank practical records show only a dash while a submitted zero remains vi
  const row=await api.repo.get('fixture-L6-'+team.id,'team');
  row.practical={year:'L6',revision:1,responses:{numPracticalResponse3:null,numPracticalResponse4:null},finalField:'numPracticalResponse4',updatedAt:null};
  await api.repo.write(row,row.etag);await openEvents(page);
- const result=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Test team 1',exact:true})}).getByRole('cell').nth(2);
+ const result=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Test team 1',exact:true})}).getByRole('cell').nth(3);
  await expect(result).toHaveText('–');await expect(result.locator('details')).toHaveCount(0);
  expect(api.requests.filter(request=>request.action==='practical-content')).toHaveLength(0);
  const saved=await api.repo.get('fixture-L6-'+team.id,'team');saved.practical.responses.numPracticalResponse4={text:'0.00',value:0};

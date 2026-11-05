@@ -105,3 +105,9 @@
 .school-colour-input{display:flex;align-items:center;gap:8px}
 .school-colour-input input{width:9em}
 .school-colour-swatch{display:inline-block;width:30px;height:30px;border:1px solid #303742;border-radius:4px;flex-shrink:0}
+
+.settings-bulk-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}
+.settings-school-import{margin:16px 0;padding:12px;border:1px solid #a2aab5;border-radius:8px}
+.settings-school-import summary{cursor:pointer}
+.settings-school-import textarea{display:block;width:100%;margin:8px 0;resize:vertical}
+.settings-teams input[type=checkbox]{width:20px;height:20px;min-width:20px;cursor:pointer}
