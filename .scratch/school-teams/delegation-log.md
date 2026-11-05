@@ -1,0 +1,9 @@
+# School teams delegation log
+
+2026-11-04 16:35:44 UTC — Worker `/root/team_structure` records the authorised one-worker implementation assignment and clean initial Git baseline. Existing direct worker model/effort: gpt-6.1-sol/high; initial/max worker count one, no delegates; root owns final review. This entry is recorded during implementation, not backdated to dispatch.
+
+2026-11-04 16:35:44 UTC — School directory, allocation journals, host setup, derived projections, metadata-preserving year reset and grouped teacher controls implemented. Focused backend fault/concurrency tests pass. External local-tooling directory is write-restricted; a safe TEMP mirror reaches dependency setup, which is blocked by missing offline npm cache. Final validation and root review remain outstanding.
+
+2026-11-04 16:43:58 UTC — Expanded synthetic coverage passes for concurrent legacy links, interrupted/reset recovery, renamed host identity and legacy-name reservation races. Source-only private boundary, typography, chemistry-engine and TypeScript syntax checks pass. Final API-wide regression is running. TEMP dependency setup remains blocked: offline cache miss; bounded normal registry fetch also returned connection refused through the configured restricted proxy. No cloud actions taken.
+
+2026-11-04 16:51:57 UTC — Final implementation verification passed: 159 API tests, including 13 school/failure/race cases. Added both winner orderings for deletion versus year-reset staging; old-row ETag fencing and fresh settings checks prevent resurrection. Final changed-TypeScript syntax, source-only private boundary, typography and JavaScript syntax checks passed. Implementation ticket 01 is resolved; independent root-review ticket 02 is open. Full types/build/rendered browser and live Azure checks remain explicitly unavailable/unrun. No commit, deployment or cloud changes. Worker returns implementation/evidence to root for acceptance.

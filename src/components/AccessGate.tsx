@@ -4,35 +4,57 @@ import { request, type TeamRecord } from '../cloud/api';
 import { CodePanels } from './CodePanels';
 import { OlympiadLogo } from './OlympiadLogo';
 import './CompetitorEntry.css';
+import './LandingEntry.css';
+import {TeacherCodeCooldown} from './TeacherCodeCooldown';
+import {IllustratedActionButton} from './IllustratedActionButton';
 import { eventTiming } from '../events/timing';
-export function AccessGate() {
+export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;onPilot?:()=>void;checking?:boolean}) {
     const security = useCompetitionSecurity();
-    const [codes, setCodes] = useState({teacher:'',competitor:''});
-    const [busy, setBusy] = useState(false);
-    const [available,setAvailable]=useState(false),[availabilityError,setAvailabilityError]=useState('');
+    const [codes,setCodes]=useState({teacher:'',competitor:''}),[teacher,setTeacher]=useState(false),[busy,setBusy]=useState(false);
+    const [available,setAvailable]=useState(false),[checkingEvent,setCheckingEvent]=useState(true),[availabilityError,setAvailabilityError]=useState('');
+    const teacherInput=useRef<HTMLInputElement>(null),eagle=useRef<HTMLButtonElement>(null);
+    const [teacherRetryAt,setTeacherRetryAt]=useState(0),[teacherRemaining,setTeacherRemaining]=useState(0);
+    const teacherCooling=teacherRemaining>0;
     useEffect(()=>{
+      if(security.invalidCode==='teacher'){setTeacherRetryAt(Date.now()+10000);setTeacherRemaining(10000);}
+    },[security.invalidCode]);
+    useEffect(()=>{
+      if(!teacherRetryAt)return;
+      const tick=()=>{const left=Math.max(0,teacherRetryAt-Date.now());setTeacherRemaining(left);if(!left)window.clearInterval(timer);};
+      const timer=window.setInterval(tick,50);tick();return()=>window.clearInterval(timer);
+    },[teacherRetryAt]);
+    useEffect(()=>{if(teacher && !teacherCooling)teacherInput.current?.focus();},[teacher,teacherCooling]);
+    useEffect(()=>{
+        if(pilot){setCheckingEvent(false);return;}
         let live=true,generation=0;
-        const check=()=>{
-            const requestGeneration=++generation;
-            setAvailable(false);
-            void request<{competitorAvailable:boolean}>('availability').then(value=>{
-                if(live && requestGeneration===generation){setAvailable(value.competitorAvailable===true);setAvailabilityError('');}
-            }).catch(()=>{
-                if(live && requestGeneration===generation){setAvailable(false);setAvailabilityError('Event availability could not be checked. Reload to retry.');}
-            });
-        };
-        check();window.addEventListener('focus',check);
-        return()=>{live=false;window.removeEventListener('focus',check);};
-    },[]);
-    return <main className="access-page"><OlympiadLogo /><section className="access-card access-entry-card type-body" aria-label="Choose teacher or competitor">
-      <div className="access-options">{(['teacher','competitor'] as const).map(role => <form key={role} autoComplete="off" onSubmit={async event => {
-        event.preventDefault(); if(busy || role==='competitor' && !available)return; setBusy(true); const code=codes[role];setCodes({teacher:'',competitor:''});
-        try { await security.login(code,role); } finally {setBusy(false);}
-      }}><h2 className="type-heading">{role==='teacher'?'TEACHER':'COMPETITOR'}</h2>
-      <CodePanels id={'access-'+role} label={role==='teacher'?'Teacher code':'Competitor code'} value={codes[role]} invalid={security.invalidCode===role} onChange={value=>{security.clearCodeError();setCodes({...codes,[role]:value});}} disabled={busy}/>
-      <button className="access-go type-heading" type="submit" disabled={busy || !codes[role].trim() || role==='competitor' && !available}><span>{busy?'...':'GO'}</span></button></form>)}</div>
-      {availabilityError && <p role="alert">{availabilityError}</p>}{security.error && <p role="alert">{security.error}</p>}</section></main>;
-
+        const check=()=>{const own=++generation;setCheckingEvent(true);setAvailable(false);
+          void request<{competitorAvailable:boolean}>('availability').then(v=>{if(live && own===generation){setAvailable(v.competitorAvailable);setAvailabilityError('');}})
+            .catch(()=>{if(live && own===generation)setAvailabilityError('Event availability could not be checked. Reload to retry.');})
+            .finally(()=>{if(live && own===generation)setCheckingEvent(false);});};
+        check();window.addEventListener('focus',check);return()=>{live=false;window.removeEventListener('focus',check);};
+    },[pilot]);
+    async function login(role:'teacher'|'competitor'){
+      if(busy || codes[role].length!==4 || role==='teacher' && Date.now()<teacherRetryAt || role==='competitor' && !available)return;
+      setBusy(true);const code=codes[role];setCodes({teacher:'',competitor:''});
+      try{await security.login(code,role);}finally{setBusy(false);}
+    }
+    function closeTeacher(){setTeacher(false);setCodes(c=>({...c,teacher:''}));security.clearCodeError();eagle.current?.focus();}
+    const pin=(role:'teacher'|'competitor')=><CodePanels digitsOnly id={'access-'+role} label={role==='teacher'?'Teacher code':'Competitor code'} value={codes[role]} invalid={security.invalidCode===role} inputRef={role==='teacher'?teacherInput:undefined} onChange={value=>{security.clearCodeError();setCodes(c=>({...c,[role]:value}));}} disabled={busy || role==='teacher' && teacherCooling}/>;
+    return <main className="access-page access-page--redesign type-body">
+      <div className="landing-logo"><OlympiadLogo/><button ref={eagle} type="button" className="landing-eagle-button" aria-label="Teacher sign in" aria-expanded={teacher} aria-controls="teacher-password" onClick={()=>teacher?closeTeacher():setTeacher(true)}/>
+        {teacher && <section id="teacher-password" className={'teacher-password'+(teacherCooling?' teacher-password--cooling':'')} aria-label="Teacher sign in" onKeyDown={event=>{if(event.key==='Escape')closeTeacher();}}>
+          {teacherCooling && <TeacherCodeCooldown remaining={teacherRemaining}/>}
+          <button type="button" className="teacher-password-close type-heading" aria-label="Close teacher sign in" onClick={closeTeacher}>&#215;</button><p className="type-heading">What's the password?</p>
+          <form onSubmit={event=>{event.preventDefault();void login('teacher');}}>{pin('teacher')}<button className="teacher-password-submit type-heading" type="submit" aria-label="Submit teacher code" disabled={busy || teacherCooling || codes.teacher.length!==4}>&gt;</button></form>
+        </section>}
+      </div>
+      <div className="landing-entry" aria-busy={busy || checking || checkingEvent}>
+        {pilot ? <><p className="pilot-welcome-copy type-body">Welcome to the Olympiad! By getting this far you have made sure the competition isn't blocked on your device. Well done. Hit go to get used to some of the controls and get some familiarity with a type of formulae you might not have seen much before...</p><IllustratedActionButton compact label="GO" icon="arrow" disabled={checking || busy} onClick={onPilot}/></> : <form onSubmit={event=>{event.preventDefault();void login('competitor');}}>{pin('competitor')}<IllustratedActionButton compact label="GO" icon="arrow" type="submit" disabled={busy || checking || checkingEvent || !available || codes.competitor.length!==4}/></form>}
+        <div className="landing-progress" role="status">{(busy || checking || checkingEvent) && <><span className="landing-progress__bar"/><span className="sr-only">{busy?'Signing in...':'Checking availability...'}</span></>}</div>
+        {!pilot && !checkingEvent && !checking && !available && !availabilityError && <p role="status">Waiting for an event.</p>}
+        {availabilityError && !pilot && <p role="alert">{availabilityError}</p>}{security.error && <p role="alert">{security.error}</p>}
+      </div>
+    </main>;
 }
 export function CompetitorEntry() {
     const security = useCompetitionSecurity(), event = security.server?.activeEvent;

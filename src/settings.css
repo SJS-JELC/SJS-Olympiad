@@ -38,7 +38,14 @@
 .settings-timing-tile > p { grid-column:1 / -1; margin:0; }
 .settings-teams { margin-top:1.5svh; padding-top:1.5svh; border-top:.15svh solid #aaa; }
 .settings-teams > p { margin:.5svh 0 1svh; }
-.settings-team-add { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:1svh; max-width:80svh; }
+.settings-school-create,.settings-school-controls,.settings-school-target,.settings-school-link { display:flex; align-items:end; flex-wrap:wrap; gap:1svh; margin-bottom:1.5svh; }
+.settings-school-create .settings-field,.settings-school-controls>.settings-field { flex:1; min-width:20svh; }
+.settings-school-target { margin-bottom:0; }
+.settings-school-target input { width:10svh; }
+.settings-school-link { padding:1.5svh; border:1px solid currentColor; }
+.settings-school-link h4 { flex-basis:100%; margin:0; }
+.settings-school-heading th { padding-top:2svh; text-align:left; }
+.settings-setup-progress { margin:1svh 0; }
 .settings-panel table { width:100%; text-align:left; border-collapse:collapse; margin-top:1svh; }
 .settings-panel td,.settings-panel th { padding:.7svh; border-bottom:.1svh solid #bbb; }
 .settings-team-actions { display:flex; flex-wrap:wrap; gap:.6svh; }

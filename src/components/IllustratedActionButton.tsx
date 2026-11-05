@@ -9,26 +9,27 @@ export interface IllustratedActionButtonProps {
   className?: string;
   type?: 'button' | 'submit';
   wide?: boolean;
+  compact?: boolean;
   icon?: 'check' | 'arrow';
   tone?: 'default' | 'lilac';
 }
 
 /** Shared original-asset actions default to buttons, never accidental submissions. */
-export function IllustratedActionButton({ label, accessibleLabel, onClick, disabled = false, className = '', type = 'button', wide = false, icon = 'check', tone = 'default' }: IllustratedActionButtonProps) {
+export function IllustratedActionButton({ label, accessibleLabel, onClick, disabled = false, className = '', type = 'button', wide = false, compact = false, icon = 'check', tone = 'default' }: IllustratedActionButtonProps) {
   return <button type={type} disabled={disabled} onClick={onClick}
     className={`illustrated-action-button${wide ? ' illustrated-action-button--wide' : ''}${tone === 'lilac' ? ' illustrated-action-button--lilac' : ''}${className ? ' ' + className : ''}`}
     aria-label={accessibleLabel ?? label}>
-    <IllustratedActionArtwork label={label} wide={wide} icon={icon} />
+    <IllustratedActionArtwork label={label} wide={wide} compact={compact} icon={icon} />
   </button>;
 }
 
 /** CheckButton owns submit and cooldown state; this only draws that state. */
-export function IllustratedActionArtwork({ label, wide = false, cooling = false, fraction = 0, icon = 'check' }: { label: string; wide?: boolean; cooling?: boolean; fraction?: number; icon?: 'check' | 'arrow' }) {
+export function IllustratedActionArtwork({ label, wide = false, compact = false, cooling = false, fraction = 0, icon = 'check' }: { label: string; wide?: boolean; compact?: boolean; cooling?: boolean; fraction?: number; icon?: 'check' | 'arrow' }) {
   const shadowId = 'action-shadow-' + useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const liquidY = 1.7 + 39.76 * fraction;
   const liquidClipId = shadowId + '-liquid';
   const bubbleClipId = shadowId + '-bubbles';
-  const width = wide ? 300.33 : 150.33;
+  const width = wide ? 300.33 : compact ? 100 : 150.33;
   const right = width - 1.82;
   return <svg className="check-button__art" viewBox={`0 0 ${width} 42.52`} aria-hidden="true" focusable="false">
     <defs><filter id={shadowId} x="-10%" y="-15%" width="120%" height="140%"><feDropShadow dx="0" dy="1.6" stdDeviation="0" floodColor="#3b3b3b" /></filter>

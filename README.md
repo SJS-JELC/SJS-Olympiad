@@ -12,7 +12,7 @@ node scripts/local-tooling.mjs install-browser
 node scripts/local-tooling.mjs dev
 ```
 
-For a usable local preview with authentication, marking and temporary test data, run `node scripts/local-tooling.mjs local-preview`, then open `http://127.0.0.1:5173`. It creates the active U6 event “Upper 6th December 2026” with three labelled test teams: 9 December, practical 16:40–17:20 and theory 17:30–18:20, Europe/London. Competitors see the real countdown; teachers can preview every year through Settings → Questions Preview. Use competitor code `1234` or teacher code `5678`. The API runs the production service against memory; data lasts until the preview stops, and Azure is not connected. The server binds to loopback only. Its port-specific local cookie adapter is separate from production cookie/origin rules.
+For a usable local preview with authentication, marking and temporary test data, run `node scripts/local-tooling.mjs local-preview`, then open `http://127.0.0.1:5173`. It creates the active U6 event “Upper 6th December 2026” with four host teams and three labelled test teams: 9 December, practical 16:40–17:20 and theory 17:30–18:20, Europe/London. Competitors see the real countdown; teachers can preview every year through Settings → Questions Preview. Use competitor code `1234` or teacher code `5678`. The API runs the production service against memory; data lasts until the preview stops, and Azure is not connected. The server binds to loopback only. Its port-specific local cookie adapter is separate from production cookie/origin rules.
 
 The tooling keeps dependencies, browser binaries and generated output outside the synced source folder in the user cache (`%LOCALAPPDATA%/SJS-Olympiad-Security-PoC` on Windows). Edit this source folder; the dev command mirrors changes into its working copy. Use the same wrapper with `typecheck`, `test`, `test:browser`, `build` or `preview`. Set `SJS_OLYMPIAD_TOOLING_PROFILE` to a short lowercase name to isolate a validation or preview working copy; set `LOCAL_PREVIEW_PORT` to run another preview without stopping an existing in-memory session. Each preview has separate temporary data. On a machine with generated files already inside the synced folder, stop development servers before using the wrapper's `migrate` command to relocate them to a local backup.
 
@@ -41,6 +41,7 @@ Azure Static Web Apps hosts the site at https://olympiad.masters-of-chemistry.ap
 
 - [Question framework](docs/question-framework.md): authoring, state and layout ownership.
 - [Typography](docs/typography.md): six shared text roles and heading/score treatments.
+- [Schools and teams](docs/schools-and-teams.md): shared school names, numbered teams, target counts and safe setup retries.
 - [Cut and Shut mark scheme](docs/u5p7-mark-scheme.md): current U5P9 chemistry.
 
 Regression cases live in `tests/fixtures/`; meaningful unit and browser coverage stays with the app. Generated screenshots belong in ignored test output. Archived original sources and the Masters of Chemistry project are read-only references; see [source locations](docs/source-provenance.md). Current source attribution is retained beside assets and adapted editors, including `src/assets/powerapp/manifest.json`; preserve font notices and recorded licensing limitations.

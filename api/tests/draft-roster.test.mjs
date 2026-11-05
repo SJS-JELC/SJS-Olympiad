@@ -18,7 +18,7 @@ for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${pas
  assert.equal(state.practice,undefined);assert.equal(state.activeEvent.id,f.event.id);assert.equal(state.activeEvent.year,year);
  assert.equal(state.activeEvent.theoryStartsAt,f.event.theoryStartsAt);assert.equal(state.activeEvent.theoryEndsAt,f.event.theoryEndsAt);
  const roster=(await f.api.teams(player.token)).teams;
- assert.deepEqual(roster.map(team=>team.name).sort(),['Alpha','Beta']);assert.ok(roster.every(team=>team.year===year&&!team.claimed));
+ assert.deepEqual(roster.map(team=>team.name).sort(),['Alpha','Beta',"St John's 1","St John's 2","St John's 3","St John's 4"]);assert.ok(roster.every(team=>team.year===year&&!team.claimed));
  if(past){
   await assert.rejects(f.api.claim(player.token,{teamId:f.first.id}),{status:403});
   assert.equal((await f.repo.get(f.event.id+'-'+f.first.id,'team')).owner,null);return;

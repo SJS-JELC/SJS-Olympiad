@@ -9,7 +9,7 @@ import '../splash.css';
 import './questions.css';
 
 export function QuestionShell({ definition, score, onBack, onSettings, backLabel = 'Back to theory', children }: {
-  definition: QuestionDefinition; score: number; onBack: () => void; onSettings?: () => void; backLabel?: string; children: ReactNode;
+  definition: Pick<QuestionDefinition, 'title' | 'headerArtwork'> & Partial<Pick<QuestionDefinition, 'year' | 'number'>>; score: number; onBack: () => void; onSettings?: () => void; backLabel?: string; children: ReactNode;
 }) {
   const pageRef = useRef<HTMLDivElement>(null);
   useEffect(() => {

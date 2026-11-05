@@ -37,7 +37,7 @@ test('active challenge banners follow independent windows and completed landing 
 });
 
 test('settings confirms return to draft without a testing checkbox',async({page})=>{
- await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
  await page.getByRole('button',{name:'Events',exact:true}).click();
  await expect(page.getByRole('button',{name:'Return to draft',exact:true})).toHaveCount(0);await page.getByLabel('Event status').selectOption('draft');
  await page.getByRole('button',{name:'Cancel',exact:true}).click();await expect(page.getByLabel('Event status')).toHaveValue('active');
@@ -66,7 +66,7 @@ for(const year of ['L5','L6','U6'])test(`competitor opens theory and practical i
 });
 
 test('teacher can change an active event year with explicit reset confirmation',async({page})=>{
- await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
  await page.getByRole('button',{name:'Events',exact:true}).click();await page.getByLabel('Year',{exact:true}).selectOption('U6');await page.getByRole('button',{name:'Save event',exact:true}).click();
  await expect(page.getByRole('dialog')).toContainText('team sessions will reset');await page.getByRole('dialog').getByRole('button',{name:'Cancel',exact:true}).click();await expect(page.getByLabel('Event status')).toHaveValue('active');
  await page.getByRole('button',{name:'Save event',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'Confirm',exact:true}).click();

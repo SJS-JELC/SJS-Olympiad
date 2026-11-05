@@ -1,0 +1,33 @@
+# Readiness pilot
+
+## Entry and school eligibility
+
+Teacher Settings → Pilot has a reversible on/off switch. Off shows competition PIN entry and blocks pilot entry/submission; on restores the same pilot history. All mode changes require a teacher session and expected revision. Pending writes share a conditional mode fence.
+
+The landing page shows a welcome message and GO while Pilot is on, without a pupil PIN. GO opens school selection, or resumes this browser's saved attempt. The logo, larger black welcome text and compact GO are vertically centred. Only the landing eagle opens the teacher password bubble; its adjacent > submits the four-digit code, and the top-right cross or Escape closes it and returns focus to the eagle. An incorrect teacher code starts a ten-second page-local timeout: the code and submit arrow are disabled while white liquid fills the dark-grey speech bubble and its mouth-pointing tail, with no red code border. Closing/reopening keeps the same deadline; expiry restores input focus. Transport failures do not trigger it. Server authentication/rate limits remain authoritative. Competition entry uses four numeric PIN digits and an illustrated GO button; teacher authentication still occurs on the server.
+
+The school chooser shows Select your school, school tiles and NEXT > directly on the background, without a white panel or back arrow. NEXT uses the landing GO lettering size and height. It uses distinct schools linked to nonremoved teams in the current unfinished event (active first, otherwise latest draft). Directory-only schools and unlinked teams are excluded. No current event or eligible schools disables school entry. Competition team counts do not limit pilot entries. School selection is self-declared.
+
+School NEXT creates a private credential-owned attempt and records its first server access-confirmation time, before marking. Retries, reloads and later visits retain that attempt and time. Separate browsers can produce repeated school rows; there are no visible session numbers or Start new attempt control. The back arrow returns to landing without clearing work.
+
+## Funny Bones
+
+The shared question layout shows FUNNY BONES and the attempt's personal best (00 before an accepted answer). Draw disconnected neutral C/H structures of formula C₅H₈. Rings and triple bonds count. Invalid valence, another formula, an empty canvas or an unfinished fragment rejects the entire submission. Valid duplicates count once, including alternative layouts and explicit/implicit H. Stereochemistry does not add structural isomers. Valid answers remain editable and resubmittable without a completion stamp.
+
+Pilot-only limits are 250 heavy atoms, 650 total atoms, 750 bonds and 50 components. Competition defaults remain unchanged. Pan, zoom, fit, cleanup and undo use the shared editor. A centred What on earth is a skeletal formula? disclosure and chevron sit beneath the prompt. Its smaller centred explanation includes butane and cyclohexane diagrams, implicit hydrogen counting and why omitting repeated atom labels makes larger structures clearer. The school identity line and idle drawing-storage message are omitted.
+
+The bottom Leaderboard sits beside Submit in one centred cluster, with gold, silver and bronze place tiles. It shows three distinct school names with no scores; empty positions show –. Rank by each school's highest accepted score, then school name (en-GB), then stable school ID. Rankings update on entry and submission without polling or manual leaderboard buttons.
+
+## Persistence and reporting
+
+The browser stores its drawing, latest 20 undo steps, private random credential and any uncertain submission under `olympiad-readiness-pilot-v1`. Clearing browser storage loses recovery. Storage failure is shown; the current tab can continue without guaranteed recovery. Other-tab changes block stale editing until reload. Reload returns to landing; GO resumes the saved drawing.
+
+The server stores access time, result summaries and idempotency receipts/fingerprints, never drawings or raw credentials. Submission retries retain the original frozen request ID/payload. Public school rankings omit attempt IDs, credentials and scores. Credential-owned responses expose only that attempt's result. A public ID or school name cannot overwrite another attempt.
+
+Teacher School Readiness contains School, Access Confirmation Time (Europe/London), and High Score. Each attempt is a separate row; unsubmitted/rejected-only attempts have no high score. Rows sort newest confirmation first. Reopening the panel and successful toggle changes reload its data, without a refresh button or polling.
+
+Legacy records are retained. Legacy idle/closed modes read as off and can turn on. Old number fields are ignored; missing historical access times display – rather than fabricated timestamps. History persists across event changes; removed schools remain in teacher history but cannot enter/submit unless eligible again. Competition scores, claims and resets remain separate.
+
+## Verification boundaries
+
+Use synthetic data only. Local tests do not establish Azure acceptance, school firewall access or school-device performance. No deployment is included. Current local evidence is recorded in `.scratch/readiness-pilot/verification.md`.

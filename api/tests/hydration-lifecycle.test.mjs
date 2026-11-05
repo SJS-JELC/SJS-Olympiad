@@ -63,7 +63,7 @@ test('fresh competitor boot revokes the role cookie, retains claimed team/result
   const response=await handle({method:'GET',params:{action:'session'},query:{restore:'1'},headers:{cookie}},()=>f.api);
   assert.equal(response.status,401);assert.match(response.headers['Set-Cookie'],/Max-Age=0/);
   await assert.rejects(f.api.submit(f.player,{questionId:'L6P8',requestId:'stale-after-boot',answers:{answer:'0.437'}}),{status:401});
-  const next=await f.api.login({role:'competitor',code:'1234'});assert.equal((await f.api.teams(next.token)).teams.filter(team=>!team.claimed).length,0);
+  const next=await f.api.login({role:'competitor',code:'1234'});assert.equal((await f.api.teams(next.token)).teams.find(team=>team.id===f.teamId).claimed,true);
   await assert.rejects(f.api.claim(next.token,{teamId:f.teamId}),{status:409});
   const stored=await f.repo.get(f.eventId+'-'+f.teamId,'q-L6P8');assert.equal(stored.state.solvedAt,solved.attempt.solvedAt);
   await f.api.teamRelease(f.staff,{eventId:f.eventId,teamId:f.teamId,confirm:true});await f.api.claim(next.token,{teamId:f.teamId});

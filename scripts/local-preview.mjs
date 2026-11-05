@@ -81,7 +81,7 @@ const server = await createServer({
 });
 await server.listen();
 console.log(`Local preview: http://127.0.0.1:${port}`);
-console.log('Upper 6th December 2026: 9 December practical 16:40-17:20, theory 17:30-18:20 Europe/London. Three test teams.');
+console.log('Upper 6th December 2026: 9 December practical 16:40-17:20, theory 17:30-18:20 Europe/London. Four host teams and three labelled test teams.');
 console.log('Competitor: 1234. Teacher: 5678. Competitors see the real countdown; teachers can preview all questions.');
 console.log('Data stays in memory until this process stops. Azure is not connected.');
 for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, async () => { await server.close(); process.exit(0); });

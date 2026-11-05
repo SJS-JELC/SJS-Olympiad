@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCompetitionSecurity } from './security';
-import { request, type EventRecord, type SessionState, type TeamRecord } from './cloud/api';
+import { request, HttpError, type EventRecord, type SessionState, type TeamRecord } from './cloud/api';
 import { OlympiadHeading } from './components/OlympiadHeading';
 import { eventTiming, londonDateValue, parseLondonDate } from './events/timing';
 import { theoryYears } from './questions/years';
 import { ProblemTesting } from './components/ProblemTesting';
-import { PracticalCatalogue, PracticalTeamResult } from './practicals/Practical';
+import { PracticalCatalogue } from './practicals/Practical';
+import {SchoolRoster} from './components/SchoolRoster';
 import './settings.css';
 import {BackendDiagnostics} from './components/BackendDiagnostics';
+import {PilotSettings} from './pilot/Pilot';
 
 type Confirmation = { title: string; description: string; run: () => Promise<void>; success?: string };
 type EventForm = { name: string; year: string; theoryStart: string; theoryEnd: string; practicalStart: string; practicalEnd: string };
@@ -31,12 +33,14 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
     const [creating, setCreating] = useState(false), [draft, setDraft] = useState<EventForm>(blankEvent), [baseline, setBaseline] = useState<EventForm>(blankEvent);
     const {questions:questionsOpen,events:eventsOpen}=panels;
     const [formRevision, setFormRevision] = useState(0);
-    const [teamName, setTeamName] = useState('');
+    const eventCreateRequest = useRef<{fingerprint:string;requestId:string}|null>(null);
     const teamsRequest = useRef(0), selectedId = useRef(eventId);
     selectedId.current = eventId;
     const selected = events.find(event => event.id === eventId);
     const currentEvent = events.find(event=>event.status==='active') ?? events.slice().reverse().find(event=>event.status==='draft');
     const ended = !creating && selected?.status === 'ended';
+    const resetPending = !!selected?.rosterResetInput;
+    const creationPending = creating && eventCreateRequest.current!==null;
     const dirty = JSON.stringify(draft) !== JSON.stringify(baseline);
     const scheduleDirty = scheduleKeys.some(key => draft[key] !== baseline[key]);
     const legacyStart = !creating && selected && eventTiming(selected).theoryStartsAt === null;
@@ -73,7 +77,7 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
     }
     useEffect(() => { void run(refresh, ''); }, []);
     useEffect(() => {
-        setCreating(false); resetForm(selected); setTeamName(''); setTeams([]); setTeamsEvent(undefined);
+        setCreating(false); resetForm(selected); setTeams([]); setTeamsEvent(undefined);
         void refreshTeams(eventId).catch(error => { if (selectedId.current === eventId) setMessage(error.message); });
         return () => { teamsRequest.current++; };
     }, [eventId]);
@@ -111,8 +115,14 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
     async function saveEvent() {
         const body = { name: draft.name, year: draft.year, ...scheduleInput() };
         if (creating) {
-            const value = await eventCommand('event-create', body), created = value.events?.find(event => event.id === value.createdEventId);
-            if (created) { setCreating(false); resetForm(created); onEventChange(created.id); }
+            const fingerprint=JSON.stringify(body);
+            if(eventCreateRequest.current && eventCreateRequest.current.fingerprint!==fingerprint)throw new Error('Retry the original event creation before changing its values.');
+            eventCreateRequest.current ??= {fingerprint,requestId:crypto.randomUUID()};
+            try{
+                const value = await eventCommand('event-create', {...body,requestId:eventCreateRequest.current.requestId}), created = value.events?.find(event => event.id === value.createdEventId);
+                eventCreateRequest.current=null;
+                if (created) { setCreating(false); resetForm(created); onEventChange(created.id); }
+            }catch(error){if(error instanceof HttpError && error.status<500){eventCreateRequest.current=null;throw error;}throw new Error((error instanceof Error?error.message:'The creation response was not confirmed.')+' Use Save to retry this event creation.');}
         } else if (selected && draft.year!==selected.year) {
             const target=selected,requestId=crypto.randomUUID(),expectedRevision=formRevision;
             setConfirm({title:'Change year and reset this event?',description:`Change ${target.name} from ${target.year} to ${draft.year}? All theory scores, answers, practical responses and team sessions will reset. Team names are kept. The event returns to draft.`,run:async()=>{
@@ -124,8 +134,9 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
             resetForm(value.events?.find(event => event.id === selected.id));
         }
     }
+    async function resumeYearReset(){if(!selected?.rosterResetInput)return;const value=await eventCommand('event-year-change',selected.rosterResetInput),replacement=value.events?.find(event=>event.id===value.createdEventId);if(replacement){resetForm(replacement);onEventChange(replacement.id);}}
     function changeStatus(status:string) {
-        if(!selected || creating || dirty || busy)return;
+        if(!selected || creating || dirty || busy || resetPending)return;
         const target=selected;
         if(target.status==='draft' && status==='active') {
             setConfirm({title:'Activate this event?',description:`Activate ${target.name} for competitors?`,run:async()=>{const value=await eventCommand('event-activate',{eventId:target.id,expectedRevision:target.revision,confirm:true});resetForm(value.events?.find(event=>event.id===target.id));}});
@@ -142,30 +153,29 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
         <section className="settings-panel settings-events" aria-labelledby="settings-events-heading">
             <div className="settings-section-heading"><h2 id="settings-events-heading" className="type-heading"><PanelToggle label="Events" expanded={eventsOpen} controls="settings-event-content" onClick={()=>onPanelsChange({...panels,events:!eventsOpen})}/></h2>{eventsOpen && <div className="settings-toolbar" role="toolbar" aria-label="Event actions">
                 <button className="ui-button" disabled={busy || creating || !!currentEvent} title={currentEvent?'Complete the current event before creating another.':undefined} onClick={()=>changeMode(true)}>Create new event</button>
-                <button className="ui-button settings-save" type="submit" form="settings-event-form" aria-label={creating?'Create draft event':'Save event'} title={creating?'Create draft event':'Save event'} disabled={busy || ended || (!creating && !selected)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l4 4v14H3V3h1Zm3 0v7h10V3M7 21v-8h10v8" fill="none" stroke="currentColor" strokeWidth="2"/></svg></button>
+                <button className="ui-button settings-save" type="submit" form="settings-event-form" aria-label={creating?'Create draft event':'Save event'} title={creating?'Create draft event':'Save event'} disabled={busy || ended || resetPending || (!creating && !selected)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h13l4 4v14H3V3h1Zm3 0v7h10V3M7 21v-8h10v8" fill="none" stroke="currentColor" strokeWidth="2"/></svg></button>
                 <button className="ui-button" disabled={busy || dirty || !security.server.activeEvent} onClick={onLeaderboard}>Open leaderboard</button>
             </div>}</div>
             <div id="settings-event-content" hidden={!eventsOpen}>
-            <div className="settings-event-selector"><label htmlFor="event-select">Selected event:</label><select id="event-select" value={creating ? '' : eventId ?? ''} disabled={busy} onChange={event => changeMode(false, event.target.value)}><option value="" disabled>{creating ? 'New event' : 'Select an event'}</option>{events.map(event => <option key={event.id} value={event.id}>{event.name}</option>)}</select><select aria-label="Event status" className={`settings-event-status type-caption settings-event-status--${creating ? 'draft' : selected?.status ?? 'draft'}`} value={creating?'draft':selected?.status ?? 'draft'} disabled={busy || dirty || creating || !selected || ended} onChange={event=>changeStatus(event.target.value)}>{(['draft','active','ended'] as const).map(status=><option key={status} value={status} disabled={status==='draft' && selected?.status==='ended'}>{statusLabel(status)}</option>)}</select></div>
+            <div className="settings-event-selector"><label htmlFor="event-select">Selected event:</label><select id="event-select" value={creating ? '' : eventId ?? ''} disabled={busy} onChange={event => changeMode(false, event.target.value)}><option value="" disabled>{creating ? 'New event' : 'Select an event'}</option>{events.map(event => <option key={event.id} value={event.id}>{event.name}</option>)}</select><select aria-label="Event status" className={`settings-event-status type-caption settings-event-status--${creating ? 'draft' : selected?.status ?? 'draft'}`} value={creating?'draft':selected?.status ?? 'draft'} disabled={busy || dirty || creating || !selected || ended || resetPending} onChange={event=>changeStatus(event.target.value)}>{(['draft','active','ended'] as const).map(status=><option key={status} value={status} disabled={status==='draft' && selected?.status==='ended'}>{statusLabel(status)}</option>)}</select></div>
             {(creating || selected) && <>
                 <form id="settings-event-form" className="settings-event-form" onSubmit={event => { event.preventDefault(); void run(saveEvent); }}>
-                    <div className="settings-event-identity"><div className="settings-field"><label htmlFor={`${prefix}-name`}>Event name</label><input id={`${prefix}-name`} value={draft.name} onChange={event => field('name', event.target.value)} required maxLength={80} disabled={busy || ended} /></div><div className="settings-field"><label htmlFor={`${prefix}-year`}>Year</label><select id={`${prefix}-year`} value={draft.year} onChange={event => field('year', event.target.value)} disabled={busy || ended}>{theoryYears.map(year => <option key={year}>{year}</option>)}</select></div></div>
+                    <div className="settings-event-identity"><div className="settings-field"><label htmlFor={`${prefix}-name`}>Event name</label><input id={`${prefix}-name`} value={draft.name} onChange={event => field('name', event.target.value)} required maxLength={80} disabled={busy || ended || resetPending || creationPending} /></div><div className="settings-field"><label htmlFor={`${prefix}-year`}>Year</label><select id={`${prefix}-year`} value={draft.year} onChange={event => field('year', event.target.value)} disabled={busy || ended || resetPending || creationPending}>{theoryYears.map(year => <option key={year}>{year}</option>)}</select></div></div>
                     <div className="settings-timing-tiles">
-                        <fieldset className="settings-timing-tile"><legend className="type-label">Practical</legend><div className="settings-field"><label htmlFor={`${prefix}-practical-start`}>Start</label><input id={`${prefix}-practical-start`} type="datetime-local" value={draft.practicalStart} onChange={event => field('practicalStart', event.target.value)} disabled={busy || ended} /></div><div className="settings-field"><label htmlFor={`${prefix}-practical-end`}>End</label><input id={`${prefix}-practical-end`} type="datetime-local" value={draft.practicalEnd} onChange={event => field('practicalEnd', event.target.value)} disabled={busy || ended} /></div></fieldset>
-                        <fieldset className="settings-timing-tile"><legend className="type-label">Theory</legend><div className="settings-field"><label htmlFor={`${prefix}-theory-start`}>Start</label><input id={`${prefix}-theory-start`} type="datetime-local" value={draft.theoryStart} onChange={event => field('theoryStart', event.target.value)} required={creating || !legacyStart || scheduleDirty} disabled={busy || ended} /></div><div className="settings-field"><label htmlFor={`${prefix}-theory-end`}>End</label><input id={`${prefix}-theory-end`} type="datetime-local" value={draft.theoryEnd} onChange={event => field('theoryEnd', event.target.value)} required disabled={busy || ended} /></div>{legacyStart && !scheduleDirty && <p className="type-caption">Legacy event: theory is available immediately until its end.</p>}</fieldset>
+                        <fieldset className="settings-timing-tile"><legend className="type-label">Practical</legend><div className="settings-field"><label htmlFor={`${prefix}-practical-start`}>Start</label><input id={`${prefix}-practical-start`} type="datetime-local" value={draft.practicalStart} onChange={event => field('practicalStart', event.target.value)} disabled={busy || ended || resetPending || creationPending} /></div><div className="settings-field"><label htmlFor={`${prefix}-practical-end`}>End</label><input id={`${prefix}-practical-end`} type="datetime-local" value={draft.practicalEnd} onChange={event => field('practicalEnd', event.target.value)} disabled={busy || ended || resetPending || creationPending} /></div></fieldset>
+                        <fieldset className="settings-timing-tile"><legend className="type-label">Theory</legend><div className="settings-field"><label htmlFor={`${prefix}-theory-start`}>Start</label><input id={`${prefix}-theory-start`} type="datetime-local" value={draft.theoryStart} onChange={event => field('theoryStart', event.target.value)} required={creating || !legacyStart || scheduleDirty} disabled={busy || ended || resetPending || creationPending} /></div><div className="settings-field"><label htmlFor={`${prefix}-theory-end`}>End</label><input id={`${prefix}-theory-end`} type="datetime-local" value={draft.theoryEnd} onChange={event => field('theoryEnd', event.target.value)} required disabled={busy || ended || resetPending || creationPending} /></div>{legacyStart && !scheduleDirty && <p className="type-caption">Legacy event: theory is available immediately until its end.</p>}</fieldset>
                     </div>
-                    {creating && <div className="settings-actions"><button className="ui-button" type="button" disabled={busy} onClick={() => changeMode(false, eventId)}>Cancel new event</button></div>}
+                    {creating && <div className="settings-actions"><button className="ui-button" type="button" disabled={busy || creationPending} onClick={() => changeMode(false, eventId)}>Cancel new event</button></div>}
                 </form>
                 {!creating && selected && <>
+                    {resetPending && <div className="settings-setup-progress"><p role="status">The confirmed year reset is incomplete. Resume it before changing this event or its roster.</p><button className="ui-button" disabled={busy} onClick={()=>void run(resumeYearReset)}>Resume year reset</button></div>}
                     {ended && <p className="type-caption">This event is complete. Results are read-only.</p>}
-                    <section className="settings-teams" aria-labelledby="settings-teams-heading"><h3 id="settings-teams-heading" className="type-heading">Teams · {selected.name}</h3><p className="type-caption">Releasing a team disconnects its device and retains saved results and answers.</p>
-                        {!ended && <form className="settings-team-add" onSubmit={event => { event.preventDefault(); const id = selected.id; void run(async () => { await request('team-add', { eventId: id, name: teamName }); setTeamName(''); await refreshTeams(id); }); }}><div className="settings-field"><label htmlFor="new-team-name">New team name</label><input id="new-team-name" value={teamName} onChange={event => setTeamName(event.target.value)} required maxLength={80} disabled={busy} /></div><button className="ui-button" disabled={busy || !teamName.trim()}>Add team</button></form>}
-                        <table><caption className="sr-only">Event teams and results</caption><thead><tr><th>Team</th><th>Practical answer</th><th>Theory score</th><th>Status</th><th>Actions</th></tr></thead><tbody>{shownTeams.map(team => <tr key={team.id}><td>{team.name}</td><td><PracticalTeamResult result={team.practical}/></td><td>{team.score ?? 0}</td><td>{team.claimed ? 'Taken' : 'Available'}</td><td><div className="settings-team-actions"><button className="ui-button" disabled={busy || ended || !team.claimed} aria-label={'Allow reselection for '+team.name} onClick={() => { const id = selected.id; setConfirm({ title: 'Allow team reselection?', description: `Allow reselection for ${team.name}? The current device will lose access. Saved results and answers will be retained.`, run: async () => { await request('team-release', { eventId: id, teamId: team.id, confirm: true }); await refreshTeams(id); } }); }}>Allow reselection</button><button className="ui-button" disabled={busy || ended} aria-label={'Delete team '+team.name} onClick={()=>{const id=selected.id,requestId=crypto.randomUUID();setConfirm({title:'Delete this team?',description:team.hasSubmittedActivity?`Remove ${team.name} from this event and leaderboard? Its submitted activity and saved records will be retained; its current device will lose access.`:`Delete ${team.name}? If it still has no submitted activity, all team data will be permanently deleted. Any activity submitted before deletion is confirmed will instead be retained and the team removed from lists. Its current device will lose access.`,run:async()=>{await request('team-delete',{eventId:id,teamId:team.id,teamName:team.name,requestId,confirm:true});await refreshTeams(id);}});}}>Delete</button></div></td></tr>)}</tbody></table>
-                    </section>
+                    <SchoolRoster key={selected.id} event={selected} teams={shownTeams} busy={busy} run={run} refresh={()=>refreshTeams(selected.id)} confirm={setConfirm} onError={setMessage} resumeEvent={async()=>{await eventCommand('event-setup',{eventId:selected.id});}}/>
                 </>}
             </>}
             </div>
         </section>
+        <PilotSettings/>
         <section className="settings-panel settings-diagnostics" aria-labelledby="settings-diagnostics-heading"><h2 id="settings-diagnostics-heading" className="type-heading"><PanelToggle label="Backend settings" expanded={panels.diagnostics} controls="settings-diagnostics-content" onClick={()=>onPanelsChange({...panels,diagnostics:!panels.diagnostics})}/></h2><BackendDiagnostics expanded={panels.diagnostics}/></section>
         {confirm && <SettingsConfirmation confirmation={confirm} error={message} busy={busy} onCancel={() => setConfirm(null)} onConfirm={() => void run(async () => { await confirm.run(); setConfirm(null); }, confirm.success)} />}
     </main>;

@@ -5,7 +5,7 @@ async function setup(api:ApiHarness,page:Page){
  for(const event of (await api.service.events(staff)).events.filter((event:any)=>event.status!=='ended'))await api.service.eventEnd(staff,{eventId:event.id,expectedRevision:event.revision,confirm:true});
  const now=Date.now(),event=(await api.service.eventCreate(staff,{name:'Lifecycle fixture',year:'L6',theoryStartsAt:now+3600000,theoryEndsAt:now+7200000})).events.at(-1);
  await api.service.teamAdd(staff,{eventId:event.id,name:'Lifecycle team'});
- await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
  await page.getByRole('button',{name:'Events',exact:true}).click();return {staff,event};
 }
 anonymous('status dropdown owns confirmed lifecycle transitions and practical preview stays in the catalogue',async({page,api})=>{

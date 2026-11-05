@@ -1,10 +1,12 @@
 import { createHash } from 'node:crypto';
 import { createService, ApiError } from './service.mjs';
 const origins = new Set(['https://olympiad.masters-of-chemistry.app','https://lively-coast-06a373f0f.2.azurestaticapps.net']);
-const gets = new Set(['availability','session','events','teams','leaderboard','diagnostics']);
-const posts = new Set(['login','logout','event-create','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
-const methods = {'event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
+const gets = new Set(['pilot','pilot-report','availability','session','events','teams','schools','leaderboard','diagnostics']);
+const posts = new Set(['login','logout','event-create','event-setup','school-create','school-rename','school-teams','school-link','school-resume','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
+const methods = {'event-setup':'eventSetup','school-create':'schoolCreate','school-rename':'schoolRename','school-teams':'schoolTeams','school-link':'schoolLink','school-resume':'schoolResume','event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
 const COOKIE='__Host-olympiad-session';
+posts.add('pilot-enter');posts.add('pilot-submit');posts.add('pilot-mode');
+Object.assign(methods,{'pilot-enter':'pilotEnter','pilot-submit':'pilotSubmit','pilot-report':'pilotReport','pilot-mode':'pilotMode'});
 function validateBody(body) {
   if(!body || typeof body!=='object' || Array.isArray(body))throw new ApiError(400,'Invalid request.');
   // Check parsed JSON iteratively before stringify or canonicalization. Answer
@@ -41,7 +43,7 @@ export async function handle(req,getService=service) {
     if(method==='POST') {
       if(!origins.has(requestHeaders.origin) || requestHeaders['content-type']?.split(';')[0].trim()!=='application/json')throw new ApiError(403,'Use the Olympiad website to submit.');
       validateBody(req.body);
-      if(Buffer.byteLength(req.rawBody ?? JSON.stringify(req.body))>64000)throw new ApiError(400,'Invalid request.');
+      if(Buffer.byteLength(req.rawBody ?? JSON.stringify(req.body))>(action==='pilot-submit'?128000:64000))throw new ApiError(400,'Invalid request.');
     }
     const api=await getService(),token=cookie(requestHeaders.cookie,COOKIE);
     let body;
@@ -56,7 +58,11 @@ export async function handle(req,getService=service) {
       body=result.state;
       headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/`;
     } else {
-      if(method==='POST')await api.throttle((['recovery','resume'].includes(action)?'recovery-':'mutate-')+(token || 'anonymous'),['recovery','resume'].includes(action)?10:180);
+      if(action==='pilot-submit' || action==='pilot-enter') {
+        const address=String(requestHeaders['x-forwarded-for'] || req.ip || 'unknown').split(',')[0];
+        await api.throttle('pilot-ip-'+createHash('sha256').update(address).digest('hex'),180);
+        await api.throttle('pilot-attempt-'+createHash('sha256').update(String(req.body.credential ?? '')).digest('hex'),20);
+      } else if(method==='POST')await api.throttle((['recovery','resume'].includes(action)?'recovery-':'mutate-')+(token || 'anonymous'),['recovery','resume'].includes(action)?10:180);
       if(action==='session')body=await api.session(token,{restore:req.query?.restore==='1' || req.query?.restore===1,interrupt:req.query?.interrupt==='1' || req.query?.interrupt===1});
       else if(action==='logout') {
         body=await api.logout(token);

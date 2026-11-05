@@ -3,7 +3,7 @@
   const LIMIT = 20;
   const DEFAULT_LIMITS = Object.freeze({ maxHeavyAtoms: LIMIT, maxAtoms: 100, maxBonds: 150 });
   function limitsFor(limits = DEFAULT_LIMITS) {
-    if (!limits || ['maxHeavyAtoms', 'maxAtoms', 'maxBonds'].some(k => !Number.isSafeInteger(limits[k]) || limits[k] < 1) || limits.maxHeavyAtoms > limits.maxAtoms || limits.maxAtoms > 100 || limits.maxBonds > 150) throw Error('Unsupported molecule limits.');
+    if (!limits || ['maxHeavyAtoms', 'maxAtoms', 'maxBonds'].some(k => !Number.isSafeInteger(limits[k]) || limits[k] < 1) || limits.maxHeavyAtoms > limits.maxAtoms || limits.maxAtoms > 650 || limits.maxBonds > 750) throw Error('Unsupported molecule limits.');
     return limits;
   }
   const valences = { C: 4, O: 2, N: 3, Cl: 1, F: 1, H: 1 };

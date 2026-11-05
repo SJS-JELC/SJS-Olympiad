@@ -12,12 +12,13 @@ anonymous('every direct route is behind the role access gate', async ({ page }) 
 });
 anonymous('login verifies the selected server role before showing content', async ({ page }) => {
     await page.goto('/');
+    await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();
     await page.getByLabel('Teacher code', { exact: true }).fill('1234');
-    await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+    await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
     await expect(page.getByLabel('Teacher code',{exact:true})).toHaveAttribute('aria-invalid','true');
     await expect(page.getByText('Code not recognised.')).toHaveCount(0);
     await page.getByLabel('Teacher code', { exact: true }).fill('5678');
-    await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+    await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
     await expect(page.locator('.teacher-settings')).toBeVisible();
 });
 competitor('team choice does not expose question content until explicit fullscreen Start', async ({ page }) => {

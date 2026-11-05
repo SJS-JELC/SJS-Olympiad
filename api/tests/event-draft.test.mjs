@@ -6,7 +6,7 @@ test('confirmed active-to-draft preserves records and permits durable play; reac
  const repo=memoryRepository(),api=createService(repo,{},()=>100000),staff=await api.login({role:'teacher',code:'5678'});
  const state=await api.eventCreate(staff.token,{name:'Return to draft',year:'L6',theoryStartsAt:0,theoryEndsAt:400000}),id=state.events[0].id;
  await api.eventActivate(staff.token,{eventId:id,expectedRevision:1});await api.teamAdd(staff.token,{eventId:id,name:'Team'});
- const player=await api.login({role:'competitor',code:'1234'}),team=(await api.teams(player.token)).teams[0];
+ const player=await api.login({role:'competitor',code:'1234'}),team=(await api.teams(player.token)).teams.find(team=>team.name==='Team');
  await api.claim(player.token,{teamId:team.id});await api.start(player.token);
  await api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'solve-before-draft'});
  const rows=()=>JSON.stringify([...repo.rows].filter(([key])=>key.startsWith(id+'-'))),before=rows();

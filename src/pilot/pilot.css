@@ -1,0 +1,41 @@
+.pilot-entry-error { position:fixed; bottom:2svh; left:10vw; right:10vw; background:white; color:#202733; padding:1svh; text-align:center; }
+.pilot-school-picker { width:min(1440px,94vw); color:#202733; text-align:center; }
+.pilot-school-picker h1 { margin:1svh 0 2svh; --text-size:3.1svh; }
+.pilot-school-picker form { display:grid; justify-items:center; gap:2svh; }
+.pilot-school-picker .illustrated-action-button { height:8svh; width:calc(8svh * 150.33 / 42.52); }
+.pilot-question .pilot-brief { flex:1; display:flex; flex-direction:column; padding:1.5svh 2vw; }
+.pilot-instructions { margin-bottom:1svh; --text-size:2svh; }
+.pilot-instructions summary { cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.7svh; list-style:none; }
+.pilot-instructions summary::-webkit-details-marker { display:none; }
+.pilot-help-chevron { width:2svh; height:2svh; }
+.pilot-instructions[open] .pilot-help-chevron { transform:rotate(180deg); }
+.pilot-instructions p { margin-top:1svh; }
+.pilot-skeletal-help { max-width:100svh; margin:1svh auto; text-align:center; --text-size:2svh; --text-leading:1.3; }
+.pilot-skeletal-help p { --text-size:2svh; margin:.7svh auto; max-width:75ch; text-align:center; }
+.pilot-skeletal-examples { display:grid; grid-template-columns:1fr 1fr; gap:3svh; margin:1.2svh 0; }
+.pilot-skeletal-examples figure { margin:0; padding:1svh; border:.12svh solid #c3cbd4; border-radius:.5svh; }
+.pilot-skeletal-examples svg { display:block; height:6svh; width:15svh; margin:.5svh auto; color:#202733; }
+.pilot-workspace { display:grid; grid-template-columns:minmax(0,1fr); gap:2svh; flex:1; min-height:30svh; }
+.pilot-drawing { min-width:0; min-height:30svh; }
+.pilot-drawing .molecule-editor { height:100%; }
+ .pilot-bottom-actions { gap:3svh; }
+.pilot-leaderboard { color:#202733; width:min(57svh,55vw); }
+.pilot-leaderboard h2 { margin:0 0 .4svh; text-align:center; --text-size:2.2svh; --text-leading:1.1; }
+.pilot-board { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8svh; padding:0; margin:0; list-style:none; }
+.pilot-place { display:flex; align-items:center; gap:.6svh; min-width:0; height:5.5svh; padding:.4svh .7svh; border:.18svh solid #2d2832; background:#fffdf3; box-shadow:.25svh .25svh 0 #2d2832; }
+.pilot-place--0 { color:#e9bc41; background:#fff5ce; }
+.pilot-place--1 { color:#c0cbd7; background:#f0f4f8; }
+.pilot-place--2 { color:#c88c5a; background:#f9e7d8; }
+.pilot-medal { flex-shrink:0; width:3.5svh; height:4.4svh; }
+.pilot-medal text { --text-size:18px; }
+.pilot-school-name { color:#202733; --text-size:1.7svh; --text-leading:1.1; overflow-wrap:anywhere; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.pilot-brief .pilot-feedback { --text-size:2svh; min-height:3svh; margin:1svh 0 0; }
+.pilot-question .question-actions .illustrated-action-button { height:8svh; width:28svh; }
+.pilot-toggle { display:inline-flex; gap:1svh; align-items:center; background:transparent; border:0; margin:2svh 2svh 2svh 0; padding:.5svh; cursor:pointer; color:inherit; }
+.pilot-toggle__track { display:block; width:6svh; height:3.2svh; border-radius:2svh; background:#586473; padding:.4svh; }
+.pilot-toggle__track::before { content:""; display:block; height:2.4svh; width:2.4svh; border-radius:50%; background:white; }
+.pilot-toggle[aria-checked=true] .pilot-toggle__track { background:#25715b; }
+.pilot-toggle[aria-checked=true] .pilot-toggle__track::before { transform:translateX(2.8svh); }
+.pilot-toggle:disabled { opacity:.6; cursor:wait; }
+.pilot-toggle:focus-visible { outline:2px solid #25715b; }
+

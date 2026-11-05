@@ -4,7 +4,7 @@ const editorQuestionNumbers=[2,3,9] as const;
 
 async function enterTeacher(page:import('@playwright/test').Page){
   await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');
-  await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+  await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
   await expect(page.locator('.teacher-settings')).toBeVisible();
 }
 async function open(page:import('@playwright/test').Page,number:number){

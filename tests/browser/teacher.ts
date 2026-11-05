@@ -2,10 +2,11 @@ import { expect, type Page } from './fixtures';
 
 /** Use the actual access form: a fresh document always revokes its old session. */
 export async function signInTeacher(page: Page) {
+  await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();
   const code = page.getByLabel('Teacher code', { exact: true });
   await expect(code).toBeVisible();
   await code.fill('5678');
-  await page.locator('form').filter({ has: code }).getByRole('button', { name: 'GO', exact: true }).click();
+  await page.locator('form').filter({ has: code }).getByRole('button', { name: 'Submit teacher code', exact: true }).click();
   await expect(page.locator('.teacher-settings')).toBeVisible();
 }
 

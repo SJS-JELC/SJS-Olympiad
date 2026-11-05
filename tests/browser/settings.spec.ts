@@ -58,7 +58,7 @@ test('Preview Questions is collapsed, ordered, keyboard accessible and isolated 
 test('team table confirms permanent draft deletion and retains active wrong-attempt records on removal',async({page,api})=>{
  await openEvents(page, '/?settings');const player=await api.service.login({role:'competitor',code:'1234'}),team=(await api.service.teams(player.token)).teams[0];await api.service.claim(player.token,{teamId:team.id});await api.service.start(player.token);await api.service.submit(player.token,{questionId:'L6P8',requestId:'settings-wrong-001',answers:{answer:'0'}});
  await reloadTeacher(page);await openEvents(page);const row=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Test team 1',exact:true})});
- await expect(row).toBeVisible();expect(await page.locator('.settings-teams th').allTextContents()).toEqual(['Team','Practical answer','Theory score','Status','Actions']);await expect(row.getByRole('cell',{name:'Final answer not submitted',exact:true})).toBeVisible();await expect(row.getByRole('cell',{name:'Taken',exact:true})).toBeVisible();
+ await expect(row).toBeVisible();expect(await page.locator('.settings-teams thead th').allTextContents()).toEqual(['Team','Practical answer','Theory score','Status','Actions']);await expect(row.getByRole('cell',{name:'Final answer not submitted',exact:true})).toBeVisible();await expect(row.getByRole('cell',{name:'Taken',exact:true})).toBeVisible();
  await row.getByRole('button',{name:/Allow reselection/}).click();await expect(page.getByRole('dialog')).toContainText('Test team 1');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(row.getByRole('cell',{name:'Available',exact:true})).toBeVisible();await expect(row.getByRole('button',{name:/Allow reselection/})).toBeDisabled();
  await row.getByRole('button',{name:/Delete team/}).click();await expect(page.getByRole('dialog')).toContainText('retained');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(row).toHaveCount(0);const stored=await api.repo.get('fixture-L6-'+team.id,'team');expect(stored.removed).toBe(true);expect(stored.score).toBe(0);expect((await api.repo.get('fixture-L6-'+team.id,'q-L6P8')).state.retryAt).toBeGreaterThan(0);await expect(page.locator('.settings-message')).toHaveCount(0);
  await page.getByLabel('Selected event').selectOption('fixture-L5');await page.getByRole('button',{name:'Delete team Test team 1',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('permanently deleted');await page.getByRole('button',{name:'Cancel',exact:true}).click();await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toBeVisible();await page.getByRole('button',{name:'Delete team Test team 1',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toHaveCount(0);
@@ -75,8 +75,8 @@ test('active year changes require a confirmed reset preserving team names',async
 test('creating another event requires completing existing events first', async ({ page, api }) => {
  const staff=await api.service.login({role:'teacher',code:'5678'});
  for(const event of (await api.service.events(staff.token)).events)await api.service.eventEnd(staff.token,{eventId:event.id,expectedRevision:event.revision,confirm:true});
- await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');
- await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();await page.getByLabel('Teacher code',{exact:true}).fill('5678');
+ await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();
  await page.getByRole('button',{name:'Events',exact:true}).click();
  await page.getByRole('button',{name:'Create new event',exact:true}).click();
  await page.locator('#new-event-name').fill('New event');await page.locator('#new-event-theory-start').fill('2030-01-02T13:00');await page.locator('#new-event-theory-end').fill('2030-01-02T15:00');
@@ -88,13 +88,14 @@ test('creating another event requires completing existing events first', async (
  await expect(page.getByRole('dialog')).toHaveCount(0);expect((await api.service.session(api.token)).activeEvent.id).toBe(event.id);
 });
 test('end requires confirmation and ended event has no restart or edit controls', async ({ page, api }) => { await openEvents(page, '/?settings'); await page.getByRole('combobox',{name:'Event status',exact:true}).selectOption('ended'); await expect(page.getByRole('dialog')).toContainText('cannot restart'); await page.getByRole('button', { name: 'Confirm', exact: true }).click(); await expect(page.getByRole('dialog')).toHaveCount(0); await expect(page.getByLabel('Event name', { exact: true }).first()).toBeDisabled(); await expect(page.getByRole('button', { name: 'Activate event', exact: true })).toHaveCount(0); const state=await api.service.session(api.token);expect(state.events.find((event:any)=>event.id==='fixture-L6').status).toBe('ended');expect(state.activeEvent).toMatchObject({id:'fixture-U6',status:'draft'}); });
-test('team names are unique and release confirms revocation while retaining results', async ({ page, api }) => {
+test('school names are unique and release confirms revocation while retaining results', async ({ page, api }) => {
     await openEvents(page, '/?settings');
-    await page.getByLabel('New team name').fill('New team');
-    await page.getByRole('button', { name: 'Add team', exact: true }).click();
-    await expect(page.getByRole('cell', { name: 'New team', exact: true })).toBeVisible();
-    await page.getByLabel('New team name').fill('new TEAM');
-    await page.getByRole('button', { name: 'Add team', exact: true }).click();
+    await page.getByLabel('New school name').fill('New school');
+    await page.getByRole('button', { name: 'Create school', exact: true }).click();
+    await page.getByRole('button', { name: 'Set team count', exact: true }).click();
+    await expect(page.getByRole('cell', { name: 'New school 1', exact: true })).toBeVisible();
+    await page.getByLabel('New school name').fill('new SCHOOL');
+    await page.getByRole('button', { name: 'Create school', exact: true }).click();
     await expect(page.locator('.teacher-settings').getByRole('alert')).toContainText('already exists');
     const competitor = await api.service.login({ role: 'competitor', code: '1234' }), teams = await api.service.teams(competitor.token), team = teams.teams[0];
     await api.service.claim(competitor.token, { teamId: team.id });

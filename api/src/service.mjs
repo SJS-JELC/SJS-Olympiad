@@ -4,6 +4,8 @@ import { eventTiming, eventAvailable, theoryAvailable, updateTiming } from './ev
 import { practicalFields, emptyPractical, practicalChanges } from './practical.mjs';
 import { retainedAttempt, retainedQuestion, retainedResponse } from './theory-retention.mjs';
 import { diagnosticSnapshot } from './diagnostics.mjs';
+import { schoolDirectory, schoolNameKey } from './schools.mjs';
+import { createPilot } from './pilot.mjs';
 export class ApiError extends Error { constructor(status,message,code) { super(message); this.status=status; this.code=code; } }
 const hash = value => createHash('sha256').update(value).digest('hex');
 const conflict = error => [409,412].includes(error.statusCode);
@@ -96,6 +98,8 @@ export function createService(repo,config={},now=Date.now) {
   const settings=async()=>{await bootstrap();const value=await repo.get('system','settings');return {...value,events:value.events.map(eventTiming)};};
   const getCurrentEvent=s=>s.events.find(event=>event.status==='active') ?? s.events.findLast(event=>event.status==='draft') ?? null;
   const eventById=(s,id)=>{const event=s.events.find(item=>item.id===id);assert(event,404,'Event not found.');return event;};
+  const schools=schoolDirectory({repo,retry,assert,validId,settings,eventById,lifecycleFence});
+  const pilot=createPilot({repo,retry,assert,schools,currentEvent:async()=>getCurrentEvent(await settings()),now});
   const teamById=(eventId,id)=>repo.get(partition(eventId,id),'team');
   const submittedActivity=async team=>{
     if(team.hasSubmittedActivity===true || team.score>0 || team.lastScoringAt)return true;
@@ -125,7 +129,7 @@ export function createService(repo,config={},now=Date.now) {
       return true;
     });
   };
-  const publicTeam=team=>team ? {id:team.teamId,name:team.name,eventId:team.eventId,year:team.year,claimGeneration:team.claimGeneration}:null;
+  const publicTeam=async(team,directory)=>team ? {id:team.teamId,name:schools.display(team,directory ?? await schools.directory()),eventId:team.eventId,year:team.year,claimGeneration:team.claimGeneration,...(team.schoolId?{schoolId:team.schoolId,teamNumber:team.teamNumber}:{})}:null;
   const authenticate=async token=>{
     await bootstrap();
     assert(typeof token==='string' && /^[a-f0-9]{64}$/.test(token),401,'Sign in to continue.');
@@ -149,12 +153,13 @@ export function createService(repo,config={},now=Date.now) {
     const rows=team?.securityStatus==='ACTIVE' && event && (hydrate || theoryAvailable(event,now())) ? await repo.list({partitionKey:team.partitionKey,kind:'question'}) : [];
     if(event && theoryAvailable(event,now())) for(const q of rows) attempts[q.questionId]={...retainedAttempt(q.questionId,q.state),revision:q.revision};
     const accessible=event && eventAvailable(event,now());
-    return {role:session.role,expiresAt:session.expiresAt,serverNow:now(),configRevision:s.revision,activeEvent:getCurrentEvent(s),...(session.role==='teacher'?{events:s.events}:!getCurrentEvent(s)?{draftEvents:s.events.filter(event=>event.status==='draft').map(({id,name,year})=>({id,name,year}))}:{}),team:publicTeam(team),competition:{status:accessible?team.securityStatus:'NOT_STARTED',epoch:team?.securityEpoch || 0},score:team?.score || 0,attempts,...(hydrate && accessible && team.securityStatus==='ACTIVE'?{hydration:bulkView({event,team,pk:team.partitionKey},rows)}:{})};
+    return {role:session.role,expiresAt:session.expiresAt,serverNow:now(),configRevision:s.revision,activeEvent:getCurrentEvent(s),...(session.role==='teacher'?{events:s.events}:!getCurrentEvent(s)?{draftEvents:s.events.filter(event=>event.status==='draft').map(({id,name,year})=>({id,name,year}))}:{}),team:await publicTeam(team),competition:{status:accessible?team.securityStatus:'NOT_STARTED',epoch:team?.securityEpoch || 0},score:team?.score || 0,attempts,...(hydrate && accessible && team.securityStatus==='ACTIVE'?{hydration:bulkView({event,team,pk:team.partitionKey},rows)}:{})};
   };
   const changeSettings=async(token,update)=>{
     const session=await authenticate(token);teacher(session);
     return retry(async()=>{const s=await settings();await update(s);s.revision++;await write(s);return snapshot(session,s,null);});
   };
+  const noRosterReset=event=>assert(!event.rosterResetRequestId,409,'Finish the pending year reset before changing this event.');
   const activeForWrite=event=>assert(eventAvailable(event,now()),403,'This event is not accepting answers.');
   const theoryForWrite=event=>assert(theoryAvailable(event,now()),403,'The theory challenge is outside its scheduled times.');
   const questionContext=async(token,input,hydrating=false)=>{
@@ -295,6 +300,11 @@ export function createService(repo,config={},now=Date.now) {
     });
   };
   const api={
+    async pilot(){return pilot.bootstrap();},
+    async pilotEnter(_token,input){return pilot.enter(input);},
+    async pilotSubmit(_token,input){return pilot.submit(input);},
+    async pilotReport(token){teacher(await authenticate(token));return pilot.report();},
+    async pilotMode(token,input){teacher(await authenticate(token));return pilot.mode(input);},
     async diagnostics(token){
       const session=await authenticate(token);teacher(session);
       return diagnosticSnapshot(await repo.get('system','settings'),config,now(),SESSION_MS);
@@ -334,33 +344,61 @@ export function createService(repo,config={},now=Date.now) {
     },
     async events(token) {const session=await authenticate(token);teacher(session);const s=await settings();return {events:s.events,activeEvent:getCurrentEvent(s),configRevision:s.revision,serverNow:now()};},
     async availability() {const s=await settings();return {competitorAvailable:s.events.some(event=>event.status==='active' || event.status==='draft')};},
-    eventCreate(token,input) {const id=randomUUID();return changeSettings(token,s=>{assert(!s.events.some(event=>event.status==='active' || event.status==='draft'),409,'Complete the current draft or active event before creating another.');assert(YEARS.has(input.year),400,'Choose a valid year.');s.events.push(timings({id,name:name(input.name),year:input.year,status:'draft',revision:1},input,true));}).then(state=>({...state,createdEventId:id}));},
+    async eventCreate(token,input) {
+      const session=await authenticate(token);teacher(session);
+      const requestId=input.requestId ?? randomUUID();assert(validId(requestId) && requestId.length>=8,400,'An event creation request identifier is required.');
+      const fingerprint=hash(canonical({...input,requestId}));
+      const id=await retry(async()=>{const s=await settings(),existing=s.events.find(event=>event.createRequestId===requestId);if(existing){assert(existing.createFingerprint===fingerprint,409,'This event request identifier was already used.');return existing.id;}assert(!s.events.some(event=>event.status==='active' || event.status==='draft'),409,'Complete the current draft or active event before creating another.');assert(YEARS.has(input.year),400,'Choose a valid year.');await schools.directory();const event=timings({id:randomUUID(),name:name(input.name),year:input.year,status:'draft',revision:1,createRequestId:requestId,createFingerprint:fingerprint,hostSetup:{schoolId:schools.hostId,requestId:'host-'+hash(requestId).slice(0,32),status:'pending'}},input,true);s.events.push(event);s.revision++;await write(s);return event.id;});
+      const current=eventById(await settings(),id);
+      if(current.hostSetup?.status==='pending' && current.status!=='ended')await api.eventSetup(token,{eventId:id});
+      return {...await snapshot(session,await settings(),null),createdEventId:id};
+    },
+    async eventSetup(token,input){
+      const session=await authenticate(token);teacher(session);const event=eventById(await settings(),input.eventId);assert(event.status!=='ended',409,'Completed event rosters are read-only.');
+      if(event.hostSetup?.status!=='pending')return snapshot(session,await settings(),null);
+      try{
+        await schools.ensure({eventId:event.id,schoolId:event.hostSetup.schoolId,targetCount:4,requestId:event.hostSetup.requestId});
+        await retry(async()=>{const s=await settings(),current=eventById(s,event.id);assert(current.status!=='ended',409,'Completed event rosters are read-only.');current.hostSetup={...current.hostSetup,status:'complete'};s.revision++;await write(s);});
+      }catch(error){if(error instanceof ApiError && error.status<500)throw error;return {...await snapshot(session,await settings(),null),setupError:'Host team setup is incomplete. Resume setup to finish creating the four teams.'};}
+      return snapshot(session,await settings(),null);
+    },
     async eventChangeYear(token,input) {
       const session=await authenticate(token);teacher(session);
+      input=Object.fromEntries(Object.entries(input).filter(([key])=>['eventId','expectedRevision','requestId','year','confirm','confirmed','name','theoryStartsAt','theoryEndsAt','practicalStartsAt','practicalEndsAt','endsAt'].includes(key)));
       assert(confirmed(input),400,'Confirm resetting results and team sessions for the new year.');
       assert(YEARS.has(input.year) && validId(input.requestId) && input.requestId.length>=8,400,'Choose a valid year and request identifier.');
       const replacementId='year-'+hash(input.eventId+'|'+input.requestId).slice(0,32),fingerprint=hash(canonical(input));
+      // A durable settings fence freezes roster additions while a fresh namespace
+      // is staged. A retry of this exact reset can always finish the staging.
+      await retry(async()=>{const s=await settings();if(s.events.some(event=>event.id===replacementId))return;const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status!=='ended' && event.year!==input.year,409,'Choose an unfinished event and a different year.');timings(event,input);if(input.name!==undefined)name(input.name);assert(!await schools.pending(event.id) && event.hostSetup?.status!=='pending',409,'Finish the pending team setup before changing the event year.');if(event.rosterResetRequestId){assert(event.rosterResetRequestId===fingerprint,409,'Retry the pending year reset before starting another.');return;}event.rosterResetRequestId=fingerprint;event.rosterResetInput=input;s.revision++;await write(s);});
       return retry(async()=>{
         const s=await settings(),existing=s.events.find(event=>event.id===replacementId);
         if(existing){assert(existing.yearChangeFingerprint===fingerprint,409,'This reset request was already used.');return {...await snapshot(session,s,null),createdEventId:replacementId};}
         const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);
         assert(event.status!=='ended',409,'Completed event results are read-only.');assert(event.year!==input.year,400,'Choose a different year.');
-        const replacement={...event,...timings(event,input),id:replacementId,name:input.name===undefined?event.name:name(input.name),year:input.year,status:'draft',hasBeenActive:false,revision:1,previousEventId:event.id,yearChangeFingerprint:fingerprint};
+        assert(!await schools.pending(event.id) && event.hostSetup?.status!=='pending',409,'Finish the pending team setup before changing the event year.');
+        const {rosterResetRequestId,rosterResetInput,...retainedEvent}=event;
+        const replacement={...retainedEvent,...timings(retainedEvent,input),id:replacementId,name:input.name===undefined?event.name:name(input.name),year:input.year,status:'draft',hasBeenActive:false,revision:1,previousEventId:event.id,yearChangeFingerprint:fingerprint};
         const teams=(await repo.list({kind:'team',eventId:event.id})).filter(team=>!team.removed);
-        for(const old of teams){
+        for(const listed of teams){
+          // Fence a deletion that read before the settings staging lock. If its
+          // transaction wins first, omit the now-removed team from the new roster.
+          const old=await retry(async()=>{const current=await teamById(event.id,listed.teamId);if(!current || current.removed)return null;if(current.rosterResetFingerprint!==fingerprint)await write({...current,rosterResetFingerprint:fingerprint});return current;});
+          if(!old)continue;
           const pk=partition(replacementId,old.teamId);
-          if(!await repo.get(pk,'team'))await repo.write({partitionKey:pk,rowKey:'team',kind:'team',schemaVersion:2,eventId:replacementId,teamId:old.teamId,name:old.name,year:input.year,score:0,lastScoringAt:null,hasSubmittedActivity:false,claimGeneration:0,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,legacyExpires:0,recovery:null});
+          if(!await repo.get(pk,'team'))await repo.write({partitionKey:pk,rowKey:'team',kind:'team',schemaVersion:2,eventId:replacementId,teamId:old.teamId,...(old.schoolId?{schoolId:old.schoolId,teamNumber:old.teamNumber}:{name:old.name}),year:input.year,score:0,lastScoringAt:null,hasSubmittedActivity:false,claimGeneration:0,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,legacyExpires:0,recovery:null});
         }
+        await schools.copyAllocations(event.id,replacementId);
         // Publish the fresh data namespace with a single conditional settings write.
         // Old in-flight submissions can only reach the retired namespace.
         s.events=s.events.map(item=>item.id===event.id?replacement:item);s.revision++;await write(s);
         return {...await snapshot(session,s,null),createdEventId:replacementId};
       });
     },
-    eventUpdate(token,input) {return changeSettings(token,s=>{const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status!=='ended',409,'Ended events cannot be changed.');if(input.year!==undefined && input.year!==event.year){assert(false,409,'Confirm a year change using the reset action.');}if(input.name!==undefined)event.name=name(input.name);Object.assign(event,timings(event,input));event.revision++;});},
-    eventActivate(token,input) {return changeSettings(token,s=>{const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='draft',409,'Only a draft event can be activated.');assert(!s.events.some(other=>other.id!==event.id && (other.status==='active' || other.status==='draft')),409,'Complete the other unfinished events before activating this event.');assert(event.endsAt>now(),400,'The event end must be in the future.');event.status='active';event.hasBeenActive=true;if(s.testingEventId===event.id)s.testingEventId=null;event.revision++;});},
-    eventDraft(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm returning this event to draft.');const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active',409,'Only an active event can return to draft.');event.status='draft';event.hasBeenActive=true;event.revision++;});},
-    eventEnd(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm ending this event.');const event=eventById(s,input.eventId);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active' || event.status==='draft',409,'Only a draft or active event can be completed.');event.status='ended';event.revision++;});},
+    eventUpdate(token,input) {return changeSettings(token,s=>{const event=eventById(s,input.eventId);noRosterReset(event);expectedRevision(input.expectedRevision,event.revision);assert(event.status!=='ended',409,'Ended events cannot be changed.');if(input.year!==undefined && input.year!==event.year){assert(false,409,'Confirm a year change using the reset action.');}if(input.name!==undefined)event.name=name(input.name);Object.assign(event,timings(event,input));event.revision++;});},
+    eventActivate(token,input) {return changeSettings(token,async s=>{const event=eventById(s,input.eventId);noRosterReset(event);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='draft',409,'Only a draft event can be activated.');assert(event.hostSetup?.status!=='pending' && !await schools.pending(event.id),409,'Finish the pending team setup before activating this event.');assert(!s.events.some(other=>other.id!==event.id && (other.status==='active' || other.status==='draft')),409,'Complete the other unfinished events before activating this event.');assert(event.endsAt>now(),400,'The event end must be in the future.');event.status='active';event.hasBeenActive=true;if(s.testingEventId===event.id)s.testingEventId=null;event.revision++;});},
+    eventDraft(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm returning this event to draft.');const event=eventById(s,input.eventId);noRosterReset(event);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active',409,'Only an active event can return to draft.');event.status='draft';event.hasBeenActive=true;event.revision++;});},
+    eventEnd(token,input) {return changeSettings(token,s=>{assert(confirmed(input),400,'Confirm ending this event.');const event=eventById(s,input.eventId);noRosterReset(event);expectedRevision(input.expectedRevision,event.revision);assert(event.status==='active' || event.status==='draft',409,'Only a draft or active event can be completed.');event.status='ended';event.revision++;});},
     codesUpdate(token,input) {return changeSettings(token,s=>{
       expectedRevision(input.expectedConfigRevision,s.revision);
       const competitorCode=input.competitorCode,teacherCode=input.teacherCode;
@@ -375,18 +413,28 @@ export function createService(repo,config={},now=Date.now) {
       const event=session.role==='teacher' && input.eventId?eventById(s,input.eventId):getCurrentEvent(s);assert(event,409,'There is no unfinished event.');
       const teams=await repo.list({kind:'team',eventId:event.id});
       const visible=teams.filter(team=>!team.removed);
-      const result=await Promise.all(visible.map(async team=>({...publicTeam(team),year:event.year,claimed:!!(team.owner || team.legacySessionHash),...(session.role==='teacher'?{score:team.score,hasSubmittedActivity:await submittedActivity(team),practical:team.practical ?? null,competition:{status:team.securityStatus,epoch:team.securityEpoch}}:{})})));
+      const directory=await schools.directory();
+      const result=await Promise.all(visible.map(async team=>({...await publicTeam(team,directory),year:event.year,claimed:!!(team.owner || team.legacySessionHash),...(session.role==='teacher'?{score:team.score,hasSubmittedActivity:await submittedActivity(team),practical:team.practical ?? null,competition:{status:team.securityStatus,epoch:team.securityEpoch}}:{})})));
       return {event,teams:result.sort((a,b)=>a.name.localeCompare(b.name))};
     },
+    async schools(token,input={}){const session=await authenticate(token);teacher(session);if(input.eventId)eventById(await settings(),input.eventId);return schools.list(input.eventId);},
+    async schoolCreate(token,input){const session=await authenticate(token);teacher(session);return schools.create(input);},
+    async schoolRename(token,input){const session=await authenticate(token);teacher(session);return schools.rename(input);},
+    async schoolTeams(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.ensure(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
+    async schoolLink(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.link(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
+    async schoolResume(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.resume(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
     async teamAdd(token,input) {
       const session=await authenticate(token);teacher(session);const s=await settings(),event=eventById(s,input.eventId || getCurrentEvent(s)?.id);assert(event.status!=='ended',409,'Teams cannot be added to an ended event.');
+      noRosterReset(event);
       const teamName=name(input.name),id=hash(teamName.normalize('NFKC').toLocaleLowerCase('en-GB')).slice(0,24);
       const existing=await repo.list({kind:'team',eventId:event.id});
-      assert(!existing.some(team=>team.name.normalize('NFKC').trim().toLocaleLowerCase('en-GB')===teamName.normalize('NFKC').toLocaleLowerCase('en-GB')),409,'That team name already exists in this event.');
+      const directory=await schools.directory();assert(!existing.some(team=>schoolNameKey(schools.display(team,directory))===schoolNameKey(teamName)) && !await schools.nameReserved(event.id,teamName),409,'That team name already exists in this event.');
       await retry(async()=>{
         const pk=partition(event.id,id),fence=await repo.get(pk,'deleted-team');
         assert(!fence || fence.complete,409,'This team is still being deleted. Retry shortly.');
+        assert(!await teamById(event.id,id),409,'That team name already exists in this event.');
         const generation=fence?(fence.claimGeneration ?? 0)+1:0;
+        await schools.reserveLegacyName(event.id,id,teamName,generation);
         const team={partitionKey:pk,rowKey:'team',kind:'team',schemaVersion:2,eventId:event.id,teamId:id,name:teamName,year:event.year,score:0,lastScoringAt:null,hasSubmittedActivity:false,claimGeneration:generation,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,recovery:null};
         // A stale creator must not reuse a generation after another full
         // create/delete cycle; team creation and the observed fence commit once.
@@ -409,18 +457,20 @@ export function createService(repo,config={},now=Date.now) {
       const outcome=await retry(async()=>{
         const receipt=await repo.get(pk,receiptKey);
         if(receipt) {assert(receipt.name===input.teamName,409,'This deletion identifier was used for another team name.');return receipt;}
+        noRosterReset(eventById(await settings(),event.id));
         assert(event.status!=='ended',409,'Ended event results are read-only.');
         const team=await teamById(event.id,input.teamId);
         assert(team && !team.removed,404,'Team not found.');
-        assert(input.teamName===team.name,409,'The team name changed. Check the selected team before deleting it.');
+        const teamName=schools.display(team,await schools.directory());assert(input.teamName===teamName,409,'The team name changed. Check the selected team before deleting it.');
         const retained=await submittedActivity(team);
         const fenced={...team,removed:true,owner:null,legacySessionHash:null,legacyExpires:0,claimGeneration:team.claimGeneration+1,securityEpoch:team.securityEpoch+1,securityStatus:'NOT_STARTED',recovery:null,deletionReceipt:receiptKey};
-        const receiptRow={partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',eventId:event.id,name:team.name,outcome:retained?'removed':'deleted',complete:retained};
+        const receiptRow={partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',eventId:event.id,name:teamName,claimGeneration:fenced.claimGeneration,outcome:retained?'removed':'deleted',complete:retained};
         const marker=await repo.get(pk,'deleted-team');
         await batch([fenced,receiptRow,{...marker,partitionKey:pk,rowKey:'deleted-team',kind:'team-deletion',eventId:event.id,claimGeneration:fenced.claimGeneration,receiptKey,complete:retained,revision:(marker?.revision ?? 0)+1}]);
         return receiptRow;
       });
       if(!outcome.complete)await finishDeletion(pk,receiptKey);
+      if(outcome.outcome==='deleted')await schools.releaseLegacyName(event.id,input.teamId,outcome.claimGeneration-1);
       return {...await api.teams(token,{eventId:event.id}),outcome:outcome.outcome};
     },
     async claim(token,input) {
@@ -491,7 +541,7 @@ export function createService(repo,config={},now=Date.now) {
     async leaderboard(token) {
       const session=await authenticate(token);teacher(session);const s=await settings(),event=getCurrentEvent(s);assert(event,409,'There is no unfinished event.');
       const all=await repo.list({kind:'team',eventId:event.id});
-      const entries=all.filter(team=>!team.removed && team.score>0).sort((a,b)=>b.score-a.score || (a.lastScoringAt || 0)-(b.lastScoringAt || 0) || a.teamId.localeCompare(b.teamId)).slice(0,3).map((team,index)=>({id:team.teamId,name:team.name,score:team.score,scoreReachedAt:team.lastScoringAt,position:index+1}));
+      const directory=await schools.directory();const entries=all.filter(team=>!team.removed && team.score>0).sort((a,b)=>b.score-a.score || (a.lastScoringAt || 0)-(b.lastScoringAt || 0) || a.teamId.localeCompare(b.teamId)).slice(0,3).map((team,index)=>({id:team.teamId,name:schools.display(team,directory),score:team.score,scoreReachedAt:team.lastScoringAt,position:index+1}));
       return {event,activeEvent:event,entries,rows:entries.map(row=>({teamId:row.id,name:row.name,score:row.score,lastScoreAt:row.scoreReachedAt})),serverNow:now(),configRevision:s.revision};
     },
   };

@@ -27,7 +27,7 @@ test('allowlisted snapshot distinguishes bootstrap from effective saved settings
  process.env.DIAGNOSTICS_SECRET_TEST_CANARY='SECRET_ENV_CANARY';
  let snapshot;try{snapshot=await f.api.diagnostics(f.staff);}finally{delete process.env.DIAGNOSTICS_SECRET_TEST_CANARY;}
  assert.equal(JSON.stringify([...f.repo.rows]),before);
- assert.equal(snapshot.settingsRevision,2);assert.equal(snapshot.currentEventId,'diagnostic-legacy');assert.equal(snapshot.currentEventSource,'active event');
+ assert.equal(snapshot.settingsRevision,raw.revision);assert.equal(snapshot.currentEventId,'diagnostic-legacy');assert.equal(snapshot.currentEventSource,'active event');
  assert.equal(snapshot.legacyBootstrap.endsAt,200000);assert.equal(snapshot.events[0].theoryEndsAt,300000);
  assert.equal(snapshot.events[0].timingSource.theoryEndsAt,'saved settings');assert.equal(snapshot.events[1].timingSource.theoryEndsAt,'legacy endsAt');assert.equal(snapshot.events[1].theoryStartsAt,null);
  assert.equal(snapshot.repository,'memory');assert.equal(snapshot.storageConfigured,false);assert.equal(snapshot.tableName,null);assert.equal(snapshot.configurationSource,'isolated local preview');

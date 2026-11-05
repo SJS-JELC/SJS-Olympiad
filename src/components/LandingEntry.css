@@ -1,0 +1,42 @@
+.access-page--redesign { gap:1svh; justify-content:center; padding:3svh 3vw; }
+.landing-logo { position:relative; width:min(48vw,68svh); flex-shrink:0; }
+.landing-logo > svg { display:block; width:100%; height:auto; }
+.landing-eagle-button { position:absolute; left:8%; top:0; width:84%; height:52%; border:0; background:transparent; cursor:pointer; }
+.landing-logo:has(.landing-eagle-button:active) [data-part="eagle"] { transform:translateY(6px) scale(.99); transform-origin:50% 25%; }
+.landing-eagle-button:focus-visible { outline:2px dashed #ffe39b; outline-offset:2px; }
+.landing-entry { display:grid; justify-items:center; text-align:center; color:#000; width:min(90vw,100svh); --text-size:2.5svh; }
+.landing-entry form { display:grid; justify-items:center; gap:2svh; }
+.landing-entry .code-panels { width:40svh; padding:.8svh; }
+.landing-entry .code-panels__cards { gap:.8svh; }
+.landing-entry .code-panels__card { height:9svh; }
+.landing-entry .illustrated-action-button { height:8svh; width:calc(8svh * 100 / 42.52); }
+.pilot-welcome-copy { margin:0 0 2svh; max-width:60ch; --text-size:3svh; --text-leading:1.3; color:#000; }
+.landing-progress { height:2svh; margin-top:1svh; width:20svh; overflow:hidden; }
+.landing-progress__bar { display:block; height:.4svh; width:45%; background:#f8e576; animation:entry-progress 1.1s ease-in-out infinite alternate; }
+@keyframes entry-progress { to { transform:translateX(125%); } }
+.teacher-password { position:absolute; z-index:20; right:60%; top:16%; width:36svh; padding:2svh; color:#202733; background:#fff; border:.5svh solid #252c36; box-shadow:.7svh .7svh 0 #252c36; }
+.teacher-password::before { content:""; position:absolute; right:-3svh; top:2svh; width:3svh; height:2svh; background:#fff; clip-path:polygon(0 0,100% 0,100% 33%,66% 33%,66% 66%,33% 66%,33% 100%,0 100%); }
+.teacher-password > p { margin:0 2svh 1.5svh 0; --text-size:2.8svh; }
+.teacher-password .code-panels { width:100%; min-width:0; }
+.teacher-password .code-panels__card { height:6svh; }
+.teacher-password .code-panels:focus-within { border-color:#0c1119; box-shadow:none; }
+.teacher-password .code-panels.code-panels--invalid { border-color:#0c1119; box-shadow:none; }
+@media (max-aspect-ratio:4/3) { .teacher-password { right:58%; width:32svh; } }
+@media (prefers-reduced-motion:reduce) { .landing-progress__bar { animation:none; width:100%; } }
+
+.teacher-password form { display:grid; grid-template-columns:minmax(0,1fr) 4svh; align-items:center; gap:1svh; }
+.teacher-password-submit { border:0; background:transparent; color:#202733; padding:0; min-height:44px; cursor:pointer; --text-size:4.5svh; }
+.teacher-password-submit:disabled { opacity:.4; cursor:default; }
+.teacher-password-close { position:absolute; top:.2svh; right:.4svh; border:0; background:transparent; color:#202733; padding:0; width:3svh; height:3svh; cursor:pointer; --text-size:3svh; --text-leading:1; }
+.teacher-password-submit:active:not(:disabled),.teacher-password-close:active { transform:translateY(1px); }
+.teacher-password-submit:focus-visible,.teacher-password-close:focus-visible { outline:2px solid #b18b3a; }
+.teacher-password--cooling { background:#202733; }
+.teacher-password--cooling::before { display:none; }
+.teacher-password-liquid { position:absolute; top:0; left:0; width:calc(100% + 3svh); height:100%; overflow:hidden; pointer-events:none;
+  clip-path:polygon(0 0,calc(100% - 3svh) 0,calc(100% - 3svh) 2svh,100% 2svh,100% 2.66svh,calc(100% - 1svh) 2.66svh,calc(100% - 1svh) 3.33svh,calc(100% - 2svh) 3.33svh,calc(100% - 2svh) 4svh,calc(100% - 3svh) 4svh,calc(100% - 3svh) 100%,0 100%);
+}
+.teacher-password-liquid .check-button__liquid-wave { fill:#fff; }
+.teacher-password-liquid .check-button__bubbles { fill:#202733; fill-opacity:.2; }
+.teacher-password--cooling > p,.teacher-password--cooling .teacher-password-close,.teacher-password--cooling .teacher-password-submit { color:#fff; mix-blend-mode:difference; }
+.teacher-password > p,.teacher-password > form { position:relative; z-index:1; }
+.teacher-password-close { z-index:2; }

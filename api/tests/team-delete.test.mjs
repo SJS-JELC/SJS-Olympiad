@@ -43,7 +43,7 @@ test('draft permanently deletes unsubmitted working, retaining only minimal dele
   const eventId=state.createdEventId,added=await f.api.teamAdd(f.staff,{eventId,name:'Draft team'}),team=added.teams[0],pk=eventId+'-'+team.id;
   await f.repo.write({partitionKey:pk,rowKey:'old-answer',kind:'question',state:{answers:{answer:'private'},solvedAt:null}});
   const result=await f.api.teamDelete(f.staff,{eventId,teamId:team.id,teamName:team.name,requestId:'draft-delete-001',confirm:true});
-  assert.equal(result.outcome,'deleted');assert.equal(result.teams.length,0);
+  assert.equal(result.outcome,'deleted');assert.equal(result.teams.length,4);assert.ok(result.teams.every(team=>team.schoolId==='host-st-johns'));
   assert.deepEqual((await f.repo.list({partitionKey:pk})).map(row=>row.kind).sort(),['admin-receipt','team-deletion']);
 });
 

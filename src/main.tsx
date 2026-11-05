@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { useEffect, useRef, useState } from 'react';
 import App, {type SettingsPanels} from './App';
+import {PilotEntry} from './pilot/Pilot';
 import { OlympiadBackground } from './components/OlympiadBackground';
 import { SplashPreview } from './components/SplashPreview';
 import { TheoryLanding } from './components/TheoryLanding';
@@ -10,7 +11,7 @@ import { QuestionGate } from './questions/QuestionGate';
 import { findQuestion, questionCatalog } from './questions/catalog';
 import { CompetitionSecurityProvider, useCompetitionSecurity } from './security';
 import { BreachModal } from './components/BreachModal';
-import { AccessGate, CompetitorEntry } from './components/AccessGate';
+import { CompetitorEntry } from './components/AccessGate';
 import { Leaderboard } from './components/Leaderboard';
 import { CloudQuestion, useServerQuestions } from './cloud/CloudQuestion';
 import { ArtworkBackButton } from './components/SharedNavigation';
@@ -81,7 +82,7 @@ export function AppRouter() {
     },[teacher,server,security.session.status,search,security.canAccessTheory(),security.canAccessPractical()]);
     function page() {
         if (!server)
-            return <AccessGate />;
+            return <PilotEntry/>;
         if (!teacher && security.session.status === 'NOT_STARTED' && !(server.team && server.activeEvent && security.serverNow() >= eventTiming(server.activeEvent).endsAt))
             return <CompetitorEntry />;
         if (teacher && (options.has('settings') || !(options.has('practical') || options.has('leaderboard') || options.has('theory') && Number.isInteger(Number(options.get('question'))) && Number(options.get('question'))>=1 && Number(options.get('question'))<=9)))
