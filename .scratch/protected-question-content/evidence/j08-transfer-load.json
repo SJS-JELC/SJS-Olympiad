@@ -1,0 +1,2530 @@
+{
+  "timestamp": "2026-11-05T01:33:03.752Z",
+  "node": "v24.13.1",
+  "mode": "Loopback HTTP with production handle/service and synthetic in-memory repositories; real uncompressed response bodies; session setup excluded from latency",
+  "compression": "Per-response local gzip level 9 / Brotli quality 11; sums are individually compressed bodies. HTTP load uses identity encoding; excludes HTTP headers/TLS and browser render time.",
+  "limitations": "One local Node process/loopback and memory repository; no Azure runtime/storage/compression/capacity acceptance. Cohorts reuse warmed modules and sessions, but each opening transfers full record/assets/selected state without a client cache.",
+  "payloads": [
+    {
+      "kind": "question",
+      "id": "L6P5",
+      "year": "L6",
+      "version": "2",
+      "record": {
+        "raw": 3824,
+        "gzip": 1193,
+        "brotli": 978
+      },
+      "assets": [
+        {
+          "id": "example",
+          "mimeType": "image/svg+xml",
+          "raw": 26248,
+          "gzip": 8284,
+          "brotli": 7043
+        },
+        {
+          "id": "question",
+          "mimeType": "image/svg+xml",
+          "raw": 10946,
+          "gzip": 2111,
+          "brotli": 1720
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 41018,
+        "gzip": 11588,
+        "brotli": 9741
+      },
+      "total": {
+        "raw": 41018,
+        "gzip": 11588,
+        "brotli": 9741
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P1",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 563,
+        "gzip": 340,
+        "brotli": 270
+      },
+      "assets": [
+        {
+          "id": "equipment9",
+          "mimeType": "image/png",
+          "raw": 301070,
+          "gzip": 272732,
+          "brotli": 271317
+        },
+        {
+          "id": "equipment4",
+          "mimeType": "image/png",
+          "raw": 217103,
+          "gzip": 201702,
+          "brotli": 201013
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 518736,
+        "gzip": 474774,
+        "brotli": 472600
+      },
+      "total": {
+        "raw": 518736,
+        "gzip": 474774,
+        "brotli": 472600
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P2",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 792,
+        "gzip": 491,
+        "brotli": 382
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 792,
+        "gzip": 491,
+        "brotli": 382
+      },
+      "total": {
+        "raw": 792,
+        "gzip": 491,
+        "brotli": 382
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P3",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 894,
+        "gzip": 501,
+        "brotli": 391
+      },
+      "assets": [
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 1933,
+          "gzip": 881,
+          "brotli": 803
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 2827,
+        "gzip": 1382,
+        "brotli": 1194
+      },
+      "total": {
+        "raw": 2827,
+        "gzip": 1382,
+        "brotli": 1194
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P4",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 740,
+        "gzip": 436,
+        "brotli": 331
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 740,
+        "gzip": 436,
+        "brotli": 331
+      },
+      "total": {
+        "raw": 740,
+        "gzip": 436,
+        "brotli": 331
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P5",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 697,
+        "gzip": 380,
+        "brotli": 301
+      },
+      "assets": [
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 2897,
+          "gzip": 1392,
+          "brotli": 1161
+        },
+        {
+          "id": "diagram2",
+          "mimeType": "image/svg+xml",
+          "raw": 2574,
+          "gzip": 1280,
+          "brotli": 1075
+        },
+        {
+          "id": "diagram3",
+          "mimeType": "image/svg+xml",
+          "raw": 2867,
+          "gzip": 1386,
+          "brotli": 1159
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 9035,
+        "gzip": 4438,
+        "brotli": 3696
+      },
+      "total": {
+        "raw": 9035,
+        "gzip": 4438,
+        "brotli": 3696
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P6",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 861,
+        "gzip": 463,
+        "brotli": 359
+      },
+      "assets": [
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 15549,
+          "gzip": 4478,
+          "brotli": 3837
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 16410,
+        "gzip": 4941,
+        "brotli": 4196
+      },
+      "total": {
+        "raw": 16410,
+        "gzip": 4941,
+        "brotli": 4196
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P7",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 1090,
+        "gzip": 587,
+        "brotli": 473
+      },
+      "assets": [
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 14566,
+          "gzip": 3402,
+          "brotli": 2778
+        },
+        {
+          "id": "diagram2",
+          "mimeType": "image/png",
+          "raw": 252275,
+          "gzip": 220255,
+          "brotli": 216916
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 267931,
+        "gzip": 224244,
+        "brotli": 220167
+      },
+      "total": {
+        "raw": 267931,
+        "gzip": 224244,
+        "brotli": 220167
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P8",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 654,
+        "gzip": 438,
+        "brotli": 344
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 654,
+        "gzip": 438,
+        "brotli": 344
+      },
+      "total": {
+        "raw": 654,
+        "gzip": 438,
+        "brotli": 344
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L5P9",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 1286,
+        "gzip": 468,
+        "brotli": 397
+      },
+      "assets": [
+        {
+          "id": "tile1",
+          "mimeType": "image/svg+xml",
+          "raw": 2570,
+          "gzip": 1272,
+          "brotli": 1059
+        },
+        {
+          "id": "tile2",
+          "mimeType": "image/svg+xml",
+          "raw": 2499,
+          "gzip": 1224,
+          "brotli": 1038
+        },
+        {
+          "id": "tile3",
+          "mimeType": "image/svg+xml",
+          "raw": 3002,
+          "gzip": 1474,
+          "brotli": 1225
+        },
+        {
+          "id": "tile4",
+          "mimeType": "image/svg+xml",
+          "raw": 3102,
+          "gzip": 1494,
+          "brotli": 1251
+        },
+        {
+          "id": "tile5",
+          "mimeType": "image/svg+xml",
+          "raw": 2977,
+          "gzip": 1409,
+          "brotli": 1169
+        },
+        {
+          "id": "tile6",
+          "mimeType": "image/svg+xml",
+          "raw": 3270,
+          "gzip": 1547,
+          "brotli": 1305
+        },
+        {
+          "id": "tile7",
+          "mimeType": "image/svg+xml",
+          "raw": 3236,
+          "gzip": 1370,
+          "brotli": 1159
+        },
+        {
+          "id": "tile8",
+          "mimeType": "image/svg+xml",
+          "raw": 2677,
+          "gzip": 1311,
+          "brotli": 1096
+        },
+        {
+          "id": "tile9",
+          "mimeType": "image/svg+xml",
+          "raw": 2483,
+          "gzip": 1201,
+          "brotli": 1027
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 27102,
+        "gzip": 12770,
+        "brotli": 10726
+      },
+      "total": {
+        "raw": 27102,
+        "gzip": 12770,
+        "brotli": 10726
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P1",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 1434,
+        "gzip": 428,
+        "brotli": 341
+      },
+      "assets": [
+        {
+          "id": "tile0",
+          "mimeType": "image/svg+xml",
+          "raw": 1539,
+          "gzip": 822,
+          "brotli": 718
+        },
+        {
+          "id": "tile1",
+          "mimeType": "image/svg+xml",
+          "raw": 1575,
+          "gzip": 852,
+          "brotli": 702
+        },
+        {
+          "id": "tile2",
+          "mimeType": "image/svg+xml",
+          "raw": 2048,
+          "gzip": 1014,
+          "brotli": 824
+        },
+        {
+          "id": "tile3",
+          "mimeType": "image/svg+xml",
+          "raw": 1709,
+          "gzip": 890,
+          "brotli": 737
+        },
+        {
+          "id": "tile4",
+          "mimeType": "image/svg+xml",
+          "raw": 1205,
+          "gzip": 618,
+          "brotli": 513
+        },
+        {
+          "id": "tile5",
+          "mimeType": "image/svg+xml",
+          "raw": 1286,
+          "gzip": 689,
+          "brotli": 589
+        },
+        {
+          "id": "tile6",
+          "mimeType": "image/svg+xml",
+          "raw": 1004,
+          "gzip": 547,
+          "brotli": 460
+        },
+        {
+          "id": "tile7",
+          "mimeType": "image/svg+xml",
+          "raw": 1300,
+          "gzip": 715,
+          "brotli": 603
+        },
+        {
+          "id": "tile8",
+          "mimeType": "image/svg+xml",
+          "raw": 1661,
+          "gzip": 866,
+          "brotli": 738
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 14761,
+        "gzip": 7441,
+        "brotli": 6225
+      },
+      "total": {
+        "raw": 14761,
+        "gzip": 7441,
+        "brotli": 6225
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P2",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 739,
+        "gzip": 444,
+        "brotli": 313
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 739,
+        "gzip": 444,
+        "brotli": 313
+      },
+      "total": {
+        "raw": 739,
+        "gzip": 444,
+        "brotli": 313
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P3",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 594,
+        "gzip": 354,
+        "brotli": 275
+      },
+      "assets": [],
+      "selected": {
+        "action": "question",
+        "raw": 145,
+        "gzip": 128,
+        "brotli": 97
+      },
+      "staticTotal": {
+        "raw": 594,
+        "gzip": 354,
+        "brotli": 275
+      },
+      "total": {
+        "raw": 739,
+        "gzip": 482,
+        "brotli": 372
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P4",
+      "year": "L6",
+      "version": "2",
+      "record": {
+        "raw": 2321,
+        "gzip": 814,
+        "brotli": 668
+      },
+      "assets": [
+        {
+          "id": "example",
+          "mimeType": "image/svg+xml",
+          "raw": 33060,
+          "gzip": 4971,
+          "brotli": 4173
+        },
+        {
+          "id": "reference1",
+          "mimeType": "image/svg+xml",
+          "raw": 12891,
+          "gzip": 3238,
+          "brotli": 2736
+        },
+        {
+          "id": "reference2",
+          "mimeType": "image/svg+xml",
+          "raw": 14049,
+          "gzip": 3481,
+          "brotli": 2923
+        },
+        {
+          "id": "empty",
+          "mimeType": "image/svg+xml",
+          "raw": 560,
+          "gzip": 322,
+          "brotli": 267
+        },
+        {
+          "id": "phase1",
+          "mimeType": "image/svg+xml",
+          "raw": 639,
+          "gzip": 341,
+          "brotli": 284
+        },
+        {
+          "id": "phase2",
+          "mimeType": "image/svg+xml",
+          "raw": 639,
+          "gzip": 341,
+          "brotli": 286
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 64159,
+        "gzip": 13508,
+        "brotli": 11337
+      },
+      "total": {
+        "raw": 64159,
+        "gzip": 13508,
+        "brotli": 11337
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P6",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 686,
+        "gzip": 395,
+        "brotli": 296
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 686,
+        "gzip": 395,
+        "brotli": 296
+      },
+      "total": {
+        "raw": 686,
+        "gzip": 395,
+        "brotli": 296
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P7",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 903,
+        "gzip": 450,
+        "brotli": 362
+      },
+      "assets": [
+        {
+          "id": "diagram0",
+          "mimeType": "image/svg+xml",
+          "raw": 6047,
+          "gzip": 2740,
+          "brotli": 2324
+        },
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 7157,
+          "gzip": 1351,
+          "brotli": 1143
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 14107,
+        "gzip": 4541,
+        "brotli": 3829
+      },
+      "total": {
+        "raw": 14107,
+        "gzip": 4541,
+        "brotli": 3829
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P8",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 489,
+        "gzip": 324,
+        "brotli": 247
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 489,
+        "gzip": 324,
+        "brotli": 247
+      },
+      "total": {
+        "raw": 489,
+        "gzip": 324,
+        "brotli": 247
+      }
+    },
+    {
+      "kind": "question",
+      "id": "L6P9",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 1118,
+        "gzip": 583,
+        "brotli": 472
+      },
+      "assets": [
+        {
+          "id": "diagram0",
+          "mimeType": "image/svg+xml",
+          "raw": 9745,
+          "gzip": 1772,
+          "brotli": 1476
+        },
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 10701,
+          "gzip": 1885,
+          "brotli": 1601
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 21564,
+        "gzip": 4240,
+        "brotli": 3549
+      },
+      "total": {
+        "raw": 21564,
+        "gzip": 4240,
+        "brotli": 3549
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P2",
+      "year": "U5",
+      "version": "2",
+      "record": {
+        "raw": 943,
+        "gzip": 553,
+        "brotli": 412
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 943,
+        "gzip": 553,
+        "brotli": 412
+      },
+      "total": {
+        "raw": 943,
+        "gzip": 553,
+        "brotli": 412
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P3",
+      "year": "U5",
+      "version": "1",
+      "record": {
+        "raw": 5499,
+        "gzip": 1168,
+        "brotli": 865
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 5499,
+        "gzip": 1168,
+        "brotli": 865
+      },
+      "total": {
+        "raw": 5499,
+        "gzip": 1168,
+        "brotli": 865
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P4",
+      "year": "U5",
+      "version": "1",
+      "record": {
+        "raw": 1287,
+        "gzip": 631,
+        "brotli": 509
+      },
+      "assets": [
+        {
+          "id": "molecules",
+          "mimeType": "image/png",
+          "raw": 129751,
+          "gzip": 116191,
+          "brotli": 115364
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 131038,
+        "gzip": 116822,
+        "brotli": 115873
+      },
+      "total": {
+        "raw": 131038,
+        "gzip": 116822,
+        "brotli": 115873
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P5",
+      "year": "U5",
+      "version": "3",
+      "record": {
+        "raw": 5452,
+        "gzip": 2210,
+        "brotli": 1837
+      },
+      "assets": [],
+      "selected": {
+        "action": "question",
+        "raw": 372651,
+        "gzip": 46335,
+        "brotli": 19397
+      },
+      "staticTotal": {
+        "raw": 5452,
+        "gzip": 2210,
+        "brotli": 1837
+      },
+      "total": {
+        "raw": 378103,
+        "gzip": 48545,
+        "brotli": 21234
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P6",
+      "year": "U5",
+      "version": "1",
+      "record": {
+        "raw": 2216,
+        "gzip": 729,
+        "brotli": 585
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 2216,
+        "gzip": 729,
+        "brotli": 585
+      },
+      "total": {
+        "raw": 2216,
+        "gzip": 729,
+        "brotli": 585
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P7",
+      "year": "U5",
+      "version": "1",
+      "record": {
+        "raw": 667,
+        "gzip": 348,
+        "brotli": 272
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 667,
+        "gzip": 348,
+        "brotli": 272
+      },
+      "total": {
+        "raw": 667,
+        "gzip": 348,
+        "brotli": 272
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P8",
+      "year": "U5",
+      "version": "2",
+      "record": {
+        "raw": 5335,
+        "gzip": 1666,
+        "brotli": 1398
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 5335,
+        "gzip": 1666,
+        "brotli": 1398
+      },
+      "total": {
+        "raw": 5335,
+        "gzip": 1666,
+        "brotli": 1398
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U5P9",
+      "year": "U5",
+      "version": "1",
+      "record": {
+        "raw": 2032,
+        "gzip": 852,
+        "brotli": 689
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 2032,
+        "gzip": 852,
+        "brotli": 689
+      },
+      "total": {
+        "raw": 2032,
+        "gzip": 852,
+        "brotli": 689
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P1",
+      "year": "U6",
+      "version": "2",
+      "record": {
+        "raw": 836,
+        "gzip": 527,
+        "brotli": 403
+      },
+      "assets": [
+        {
+          "id": "spectrum",
+          "mimeType": "image/svg+xml",
+          "raw": 18513,
+          "gzip": 4156,
+          "brotli": 3238
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 19349,
+        "gzip": 4683,
+        "brotli": 3641
+      },
+      "total": {
+        "raw": 19349,
+        "gzip": 4683,
+        "brotli": 3641
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P2",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 744,
+        "gzip": 433,
+        "brotli": 354
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 744,
+        "gzip": 433,
+        "brotli": 354
+      },
+      "total": {
+        "raw": 744,
+        "gzip": 433,
+        "brotli": 354
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P3",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 610,
+        "gzip": 387,
+        "brotli": 309
+      },
+      "assets": [
+        {
+          "id": "diagram0",
+          "mimeType": "image/svg+xml",
+          "raw": 4114,
+          "gzip": 1491,
+          "brotli": 1344
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 4724,
+        "gzip": 1878,
+        "brotli": 1653
+      },
+      "total": {
+        "raw": 4724,
+        "gzip": 1878,
+        "brotli": 1653
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P4",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 812,
+        "gzip": 471,
+        "brotli": 375
+      },
+      "assets": [
+        {
+          "id": "diagram0",
+          "mimeType": "image/svg+xml",
+          "raw": 13749,
+          "gzip": 2690,
+          "brotli": 2333
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 14561,
+        "gzip": 3161,
+        "brotli": 2708
+      },
+      "total": {
+        "raw": 14561,
+        "gzip": 3161,
+        "brotli": 2708
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P5",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 854,
+        "gzip": 505,
+        "brotli": 426
+      },
+      "assets": [
+        {
+          "id": "diagram0",
+          "mimeType": "image/svg+xml",
+          "raw": 10563,
+          "gzip": 3045,
+          "brotli": 2667
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 11417,
+        "gzip": 3550,
+        "brotli": 3093
+      },
+      "total": {
+        "raw": 11417,
+        "gzip": 3550,
+        "brotli": 3093
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P6",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 643,
+        "gzip": 411,
+        "brotli": 305
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 643,
+        "gzip": 411,
+        "brotli": 305
+      },
+      "total": {
+        "raw": 643,
+        "gzip": 411,
+        "brotli": 305
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P7",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 697,
+        "gzip": 440,
+        "brotli": 347
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 697,
+        "gzip": 440,
+        "brotli": 347
+      },
+      "total": {
+        "raw": 697,
+        "gzip": 440,
+        "brotli": 347
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P8",
+      "year": "U6",
+      "version": "2",
+      "record": {
+        "raw": 1176,
+        "gzip": 619,
+        "brotli": 515
+      },
+      "assets": [
+        {
+          "id": "diagram0",
+          "mimeType": "image/svg+xml",
+          "raw": 16182,
+          "gzip": 2408,
+          "brotli": 2037
+        },
+        {
+          "id": "diagram1",
+          "mimeType": "image/svg+xml",
+          "raw": 12057,
+          "gzip": 2198,
+          "brotli": 1872
+        }
+      ],
+      "selected": null,
+      "staticTotal": {
+        "raw": 29415,
+        "gzip": 5225,
+        "brotli": 4424
+      },
+      "total": {
+        "raw": 29415,
+        "gzip": 5225,
+        "brotli": 4424
+      }
+    },
+    {
+      "kind": "question",
+      "id": "U6P9",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 1658,
+        "gzip": 773,
+        "brotli": 604
+      },
+      "assets": [],
+      "selected": null,
+      "staticTotal": {
+        "raw": 1658,
+        "gzip": 773,
+        "brotli": 604
+      },
+      "total": {
+        "raw": 1658,
+        "gzip": 773,
+        "brotli": 604
+      }
+    },
+    {
+      "kind": "practical",
+      "id": "L5",
+      "year": "L5",
+      "version": "1",
+      "record": {
+        "raw": 3392,
+        "gzip": 1430,
+        "brotli": 1160
+      },
+      "assets": [],
+      "selected": {
+        "action": "practical",
+        "raw": 281,
+        "gzip": 163,
+        "brotli": 125
+      },
+      "staticTotal": {
+        "raw": 3392,
+        "gzip": 1430,
+        "brotli": 1160
+      },
+      "total": {
+        "raw": 3673,
+        "gzip": 1593,
+        "brotli": 1285
+      }
+    },
+    {
+      "kind": "practical",
+      "id": "L6",
+      "year": "L6",
+      "version": "1",
+      "record": {
+        "raw": 1813,
+        "gzip": 1032,
+        "brotli": 842
+      },
+      "assets": [
+        {
+          "id": "protocol-image",
+          "mimeType": "image/png",
+          "raw": 2149009,
+          "gzip": 2144590,
+          "brotli": 2144524
+        }
+      ],
+      "selected": {
+        "action": "practical",
+        "raw": 223,
+        "gzip": 157,
+        "brotli": 130
+      },
+      "staticTotal": {
+        "raw": 2150822,
+        "gzip": 2145622,
+        "brotli": 2145366
+      },
+      "total": {
+        "raw": 2151045,
+        "gzip": 2145779,
+        "brotli": 2145496
+      }
+    },
+    {
+      "kind": "practical",
+      "id": "U6",
+      "year": "U6",
+      "version": "1",
+      "record": {
+        "raw": 3103,
+        "gzip": 1389,
+        "brotli": 1112
+      },
+      "assets": [],
+      "selected": {
+        "action": "practical",
+        "raw": 281,
+        "gzip": 162,
+        "brotli": 135
+      },
+      "staticTotal": {
+        "raw": 3103,
+        "gzip": 1389,
+        "brotli": 1112
+      },
+      "total": {
+        "raw": 3384,
+        "gzip": 1551,
+        "brotli": 1247
+      }
+    }
+  ],
+  "loads": [
+    {
+      "concurrency": 25,
+      "elapsedMs": 131.42319999999927,
+      "requests": 69,
+      "responseBodyBytes": 3672000,
+      "serverBodyBytes": 3672000,
+      "errors": 0,
+      "latencyMs": {
+        "min": 48.36539999999877,
+        "p50": 92.13260000000082,
+        "p95": 122.91749999999956,
+        "max": 122.98790000000008
+      },
+      "outcomes": [
+        {
+          "kind": "practical",
+          "id": "L6",
+          "ms": 116.87169999999969,
+          "bytes": 2151045,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P5",
+          "ms": 90.4913000000015,
+          "bytes": 378103,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P1",
+          "ms": 108.54550000000017,
+          "bytes": 518736,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P5",
+          "ms": 108.41580000000067,
+          "bytes": 41018,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P2",
+          "ms": 48.36539999999877,
+          "bytes": 792,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P3",
+          "ms": 92.13260000000082,
+          "bytes": 2827,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P4",
+          "ms": 49.08269999999902,
+          "bytes": 740,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P5",
+          "ms": 111.32170000000042,
+          "bytes": 9035,
+          "requests": 4
+        },
+        {
+          "kind": "question",
+          "id": "L5P6",
+          "ms": 92.09419999999955,
+          "bytes": 16410,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P7",
+          "ms": 107.59739999999874,
+          "bytes": 267931,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P8",
+          "ms": 50.8742000000002,
+          "bytes": 654,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P9",
+          "ms": 122.91749999999956,
+          "bytes": 27102,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P1",
+          "ms": 122.98790000000008,
+          "bytes": 14761,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P2",
+          "ms": 52.22320000000036,
+          "bytes": 739,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P3",
+          "ms": 93.06759999999849,
+          "bytes": 739,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L6P4",
+          "ms": 117.60780000000159,
+          "bytes": 64159,
+          "requests": 7
+        },
+        {
+          "kind": "question",
+          "id": "L6P6",
+          "ms": 53.932300000000396,
+          "bytes": 686,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P7",
+          "ms": 107.74070000000029,
+          "bytes": 14107,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P8",
+          "ms": 55.19630000000143,
+          "bytes": 489,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P9",
+          "ms": 107.73240000000078,
+          "bytes": 21564,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P2",
+          "ms": 56.02440000000024,
+          "bytes": 943,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P3",
+          "ms": 56.30489999999918,
+          "bytes": 5499,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P4",
+          "ms": 95.1918999999998,
+          "bytes": 131038,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U5P6",
+          "ms": 57.15270000000055,
+          "bytes": 2216,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P7",
+          "ms": 57.39019999999982,
+          "bytes": 667,
+          "requests": 1
+        }
+      ]
+    },
+    {
+      "concurrency": 50,
+      "elapsedMs": 137.79700000000048,
+      "requests": 125,
+      "responseBodyBytes": 7184025,
+      "serverBodyBytes": 7184025,
+      "errors": 0,
+      "latencyMs": {
+        "min": 27.08510000000024,
+        "p50": 89.9403000000002,
+        "p95": 133.74089999999887,
+        "max": 136.72969999999987
+      },
+      "outcomes": [
+        {
+          "kind": "practical",
+          "id": "L6",
+          "ms": 110.87300000000141,
+          "bytes": 2151045,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P5",
+          "ms": 68.29690000000119,
+          "bytes": 378103,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P1",
+          "ms": 111.41159999999945,
+          "bytes": 518736,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P5",
+          "ms": 111.49099999999999,
+          "bytes": 41018,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P2",
+          "ms": 27.08510000000024,
+          "bytes": 792,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P3",
+          "ms": 83.95749999999862,
+          "bytes": 2827,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P4",
+          "ms": 27.78399999999965,
+          "bytes": 740,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P5",
+          "ms": 120.64419999999882,
+          "bytes": 9035,
+          "requests": 4
+        },
+        {
+          "kind": "question",
+          "id": "L5P6",
+          "ms": 84.54629999999997,
+          "bytes": 16410,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P7",
+          "ms": 112.18029999999999,
+          "bytes": 267931,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P8",
+          "ms": 29.305500000000393,
+          "bytes": 654,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P9",
+          "ms": 136.60779999999977,
+          "bytes": 27102,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P1",
+          "ms": 136.72969999999987,
+          "bytes": 14761,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P2",
+          "ms": 30.441100000000006,
+          "bytes": 739,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P3",
+          "ms": 88.4362000000001,
+          "bytes": 739,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L6P4",
+          "ms": 131.012999999999,
+          "bytes": 64159,
+          "requests": 7
+        },
+        {
+          "kind": "question",
+          "id": "L6P6",
+          "ms": 31.501499999998487,
+          "bytes": 686,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P7",
+          "ms": 113.94709999999941,
+          "bytes": 14107,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P8",
+          "ms": 33.20139999999992,
+          "bytes": 489,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P9",
+          "ms": 113.9455999999991,
+          "bytes": 21564,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P2",
+          "ms": 33.89249999999993,
+          "bytes": 943,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P3",
+          "ms": 34.049699999999575,
+          "bytes": 5499,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P4",
+          "ms": 90.07510000000002,
+          "bytes": 131038,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U5P6",
+          "ms": 34.86369999999988,
+          "bytes": 2216,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P7",
+          "ms": 35.01669999999831,
+          "bytes": 667,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P8",
+          "ms": 35.20930000000044,
+          "bytes": 5335,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P9",
+          "ms": 35.394099999999526,
+          "bytes": 2032,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P1",
+          "ms": 89.92590000000018,
+          "bytes": 19349,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P2",
+          "ms": 36.423000000000684,
+          "bytes": 744,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P3",
+          "ms": 89.9403000000002,
+          "bytes": 4724,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P4",
+          "ms": 90.0635000000002,
+          "bytes": 14561,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P5",
+          "ms": 90.14660000000003,
+          "bytes": 11417,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P6",
+          "ms": 38.29600000000028,
+          "bytes": 643,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P7",
+          "ms": 38.39289999999892,
+          "bytes": 697,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P8",
+          "ms": 112.96460000000116,
+          "bytes": 29415,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U6P9",
+          "ms": 38.94260000000031,
+          "bytes": 1658,
+          "requests": 1
+        },
+        {
+          "kind": "practical",
+          "id": "L5",
+          "ms": 90.23090000000047,
+          "bytes": 3673,
+          "requests": 2
+        },
+        {
+          "kind": "practical",
+          "id": "U6",
+          "ms": 90.41489999999976,
+          "bytes": 3384,
+          "requests": 2
+        },
+        {
+          "kind": "practical",
+          "id": "L6",
+          "ms": 115.69670000000042,
+          "bytes": 2151045,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P5",
+          "ms": 97.48929999999928,
+          "bytes": 378103,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P1",
+          "ms": 113.22160000000076,
+          "bytes": 518736,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P5",
+          "ms": 113.36789999999928,
+          "bytes": 41018,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P2",
+          "ms": 55.167199999999866,
+          "bytes": 792,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P3",
+          "ms": 99.1242999999995,
+          "bytes": 2827,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P4",
+          "ms": 55.48960000000079,
+          "bytes": 740,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P5",
+          "ms": 118.98040000000037,
+          "bytes": 9035,
+          "requests": 4
+        },
+        {
+          "kind": "question",
+          "id": "L5P6",
+          "ms": 99.25200000000041,
+          "bytes": 16410,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P7",
+          "ms": 114.02170000000115,
+          "bytes": 267931,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P8",
+          "ms": 56.234300000000076,
+          "bytes": 654,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P9",
+          "ms": 133.74089999999887,
+          "bytes": 27102,
+          "requests": 10
+        }
+      ]
+    },
+    {
+      "concurrency": 100,
+      "elapsedMs": 225.86949999999888,
+      "requests": 248,
+      "responseBodyBytes": 11210597,
+      "serverBodyBytes": 11210597,
+      "errors": 0,
+      "latencyMs": {
+        "min": 46.53900000000067,
+        "p50": 142.05119999999988,
+        "p95": 219.6270999999997,
+        "max": 224.40229999999974
+      },
+      "outcomes": [
+        {
+          "kind": "practical",
+          "id": "L6",
+          "ms": 180.64710000000014,
+          "bytes": 2151045,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P5",
+          "ms": 109.28939999999966,
+          "bytes": 378103,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P1",
+          "ms": 173.85579999999936,
+          "bytes": 518736,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P5",
+          "ms": 181.29280000000108,
+          "bytes": 41018,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P2",
+          "ms": 46.53900000000067,
+          "bytes": 792,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P3",
+          "ms": 135.38920000000144,
+          "bytes": 2827,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P4",
+          "ms": 46.96730000000025,
+          "bytes": 740,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P5",
+          "ms": 192.9261000000006,
+          "bytes": 9035,
+          "requests": 4
+        },
+        {
+          "kind": "question",
+          "id": "L5P6",
+          "ms": 135.8817999999992,
+          "bytes": 16410,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P7",
+          "ms": 181.71010000000024,
+          "bytes": 267931,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P8",
+          "ms": 48.281300000000556,
+          "bytes": 654,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P9",
+          "ms": 224.38240000000042,
+          "bytes": 27102,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P1",
+          "ms": 224.40229999999974,
+          "bytes": 14761,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P2",
+          "ms": 51.11489999999867,
+          "bytes": 739,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P3",
+          "ms": 137.0583999999999,
+          "bytes": 739,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L6P4",
+          "ms": 210.58249999999862,
+          "bytes": 64159,
+          "requests": 7
+        },
+        {
+          "kind": "question",
+          "id": "L6P6",
+          "ms": 52.09389999999985,
+          "bytes": 686,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P7",
+          "ms": 182.2532999999985,
+          "bytes": 14107,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P8",
+          "ms": 52.57300000000032,
+          "bytes": 489,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P9",
+          "ms": 182.26530000000093,
+          "bytes": 21564,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P2",
+          "ms": 53.179299999999785,
+          "bytes": 943,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P3",
+          "ms": 53.295499999998356,
+          "bytes": 5499,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P4",
+          "ms": 140.92100000000028,
+          "bytes": 131038,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U5P6",
+          "ms": 53.78260000000046,
+          "bytes": 2216,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P7",
+          "ms": 53.92840000000069,
+          "bytes": 667,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P8",
+          "ms": 54.1270999999997,
+          "bytes": 5335,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P9",
+          "ms": 54.1833000000006,
+          "bytes": 2032,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P1",
+          "ms": 141.08290000000125,
+          "bytes": 19349,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P2",
+          "ms": 54.698200000000725,
+          "bytes": 744,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P3",
+          "ms": 141.48109999999906,
+          "bytes": 4724,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P4",
+          "ms": 141.7427000000007,
+          "bytes": 14561,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P5",
+          "ms": 142.05119999999988,
+          "bytes": 11417,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P6",
+          "ms": 56.02260000000024,
+          "bytes": 643,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P7",
+          "ms": 56.08979999999974,
+          "bytes": 697,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P8",
+          "ms": 181.3130999999994,
+          "bytes": 29415,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U6P9",
+          "ms": 56.54939999999988,
+          "bytes": 1658,
+          "requests": 1
+        },
+        {
+          "kind": "practical",
+          "id": "L5",
+          "ms": 142.5033000000003,
+          "bytes": 3673,
+          "requests": 2
+        },
+        {
+          "kind": "practical",
+          "id": "U6",
+          "ms": 142.57900000000154,
+          "bytes": 3384,
+          "requests": 2
+        },
+        {
+          "kind": "practical",
+          "id": "L6",
+          "ms": 187.06570000000102,
+          "bytes": 2151045,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P5",
+          "ms": 148.97530000000006,
+          "bytes": 378103,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P1",
+          "ms": 181.65070000000014,
+          "bytes": 518736,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P5",
+          "ms": 181.71639999999934,
+          "bytes": 41018,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P2",
+          "ms": 59.22060000000056,
+          "bytes": 792,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P3",
+          "ms": 150.36709999999948,
+          "bytes": 2827,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P4",
+          "ms": 59.81790000000001,
+          "bytes": 740,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P5",
+          "ms": 191.69150000000081,
+          "bytes": 9035,
+          "requests": 4
+        },
+        {
+          "kind": "question",
+          "id": "L5P6",
+          "ms": 150.66870000000017,
+          "bytes": 16410,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P7",
+          "ms": 182.19170000000122,
+          "bytes": 267931,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P8",
+          "ms": 61.02529999999933,
+          "bytes": 654,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P9",
+          "ms": 222.2430000000004,
+          "bytes": 27102,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P1",
+          "ms": 222.28759999999966,
+          "bytes": 14761,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P2",
+          "ms": 61.866399999998976,
+          "bytes": 739,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P3",
+          "ms": 151.500399999999,
+          "bytes": 739,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L6P4",
+          "ms": 208.96039999999994,
+          "bytes": 64159,
+          "requests": 7
+        },
+        {
+          "kind": "question",
+          "id": "L6P6",
+          "ms": 63.14350000000013,
+          "bytes": 686,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P7",
+          "ms": 182.72520000000077,
+          "bytes": 14107,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P8",
+          "ms": 63.885299999999916,
+          "bytes": 489,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P9",
+          "ms": 185.9356000000007,
+          "bytes": 21564,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P2",
+          "ms": 64.39279999999962,
+          "bytes": 943,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P3",
+          "ms": 64.51590000000033,
+          "bytes": 5499,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P4",
+          "ms": 165.51859999999942,
+          "bytes": 131038,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U5P6",
+          "ms": 64.94880000000012,
+          "bytes": 2216,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P7",
+          "ms": 64.95650000000023,
+          "bytes": 667,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P8",
+          "ms": 65.02379999999903,
+          "bytes": 5335,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P9",
+          "ms": 65.07459999999992,
+          "bytes": 2032,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P1",
+          "ms": 165.0597999999991,
+          "bytes": 19349,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P2",
+          "ms": 65.48300000000017,
+          "bytes": 744,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P3",
+          "ms": 165.02709999999934,
+          "bytes": 4724,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P4",
+          "ms": 165.07799999999952,
+          "bytes": 14561,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P5",
+          "ms": 151.28739999999925,
+          "bytes": 11417,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U6P6",
+          "ms": 89.97890000000007,
+          "bytes": 643,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P7",
+          "ms": 90.02850000000035,
+          "bytes": 697,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U6P8",
+          "ms": 181.44700000000012,
+          "bytes": 29415,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U6P9",
+          "ms": 90.40999999999985,
+          "bytes": 1658,
+          "requests": 1
+        },
+        {
+          "kind": "practical",
+          "id": "L5",
+          "ms": 151.59330000000045,
+          "bytes": 3673,
+          "requests": 2
+        },
+        {
+          "kind": "practical",
+          "id": "U6",
+          "ms": 151.6805000000004,
+          "bytes": 3384,
+          "requests": 2
+        },
+        {
+          "kind": "practical",
+          "id": "L6",
+          "ms": 184.52839999999924,
+          "bytes": 2151045,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P5",
+          "ms": 158.5069999999996,
+          "bytes": 378103,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P1",
+          "ms": 181.38940000000002,
+          "bytes": 518736,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P5",
+          "ms": 181.45080000000053,
+          "bytes": 41018,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P2",
+          "ms": 92.55689999999959,
+          "bytes": 792,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P3",
+          "ms": 159.99499999999898,
+          "bytes": 2827,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P4",
+          "ms": 93.03430000000117,
+          "bytes": 740,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P5",
+          "ms": 189.89929999999913,
+          "bytes": 9035,
+          "requests": 4
+        },
+        {
+          "kind": "question",
+          "id": "L5P6",
+          "ms": 160.38739999999962,
+          "bytes": 16410,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L5P7",
+          "ms": 182.04670000000078,
+          "bytes": 267931,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L5P8",
+          "ms": 94.08359999999993,
+          "bytes": 654,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L5P9",
+          "ms": 219.6270999999997,
+          "bytes": 27102,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P1",
+          "ms": 219.66229999999996,
+          "bytes": 14761,
+          "requests": 10
+        },
+        {
+          "kind": "question",
+          "id": "L6P2",
+          "ms": 94.66749999999956,
+          "bytes": 739,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P3",
+          "ms": 161.14170000000013,
+          "bytes": 739,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "L6P4",
+          "ms": 209.01209999999992,
+          "bytes": 64159,
+          "requests": 7
+        },
+        {
+          "kind": "question",
+          "id": "L6P6",
+          "ms": 95.27319999999963,
+          "bytes": 686,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P7",
+          "ms": 182.78009999999995,
+          "bytes": 14107,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "L6P8",
+          "ms": 95.52619999999843,
+          "bytes": 489,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "L6P9",
+          "ms": 182.77659999999923,
+          "bytes": 21564,
+          "requests": 3
+        },
+        {
+          "kind": "question",
+          "id": "U5P2",
+          "ms": 95.83519999999953,
+          "bytes": 943,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P3",
+          "ms": 95.96950000000106,
+          "bytes": 5499,
+          "requests": 1
+        },
+        {
+          "kind": "question",
+          "id": "U5P4",
+          "ms": 166.0666000000001,
+          "bytes": 131038,
+          "requests": 2
+        },
+        {
+          "kind": "question",
+          "id": "U5P6",
+          "ms": 96.56629999999859,
+          "bytes": 2216,
+          "requests": 1
+        }
+      ]
+    }
+  ]
+}

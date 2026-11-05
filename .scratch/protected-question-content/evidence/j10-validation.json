@@ -1,0 +1,116 @@
+{
+  "job": "J10",
+  "status": "PASS locally; independent rechecks and root acceptance pending",
+  "reviewedRuntime": "37c2d0474ec4af48f891642cb51f305209a9cd5d",
+  "foremanHandoffCommit": "ccd86a2",
+  "sourceBaseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "scientificBaseline": "5f5c69b471937cbf0ba13d724466733ef7815a3c",
+  "timestamp": "2026-11-05T02:15:52.065746+00:00",
+  "profile": "protected-j10",
+  "versions": {
+    "node": "24.13.1",
+    "vite": "7.3.7",
+    "react": "19.3.0",
+    "playwright": "1.63.0",
+    "chrome": "157.0.8103.38"
+  },
+  "checks": {
+    "api": {
+      "pass": 269,
+      "fail": 0
+    },
+    "frontendUnits": {
+      "files": 37,
+      "pass": 590,
+      "fail": 0,
+      "newActualHookCases": 26
+    },
+    "contracts": {
+      "pass": 22,
+      "fail": 0
+    },
+    "standardBuild": true,
+    "exactScientificRecords": 38,
+    "exactParityComparisons": 114,
+    "visualPairsInspected": 114,
+    "extraGcVisualPairs": 9,
+    "negativeBoundaryProbes": 16,
+    "browser": {
+      "initialAffectedAndParity": {
+        "pass": 69,
+        "fail": 2,
+        "total": 71,
+        "workers": 8
+      },
+      "finalSecurityPilotAndRaces": {
+        "pass": 31,
+        "fail": 0,
+        "workers": 1,
+        "newRealBrowserRaceCases": 6
+      },
+      "distinctPassedFinalUnion": 77,
+      "parityCaptureTestsIncluded": 3,
+      "affectedInteractionTests": 74,
+      "initialFailureDisposition": "Two 30-second navigation/GO timeouts passed in the complete serial pilot/security recheck; traces retained."
+    }
+  },
+  "commands": [
+    "node --test api/tests/*.test.mjs",
+    "npm run test",
+    "npm run test:contracts",
+    "SJS_OLYMPIAD_TOOLING_PROFILE=protected-j10 node scripts/local-tooling.mjs build",
+    "node scripts/check-protected-presentations.mjs",
+    "node scripts/test-protected-boundary.mjs",
+    "node scripts/check-protected-science.mjs <source-evidence-json> (evidence only)",
+    "TEST_BASE_URL=http://127.0.0.1:4290 PLAYWRIGHT_CHANNEL=chrome npx playwright test <nine affected/parity suites> --output=j10-final",
+    "TEST_BASE_URL=http://127.0.0.1:4290 PLAYWRIGHT_CHANNEL=chrome npx playwright test tests/browser/selected-load-races.spec.ts tests/browser/pilot.spec.ts tests/browser/security.spec.ts --workers=1 --output=j10-recheck",
+    "node scripts/measure-protected-content.mjs j10-transfer-load.json"
+  ],
+  "logs": [
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final-api.log",
+      "sha256": "8c3f0137628947222f989bf82ab936640daa09e376ee24c9f382add85d2dda39"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final-unit.log",
+      "sha256": "e0893bc8ff662c2d7ec907626f3cda435dfd3a44cba3893cc2919bce72ddb4c8"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final-contracts.log",
+      "sha256": "9c9194dbc508ce99bae43739a29ba081866eaf6d7f01ecf2d271dde885312db6"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final-build.log",
+      "sha256": "57626b4b3bdf57550e9effe1ff67f3f9bf6ea72cef52ab70b724abb5f2b09450"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-negative.log",
+      "sha256": "e152314446d657a474fef44cecdf70e20fa01d346f49596d8e787256abde99a2"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final-browser.log",
+      "sha256": "72f931283cce804904019b736873b0993e85d232c33d01cce21cafb815f9ebf6"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-recheck-browser.log",
+      "sha256": "0986c28cbd6659ab1f65f4fde6b8d4723b2fda20400f797adcd0be5ef27b14a4"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-reproduce.log",
+      "sha256": "0a6d061509b6a3d8173f5540dda48d7f56cae50b1c4e6b10ed3513f8f34547d6"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-transfer-load.log",
+      "sha256": "5bdc00a55d2f3d9661624c7bb48b222f27cf4050c09902a1840c2e9f47754b61"
+    }
+  ],
+  "limitations": [
+    "Independent Standards/Spec rechecks and root acceptance pending",
+    "Local Windows/Node24/Chrome/synthetic in-memory repositories; no Azure/managed Node22/storage/compression/deployment acceptance",
+    "Loopback cohorts exclude TLS/headers/browser render and real network/storage; modules/sessions warm",
+    "Two existing raster intrinsic-size exceptions; pixel identity not claimed",
+    "Scientific Git invariant is evidence-only and not required by build/API/CI; required tooling remains shallow-checkout portable",
+    "Unchanged broad159 browser suite not repeated",
+    "Preview observed Vite reloads from generated Playwright trace-resource HTML beneath the external mirror; use an external sibling output directory for future browser runs. All final distinct checks passed, and initial timeouts/traces remain recorded."
+  ]
+}

@@ -92,7 +92,7 @@ export function AppRouter() {
         if (options.has('practical')) {
             const definition = findPractical(selectedEvent?.year);
             if (!selectedEvent || !definition) return <main className="question-access type-body"><h1 className="type-heading">No practical available for this year</h1><ArtworkBackButton onClick={() => void navigate(teacher ? '?settings' : '')} label="Back"/></main>;
-            return <PracticalShell definition={definition} onBack={() => void navigate(teacher ? '?settings' : '')} backLabel={teacher ? 'Back to settings' : 'Back to landing'}><QuestionGate practical theory={false}><Practical key={selectedEvent.id} definition={definition} event={selectedEvent} flushRef={practicalFlush} onNavigationReady={() => setNavigationError('')} onTheory={!teacher ? () => void navigate('?theory') : undefined}/></QuestionGate></PracticalShell>;
+            return <PracticalShell definition={definition} contentStore={questions.content} onBack={() => void navigate(teacher ? '?settings' : '')} backLabel={teacher ? 'Back to settings' : 'Back to landing'}><QuestionGate practical theory={false}><Practical key={selectedEvent.id} contentStore={questions.content} definition={definition} event={selectedEvent} flushRef={practicalFlush} onNavigationReady={() => setNavigationError('')} onTheory={!teacher ? () => void navigate('?theory') : undefined}/></QuestionGate></PracticalShell>;
         }
         if (options.has('theory')) {
             if (!selectedEvent)
@@ -103,13 +103,13 @@ export function AppRouter() {
             if (Number.isInteger(number) && number >= 1 && number <= 9) {
                 const entry = findQuestion(year, number), back = () => void navigate(teacher?'?settings':'?theory');
                 if (entry)
-                    return <QuestionShell definition={entry.definition} score={score} onBack={back} backLabel={teacher?'Back to settings':'Back to theory'}><QuestionGate><CloudQuestion key={selectedEvent.id + entry.definition.id} entry={entry} questions={questions}/></QuestionGate></QuestionShell>;
+                    return <QuestionShell definition={{...entry.definition,title:questions.content.get('question',entry.definition.id).value?.record.presentation.title ?? entry.definition.title}} score={score} onBack={back} backLabel={teacher?'Back to settings':'Back to theory'}><QuestionGate><CloudQuestion key={selectedEvent.id + entry.definition.id} entry={entry} questions={questions}/></QuestionGate></QuestionShell>;
                 return <TheoryQuestionPreview question={number} onBack={back}/>;
             }
             const timing = eventTiming(selectedEvent);
-            return <QuestionGate theory={false}><TheoryLanding year={year} score={score} solvedProblems={solved} preview={teacher} eventStartsAt={selectedEvent?.status==='draft'?null:timing.theoryStartsAt} eventEndsAt={timing.theoryEndsAt} serverNow={security.serverNow} available={security.canAccessTheory()} onQuestion={number => void navigate(`?theory&question=${number}`)} onBack={() => void navigate('')}/></QuestionGate>;
+            return <QuestionGate theory={false}><TheoryLanding year={year} score={score} solvedProblems={solved} preview={teacher} eventStartsAt={timing.theoryStartsAt} eventEndsAt={timing.theoryEndsAt} serverNow={security.serverNow} available={security.canAccessTheory()} onQuestion={number => void navigate(`?theory&question=${number}`)} onBack={() => void navigate('')}/></QuestionGate>;
         }
-        return <SplashPreview teacher={teacher} allowEarlyAccess={selectedEvent?.status==='draft'} theoryStartsAt={selectedEvent ? eventTiming(selectedEvent).theoryStartsAt : null} theoryEndsAt={selectedEvent ? eventTiming(selectedEvent).theoryEndsAt : undefined} serverNow={security.serverNow} onTheory={() => void navigate('?theory')} onPractical={findPractical(selectedEvent?.year) ? () => void navigate('?practical') : undefined} practicalStartsAt={selectedEvent ? eventTiming(selectedEvent).practicalStartsAt : null} practicalEndsAt={selectedEvent ? eventTiming(selectedEvent).practicalEndsAt : null}/>;
+        return <SplashPreview teacher={teacher} allowEarlyAccess={false} theoryStartsAt={selectedEvent ? eventTiming(selectedEvent).theoryStartsAt : null} theoryEndsAt={selectedEvent ? eventTiming(selectedEvent).theoryEndsAt : undefined} serverNow={security.serverNow} onTheory={() => void navigate('?theory')} onPractical={findPractical(selectedEvent?.year) ? () => void navigate('?practical') : undefined} practicalStartsAt={selectedEvent ? eventTiming(selectedEvent).practicalStartsAt : null} practicalEndsAt={selectedEvent ? eventTiming(selectedEvent).practicalEndsAt : null}/>;
     }
     const locked = server?.role === 'competitor' && security.session.status === 'LOCKED';
     const requestedQuestion=Number(options.get('question'));

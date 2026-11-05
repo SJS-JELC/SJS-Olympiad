@@ -79,7 +79,7 @@ for (const viewport of [{width:960,height:600},{width:1200,height:800},{width:14
   const positions=await page.locator('.gc-sample').evaluateAll(elements=>elements.map(element=>({x:element.getBoundingClientRect().x,y:element.getBoundingClientRect().y,bottom:element.getBoundingClientRect().bottom})));
   expect(new Set(positions.map(position=>position.y))).toHaveProperty('size',1);
   expect(positions[3].x).toBeGreaterThan(positions[0].x);
-  const machine=await page.locator('.gc-instrument').boundingBox();
+  const machine=await page.locator('.gc-graphic').boundingBox();
   expect(machine!.y).toBeGreaterThan(positions[0].bottom);
   expect(machine!.width).toBeGreaterThan(viewport.width*.5);
   await expect(page.locator('.gc-load-button').first()).toHaveText('+');

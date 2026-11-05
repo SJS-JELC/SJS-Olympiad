@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { doubleTrouble, doubleTroubleItems } from '../../src/questions/double-trouble/definition';
+import { doubleTrouble } from '../../src/questions/double-trouble/definition';
+import {doubleTroubleItems} from '../fixtures/grouping-presentations';
 import { doubleTroubleGroups } from '../fixtures/double-trouble';
 
 describe('Double Trouble chemistry', () => {

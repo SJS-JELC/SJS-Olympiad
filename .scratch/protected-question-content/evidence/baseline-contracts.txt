@@ -1,0 +1,17 @@
+✔ server outcomes do not wipe local drawings/undo, navigation cache or a completed answer (41.3928ms)
+✔ uncertain CHECK retries its frozen request and accepts only confirmed success (4.8429ms)
+✔ fresh restore strips old drawings/groupings/formulations/reports but retains active deadlines/results (2.0666ms)
+✔ GC keeps reports locally, reconstructs captured inputs on retry and never resurrects old reports (27.9825ms)
+✔ entry/recovery distinguish wrong-code invalid state from operational errors (8.4863ms)
+✔ recovery rejects only the code visually, keeps operational errors actionable and never unlocks early (2.1456ms)
+✔ interruption, cross-tab changes and lost activation responses keep access gated (2.0294ms)
+✔ fresh initialization discards prior session content even if a stale snapshot is returned (2.0642ms)
+✔ fixed products preserve all bonds and C-H vectors while extending C-C/C-O by 1.45 (6.9848ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1570.4893

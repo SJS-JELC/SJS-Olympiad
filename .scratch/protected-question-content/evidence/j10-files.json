@@ -1,0 +1,151 @@
+{
+  "files": [
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-aliases.json",
+      "bytes": 1945,
+      "sha256": "84b0051d80255840e56b806075470b1fe1cf6aa7ced4bd36da1f05d728598c7e"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-boundary.json",
+      "bytes": 43393,
+      "sha256": "c95412929623453ce4c9af89c9256d0dd351f5ed4e39605b530cd04b058c18a2"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-fix.md",
+      "bytes": 7770,
+      "sha256": "40587cfefb03c828369d7f5c85bfb6132e4cfa3ab4ce5cb690aa9191a48b7251"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-gc-visual.json",
+      "bytes": 6678,
+      "sha256": "2adc1ab705196d66947b988c7d3c99cd6cd23ec5b1fc9874842fa8c47d0228eb"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-negative.json",
+      "bytes": 1289,
+      "sha256": "18f9e99fbf86dfa3c3772280e0eb5f3fe7389f1954e6b2b61e5798245ad64cce"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-render.json",
+      "bytes": 304233,
+      "sha256": "0a768280b65073a037df1351d74f513a39d90b9c5f9f911e695572b625905787"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-reproduction.json",
+      "bytes": 1342,
+      "sha256": "bb44bbffced57c66a936d6f708989ed51c72e30a6a87cdcadaed815d2b69aee5"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-science.json",
+      "bytes": 8542,
+      "sha256": "dfe2e0106d57426a36f482c124553bb574ebd7de1c5e8ff0038942d2c79bd8e0"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-transfer-load.json",
+      "bytes": 53995,
+      "sha256": "c68d2511ea71297b84a9fa85e8ae995ee5b4e10cf061cbea905d9ef49ffa5ae0"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-validation.json",
+      "bytes": 5342,
+      "sha256": "eb49b9bba33b44e04f99ca22f8644aba822c8048e4356252ee97427f668d18bc"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j10-visual.json",
+      "bytes": 94697,
+      "sha256": "e241f7566653e94c0283a3409793ea0ab50649cdcbacd7141f7bed0cf3747295"
+    },
+    {
+      "path": "api/src/presentation/records/u5p5.mjs",
+      "bytes": 10988,
+      "sha256": "0623bf1bc5dc269dfc925a21aef7480e09642eeb7e9c4418e99373a22d70ca6b"
+    },
+    {
+      "path": "docs/api-contract.md",
+      "bytes": 22068,
+      "sha256": "168ce366485ba07548f59174426e504c801f9e0ae35d7977d070c7a5808b8a70"
+    },
+    {
+      "path": "docs/question-framework.md",
+      "bytes": 11616,
+      "sha256": "9046584a34d9ae4526b869e458848260b8e7993bd47f101bf1fad6c7fa998eae"
+    },
+    {
+      "path": "scripts/check-protected-presentations.mjs",
+      "bytes": 12301,
+      "sha256": "5be489852354dab49a10e8502e67acc730d6a13a027042229402a6a9ece925ee"
+    },
+    {
+      "path": "scripts/check-protected-science.mjs",
+      "bytes": 6070,
+      "sha256": "3a1c3c990d0237e9de00a4d43a88ba9e23e0043c2967cd3698431cf91ac99c7a"
+    },
+    {
+      "path": "scripts/compare-protected-visuals.py",
+      "bytes": 2838,
+      "sha256": "7016bbef18f31ad4133999d2a9df45d61e0ea379c05669d1075cecb5e3540300"
+    },
+    {
+      "path": "scripts/test-protected-boundary.mjs",
+      "bytes": 2703,
+      "sha256": "a7a1c2737297a034b0cb5306ea829f7a1b10fa92ad85c84a3b4d241ad72c6966"
+    },
+    {
+      "path": "src/cloud/CloudQuestion.tsx",
+      "bytes": 18303,
+      "sha256": "52e088b70b0fff59eddcb9e72c0bc7b49dcaa6beecb1dc36c0dfdf1c89d3a89c"
+    },
+    {
+      "path": "src/questions/u5p5/Chromatogram.tsx",
+      "bytes": 6065,
+      "sha256": "e70514c9970356161980377d3267a088709bfc1c6dc59e377c6ba8b790ac03f5"
+    },
+    {
+      "path": "src/questions/u5p5/GcInstrument.tsx",
+      "bytes": 4735,
+      "sha256": "7edc140fec90177882b157b2e28cd8e02f5365d28341888e119cd0f0962c7391"
+    },
+    {
+      "path": "src/questions/u5p5/ScentsAndScentsibility.css",
+      "bytes": 7916,
+      "sha256": "012e1cd2f727ded51d64521d1893076a4b336632154378b13ec837fcea7afcf9"
+    },
+    {
+      "path": "src/questions/u5p5/ScentsAndScentsibility.tsx",
+      "bytes": 6577,
+      "sha256": "b35500d5bb332e2b14c6cd74abdf8db2d52226ea6993c538cdcaf43bcb16e652"
+    },
+    {
+      "path": "src/questions/u5p5/model.ts",
+      "bytes": 4948,
+      "sha256": "1366120b4bca6c9d2ebb68fde136fd97df08243715775bd6dd3d948f6fc24158"
+    },
+    {
+      "path": "src/questions/u5p5/presentation.ts",
+      "bytes": 1080,
+      "sha256": "53632d1b7f5028c36baa5de49ec5d29de72df357f53663bb3f37a74aa9f2b4cb"
+    },
+    {
+      "path": "tests/browser/selected-load-races.spec.ts",
+      "bytes": 4940,
+      "sha256": "60e22cefbd457003b9ed37ffcf15f6597b46a0425f9aa95fb1a90abe7bb14424"
+    },
+    {
+      "path": "tests/browser/u5p5-compact.spec.ts",
+      "bytes": 12127,
+      "sha256": "29ee69efe3f44c2781ff1a90c43edbb742b0f4fc5b32e41ac323b2e176fabf33"
+    },
+    {
+      "path": "tests/unit/network-policy.test.ts",
+      "bytes": 23946,
+      "sha256": "6a8dfb96b5f3c11407f17dc5f1d0ba67bca93c4177fce00a1e10de9957b066f5"
+    },
+    {
+      "path": "tests/unit/u5p5-model.test.ts",
+      "bytes": 5936,
+      "sha256": "74cf5bcbf43988a5af7b20850b0befbc2137c54b5a4ba6bb830408d062ae5785"
+    }
+  ],
+  "excludedSelf": "j10-files.json excludes its own hash",
+  "foremanOwnedFilesModified": false
+}

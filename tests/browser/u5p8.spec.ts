@@ -72,9 +72,9 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
     await page.setViewportSize(viewport);
     await openTeacher(page, route);
     await page.evaluate(() => document.fonts.ready);
-    await expect(page.locator('.u5p8-flask')).toBeVisible();
-    await expect(page.locator('.u5p8-flask')).toContainText('10.0 cm');
-    const dimensions = await page.locator('.u5p8-flask [data-dimension]').evaluateAll(paths => paths.map(path => {
+    await expect(page.locator('.u5p8-diagram')).toBeVisible();
+    await expect(page.locator('.u5p8-diagram')).toContainText('10.0 cm');
+    const dimensions = await page.locator('.u5p8-diagram [data-dimension]').evaluateAll(paths => paths.map(path => {
       const style = getComputedStyle(path);
       return { name: path.getAttribute('data-dimension'), separateLine: !/M.*M/.test(path.getAttribute('d') ?? ''),
         arrowAtStart: style.markerStart !== 'none', arrowAtEnd: style.markerEnd !== 'none' };
@@ -85,7 +85,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
       const pane = document.querySelector('.u5p8-brief')!;
       const check = document.querySelector('.check-button')!.getBoundingClientRect();
       const answer = document.querySelector('#u5p8-answer')!.getBoundingClientRect();
-      const diagram = document.querySelector('.u5p8-flask')!.getBoundingClientRect();
+      const diagram = document.querySelector('.u5p8-diagram')!.getBoundingClientRect();
       const paneRect = pane.getBoundingClientRect();
       return { pageFits: document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth,
         checkFits: check.bottom <= innerHeight && check.top >= 0, answerFits: answer.bottom <= innerHeight,

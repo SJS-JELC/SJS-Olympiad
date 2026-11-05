@@ -1,0 +1,257 @@
+{
+  "sourceCommit": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "captures": {
+    "1200": {
+      "id": "L6P5",
+      "text": "SCORE000000L6 · Problem 5TWIST AND BUMP As a molecule rotates about a single bond, it adopts a range of different conformations, some of which are more stable than others.For each of the molecules shown, consider the view along the indicated C–C bond from left to right (i.e. the front carbon is on the left). As the bond rotates, the back carbon turns clockwise relative to the front.Suggest the angle(s) of rotation that give the most and least stable conformations.CCClClHHHHClClHHHHMost StableConformation: 0°Least StableConformation: 180°OOHHHClClClClHHMost stableLeast stableMolecule 1 Most stableLeast stableMolecule 2 Most stableLeast stableMolecule 3 Most stableLeast stableCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and diagrams"
+        },
+        {
+          "tag": "svg",
+          "label": "Worked Newman projection example: view from left to right along the carbon–carbon bond, with the back carbon rotating clockwise. The most stable conformation is at 0 degrees and the least stable at 180 degrees."
+        },
+        {
+          "tag": "svg",
+          "label": "The three molecules to solve, corresponding to Molecules 1, 2 and 3 from left to right, with their indicated carbon–carbon bonds."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Least stable angle in degrees"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    "1920": {
+      "id": "L6P5",
+      "text": "SCORE000000L6 · Problem 5TWIST AND BUMP As a molecule rotates about a single bond, it adopts a range of different conformations, some of which are more stable than others.For each of the molecules shown, consider the view along the indicated C–C bond from left to right (i.e. the front carbon is on the left). As the bond rotates, the back carbon turns clockwise relative to the front.Suggest the angle(s) of rotation that give the most and least stable conformations.CCClClHHHHClClHHHHMost StableConformation: 0°Least StableConformation: 180°OOHHHClClClClHHMost stableLeast stableMolecule 1 Most stableLeast stableMolecule 2 Most stableLeast stableMolecule 3 Most stableLeast stableCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and diagrams"
+        },
+        {
+          "tag": "svg",
+          "label": "Worked Newman projection example: view from left to right along the carbon–carbon bond, with the back carbon rotating clockwise. The most stable conformation is at 0 degrees and the least stable at 180 degrees."
+        },
+        {
+          "tag": "svg",
+          "label": "The three molecules to solve, corresponding to Molecules 1, 2 and 3 from left to right, with their indicated carbon–carbon bonds."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Least stable angle in degrees"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "2560": {
+      "id": "L6P5",
+      "text": "SCORE000000L6 · Problem 5TWIST AND BUMP As a molecule rotates about a single bond, it adopts a range of different conformations, some of which are more stable than others.For each of the molecules shown, consider the view along the indicated C–C bond from left to right (i.e. the front carbon is on the left). As the bond rotates, the back carbon turns clockwise relative to the front.Suggest the angle(s) of rotation that give the most and least stable conformations.CCClClHHHHClClHHHHMost StableConformation: 0°Least StableConformation: 180°OOHHHClClClClHHMost stableLeast stableMolecule 1 Most stableLeast stableMolecule 2 Most stableLeast stableMolecule 3 Most stableLeast stableCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and diagrams"
+        },
+        {
+          "tag": "svg",
+          "label": "Worked Newman projection example: view from left to right along the carbon–carbon bond, with the back carbon rotating clockwise. The most stable conformation is at 0 degrees and the least stable at 180 degrees."
+        },
+        {
+          "tag": "svg",
+          "label": "The three molecules to solve, corresponding to Molecules 1, 2 and 3 from left to right, with their indicated carbon–carbon bonds."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Least stable angle in degrees"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 2560,
+        "height": 1440
+      }
+    }
+  }
+}

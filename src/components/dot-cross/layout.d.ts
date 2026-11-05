@@ -28,4 +28,4 @@ export interface Layout {
   regionData(anchor: ElectronRegion): ElectronRegion;
   regionKey(anchor: ElectronRegion | null): string;
 }
-export function createLayout(questionId?: string): Layout;
+export function createLayout(configuration?: {shellRadii?: Readonly<Record<string,number>>}): Layout;

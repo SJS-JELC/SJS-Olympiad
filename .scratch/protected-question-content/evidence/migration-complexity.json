@@ -1,0 +1,12 @@
+{
+  "purpose": "Prospective complexity allocation for the plan's 35% migration milestone; accepted content only earns credit. These are relative migration/review units, not elapsed-time or token estimates.",
+  "basis": "Baseline inventory: prose-only 1; scientific diagrams/structured data 2; grouping or multi-part scientific interaction 3; complex editor/timed/3D interaction 4; GC multiple scientific subcomponents 5. Practical protocol and fields 2 each. Shared L6P5 representative already belongs to J02's separate milestone.",
+  "totalUnits": 93,
+  "jobs": {
+    "J03": {"units":17,"content":{"L5P1":2,"L5P2":1,"L5P3":2,"L5P4":2,"L5P5":2,"L5P6":2,"L5P7":2,"L5P8":1,"L5P9":3}},
+    "J04": {"units":28,"content":{"U5P2":4,"U5P3":4,"U5P4":2,"U5P5":5,"U5P6":3,"U5P7":3,"U5P8":3,"U5P9":4}},
+    "J05": {"units":22,"content":{"L6P1":3,"L6P2":2,"L6P3":4,"L6P4":4,"L6P6":2,"L6P7":3,"L6P8":1,"L6P9":3}},
+    "J06": {"units":20,"content":{"U6P1":3,"U6P2":1,"U6P3":2,"U6P4":2,"U6P5":2,"U6P6":2,"U6P7":1,"U6P8":3,"U6P9":4}},
+    "J07": {"units":6,"content":{"L5-practical":2,"L6-practical":2,"U6-practical":2}}
+  }
+}

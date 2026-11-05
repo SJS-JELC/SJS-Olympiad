@@ -13,7 +13,7 @@ async function fixture(year,past=false){
 
  return {repo,api,staff,event,first,setTime:value=>time=value};
 }
-for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${past?'past':'future'} draft preserves real schedules, claims and results, bypassing only starts`,async()=>{
+for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${past?'past':'future'} draft preserves real schedules, claims and results, respecting starts and ends`,async()=>{
  const f=await fixture(year,past),player=await f.api.login({role:'competitor',code:'1234'}),state=player.state;
  assert.equal(state.practice,undefined);assert.equal(state.activeEvent.id,f.event.id);assert.equal(state.activeEvent.year,year);
  assert.equal(state.activeEvent.theoryStartsAt,f.event.theoryStartsAt);assert.equal(state.activeEvent.theoryEndsAt,f.event.theoryEndsAt);
@@ -30,18 +30,21 @@ for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${pas
  assert.equal((await f.api.teams(another.token)).teams.find(team=>team.id===f.first.id).claimed,true);
  await assert.rejects(f.api.claim(another.token,{teamId:f.first.id}),{status:409});
  const id=year==='U5'?'U5P6':'L6P8',answer=year==='U5'?'485':'0.437';
- const wrong=await f.api.submit(player.token,{questionId:id,requestId:'draft-wrong-0001',answers:{answer:'1'}});assert.equal(wrong.attempt.retryAt,year==='U5'?120000:115000);
+ await assert.rejects(f.api.question(player.token,{questionId:id}),{status:403});
+ f.setTime(500000);
+ const wrong=await f.api.submit(player.token,{questionId:id,requestId:'draft-wrong-0001',answers:{answer:'1'}});assert.equal(wrong.attempt.retryAt,year==='U5'?520000:515000);
  const blocked=await f.api.submit(player.token,{questionId:id,requestId:'early-correct-001',answers:{answer}});assert.equal(blocked.score,0);assert.equal(blocked.attempt.retryAt,wrong.attempt.retryAt);assert.equal(blocked.attempt.solvedAt,null);
- f.setTime(121000);const marked=await f.api.submit(player.token,{questionId:id,requestId:'draft-correct-001',answers:{answer}});assert.equal(marked.score,year==='U5'?2:3);
- const persisted=await f.repo.get(f.event.id+'-'+f.first.id,'q-'+id);assert.equal(persisted.state.solvedAt,121000);assert.deepEqual(persisted.state.answers,{});
+ f.setTime(521000);const marked=await f.api.submit(player.token,{questionId:id,requestId:'draft-correct-001',answers:{answer}});assert.equal(marked.score,year==='U5'?2:3);
+ const persisted=await f.repo.get(f.event.id+'-'+f.first.id,'q-'+id);assert.equal(persisted.state.solvedAt,521000);assert.deepEqual(persisted.state.answers,{});
  assert.equal((await f.api.leaderboard(f.staff)).rows[0].score,marked.score);
  if(year==='U5')await assert.rejects(f.api.practical(player.token),{status:404});
  else{
+  await assert.rejects(f.api.practical(player.token),{status:403});f.setTime(700000);
   assert.equal((await f.api.practical(player.token)).readOnly,false);
   const saved=await f.api.practicalSave(player.token,{requestId:'draft-practical-001',expectedRevision:0,changes:{numPracticalResponse3:'12.34'}});assert.equal(saved.responses.numPracticalResponse3.text,'12.34');
  }
  await f.api.eventUpdate(f.staff,{eventId:f.event.id,expectedRevision:1,name:'Draft revised'});
- const restarted=createService(f.repo,{},()=>121000);assert.equal((await restarted.session(player.token)).score,marked.score);
+ const restarted=createService(f.repo,{},()=>521000);assert.equal((await restarted.session(player.token)).score,marked.score);
  const locked=await restarted.breach(player.token,{expectedEpoch:started.competition.epoch,requestId:'draft-breach-001'});assert.equal(locked.competition.status,'LOCKED');
  await assert.rejects(restarted.submit(player.token,{questionId:id,requestId:'locked-draft-001',answers:{answer}}),{status:423});
  const recovery=await restarted.recovery(player.token,{code:'5678',expectedEpoch:locked.competition.epoch});
@@ -49,7 +52,7 @@ for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${pas
  await assert.rejects(restarted.session(player.token,{restore:true}),{status:401});
  const fresh=await restarted.login({role:'competitor',code:'1234'});await assert.rejects(restarted.claim(fresh.token,{teamId:f.first.id}),{status:409});
  await restarted.teamRelease(f.staff,{eventId:f.event.id,teamId:f.first.id,confirm:true});
- await restarted.claim(fresh.token,{teamId:f.first.id});const resumed=await restarted.start(fresh.token);assert.equal(resumed.score,marked.score);assert.equal(resumed.hydration.questions[id].attempt.solvedAt,121000);assert.deepEqual(resumed.hydration.questions[id].attempt.answers,{});
+ await restarted.claim(fresh.token,{teamId:f.first.id});const resumed=await restarted.start(fresh.token);assert.equal(resumed.score,marked.score);assert.equal(resumed.hydration.questions[id].attempt.solvedAt,521000);assert.deepEqual(resumed.hydration.questions[id].attempt.answers,{});
  f.setTime(600000);await assert.rejects(f.api.question(fresh.token,{questionId:id}),{status:403});
  if(year==='L6'){f.setTime(800000);await assert.rejects(f.api.practicalSave(fresh.token,{requestId:'ended-practical-001',expectedRevision:1,changes:{numPracticalResponse3:'20'}}),{status:403});}
 });
@@ -60,7 +63,7 @@ test('removed roster rows stay absent and an empty draft has no invented teams',
 });
 
 for(const activity of ['wrong','correct','timed','none'])test(`draft deletion preserves submitted ${activity} activity and fences claims`,async()=>{
- const f=await fixture('L6'),player=await f.api.login({role:'competitor',code:'1234'});await f.api.claim(player.token,{teamId:f.first.id});await f.api.start(player.token);
+ const f=await fixture('L6'),player=await f.api.login({role:'competitor',code:'1234'});await f.api.claim(player.token,{teamId:f.first.id});await f.api.start(player.token);f.setTime(500000);
  if(activity==='timed')await f.api.action(player.token,{questionId:'L6P3',requestId:'draft-timed-0001',action:{type:'start'}});
  else if(activity!=='none')await f.api.submit(player.token,{questionId:'L6P8',requestId:'draft-mark-0001',answers:{answer:activity==='correct'?'0.437':'1'}});
  const result=await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:f.first.id,teamName:'Alpha',requestId:'draft-delete-001',confirm:true});

@@ -23,8 +23,8 @@ describe('complete question registry', () => {
     }
     for (const [number, points] of [[2,1],[3,1],[4,1],[5,2],[6,2],[7,2],[8,3],[9,3]]) expect(findQuestion('U5',number)?.definition.points).toBe(points);
     for (const number of [1]) expect(findQuestion('U5',number)).toBeUndefined(); expect(findQuestion('EXAMPLE',0)).toBeUndefined();
-    expect(findQuestion('U5',9)?.definition.title).toBe('Cut and Shut');
-    expect(findQuestion('U5',8)?.definition.title).toBe('Boundaries');
+    expect(findQuestion('U5',9)?.definition.title).toBe('Question 9');
+    expect(findQuestion('U5',8)?.definition.title).toBe('Question 8');
   });
   // L6P8's private marking fixtures run in api/tests/service.test.mjs.
   for(const entry of questionCatalog.filter(e=>!['L5P9','L6P1','L6P3','U5P5','U5P7'].includes(e.definition.id))) {

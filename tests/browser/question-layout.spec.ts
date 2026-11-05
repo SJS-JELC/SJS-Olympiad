@@ -101,12 +101,12 @@ competitor('timed naming focuses on GO and preserves run, wrong, timeout and sol
   await go.click();
   await expect(input).toBeFocused();
   for(let step=0;step<5;step++) {
-    const formula=await page.locator('.l6p3-formula').getAttribute('aria-label');
+    const formula=await page.locator('.l6p3-prompt-display').getAttribute('aria-label');
     const prompt=oxyanions.find((item:{formula:string;name:string})=>item.formula===formula);
     expect(prompt).toBeTruthy();
     await input.fill(prompt!.name);
     await input.press('Enter');
-    if(step<4) await expect(page.locator('.l6p3-formula')).not.toHaveAttribute('aria-label',formula!);
+    if(step<4) await expect(page.locator('.l6p3-prompt-display')).not.toHaveAttribute('aria-label',formula!);
   }
   await expect(page.locator('.question-score output')).toHaveAttribute('aria-label','Score: 01');
   await expect(input).toBeDisabled();

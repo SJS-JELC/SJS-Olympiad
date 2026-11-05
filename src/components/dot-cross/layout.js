@@ -1,16 +1,13 @@
 /* Checked pure pair layout extracted from source renderer; no DOM drawing or global question state. */
-export function createLayout(questionId = '') {
+export function createLayout(configuration = {}) {
   const angles = [-100, -80, -10, 10, 80, 100, 170, 190],
     EPSILON = 1e-7,
     PAIR_HALF_ANGLE = (9 * Math.PI) / 180;
   function shellRadius(atom) {
     const element = typeof atom === 'string' ? atom : atom.element;
-    return (questionId === 'phosphorus-pentachloride' && element === 'P') ||
-      (questionId === 'sulfur-hexafluoride' && element === 'S')
-      ? 100
-      : element === 'H'
+    return configuration.shellRadii?.[element] ?? (element === 'H'
         ? 40
-        : 54;
+        : 54);
   }
   function bondDistance(a, b) {
     return shellRadius(a) + shellRadius(b) - 24;

@@ -1,3 +1,4 @@
+import { requirePresentation, presentedDefinition, type PresentationPayload } from '../../contracts/presentation';
 import type { QuestionViewProps } from '../catalog';
 import { AnswerInput } from '../AnswerInput';
 import { QuestionAnswerForm } from '../QuestionAnswerForm';
@@ -6,24 +7,26 @@ import { CubaneModel } from './CubaneModel';
 import './U5Problem6.css';
 
 /** Content only: the router supplies QuestionShell and QuestionGate. */
-export function U5Problem6({ attempt, onAction }: QuestionViewProps) {
+export interface CubanePresentation extends PresentationPayload {renderer:'U5P6';paragraphs:string[];initialAngles:{yaw:number;pitch:number};atoms:{id:string;element:string;position:import('./cubaneGeometry').Vec3}[];bonds:[number,number][];modelLabel:string;modelTitle:string;answerLabel:string;unit:string;dragHint:string;}
+export function U5Problem6({ attempt, onAction, presentation }: QuestionViewProps) {
+ const {record:{presentation:content}}=requirePresentation<CubanePresentation>(presentation,'U5P6');
   return <div className="question-content question-content--aligned u5p6-question" data-testid="u5p6-content">
     <section className="question-brief" aria-label="Question">
       <div className="u5p6-prompt">
-        <p className="type-body">The molecule shown, C₈H₈, is called cubane, for fairly obvious reasons.</p>
-        <p className="type-body">C–C bonds are 154 pm long and C–H bonds are 109 pm.</p>
-        <p className="type-body">Calculate the greatest possible distance between any two hydrogen atoms in a molecule of cubane.</p>
-        <p className="type-body">Give your answer to the nearest pm.</p>
+        <p className="type-body">{content.paragraphs[0]}</p>
+        <p className="type-body">{content.paragraphs[1]}</p>
+        <p className="type-body">{content.paragraphs[2]}</p>
+        <p className="type-body">{content.paragraphs[3]}</p>
       </div>
       <figure className="u5p6-diagram">
-        <CubaneModel />
+        <CubaneModel content={content} />
       </figure>
     </section>
-    <QuestionAnswerForm definition={u5p6} attempt={attempt} onAction={onAction}>
+    <QuestionAnswerForm definition={presentedDefinition(u5p6,content)} attempt={attempt} onAction={onAction}>
       {({ disabled, onEdit }) => <label className="u5p6-answer type-label" htmlFor="u5p6-answer">
-        <span className="sr-only">Greatest hydrogen separation in pm</span>
+        <span className="sr-only">{content.answerLabel}</span>
         <AnswerInput id="u5p6-answer" name="answer" value={attempt.answers.answer ?? ''}
-          inputMode="decimal" maxLength={8} unit="pm" disabled={disabled}
+          inputMode="decimal" maxLength={8} unit={content.unit} disabled={disabled}
           onValueChange={value => onEdit('answer', value)} />
       </label>}
     </QuestionAnswerForm>

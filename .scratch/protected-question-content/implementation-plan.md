@@ -1,6 +1,6 @@
 # Implementation and delegation plan
 
-Status: Planned; not executing.
+Status: Complete locally and accepted by root after independent reviews/rechecks. No deployment authorised or performed.
 
 Authority: user requested an exact implementation plan with delegation. This document refines [the specification](spec.md); it does not authorise deployment. The existing implementation ticket is the parent delivery ticket. On execution, materialise the jobs below as numbered child tickets using the local tracker conventions, without another design round unless new consequential decisions arise.
 

@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { productGraphs } from '../../src/questions/u5p7/productGraphs';
+import type {CutPresentation} from '../../src/questions/u5p7/U5Problem7';
+// @ts-expect-error Node-only protected scientific reference.
+import {u5p9Presentation} from '../../api/src/presentation/records/u5p9.mjs';
+const productGraphs=(u5p9Presentation.presentation as CutPresentation).graphs;
 import source from '../../src/questions/u5p7/assets/ozonolysis-products.source.json';
 import { core } from '../../src/chemistry/molecule/engine';
 import { labelFor } from '../../src/chemistry/molecule/depiction';

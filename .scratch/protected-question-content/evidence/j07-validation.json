@@ -1,0 +1,89 @@
+{
+  "profile": "protected-j07",
+  "baseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "api": {
+    "passed": 48,
+    "failed": 0,
+    "files": [
+      "api/tests/practical.test.mjs",
+      "api/tests/event-timing.test.mjs",
+      "api/tests/protected-practical.test.mjs",
+      "api/tests/protected-content.test.mjs"
+    ]
+  },
+  "unit": {
+    "passed": 37,
+    "failed": 0,
+    "files": [
+      "tests/unit/practical.test.ts",
+      "tests/unit/event-timing.test.ts",
+      "tests/unit/content-gating.test.ts"
+    ]
+  },
+  "contracts": {
+    "passed": 13,
+    "failed": 0,
+    "file": "tests/node/content-store.test.cjs"
+  },
+  "browser": {
+    "passed": 20,
+    "failed": 0,
+    "files": [
+      "tests/browser/practical.spec.ts",
+      "tests/browser/protected-practical.spec.ts"
+    ],
+    "browser": "installed Chrome",
+    "seconds": 59.0
+  },
+  "build": {
+    "passed": true,
+    "stages": [
+      "registry validation",
+      "engine sync",
+      "typography",
+      "TypeScript",
+      "Vite",
+      "private boundary",
+      "representative protected boundary"
+    ]
+  },
+  "parity": {
+    "records": 3,
+    "viewports": [
+      [
+        1200,
+        800
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        2560,
+        1440
+      ]
+    ],
+    "checks": 9,
+    "exact": [
+      "DOM text",
+      "aria labels",
+      "image alt/completion",
+      "page bounds"
+    ],
+    "exception": "Protected Mohr PNG intrinsic dimensions 1234x1328 replace SVG natural dimensions139x150; original displayed154.24:166.05 aspect is retained. Pixel identity is not claimed.",
+    "screenshots": [
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j07\\test-results\\protected-practical-all-th-80622-ria-and-page-bounds-at-1920-chromium",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j07\\test-results\\protected-practical-all-th-a74e3-ria-and-page-bounds-at-2560-chromium",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j07\\test-results\\protected-practical-all-th-eaf01-ria-and-page-bounds-at-1200-chromium"
+    ],
+    "visuallyInspected": [
+      "baseline/current at all 3 sizes for all 3 practicals",
+      "protocol top/end at all 3 sizes for all 3 practicals"
+    ]
+  },
+  "limits": [
+    "Local only; no cloud/deployment/live data",
+    "Independent J09 and integrated J08 audit/load validation remain",
+    "Existing prior public copies cannot be retracted"
+  ]
+}

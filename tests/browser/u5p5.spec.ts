@@ -15,9 +15,13 @@ async function runSample(page: import('@playwright/test').Page, sample: keyof ty
 }
 const printout=(page:import('@playwright/test').Page,sample:keyof typeof sampleNames)=>page.locator('.gc-printout').filter({hasText:sampleNames[sample]});
 async function openPrintout(page: import('@playwright/test').Page, sample: keyof typeof sampleNames) {
+  // Closing a native dialog queues its close/focus restoration event. Finish
+  // that event before focusing another overlapping report.
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   const report = printout(page,sample);
   // Reports overlap deliberately. Keyboard movement raises the chosen report before opening it.
   await report.focus();
+  await expect(report).toBeFocused();
   await page.keyboard.press('ArrowLeft');
   await report.getByRole('button',{name:/^Enlarge run /}).click();
   await expect(page.getByRole('dialog')).toBeVisible();

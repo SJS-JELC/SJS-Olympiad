@@ -127,8 +127,8 @@ for (const reason of ['blur', 'hidden', 'fullscreen'] as const) competitor(`draw
 test('displayed polymer and drawing canvas fit landscape and zoomed viewports', async ({ page }, testInfo) => {
   for (const [width, height] of [[1200, 800], [1440, 810], [960, 640]]) {
     await page.setViewportSize({ width, height }); await openTeacher(page, route); await page.evaluate(() => document.fonts.ready);
-    await expect(page.locator('.u5p3-polymer svg')).toBeVisible();
-    await expect(page.locator('.u5p3-polymer img')).toHaveCount(0);
+    await expect(page.locator('.u5p3-diagram svg')).toBeVisible();
+    await expect(page.locator('.u5p3-diagram img')).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight)).toBe(true);
     const area = (await canvas(page).boundingBox())!, check = (await page.locator('.check-button').boundingBox())!;
     expect(area.height).toBeGreaterThan(height * .18);

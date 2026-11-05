@@ -1,0 +1,1523 @@
+{
+  "sourceBaseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "comparisons": [
+    {
+      "id": "L5-practical",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5-practical.png",
+      "baselineSha256": "5ace5caf22b45836bc6e63a481b349cc3ae3ca954e0853507ed715cb7253faa3",
+      "currentSha256": "ebcc81842ebb1108cf2c949cf37dbe0d168bd008a20c682a4655fd379292ab2d",
+      "meanAbsoluteRGB": 0.3534069444444445,
+      "changedPixelsThreshold12": 4668
+    },
+    {
+      "id": "L5P1",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P1.png",
+      "baselineSha256": "ae9b3d03c4ee4d2b8c37b980858dc1afc484ab72f98467a78f7f2804562e89ea",
+      "currentSha256": "ff09ead9cfcda8e3d4ea60c8ef423a15194a83940cff015c61f8d52ec66eaead",
+      "meanAbsoluteRGB": 0.6124604166666666,
+      "changedPixelsThreshold12": 9783
+    },
+    {
+      "id": "L5P2",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P2.png",
+      "baselineSha256": "67f20711044be31da83e96b9520aebd9fa13f4a1810ded86aaeff6786150e002",
+      "currentSha256": "571f0ef2f58a576e0992542829e863c3f8f877aecabc98e35eec384dd76a2cf3",
+      "meanAbsoluteRGB": 0.35006354166666664,
+      "changedPixelsThreshold12": 1950
+    },
+    {
+      "id": "L5P3",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P3.png",
+      "baselineSha256": "166d93b6b1d72df34f1cf2fdaec34feef7ca560ec496b216609807f8c4a8a5ba",
+      "currentSha256": "195708ff4d7dd9d2dc1a6ad0b6c4710566ce3c2598bf1d8c95e0decf4e38ab1f",
+      "meanAbsoluteRGB": 0.34438437499999996,
+      "changedPixelsThreshold12": 4284
+    },
+    {
+      "id": "L5P4",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P4.png",
+      "baselineSha256": "102d0ac4e10eb83fcfabdbe445cbd21789f63a0478b7d9467cc4c2cf24c9f673",
+      "currentSha256": "f2632be5104536d82c20e93391f4dfe407bc3b9e77525b33e4ce83fdf2c7cc7d",
+      "meanAbsoluteRGB": 0.33895000000000003,
+      "changedPixelsThreshold12": 811
+    },
+    {
+      "id": "L5P5",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P5.png",
+      "baselineSha256": "12c76de0c305e58de30563ea7d2be2d71464fb174c3ad7d9a1fab8e3f5b3e8ab",
+      "currentSha256": "32622c43c59ba782b9efdf23404c3c86e837c896961497600e2a890887deea46",
+      "meanAbsoluteRGB": 0.39635173611111113,
+      "changedPixelsThreshold12": 5910
+    },
+    {
+      "id": "L5P6",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P6.png",
+      "baselineSha256": "f807e13673981c7c73683a6949cf74ec4b456ea69d5d357fe81f8521775abcb4",
+      "currentSha256": "725347bff9691ffb37f0c0ecc6b9a98a8e681f61249d5a93921aaa7870a6d846",
+      "meanAbsoluteRGB": 0.3834565972222222,
+      "changedPixelsThreshold12": 5348
+    },
+    {
+      "id": "L5P7",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P7.png",
+      "baselineSha256": "2e8dbcaa44622dddaa7f720070240dce791a6cfbfd840fe1e3bf50f14110c519",
+      "currentSha256": "d8b8db6e13585a783279133a7686289585cd1dc78f3a2e99eabb6fbfcc6124cf",
+      "meanAbsoluteRGB": 0.4270215277777778,
+      "changedPixelsThreshold12": 8292
+    },
+    {
+      "id": "L5P8",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P8.png",
+      "baselineSha256": "5bae61ca4f44d40ed66805376958bbd2ca37d917e5596b79426765b33925900f",
+      "currentSha256": "b690f8c7387f104a64a46719fd3a6d511ae28d9960ec5ba67a164ec3e3e9594f",
+      "meanAbsoluteRGB": 0.364784375,
+      "changedPixelsThreshold12": 1949
+    },
+    {
+      "id": "L5P9",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L5P9.png",
+      "baselineSha256": "8eb1a5e5257087777a5f5988204bfd64e12672d8a728fec84c6431c286cb26a4",
+      "currentSha256": "b94ffbd50264b880242846af7494ac41f463d299d2b61553716ee64d4e7d4aa6",
+      "meanAbsoluteRGB": 0.4054479166666667,
+      "changedPixelsThreshold12": 8096
+    },
+    {
+      "id": "L6-practical",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6-practical.png",
+      "baselineSha256": "8007c6c9aba748540d621e3810b0cfacf51801229e21b53cb7dee2babd228eda",
+      "currentSha256": "47b99f0af8cde81fe8157ad81a0f0ee85672ad3555fc981bc8d0ef971d3affd8",
+      "meanAbsoluteRGB": 0.28572881944444445,
+      "changedPixelsThreshold12": 3302
+    },
+    {
+      "id": "L6P1",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P1.png",
+      "baselineSha256": "17971e078878e07bd45f791242a443642f04f3529562290cd6127e90d4b3da86",
+      "currentSha256": "39c0f8f4930dd0a31a6e58db96b578ae3cedee9d1085ef33f4a7dd0209d68075",
+      "meanAbsoluteRGB": 0.32450659722222225,
+      "changedPixelsThreshold12": 5692
+    },
+    {
+      "id": "L6P2",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P2.png",
+      "baselineSha256": "e94895c5e9696f52d64d918dc00623b50243a81f3790d172fad9b1f404fbad14",
+      "currentSha256": "76321e535a6d457948d42305a09c7733106b7d9a98db07e323e9522fcdf6fdb0",
+      "meanAbsoluteRGB": 0.3527034722222222,
+      "changedPixelsThreshold12": 1949
+    },
+    {
+      "id": "L6P3",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P3.png",
+      "baselineSha256": "29891df92948b30dd85653dc5482e51485647a4824316b7442ce00d3af7f420d",
+      "currentSha256": "1bf4c7e58eee133e2b650d3b8177e6ad24353a11d02d32b7967326826266a1f8",
+      "meanAbsoluteRGB": 0.35223333333333334,
+      "changedPixelsThreshold12": 1479
+    },
+    {
+      "id": "L6P4",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P4.png",
+      "baselineSha256": "3b2647f9e9a6701ec6a62cc07ad16b816063b875caac0d66f71064a897643dfa",
+      "currentSha256": "160d1dffb6eed316417f65cafaac41081e17038e71e00d33bec6afa610c369cb",
+      "meanAbsoluteRGB": 0.6208354166666666,
+      "changedPixelsThreshold12": 14191
+    },
+    {
+      "id": "L6P5",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P5.png",
+      "baselineSha256": "352ad79a7993a21d8acbe049fae57b9ac722e46494649e82bf87646e107b58da",
+      "currentSha256": "9d447e9bb826046aabe1bb465c3f4072d92091599252bb5ccc06f6af0fdf8618",
+      "meanAbsoluteRGB": 0.36564444444444444,
+      "changedPixelsThreshold12": 4959
+    },
+    {
+      "id": "L6P6",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P6.png",
+      "baselineSha256": "b4b35f081e2a646fafa6051818ca715016df01abfbc5237c614b87536586217d",
+      "currentSha256": "487bb81a5a1ce2494933e7d2c8e4f0c9ccca4b3ad254e3f104c0cc2a391f4d5b",
+      "meanAbsoluteRGB": 0.3029899305555555,
+      "changedPixelsThreshold12": 1948
+    },
+    {
+      "id": "L6P7",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P7.png",
+      "baselineSha256": "950da4b7aecbde15a29b5b090b90a2fce966635edd5b974a0f32148ef1e56513",
+      "currentSha256": "b81002739dcbb41cd7739776df15ad13a3bc7483f4c98ace1b57d3a9216b9e5a",
+      "meanAbsoluteRGB": 0.34646493055555555,
+      "changedPixelsThreshold12": 4626
+    },
+    {
+      "id": "L6P8",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P8.png",
+      "baselineSha256": "336d1fb99e612853ca800a964ac2bccf5da3a94c8ced105d20e5bdc162efec35",
+      "currentSha256": "eb62788aa23a30ee5a776c331ca1e0a4074fde9c6122cb69b9995a70e1ee37fe",
+      "meanAbsoluteRGB": 0.40203090277777775,
+      "changedPixelsThreshold12": 1949
+    },
+    {
+      "id": "L6P9",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-L6P9.png",
+      "baselineSha256": "535a9c49dde9eb12d7f566d151aa10888db2ceb20149c1677a6b3f974fb6cf45",
+      "currentSha256": "49e76879a82e181f8e3ad127ab0efe1bc65b52f1418a494eb3e1bcbcf1d118a7",
+      "meanAbsoluteRGB": 0.33284270833333335,
+      "changedPixelsThreshold12": 3920
+    },
+    {
+      "id": "U5P2",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P2.png",
+      "baselineSha256": "18dac96eee753e005998cc0c4774174e84c40747a9f1c43b9165c153b688f151",
+      "currentSha256": "064f6e1ebf94f144135c70771cc295e2022c4ae40eae3fd3e0cf4501a2bee4c4",
+      "meanAbsoluteRGB": 0.2535236111111111,
+      "changedPixelsThreshold12": 2211
+    },
+    {
+      "id": "U5P3",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P3.png",
+      "baselineSha256": "c20827963bcd68aa3364751b154dd7bb4f7d49f0a6783cd97b3dfe13d91d3f47",
+      "currentSha256": "1d363174464b90b6f4c98fa1392e5e0d22a0b35ebab1956dd7b081c938ac25a6",
+      "meanAbsoluteRGB": 0.26952916666666665,
+      "changedPixelsThreshold12": 3450
+    },
+    {
+      "id": "U5P4",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P4.png",
+      "baselineSha256": "61d96b310768f40aca2b27ead1df2dbb084c93c8444df56c34bc9ee5dd3578c0",
+      "currentSha256": "d9867604f836221d69df87567ed34d99d6f3f7bf8d39bb119cd61c5264598cf0",
+      "meanAbsoluteRGB": 0.32346423611111114,
+      "changedPixelsThreshold12": 1969
+    },
+    {
+      "id": "U5P5",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P5.png",
+      "baselineSha256": "07a59e26002c813040b939cd534d12c8a77efc95b7033a2b8ab5e94998651dff",
+      "currentSha256": "475f6d747253cc3bcbfd6e11f222aab16946e2de854ac6044873684ae21e6b0a",
+      "meanAbsoluteRGB": 0.3927555555555555,
+      "changedPixelsThreshold12": 2868
+    },
+    {
+      "id": "U5P6",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P6.png",
+      "baselineSha256": "02c260ba5860d489765351f6ce3161c6c9ee6a29ac2313b6ed559915a7e2d910",
+      "currentSha256": "7f0cd5d7dd1a6886538cae541b52b8674a434d8e27d785c9db8dbc3d2a8a7372",
+      "meanAbsoluteRGB": 0.29441979166666665,
+      "changedPixelsThreshold12": 2061
+    },
+    {
+      "id": "U5P7",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P7.png",
+      "baselineSha256": "bebb4bfe2105e04449b0d9a7610c9c0c18a58025625c426fc1800592e3b218d4",
+      "currentSha256": "b3a5872082d7a98653f37653708b968b11cf5ea7bfc3b66287b67643e491c94e",
+      "meanAbsoluteRGB": 0.23933020833333332,
+      "changedPixelsThreshold12": 3001
+    },
+    {
+      "id": "U5P8",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P8.png",
+      "baselineSha256": "3e4be8280c41b986bfded3bf9a51122d870734a29498b4a8fa2b49129720cadc",
+      "currentSha256": "54dc200c7f256a2eb3fee4cbfb4ad1868d0c7598f8d3b8102a839f14c6b13024",
+      "meanAbsoluteRGB": 0.32960972222222223,
+      "changedPixelsThreshold12": 3702
+    },
+    {
+      "id": "U5P9",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U5P9.png",
+      "baselineSha256": "ffe5872f744d4fb960b99c38f15c1d4d4a53027370de9fa87f0251569fc0c66c",
+      "currentSha256": "2ce25aade7c8098576ef3dea75d545bd69bcd487abd6a4a13c3c8f76161f1567",
+      "meanAbsoluteRGB": 0.2628173611111111,
+      "changedPixelsThreshold12": 3125
+    },
+    {
+      "id": "U6-practical",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6-practical.png",
+      "baselineSha256": "489345056273c889125f1281a9619344c199525d68ab83e4accbdaa7806bf559",
+      "currentSha256": "776e52782ffb9ba78c989901d7b04b66fc3c7e6c8767cf44088b60a257cb9041",
+      "meanAbsoluteRGB": 0.26339583333333333,
+      "changedPixelsThreshold12": 1381
+    },
+    {
+      "id": "U6P1",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P1.png",
+      "baselineSha256": "6cfe38bd4e0fbc8d78960ef5853dc0a511e9333958e4e0372c78bb9681b568ab",
+      "currentSha256": "90c47dc1bb11ba1a3dcad6ff99f38dbaa33ad26580819a30e8519ab70e968694",
+      "meanAbsoluteRGB": 0.33877951388888894,
+      "changedPixelsThreshold12": 4131
+    },
+    {
+      "id": "U6P2",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P2.png",
+      "baselineSha256": "a8bf7bf20886fbc0e3b162ad1ddd0a394a0d81c86b8aea00d1d8c53b1a4a6dce",
+      "currentSha256": "f80d633e7b5d2c936fe150bdf2dd328c3b044555eec7a2fe8d5087c8ea209b54",
+      "meanAbsoluteRGB": 0.361109375,
+      "changedPixelsThreshold12": 1949
+    },
+    {
+      "id": "U6P3",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P3.png",
+      "baselineSha256": "33cc580dfea972c6e856b61cd75fa98811d53028f82f8808ecb1d737c8ae4e35",
+      "currentSha256": "aa43e6038259c387be3eb1288c1d8e61e80788e13e62863ab411fbf11c25c25c",
+      "meanAbsoluteRGB": 0.3084166666666667,
+      "changedPixelsThreshold12": 3201
+    },
+    {
+      "id": "U6P4",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P4.png",
+      "baselineSha256": "5cda29d51af94270a44d20392ac6ee2ab4ec7f44d38d0e3b7592c989cd8da454",
+      "currentSha256": "456bd4d3b596198666173d5b2cf3d2c3a2aa515cc4dfd7334c1ec2e0ca80cba2",
+      "meanAbsoluteRGB": 0.4290364583333333,
+      "changedPixelsThreshold12": 6763
+    },
+    {
+      "id": "U6P5",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P5.png",
+      "baselineSha256": "c105e1b6e1e5af45651f300bc6ca4f362a3344d756f36b9b1eb713f23eff07cd",
+      "currentSha256": "539c5cb8423656310b4cd4baa42a25652992a294b30fd4f81f7a391189b7a2a8",
+      "meanAbsoluteRGB": 0.3176465277777778,
+      "changedPixelsThreshold12": 3102
+    },
+    {
+      "id": "U6P6",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P6.png",
+      "baselineSha256": "02b1bc6af4a65ec3f3e86e60bd6495b5de8b4b7fb4f953818d7d92e0f8449c61",
+      "currentSha256": "50234aa0b345f6c24ca8ca30a37b8b6f05246cf5775ed3dae652ca2147f357bf",
+      "meanAbsoluteRGB": 0.3834416666666667,
+      "changedPixelsThreshold12": 1949
+    },
+    {
+      "id": "U6P7",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P7.png",
+      "baselineSha256": "34b77f4d67da82298d10ddfc356333fa0d874c62146de5a8d851312d0813c38b",
+      "currentSha256": "523276ba73bed73e01563e96b3f41f34822f193a02e7ab16b212420b6056c0db",
+      "meanAbsoluteRGB": 0.34576215277777783,
+      "changedPixelsThreshold12": 1950
+    },
+    {
+      "id": "U6P8",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P8.png",
+      "baselineSha256": "2acdcdf03bc3a89102feb5b2650db7800c1186c56c6a3ba2135a0b59c663d1cc",
+      "currentSha256": "96bed283bf998e529460877b4c167b992d5747cc8afc60e7784c214dc5766d20",
+      "meanAbsoluteRGB": 0.3000510416666667,
+      "changedPixelsThreshold12": 4530
+    },
+    {
+      "id": "U6P9",
+      "viewport": [
+        1200,
+        800
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j10-final-U6P9.png",
+      "baselineSha256": "252196ada47729e929a23b56f8f35a7dcf64814c3b02c47afb2354a6677e9aa2",
+      "currentSha256": "c04fd6c489b301fb6cbe67d208913041f71ce9be59ae73965b74dd0980ec854c",
+      "meanAbsoluteRGB": 0.2554486111111111,
+      "changedPixelsThreshold12": 2015
+    },
+    {
+      "id": "L5-practical",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5-practical.png",
+      "baselineSha256": "a20bc7c8bf6ebfba8772d4340b12218d9209a5224df0b043415a038e660e13a4",
+      "currentSha256": "1fff54cff93e7369891b36b7185b92355ad28826df8e0c342f19ce21036ca42a",
+      "meanAbsoluteRGB": 0.2606336805555556,
+      "changedPixelsThreshold12": 4810
+    },
+    {
+      "id": "L5P1",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P1.png",
+      "baselineSha256": "aebc0ac2403dd8fb4445d59507b8842313397e6f7bc5c0de732588f631d03514",
+      "currentSha256": "d915fd134dce9d134e57b04adba41a5e1f4d64d1e1e2702299b12d9bb74e9279",
+      "meanAbsoluteRGB": 0.5518034657921811,
+      "changedPixelsThreshold12": 15967
+    },
+    {
+      "id": "L5P2",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P2.png",
+      "baselineSha256": "36b46d6f3d643489101745c46316bad5d5741f5135ac4117c99b494f57c208c5",
+      "currentSha256": "fc4e5d7d0e1bfcc4a2e864040d422abbce3c34305c685547f5ef922b9b55f109",
+      "meanAbsoluteRGB": 0.34784272119341564,
+      "changedPixelsThreshold12": 2742
+    },
+    {
+      "id": "L5P3",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P3.png",
+      "baselineSha256": "3acda00038bc18efd57889272e788bb97b2a68f3a4773cee8d8d9636777424ac",
+      "currentSha256": "d2ecc7211803ebd7ea3a480e4fa58ef9d97b0a4d12397ea57e952e357e201b6d",
+      "meanAbsoluteRGB": 0.29865885416666665,
+      "changedPixelsThreshold12": 5994
+    },
+    {
+      "id": "L5P4",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P4.png",
+      "baselineSha256": "f67a3359e66ca999a7abe3d76e696b8000766a65c5a6864e6f01904adda051c5",
+      "currentSha256": "a8ea3b5c226e21e2131c27c27963ba2e049309e52c1c07c721ac8a63ef21ec71",
+      "meanAbsoluteRGB": 0.3494828639403292,
+      "changedPixelsThreshold12": 1288
+    },
+    {
+      "id": "L5P5",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P5.png",
+      "baselineSha256": "8f44955622ac689a738afe2069ed465e6f2b73990ff18bab6f1bf8d9042c3579",
+      "currentSha256": "9242d79471a994b557c89b93086e735e874a10f9d1c02828627bc2f7e9de171f",
+      "meanAbsoluteRGB": 0.3496521347736626,
+      "changedPixelsThreshold12": 9364
+    },
+    {
+      "id": "L5P6",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P6.png",
+      "baselineSha256": "e824900c946ddb715c6543aeb72a3c3d80787f541ec05f2535a5e00cefe4eabd",
+      "currentSha256": "fd1830287d7a220403f99654957da4e4aaf325c73b6fc465f484cb32f844e612",
+      "meanAbsoluteRGB": 0.34855420524691355,
+      "changedPixelsThreshold12": 8846
+    },
+    {
+      "id": "L5P7",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P7.png",
+      "baselineSha256": "ca6b6f2b915a96cbba56f0a29e876a033b5409ce4cc03d00f5f89652ffd6f6ee",
+      "currentSha256": "5b4601140f20288c500a9becc0b438ea6850173c15e6dcd30f2b6e38141d0613",
+      "meanAbsoluteRGB": 0.39314155735596706,
+      "changedPixelsThreshold12": 14282
+    },
+    {
+      "id": "L5P8",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P8.png",
+      "baselineSha256": "c3c848b53d06a846932ff2fe36b98b217fec7e0b8dc0be61878a78724150040c",
+      "currentSha256": "3915b8dbb80d4fb9c0b216e1e3810a23375dd982aa555f6a7d9c036eb9e36ab9",
+      "meanAbsoluteRGB": 0.36158982767489717,
+      "changedPixelsThreshold12": 2742
+    },
+    {
+      "id": "L5P9",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L5P9.png",
+      "baselineSha256": "92d909eb2f50675c14788be20264e730b1e53a870d40e126e4451b1fd137095d",
+      "currentSha256": "4572e681d591d7821ef983ab490168536cab26748e0ce500ac14ec0c07124742",
+      "meanAbsoluteRGB": 0.31624276620370373,
+      "changedPixelsThreshold12": 10409
+    },
+    {
+      "id": "L6-practical",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6-practical.png",
+      "baselineSha256": "f235b2737653e228c4cb7b210c910eebf4c544be8c3b875f4553bf75c09013f1",
+      "currentSha256": "08b73eb5a1dad48da0f0990699962872bff47f152eadcdbab3290373a0ba2ae2",
+      "meanAbsoluteRGB": 0.2050221836419753,
+      "changedPixelsThreshold12": 5448
+    },
+    {
+      "id": "L6P1",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P1.png",
+      "baselineSha256": "999945c19e988fcb0c01bb4a490019af4458fbed4032f6656fbcf15591d66974",
+      "currentSha256": "99043d8d785c013f4174ac19950e69e2f3ad92d4a96f5ce7ff3d2b4da71ea21f",
+      "meanAbsoluteRGB": 0.2708079346707819,
+      "changedPixelsThreshold12": 7521
+    },
+    {
+      "id": "L6P2",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P2.png",
+      "baselineSha256": "7c00237fa4e798b95f6993e2c39a84d2ae9241feef82b22017ce19e1e92c2373",
+      "currentSha256": "30d9174c9f5791c38f4351e4ebd92b68f2604462472abc9d95edeb6d51bf4521",
+      "meanAbsoluteRGB": 0.34931295010288066,
+      "changedPixelsThreshold12": 2743
+    },
+    {
+      "id": "L6P3",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P3.png",
+      "baselineSha256": "0db3ea8e725117f8debb6cbd5cf56f63d4c74e383855f6ec8bc4535aae283e5d",
+      "currentSha256": "72f1a9bfa5b927f6d0b1908649c04fda4c643f70183e55941600feb6b26c65a4",
+      "meanAbsoluteRGB": 0.33771572788065846,
+      "changedPixelsThreshold12": 2100
+    },
+    {
+      "id": "L6P4",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P4.png",
+      "baselineSha256": "e720598c43132203f867bba1286e3bb5205b1cd8564a02caca7c30bd56a20d0e",
+      "currentSha256": "553d548c69e3f0aaf6c321e4ed94a793bab54402d4027da3234b71bbbec1f55d",
+      "meanAbsoluteRGB": 0.493382683899177,
+      "changedPixelsThreshold12": 22127
+    },
+    {
+      "id": "L6P5",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P5.png",
+      "baselineSha256": "ef717647452b801427efdbe4923520519835b0b25d6743ff73ecdad1bf238678",
+      "currentSha256": "2b84ddcc31880797122e4ddf79c3dc8cff681724080f02edb70e1c7b34740b33",
+      "meanAbsoluteRGB": 0.3240988297325103,
+      "changedPixelsThreshold12": 7326
+    },
+    {
+      "id": "L6P6",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P6.png",
+      "baselineSha256": "a10ea1d803462906a5dbd3a828910063ea2f59aa234108ca7e8ed0a6e7d2f861",
+      "currentSha256": "e1c4b1e3756f5a4f9e34dea23993406ae4a39ef72ade356ae0990ceace3d2588",
+      "meanAbsoluteRGB": 0.3067692258230453,
+      "changedPixelsThreshold12": 2742
+    },
+    {
+      "id": "L6P7",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P7.png",
+      "baselineSha256": "31657eadf2271e59cc3f6e5538b1b3230bbed74904de7c770c6222389049f68d",
+      "currentSha256": "47262016cabf1f514afb9ae10aa74a69653207ae2de26e092340dd0ccfb22c1a",
+      "meanAbsoluteRGB": 0.29847334747942383,
+      "changedPixelsThreshold12": 6145
+    },
+    {
+      "id": "L6P8",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P8.png",
+      "baselineSha256": "fe48740022bed113c487a4e377b24bd0a8535dcdaa9608a40e4630d3a5c92067",
+      "currentSha256": "c88b649111885923bc2e06717cd0633e933381657728e20d13b01aef66aa1200",
+      "meanAbsoluteRGB": 0.3915502829218107,
+      "changedPixelsThreshold12": 2741
+    },
+    {
+      "id": "L6P9",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-L6P9.png",
+      "baselineSha256": "bc3c6cd457ddd74517a0237fe6fbd29fb3c2d03283ddd25e2e972804c81150c9",
+      "currentSha256": "1dd9bffe4772e93a2243b42a7ddbe9a59c8d9cadcbce4e20664286db397f62b1",
+      "meanAbsoluteRGB": 0.29224987139917696,
+      "changedPixelsThreshold12": 5623
+    },
+    {
+      "id": "U5P2",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P2.png",
+      "baselineSha256": "cb4646b35f1bd712e51ee6689033b805bf9a041c0c434580ff51ab5be947342d",
+      "currentSha256": "e6e4a44e0b1450eaa0389139eb1317a2defd6e1a87d28624fefb0ce5e36f6375",
+      "meanAbsoluteRGB": 0.23358603395061728,
+      "changedPixelsThreshold12": 3147
+    },
+    {
+      "id": "U5P3",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P3.png",
+      "baselineSha256": "9ae3dd83a29350458074701639f142385ca32892523be33ce938294ce6107008",
+      "currentSha256": "8b15a20a083f5eda728df9b188025027cdafdedb94a38dbc62535aa13f8be942",
+      "meanAbsoluteRGB": 0.24065682870370372,
+      "changedPixelsThreshold12": 4786
+    },
+    {
+      "id": "U5P4",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P4.png",
+      "baselineSha256": "e6fa238c5c403716d73ca3de9827c731f7d20ac13c6c6838ca3414e1b715bc70",
+      "currentSha256": "6ebeba0077354a911059ea25920b2247724a1a40103c8c08fa5ce5d804058036",
+      "meanAbsoluteRGB": 0.2788191229423868,
+      "changedPixelsThreshold12": 2555
+    },
+    {
+      "id": "U5P5",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P5.png",
+      "baselineSha256": "a0079835ffd076fc4505b0b43f5895ae419c71459815d2248653488ecf0745f5",
+      "currentSha256": "d0fa0f84ad0858de139c1c1da3a5cf1c3ca3cdf0fb5614c4982670678cd67354",
+      "meanAbsoluteRGB": 0.367195859053498,
+      "changedPixelsThreshold12": 4008
+    },
+    {
+      "id": "U5P6",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P6.png",
+      "baselineSha256": "8b71cd320d79cda40fb442d564054248664ab9b1f8eda0a3f9a2c76f38855cdb",
+      "currentSha256": "082d3faaef4299fad9f16ebbb71500936e9a086de4d2b695a5b03b385a299853",
+      "meanAbsoluteRGB": 0.27556262860082303,
+      "changedPixelsThreshold12": 3108
+    },
+    {
+      "id": "U5P7",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P7.png",
+      "baselineSha256": "3067e4ac20f41cfede272f40430ba6924027c7ed4fdec4f0dcec3047a8163e45",
+      "currentSha256": "64bb2350fce0d4cd4b5291b79b6d3c608e878b446748f44c2176cdbc9d92dc42",
+      "meanAbsoluteRGB": 0.2165848443930041,
+      "changedPixelsThreshold12": 3837
+    },
+    {
+      "id": "U5P8",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P8.png",
+      "baselineSha256": "bba3ed84ee736f5d21ed8fb289e039d9395eb227060e0ac44bd88d8564ba5a39",
+      "currentSha256": "a6194d78e970b9d9eb25da6bf3ff08c133c5088a8f3002a1d3791a9afd1a2f65",
+      "meanAbsoluteRGB": 0.2940258487654321,
+      "changedPixelsThreshold12": 4233
+    },
+    {
+      "id": "U5P9",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U5P9.png",
+      "baselineSha256": "4e3e62d14f7ac06ce0a0b7495cc2db52a4b14e271e02f5f5622f04f7991005ab",
+      "currentSha256": "2a4b9be247d64cdf6550287f778f9b1399ac82c4ce5427b5f350014a7a3ac307",
+      "meanAbsoluteRGB": 0.2378734246399177,
+      "changedPixelsThreshold12": 4420
+    },
+    {
+      "id": "U6-practical",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6-practical.png",
+      "baselineSha256": "3f819fdeb96736b052ea5eefeda5c1799eca2d395f350388cf5050cdc1186590",
+      "currentSha256": "63cfee637145bb9540811bfbeac7047df3b2163ec08a65cd5aa886472dfaf06c",
+      "meanAbsoluteRGB": 0.22187564300411522,
+      "changedPixelsThreshold12": 1960
+    },
+    {
+      "id": "U6P1",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P1.png",
+      "baselineSha256": "7b8a6c5f20fd37583bb86374a876ed54f9a136868b0c0b286ea4bbb652018ef8",
+      "currentSha256": "c7fb53bdd526c38a3b21956f5e481d6ce88aa0168aa63d994097c5652fde338b",
+      "meanAbsoluteRGB": 0.3405880272633745,
+      "changedPixelsThreshold12": 9520
+    },
+    {
+      "id": "U6P2",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P2.png",
+      "baselineSha256": "ca07568f533a26ae56de84054ea9141eee7ffe4893748f01c8941e44d791fc6a",
+      "currentSha256": "2d1aec20adfc388264fd85385b5e15d067308d16a8e6e0853613cf8ddc39bf9d",
+      "meanAbsoluteRGB": 0.3593721064814815,
+      "changedPixelsThreshold12": 2743
+    },
+    {
+      "id": "U6P3",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P3.png",
+      "baselineSha256": "0d0fe36d1bb7548866e209640ead849d2000131e072220ee8faddb67f029f787",
+      "currentSha256": "1fdab1727a0834ce9ef0cda521c426d1487a1b8321022c5472350e9d152c2229",
+      "meanAbsoluteRGB": 0.27447418338477364,
+      "changedPixelsThreshold12": 4296
+    },
+    {
+      "id": "U6P4",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P4.png",
+      "baselineSha256": "288d1d932349dd64aabc73f75f922808309466e87a18631fdfc0c5a299c87c55",
+      "currentSha256": "48fa8116811a93ddf7b8da6fed01c5cad8dc9dfdc643f3873481d64f9876f571",
+      "meanAbsoluteRGB": 0.3563011188271605,
+      "changedPixelsThreshold12": 9639
+    },
+    {
+      "id": "U6P5",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P5.png",
+      "baselineSha256": "24f0731126f8da858aa1937a27e85509c899921796276c45cfff5b9ef214a176",
+      "currentSha256": "65d13770131ded07cbd3a0aef07e08b6f7bd1a0c428be955f6e9d71daaeeb5ac",
+      "meanAbsoluteRGB": 0.2850405092592593,
+      "changedPixelsThreshold12": 4517
+    },
+    {
+      "id": "U6P6",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P6.png",
+      "baselineSha256": "dc9415108e855c1f769cf04331f59e1bf1f5f57f3ceb631491ba180aa92f1d24",
+      "currentSha256": "d1e821bc530857f44202266e425d43855edef10d678d7a2e46f158cc2a14d425",
+      "meanAbsoluteRGB": 0.3764422582304527,
+      "changedPixelsThreshold12": 2743
+    },
+    {
+      "id": "U6P7",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P7.png",
+      "baselineSha256": "00a37508a7fa0d20cecc0fdd6ba71d3635ceaaef964fe7bed9ed427a8c00a7d3",
+      "currentSha256": "8d02d5c5fb3bd5b9b154dcfe500fdb66ebadf7ceeae98c3c0c28277820d2db7d",
+      "meanAbsoluteRGB": 0.3495397698045268,
+      "changedPixelsThreshold12": 2743
+    },
+    {
+      "id": "U6P8",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P8.png",
+      "baselineSha256": "2ff6d90fbac14b631768fe555d3532c69f92b7bae7ead6cf0434ce30997c0aaf",
+      "currentSha256": "eb0c0e18bfb412ca2246408599470924b08613f9302ff2b48f11e8b70c726392",
+      "meanAbsoluteRGB": 0.25903147505144036,
+      "changedPixelsThreshold12": 6484
+    },
+    {
+      "id": "U6P9",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j10-final-U6P9.png",
+      "baselineSha256": "9efb2e16d513c85060574c4747f9bfda946d3bd011f91f0d9acedc76aa7e5929",
+      "currentSha256": "da7944b96d9ec853cc1a8d9c075ea3fc53938431c4f4a2437be20fac03494df9",
+      "meanAbsoluteRGB": 0.23293563528806582,
+      "changedPixelsThreshold12": 2949
+    },
+    {
+      "id": "L5-practical",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5-practical.png",
+      "baselineSha256": "539eeff4beb3e69afe6d9e86326db832eee18e7584001121044d433ef2ddf2bc",
+      "currentSha256": "d335372805a055673f2c8f420e0631c866e9c8f9b669c51548fc30cf2c1f35d1",
+      "meanAbsoluteRGB": 0.23222864221643516,
+      "changedPixelsThreshold12": 7094
+    },
+    {
+      "id": "L5P1",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P1.png",
+      "baselineSha256": "e7ef84b1ed3dc71e69cd2bb607c07a76e734a5afea6389e50fc9f0bb9a4588ad",
+      "currentSha256": "36cedac0df68f987642b3d739701eca76c9860697f264665ca663ef16b3313c4",
+      "meanAbsoluteRGB": 0.5007936378761574,
+      "changedPixelsThreshold12": 21371
+    },
+    {
+      "id": "L5P2",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P2.png",
+      "baselineSha256": "0c887cdf75b0d50103ae7be3435d89e83754ecac527c5e0f002e4a38e7fbca7d",
+      "currentSha256": "4aabe0444063967fe2677826eac90e300d6c4d02639f0cb4bd2dc36073ca3bca",
+      "meanAbsoluteRGB": 0.32923321759259255,
+      "changedPixelsThreshold12": 3488
+    },
+    {
+      "id": "L5P3",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P3.png",
+      "baselineSha256": "1ccc50a1c6527e3c419151ed7fda2ca55045ce00e553ba862378764569c7770e",
+      "currentSha256": "dbeacce0485df92d10271b0de95c29ef53435d0eabe3686fc6e77775145a6e73",
+      "meanAbsoluteRGB": 0.26970703125,
+      "changedPixelsThreshold12": 7453
+    },
+    {
+      "id": "L5P4",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P4.png",
+      "baselineSha256": "267a243a56da44796612313f400133798c283dd2ebc2da583e845e07e8844707",
+      "currentSha256": "3e43247ebee0921639222cc32e4ebb123e524fab02e7212797c57c8e13757a89",
+      "meanAbsoluteRGB": 0.33722819010416666,
+      "changedPixelsThreshold12": 2067
+    },
+    {
+      "id": "L5P5",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P5.png",
+      "baselineSha256": "1ee167cf75285ae477855ea0f5c6b652ba3b1168bf584276849ad2b120a8905c",
+      "currentSha256": "08e0d58bc2a1ed290887b3a40ccec1571ee3068b9a6d5593636e6cf5f3bdf8d1",
+      "meanAbsoluteRGB": 0.30592185691550927,
+      "changedPixelsThreshold12": 11278
+    },
+    {
+      "id": "L5P6",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P6.png",
+      "baselineSha256": "0a1315a93e076f4faeab546b891318caf35b6b9d04997b9e1c93dc658c3d3389",
+      "currentSha256": "66660bdc82cc34fbb54961ac69a325cfb2da034a7c6886e32984d7ff6be1d251",
+      "meanAbsoluteRGB": 0.3087380642361111,
+      "changedPixelsThreshold12": 11248
+    },
+    {
+      "id": "L5P7",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P7.png",
+      "baselineSha256": "e7d62b055c1316a8cebc56429c3955c427b5546321c9a4dcfea4a476937d291a",
+      "currentSha256": "ca7835b6d347f4680305abc6daee67d7b07b1dc92b1f7b2bca33e3e5713d509c",
+      "meanAbsoluteRGB": 0.31273084852430555,
+      "changedPixelsThreshold12": 14489
+    },
+    {
+      "id": "L5P8",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P8.png",
+      "baselineSha256": "967308edfe192bc00d7acbe92f00fe28860c28f600ba405397d492bb88025f6c",
+      "currentSha256": "fc97ed537599e9656ca434cb1224eb6cbad9346a7fe6347850d9d2ba98cf5f09",
+      "meanAbsoluteRGB": 0.3436600296585648,
+      "changedPixelsThreshold12": 3488
+    },
+    {
+      "id": "L5P9",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L5P9.png",
+      "baselineSha256": "955d1ff367c9d37e09bab7cc7b3ee80c28331e83b0a540616d842b493fc1e712",
+      "currentSha256": "caf2756d12d8222d055988627f178f508c0d6cace6829d145ce278549019ce89",
+      "meanAbsoluteRGB": 0.27684154369212965,
+      "changedPixelsThreshold12": 14009
+    },
+    {
+      "id": "L6-practical",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6-practical.png",
+      "baselineSha256": "9b7a0a2bb9e4aa0d5a3e8b49b14d0f8f87b6d8ddef05a96207d7fcd1b70778d5",
+      "currentSha256": "4fe90d97e8eb396a0a35d708d78e884d2561f115340b34af84a30e51470e1416",
+      "meanAbsoluteRGB": 0.1881585467303241,
+      "changedPixelsThreshold12": 7670
+    },
+    {
+      "id": "L6P1",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P1.png",
+      "baselineSha256": "c08519a29b47b57c62b23378756323f60d27a1ad199d618e3872d0f61009254b",
+      "currentSha256": "7190488dbbc0e5df05be55d814234285b50407a2bcf8870328a9c51189c89941",
+      "meanAbsoluteRGB": 0.2397953739872685,
+      "changedPixelsThreshold12": 9507
+    },
+    {
+      "id": "L6P2",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P2.png",
+      "baselineSha256": "fd152d9b4c9e3424c773e00d713cc8f96561cc4d8e989cf0efe7d134a376f397",
+      "currentSha256": "8a6c30e2cfd7ea72e4116b0304758bad50d192b8bc4fa5d0ddb5c252c06f6609",
+      "meanAbsoluteRGB": 0.3308890335648148,
+      "changedPixelsThreshold12": 3487
+    },
+    {
+      "id": "L6P3",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P3.png",
+      "baselineSha256": "8e167b9be26d90f2cac455763b1c5ae80b6e3af7ddee50209bce88cc6946e4f0",
+      "currentSha256": "3f18f99bf9644095f8cc808fa55a0f1f44fb0b9f2e69a2e48055ecfa814422b5",
+      "meanAbsoluteRGB": 0.32584074797453705,
+      "changedPixelsThreshold12": 3327
+    },
+    {
+      "id": "L6P4",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P4.png",
+      "baselineSha256": "adc456e971bab1f7f712576c23b3988bd0421eced24f2fc260cd8135d02f796a",
+      "currentSha256": "92ef85a6b1d367ae085b93d3ac3bcf6f59e8fac86acad3ca70d943c597201619",
+      "meanAbsoluteRGB": 0.39048593026620376,
+      "changedPixelsThreshold12": 27052
+    },
+    {
+      "id": "L6P5",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P5.png",
+      "baselineSha256": "45579e6a20378bab64b61cbb9b755ed5d9ffc73a471b41afdb6bd94a2371a70d",
+      "currentSha256": "3d2ef194fa7d6235f1d973a22c38a2fdac44c4b26754f0e34ca16d6bee4aadad",
+      "meanAbsoluteRGB": 0.2882574688946759,
+      "changedPixelsThreshold12": 9338
+    },
+    {
+      "id": "L6P6",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P6.png",
+      "baselineSha256": "9789f66845e527c1735ec60c40db64838db8baf898c48066a60d452bc1f5083a",
+      "currentSha256": "121b2ab48fe1766739371c27b93815dac089f8e6ab9fb4fa421cbba6a167b832",
+      "meanAbsoluteRGB": 0.2893183051215278,
+      "changedPixelsThreshold12": 3487
+    },
+    {
+      "id": "L6P7",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P7.png",
+      "baselineSha256": "56d257ac96a0cb58cc04f2d5acc27c4c7f16573f90c0f49ab8896a1218994c9c",
+      "currentSha256": "959c84b8346aa0bf748db47ffa443f6aab397b40743def585fb933b353cca807",
+      "meanAbsoluteRGB": 0.27067274305555555,
+      "changedPixelsThreshold12": 7987
+    },
+    {
+      "id": "L6P8",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P8.png",
+      "baselineSha256": "8bc95e4bdab3db6ef279a43c5507f6b8d9033def94d30aef6c26cb76d569969e",
+      "currentSha256": "405a6d10b4694e664f175190197ad48a447c20bdd036e1ec0d09dc3bbd47b7a0",
+      "meanAbsoluteRGB": 0.37400173611111115,
+      "changedPixelsThreshold12": 3489
+    },
+    {
+      "id": "L6P9",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-L6P9.png",
+      "baselineSha256": "266cd11c391d0624eed83e5876c0e9c949ab963eba08ed2ef68fc5e790c588aa",
+      "currentSha256": "dd283295f27067e6f20162462ac76fd7cce94cb455cf157476dc764179e2997d",
+      "meanAbsoluteRGB": 0.26822509765624997,
+      "changedPixelsThreshold12": 7155
+    },
+    {
+      "id": "U5P2",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P2.png",
+      "baselineSha256": "97772f387a68591eb6cb8a2de5e9458fa6431b5cd0b0307eebb0a0bd3bad7467",
+      "currentSha256": "cf9ac58b619221ce8645271bec5cdcc845e2fff4f0ea5dfc967f711ca3376d24",
+      "meanAbsoluteRGB": 0.21732530381944445,
+      "changedPixelsThreshold12": 4015
+    },
+    {
+      "id": "U5P3",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P3.png",
+      "baselineSha256": "664aca719429d440fe9e95606308e8434c21845a320c2da6cc60ff1dfc1f3ea5",
+      "currentSha256": "64067f456aa87dd0c0ded0e642ddadf59c2bd2a4922f3d054527c6579536a904",
+      "meanAbsoluteRGB": 0.22027388961226854,
+      "changedPixelsThreshold12": 6176
+    },
+    {
+      "id": "U5P4",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P4.png",
+      "baselineSha256": "319c314ef2594c8f549cd543829c8a8f4f00966f34a2e904bf7d4e5387ff5099",
+      "currentSha256": "aa549c483677e05d792a75fac33bf2192d699ba974c29ca4cae3d791c2d74562",
+      "meanAbsoluteRGB": 0.26943495008680557,
+      "changedPixelsThreshold12": 3614
+    },
+    {
+      "id": "U5P5",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P5.png",
+      "baselineSha256": "c2cce548a548e7b07b32c08f2b668f7734bd3109f7043e208ae51e3f4a2fe968",
+      "currentSha256": "7830464170f45b98d8418d6f3fcde60c910ac0bed80d56b17c22a14436e6fa66",
+      "meanAbsoluteRGB": 0.33760760271990736,
+      "changedPixelsThreshold12": 3916
+    },
+    {
+      "id": "U5P6",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P6.png",
+      "baselineSha256": "34a7d714b476a03843ddb9976db1f21519a9bfa385072995260700bf6674328b",
+      "currentSha256": "0e011fdf2353ed5df9e76794ed51908d8cee310e3ba8b477acf6e750438494bc",
+      "meanAbsoluteRGB": 0.2515388997395833,
+      "changedPixelsThreshold12": 2604
+    },
+    {
+      "id": "U5P7",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P7.png",
+      "baselineSha256": "091339e4b3eb50ee9c4e3a7840da26a89bde9eb5de6b024ba0ee4ce180ca6385",
+      "currentSha256": "2505378546db71147f25ff1a643b41d873d6f5c2a592e725fc11d9c218708eff",
+      "meanAbsoluteRGB": 0.20165834780092592,
+      "changedPixelsThreshold12": 5077
+    },
+    {
+      "id": "U5P8",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P8.png",
+      "baselineSha256": "9fec47aa927f998b4eda8949e776b4ade6b1a3ca367b91c243cd2a8aec40dd7a",
+      "currentSha256": "87e760192e5436c706934ac4b187fb92b0d90e9e4894a20c86cf6fc0fde53dce",
+      "meanAbsoluteRGB": 0.274139087818287,
+      "changedPixelsThreshold12": 5132
+    },
+    {
+      "id": "U5P9",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U5P9.png",
+      "baselineSha256": "de276165085ecc669a782b7f09b3e52e92d422ec59ab380a4d94422d32b2b362",
+      "currentSha256": "fae3e4e17c9a02e33865e5c645e92daa13258d3e2d17b036fa2f2749f4acf121",
+      "meanAbsoluteRGB": 0.21826958550347222,
+      "changedPixelsThreshold12": 5741
+    },
+    {
+      "id": "U6-practical",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6-practical.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6-practical.png",
+      "baselineSha256": "a570df9a57d3ada40741635a6405a36770bef2cd94da8d5f084f217d50a034dc",
+      "currentSha256": "7e83e307e0a60a873a42fdf2643060560ca43dafd960391212ee268baa715ece",
+      "meanAbsoluteRGB": 0.20015181929976852,
+      "changedPixelsThreshold12": 2862
+    },
+    {
+      "id": "U6P1",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P1.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P1.png",
+      "baselineSha256": "2cd701e5ed713032e969f86ee2ffbcdb9acf3ce4b01c05e20e7e9323f7ec2683",
+      "currentSha256": "bf32782d4fa5f6245385a55d097ca63d47ce9dd9f9722060867e7bd6d6f3722c",
+      "meanAbsoluteRGB": 0.29666630497685187,
+      "changedPixelsThreshold12": 11922
+    },
+    {
+      "id": "U6P2",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P2.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P2.png",
+      "baselineSha256": "1c438d38fa6d42f2ba5d29898c9574cfb21cb927e66e9368da9eb4cf8c6a7aeb",
+      "currentSha256": "188a8c6f552fc52d51a553280ca711c82e45e22fe2e7ef2f280e7304464e06bd",
+      "meanAbsoluteRGB": 0.3413981119791667,
+      "changedPixelsThreshold12": 3486
+    },
+    {
+      "id": "U6P3",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P3.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P3.png",
+      "baselineSha256": "30ad538a54f64cbe68ab299699f75bb4f605f906083fa6b8423cab24f580d855",
+      "currentSha256": "0b5f21a7c9b073adc3bc95daddcb15e35ecb391c5307545938fc33b8237d3fa7",
+      "meanAbsoluteRGB": 0.25734474464699075,
+      "changedPixelsThreshold12": 5934
+    },
+    {
+      "id": "U6P4",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P4.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P4.png",
+      "baselineSha256": "ab3f11d2248a6749389814e1b18984cd3e5ea552b65282cf58173878a81e5f15",
+      "currentSha256": "d33b425be6a600d452c60fa6114c337bf535dea6b41a4e960d0ce433950e33ae",
+      "meanAbsoluteRGB": 0.3085113751446759,
+      "changedPixelsThreshold12": 11542
+    },
+    {
+      "id": "U6P5",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P5.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P5.png",
+      "baselineSha256": "df38819279d4942323ea9119fd3273bca27ed9b0b8ba922d3c1b41e278fd9d51",
+      "currentSha256": "5643c99e990c957ca140e3ea419bd2f107c4445fcc30c6cd0b6a8308a861cb38",
+      "meanAbsoluteRGB": 0.26337944878472225,
+      "changedPixelsThreshold12": 5891
+    },
+    {
+      "id": "U6P6",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P6.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P6.png",
+      "baselineSha256": "028787512f89a21434d92360291c93e43b802c3c992acbebb685856b72615ee6",
+      "currentSha256": "c257fee37e97375afa7136b6388f48578b5a754fc897ecf8740329d4366a2805",
+      "meanAbsoluteRGB": 0.3580381040219907,
+      "changedPixelsThreshold12": 3486
+    },
+    {
+      "id": "U6P7",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P7.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P7.png",
+      "baselineSha256": "8b0cf8d897cb40ad8a2b8fd6e6b089fce951e709a613863dcf6dbb76a4481038",
+      "currentSha256": "6ed1da4e8dcc4da9ba467171ed758a8cdc54a6bb203bdf2eccd7c6288f7ce82c",
+      "meanAbsoluteRGB": 0.3312773980034722,
+      "changedPixelsThreshold12": 3486
+    },
+    {
+      "id": "U6P8",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P8.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P8.png",
+      "baselineSha256": "48a4946fe43011c72204e606b7efa23bbeb9b02b8ca7d81c63c8a238359a1db9",
+      "currentSha256": "1e09479406260409169e0f08894662fe3e99a96e72c472505917b9e2a657a8d0",
+      "meanAbsoluteRGB": 0.22879512080439815,
+      "changedPixelsThreshold12": 8534
+    },
+    {
+      "id": "U6P9",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P9.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j10-final-U6P9.png",
+      "baselineSha256": "150a90ecaf6aaa7dc68d33308a9a17e46165369e0fd09f9480372dd41baea005",
+      "currentSha256": "b93dfbcf42ae3a3957f1acc5eff0c8200b43345f50cbfa97db0070764384c243",
+      "meanAbsoluteRGB": 0.2171460865162037,
+      "changedPixelsThreshold12": 3576
+    }
+  ],
+  "contactSheets": [
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-5.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-5.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-5.jpg"
+  ],
+  "note": "Pixel variation includes animated public artwork/background and antialiasing; exact scientific DOM/aria/bounds and source-value/asset invariants are verified separately.",
+  "inspectedContactSheets": [
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-5.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-5.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-5.jpg"
+  ],
+  "visualInspection": "All 15 sheets inspected: scientific text, diagrams and layout match; background/artwork animation and antialiasing vary. Original scientific values/assets are checked separately."
+}

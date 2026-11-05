@@ -1,3 +1,6 @@
+// @ts-expect-error Node-only authorized scientific fixture.
+import {u5p5Presentation} from '../../api/src/presentation/records/u5p5.mjs';
+import {presentedDefinition} from '../../src/contracts/presentation';
 import { reconcileQuestion } from '../../src/cloud/question-state';
 import { transition as localTransition, type Attempt, type AttemptAction, type QuestionDefinition, type TimedInteraction } from '../../src/questions/attempts';
 // Node-only runtime modules deliberately contain the private source keys.
@@ -19,7 +22,7 @@ export function transition(definition:QuestionDefinition,state:Attempt,action:At
     secrets.set(next,privateState);return JSON.stringify(next)===JSON.stringify(state)?state:next;
   };
   if(!['submit','start','tick','gc-run'].includes(action.type))
-    return remember(localTransition(definition,state,action));
+    return remember(localTransition(definition.id==='U5P5'?presentedDefinition(definition,u5p5Presentation.presentation):definition,state,action));
   let input:Record<string,unknown>={...action};
   if(action.type==='submit')input={...input,answers:state.interaction?.kind==='grouping'?{groups:state.interaction.selected.join(',')}:state.answers};
   if(action.type==='gc-run'){

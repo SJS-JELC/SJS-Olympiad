@@ -12,7 +12,8 @@ Read AGENTS.md for security, marking and approved layout contracts. Copy src/que
 | Reusable illustrated action artwork | IllustratedActionButton; CheckButton owns submit/cooldown semantics |
 | Field appearance and display-only suffix | AnswerInput |
 | Paired angles | AnswerPart (L6P5 adapter) |
-| Public presentation/edit state | attempts.ts and question presentation definition |
+| Public edit state, validators and neutral routing | attempts.ts and question definition |
+| Protected scientific presentation/assets | api/src/presentation, via contracts/presentation.ts and the router ContentStore |
 | All marking, cooldowns, saved results and once-only points | Private API question modules and transactional service |
 | One-time context hydration, direct CHECK/action transport | Cloud question adapter |
 | Server outcome/page-working reconciliation and fresh restoration | cloud/question-state.ts, used by hydration, CHECK and test adapters |
@@ -22,8 +23,8 @@ Read AGENTS.md for security, marking and approved layout contracts. Copy src/que
 ## Add a question
 
 1. Copy/rename the starter's component, stylesheet and prefix. Replace EXAMPLE identity; keep missing questions unavailable until registered both publicly and on the server.
-2. Define stable public field IDs and acceptsEdit rules. Implement private marking in the API, never in a browser-imported definition. Reject blanks/invalid numbers explicitly; do not convert an empty string into zero. Ordinary definitions set lockCorrectParts:false and allowIncompleteSubmission:true.
-3. Put scientific content and bespoke interactions in the question folder. Preserve source geometry, Unicode and required attribution. Original Power Apps/Masters references stay read-only.
+2. Define neutral public field/part placeholders and generic acceptsEdit rules; supply real scientific protocol IDs from authorized presentation. Implement private marking in the API, never in a browser-imported definition. Reject blanks/invalid numbers explicitly; do not convert an empty string into zero. Ordinary definitions set lockCorrectParts:false and allowIncompleteSubmission:true.
+3. Keep bespoke interaction/rendering code in the question folder and put scientific content/configuration/assets in a typed server presentation record. Preserve source geometry, Unicode and required attribution. Original Power Apps/Masters references stay read-only.
 4. Wrap ordinary controls in QuestionAnswerForm. Use its disabled and onEdit callbacks; do not add a separate cooldown authority. AnswerInput owns field appearance and accessible names. Units are display-only.
 5. Register definition and View in catalog.ts. Reuse the router shell/gate; never add a nested security provider or bypass restoration/lock checks.
 6. Add independent accepted/rejected server fixtures and tests. Cover blank attempts, exact cooldown boundaries, replay/concurrent submissions and once-only scoring. Test role/event/year/claim/security fencing and preview isolation. Maintain integrity expectations for trusted imported assets and inspect the production bundle for private-data leakage.
@@ -32,7 +33,7 @@ Check remains clickable during cooldown without restarting deadlines. Confirmed 
 
 ## State
 
-Server attempts are keyed by event/team/question. GO hydrates all active-year outcomes/revisions, active timed state and public custom data once. Teacher theory previews hydrate once per event/catalogue context. Ordinary edits and navigation stay in memory, with no autosave, pre-submit flush or session preflight. CHECK sends one frozen idempotent submission; uncertain retries reuse it. Reload discards all answer working, undo, formulation and GC reports, signs competitors out and retains server-confirmed outcomes/cooldowns for a later authorized claim. Even successful answer content is not stored. Compact canonical outcome receipts and fingerprints retain idempotency; responses merge into page-local working without replacing it. Never persist editor history as a scoring payload.
+Server attempts are keyed by event/team/question. GO hydrates all active-year outcomes/revisions, status metadata only, without custom interactions/data. Teacher theory previews start blank, loading selected timed/GC state when needed. Ordinary edits and navigation stay in memory, with no autosave, pre-submit flush or session preflight. CHECK sends one frozen idempotent submission; uncertain retries reuse it. Reload discards all answer working, undo, formulation and GC reports, signs competitors out and retains server-confirmed outcomes/cooldowns for a later authorized claim. Even successful answer content is not stored. Compact canonical outcome receipts and fingerprints retain idempotency; responses merge into page-local working without replacing it. Never persist editor history as a scoring payload.
 
 Custom client reducers update presentation only. Oxyanion selection, step and timeout are server-owned; return only the current formula and reveal its name only on timeout. GC keeps the recipe private and supplies authorized trace data; experiments remain optional for marking. Grouping validates exact unique items order-independently. Local ticks animate deadlines without repeated network requests. See api-contract.md and azure-backend-pilot.md.
 
@@ -67,3 +68,9 @@ For future changes run focused marking tests, typography audit, typecheck and bu
 U5 P2/P3/P9 editors use a compact left palette. The rail owns its fine dividers/spacing and preserves 44px coarse-pointer targets; short touch layouts use a top-strip fallback to keep canvas height. P3/P9 answer forms use question-scoped zero horizontal padding so diagram and drawing card edges match. No injected test CSS or stored placement setting is needed.
 
 U5P2, U5P3 and U5P9 start with two extra Zoom out steps (0.8 squared scale). This changes only their initial camera; molecular coordinates, saved working, manual zoom and Fit remain independent. The molecule editor enforces the currently permitted representation even if a mounted editor retains an earlier view preference.
+
+## Protected presentation seam
+
+All 35 theory and three practical presentations use the shared content loader and explicit server registry. Public definitions use neutral titles/labels/IDs and `protectedContent:true`; their views consume a typed server payload and resolved memory blob URLs through QuestionViewProps. They have no static fallback. Question state/results and presentation readiness are separate, and both plus the current security/window gate are required before mounting. The header uses the authorized title; the teacher catalogue obtains scientific titles through its authenticated metadata endpoint. Shared forms and CloudQuestion both use the effective authorized definition so genuine field IDs retain their matching generic edit validators. Per-question reducer/editor/dropdown configuration comes from the same payload. Generic mathematical rendering remains public; scientific graph coordinates, apparatus geometry and defaults do not. Question-bound chart/apparatus selectors and property keys also use neutral public names; authorized scientific labels and geometry remain exact. Private protocol IDs and fingerprints remain stable; see [ADR 0003](adr/0003-protected-runtime-identifiers.md). See [the renderer contract](../.scratch/protected-question-content/renderer-seam.md) and [API delivery](api-contract.md#protected-presentation-delivery).
+
+Selected timed/GC state reads belong to the current authority/context generation. Lock, theory closure or context replacement invalidates obsolete selected flights so recovery/context return can read immediately; only the owning flight clears its pending slot. Late old results/errors remain fenced and learner working and frozen uncertain submissions remain in page memory.

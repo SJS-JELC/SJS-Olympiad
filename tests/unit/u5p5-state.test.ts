@@ -1,11 +1,20 @@
+// @ts-expect-error Node-only authorized scientific fixture.
+import {u5p5Presentation} from '../../api/src/presentation/records/u5p5.mjs';
+import {presentedDefinition} from '../../src/contracts/presentation';
 import { transition, customData } from '../fixtures/custom-server';
 import { describe, expect, it } from 'vitest';
 import { emptyAttempt, score, type Attempt } from '../../src/questions/attempts';
 import { integrate } from '../../src/questions/u5p5/model';
-import { gcState, u5p5 } from '../../src/questions/u5p5/definition';
+import { gcState, reduceGc, u5p5 } from '../../src/questions/u5p5/definition';
 const act = (state: Attempt, action: Parameters<typeof transition>[2]) => transition(u5p5,state,action);
 const enter = () => act(emptyAttempt(), { type:'gc-enter',now:0 });
 const run=(state:Attempt,sample:'mystery'|'citrus'|'floral'|'woody',now:number)=>act(act(state,{type:'gc-load',sample,now}),{type:'gc-run',sample,now});
+
+it('keeps the obsolete local interval helper generic without exposing the scientific chart ceiling',()=>{
+ const initial=emptyAttempt();
+ expect(gcState(reduceGc(initial,{type:'gc-interval',interval:[9,-2],now:0},u5p5Presentation.presentation)).interval).toEqual([0,9]);
+ expect(reduceGc(initial,{type:'gc-interval',interval:[0,Infinity],now:0},u5p5Presentation.presentation)).toBe(initial);
+});
 describe('U5P5 retained laboratory and shared marking', () => {
   it('completes one run through deadline reconciliation exactly once and prevents simultaneous starts', () => {
     const started=run(enter(),'mystery',100);
@@ -47,7 +56,7 @@ describe('U5P5 retained laboratory and shared marking', () => {
     expect(s.solvedAt).toBeNull();expect(s.feedback).toEqual({});
   });
   it('rejects malformed/negative/unsnapped compositions and no default marker is selected', () => {
-    expect(gcState(emptyAttempt()).interval).toEqual([.5,.7]);
+    expect(gcState(emptyAttempt(),u5p5Presentation.presentation).interval).toEqual([.5,.7]);
     for(const value of ['[]','[25,14,9,153]','[-1,50,50,101]','[25.5,14,9,151.5]','null']) expect(act(enter(),{type:'edit',field:'composition',value,now:0}).answers).toEqual({});
     expect(act(enter(),{type:'submit',now:0}).feedback).toEqual({question:false});
   });

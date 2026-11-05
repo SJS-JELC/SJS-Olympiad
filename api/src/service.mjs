@@ -1,3 +1,5 @@
+import { presentationRecord, presentationCatalogue } from './presentation/registry.mjs';
+import { publicRecord } from './presentation/record.mjs';
 import { createHash, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import { questionInfo, reduceQuestion, validateAnswers, questionData } from './questions.mjs';
 import { eventTiming, eventAvailable, theoryAvailable, updateTiming } from './event-timing.mjs';
@@ -151,7 +153,7 @@ export function createService(repo,config={},now=Date.now) {
     // Locked/not-started sessions expose no question answers or interaction.
     const event=team?s.events.find(item=>item.id===team.eventId):null;
     const rows=team?.securityStatus==='ACTIVE' && event && (hydrate || theoryAvailable(event,now())) ? await repo.list({partitionKey:team.partitionKey,kind:'question'}) : [];
-    if(event && theoryAvailable(event,now())) for(const q of rows) attempts[q.questionId]={...retainedAttempt(q.questionId,q.state),revision:q.revision};
+    if(event && theoryAvailable(event,now())) for(const q of rows) attempts[q.questionId]={...statusAttempt(q.questionId,q.state),revision:q.revision};
     const accessible=event && eventAvailable(event,now());
     return {role:session.role,expiresAt:session.expiresAt,serverNow:now(),configRevision:s.revision,activeEvent:getCurrentEvent(s),...(session.role==='teacher'?{events:s.events}:!getCurrentEvent(s)?{draftEvents:s.events.filter(event=>event.status==='draft').map(({id,name,year})=>({id,name,year}))}:{}),team:await publicTeam(team),competition:{status:accessible?team.securityStatus:'NOT_STARTED',epoch:team?.securityEpoch || 0},score:team?.score || 0,attempts,...(hydrate && accessible && team.securityStatus==='ACTIVE'?{hydration:bulkView({event,team,pk:team.partitionKey},rows)}:{})};
   };
@@ -192,11 +194,11 @@ export function createService(repo,config={},now=Date.now) {
     assert(practicalFields(event.year) && event.practicalStartsAt!==null && event.practicalEndsAt!==null,404,'This practical is unavailable for this event.');
     assert(team.year===event.year,403,'Your team belongs to a different year.');
     assert(team.securityStatus==='ACTIVE',423,'Competition mode is locked or has not started.');
-    activeForWrite(event);
-    assert((event.status==='draft' || now()>=event.practicalStartsAt) && (!write || now()<event.practicalEndsAt),403,'The practical challenge is outside its scheduled times.');
+    if(write)activeForWrite(event);
+    assert((!write && event.status==='ended' || now()>=event.practicalStartsAt) && (!write || now()<event.practicalEndsAt),403,'The practical challenge is outside its scheduled times.');
     return {session,event,team,pk:team.partitionKey};
   };
-  const practicalView=(value,ctx)=>({...value,serverNow:now(),eventEndsAt:ctx.event.practicalEndsAt ?? null,readOnly:!!ctx.team && now()>=ctx.event.practicalEndsAt});
+  const practicalView=(value,ctx)=>({...value,serverNow:now(),eventEndsAt:ctx.event.practicalEndsAt ?? null,readOnly:!!ctx.team && (ctx.event.status==='ended' || now()>=ctx.event.practicalEndsAt)});
   const loadPractical=async ctx=>await repo.get(ctx.pk,'practical') || {partitionKey:ctx.pk,rowKey:'practical',kind:'practical',...emptyPractical(ctx.event.year)};
   const practicalSummary=value=>({year:value.year,revision:value.revision,responses:value.responses,finalField:value.finalField,updatedAt:value.updatedAt});
   const savePractical=async(token,input)=>{
@@ -232,13 +234,42 @@ export function createService(repo,config={},now=Date.now) {
   const loadQuestion=async(ctx,id)=>await repo.get(ctx.pk,'q-'+id) || {partitionKey:ctx.pk,rowKey:'q-'+id,kind:'question',questionId:id,revision:0,state:empty(),privateState:{}};
   // Public state is initialized/projected without creating questions or receipts.
   // Timeout projection may reveal only the current expired timed prompt.
+  // GC keeps its captured run until a committed tick returns the completion ID;
+  // projecting it away on a read would discard the page-local recovered report.
   const publicQuestion=(ctx,id,rows)=>{
     const q=retainedQuestion(id,rows.find(row=>row.questionId===id) ?? {state:empty(),privateState:{},revision:0});
-    const projected=Number.isFinite(q.state.solvedAt)?null:reduceQuestion(id,q,{type:'tick'},now());
+    const projected=Number.isFinite(q.state.solvedAt) || id==='U5P5'?null:reduceQuestion(id,q,{type:'tick'},now());
     const data=questionData(id);
     return {attempt:retainedAttempt(id,projected?.state ?? q.state),revision:q.revision,...(data?{data}:{})};
   };
-  const bulkView=(ctx,rows)=>({eventId:ctx.event.id,year:ctx.event.year,serverNow:now(),eventEndsAt:ctx.event.theoryEndsAt,score:ctx.team?.score || 0,questions:Object.fromEntries(Array.from({length:9},(_,index)=>ctx.event.year+'P'+(index+1)).filter(id=>questionInfo(id)).map(id=>[id,publicQuestion(ctx,id,rows)]))});
+  const statusAttempt=(id,state)=>{
+    const {interaction,...status}=retainedAttempt(id,state);
+    // Historical part keys may encode scientific clues. Bulk status exposes only
+    // the shared cross/completion outcome, never per-part keys or correctness.
+    const wrong=Object.values(status.feedback).some(value=>value===false);
+    return {...status,feedback:wrong?{question:false}:status.solvedAt!=null?{question:true}:{}};
+  };
+  const statusQuestion=(id,rows)=>{const q=rows.find(row=>row.questionId===id);return {attempt:statusAttempt(id,q?.state ?? empty()),revision:q?.revision ?? 0};};
+  const bulkView=(ctx,rows)=>({eventId:ctx.event.id,year:ctx.event.year,serverNow:now(),eventEndsAt:ctx.event.theoryEndsAt,score:ctx.team?.score || 0,questions:Object.fromEntries(Array.from({length:9},(_,index)=>ctx.event.year+'P'+(index+1)).filter(id=>questionInfo(id)).map(id=>[id,statusQuestion(id,rows)]))});
+  const contentContext=async(token,input,kind)=>{
+    assert(input && typeof input==='object',400,'Invalid content request.');
+    assert(kind==='question' || kind==='practical',400,'Invalid content kind.');
+    const ctx=kind==='question'?await questionContext(token,input):await practicalContext(token,input,true);
+    const id=kind==='question'?(input.questionId ?? input.contentId):input.contentId ?? ctx.event.year;
+    if(kind==='question'){assert(!input.contentId || !input.questionId || input.contentId===input.questionId,404,'Content not found.');validateQuestion(id,ctx.event);}
+    else assert(id===ctx.event.year,404,'This practical is unavailable for this event.');
+    const record=presentationRecord(kind,id);
+    assert(record,404,'This content is unavailable.');
+    return {ctx,record};
+  };
+  // Re-read authority after constructing/reading content as well as before it.
+  // Async repository reads may race a release, breach, reset or window boundary.
+  const verifyContent=async(token,input,kind,accepted)=>{
+    const latest=await contentContext(token,input,kind);
+    assert(latest.ctx.session.rowKey===accepted.ctx.session.rowKey,401,'Your session changed.');
+    if(accepted.ctx.team)assert(latest.ctx.team.securityEpoch===accepted.ctx.team.securityEpoch && latest.ctx.team.claimGeneration===accepted.ctx.team.claimGeneration,423,'Competition mode changed.');
+    return latest;
+  };
   const mutateQuestion=async(token,input,operation)=>{
     assert(validId(input.requestId) && input.requestId.length>=8,400,'A request identifier is required.');
     let payload;
@@ -343,6 +374,28 @@ export function createService(repo,config={},now=Date.now) {
       return snapshot(session,s);
     },
     async events(token) {const session=await authenticate(token);teacher(session);const s=await settings();return {events:s.events,activeEvent:getCurrentEvent(s),configRevision:s.revision,serverNow:now()};},
+    async questionContent(token,input) {
+      const accepted=await contentContext(token,input,'question');
+      await verifyContent(token,input,'question',accepted);
+      return publicRecord(accepted.record,now());
+    },
+    async practicalContent(token,input) {
+      const accepted=await contentContext(token,input,'practical');
+      await verifyContent(token,input,'practical',accepted);
+      return publicRecord(accepted.record,now());
+    },
+    async contentAsset(token,input) {
+      const accepted=await contentContext(token,input,input.kind);
+      assert(input.version===accepted.record.version && validId(input.assetId),404,'Content asset not found.');
+      const asset=accepted.record.assets.find(asset=>asset.id===input.assetId);
+      assert(asset,404,'Content asset not found.');
+      await verifyContent(token,input,input.kind,accepted);
+      return {binary:true,mimeType:asset.mimeType,body:asset.body};
+    },
+    async contentCatalogue(token) {
+      teacher(await authenticate(token));
+      return {schemaVersion:1,questions:presentationCatalogue(),practicals:presentationCatalogue('practical')};
+    },
     async availability() {const s=await settings();return {competitorAvailable:s.events.some(event=>event.status==='active' || event.status==='draft')};},
     async eventCreate(token,input) {
       const session=await authenticate(token);teacher(session);
@@ -531,6 +584,8 @@ export function createService(repo,config={},now=Date.now) {
     async question(token,input) {
       const ctx=await questionContext(token,input);validateQuestion(input.questionId,ctx.event);
       const q=await loadQuestion(ctx,input.questionId);
+      const current=await questionContext(token,input);
+      if(ctx.team)assert(current.team.securityEpoch===ctx.team.securityEpoch,423,'Competition mode changed.');
       return {...qView(q,ctx),...publicQuestion(ctx,input.questionId,[{...q,questionId:input.questionId}])};
     },
     async practical(token,input={}) {const ctx=await practicalContext(token,input);return practicalView(practicalSummary(await loadPractical(ctx)),ctx);},

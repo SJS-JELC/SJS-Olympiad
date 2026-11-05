@@ -1,0 +1,27 @@
+{
+  "sourceArchive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "C2H4O",
+      "file": "assets/c2h4o.svg",
+      "sourceEntry": "Assets/Images/3eb2855b-88ab-44cb-8f21-17c5f6a77d41.svg",
+      "sha256": "06b9fa9ceea02f544f5a65e6f737f24bfc8c5dd4c3e7ffd0f8eb8842109d79a9",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    },
+    {
+      "name": "C4H8",
+      "file": "assets/c4h8.svg",
+      "sourceEntry": "Assets/Images/ef0372e7-a182-4f92-b643-5126b5ba3ea4.svg",
+      "sha256": "e161cd6706bd4b12be070af63b381906cb1253c518bc4ad407ae57290aefe8e6",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    },
+    {
+      "name": "C3H9N",
+      "file": "assets/c3h9n.svg",
+      "sourceEntry": "Assets/Images/021d7a40-00e6-4b2e-a6d7-22e92b4826c9.svg",
+      "sha256": "442437268e1bc1260ecd2349d11f84588d8cdcfa4300b3f6c5fdb75b57fccdc0",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    }
+  ]
+}

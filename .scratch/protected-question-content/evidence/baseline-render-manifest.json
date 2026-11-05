@@ -1,0 +1,32 @@
+{
+  "phase": "baseline",
+  "checks": 3,
+  "passed": 3,
+  "captures": 114,
+  "records": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "count": 38,
+      "screenshotDirectory": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium"
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "count": 38,
+      "screenshotDirectory": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium"
+    },
+    {
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "count": 38,
+      "screenshotDirectory": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium"
+    }
+  ]
+}

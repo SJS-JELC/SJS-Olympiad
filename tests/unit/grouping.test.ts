@@ -1,10 +1,12 @@
 import { transition, l5p9Groups, l6p1Groups } from '../fixtures/custom-server';
 import { describe, expect, it } from 'vitest';
 import { emptyAttempt, score, type Attempt } from '../../src/questions/attempts';
-import { l5p9, l5p9Items } from '../../src/questions/l5p9/definition';
-import { l6p1, l6p1Items } from '../../src/questions/l6p1/definition';
+import { l5p9 } from '../../src/questions/l5p9/definition';
+import { l6p1 } from '../../src/questions/l6p1/definition';
 
-import { doubleTrouble, doubleTroubleItems } from '../../src/questions/double-trouble/definition';
+import { doubleTrouble } from '../../src/questions/double-trouble/definition';
+import { l5p9Items, l6p1Items, doubleTroubleItems } from '../fixtures/grouping-presentations';
+import { groupingReducer } from '../../src/questions/l5p9/grouping';
 import { doubleTroubleGroups } from '../fixtures/double-trouble';
 
 const cases = [
@@ -30,11 +32,11 @@ for (const { definition, items, groups } of cases) {
         }
       }
     });
-    it('ignores blank and incomplete checks, duplicate and unknown selections', () => {
+    it('ignores blank and incomplete checks, duplicate and malformed selections', () => {
       const blank = emptyAttempt(); expect(submit(blank)).toBe(blank);
       const partial = select(groups[0]); expect(submit(partial)).toBe(partial);
       expect(transition(definition, partial, { type: 'select', item: groups[0][0], now: 0 })).toBe(partial);
-      expect(transition(definition, partial, { type: 'select', item: 'unknown', now: 0 })).toBe(partial);
+      expect(transition(definition, partial, { type: 'select', item: '../invalid item', now: 0 })).toBe(partial);
       expect(transition(definition, partial, { type: 'edit', field: 'groups', value: groups.flat().join(','), now: 0 })).toBe(partial);
       expect(submit(blank).solvedAt).toBeNull();
     });
@@ -77,3 +79,12 @@ for (const { definition, items, groups } of cases) {
     });
   });
 }
+
+it('bounds presentation-supplied identities and leaves correctness to the server', () => {
+  const reduce = groupingReducer(9);
+  let state = emptyAttempt();
+  for (let index = 0; index < 9; index++) state = reduce(state, {type:'select',item:'tile'+index,now:0});
+  expect(reduce(state, {type:'select',item:'tile9',now:0})).toBe(state);
+  expect(reduce(state, {type:'select',item:'tile0',now:0})).toBe(state);
+  expect(reduce(emptyAttempt(), {type:'select',item:'../invalid item',now:0}).interaction).toBeUndefined();
+});

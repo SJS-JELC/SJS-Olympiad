@@ -6,7 +6,7 @@ async function draftYear(api:ApiHarness,year:string){
  const event=(await api.service.events(staff)).events.find((row:any)=>row.year===year);
  if(event.status==='active')await api.service.eventDraft(staff,{eventId:event.id,expectedRevision:event.revision,confirm:true});
  const current=(await api.service.events(staff)).events.find((row:any)=>row.year===year),now=Date.now();
- await api.service.eventUpdate(staff,{eventId:current.id,expectedRevision:current.revision,theoryStartsAt:now+300000,theoryEndsAt:now+600000,practicalStartsAt:now+400000,practicalEndsAt:now+700000});
+ await api.service.eventUpdate(staff,{eventId:current.id,expectedRevision:current.revision,theoryStartsAt:now-300000,theoryEndsAt:now+600000,practicalStartsAt:now-400000,practicalEndsAt:now+700000});
 }
 test('draft competition enforces breach recovery with a visible editable code field',async({page,api})=>{
  await draftYear(api,'U6');await mockFullscreen(page);await page.goto('/');await claimAndStart(page);

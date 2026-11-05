@@ -1,0 +1,8 @@
+{
+  "source": "src/practicals/assets/mohr-crisps.svg",
+  "sourceSha256": "7327afbbfc20109240ae2a105417e8fa6edb71c024baf2b87ae5cdfcc75a985d",
+  "asset": "mohr-crisps.png",
+  "assetSha256": "5affd65491889ccf25f05df047120a4d28ef8494c8929266e99cfa06755f5e24",
+  "method": "Chromium faithful SVG rasterization to transparent 1234 by 1328 PNG (8x original geometry, rounded to pixels); embedded image preserved. Renderer preserves original 154.24:166.05 aspect ratio.",
+  "bytes": 2149009
+}

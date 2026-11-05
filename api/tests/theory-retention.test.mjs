@@ -59,7 +59,8 @@ test('timed run stores row IDs and deadline, never typed names; sequence expires
   assert.ok(!JSON.stringify(await f.repo.list({partitionKey:f.pk})).includes('unique-wrong-oxyanion'));
   const expected=oxyanions.find(row=>row.row===stored.privateState.run[0]);
   await f.api.submit(f.token,{questionId:'L6P3',requestId:'timed-correct-01',answers:{answer:expected.name}});
-  const hydration=(await f.api.hydrate(f.token)).questions.L6P3.attempt;assert.equal(hydration.interaction.step,1);assert.equal(hydration.interaction.deadline,175000);assert.deepEqual(hydration.answers,{});
+  assert.equal((await f.api.hydrate(f.token)).questions.L6P3.attempt.interaction,undefined);
+  const hydration=(await f.api.question(f.token,{questionId:'L6P3'})).attempt;assert.equal(hydration.interaction.step,1);assert.equal(hydration.interaction.deadline,175000);assert.deepEqual(hydration.answers,{});
   f.setTime(175000);await f.api.action(f.token,{questionId:'L6P3',requestId:'timed-expire-001',action:{type:'tick'}});
   stored=await f.repo.get(f.pk,'q-L6P3');assert.deepEqual(stored.privateState,{});assert.equal(stored.state.retryAt,195000);
 });
@@ -73,5 +74,6 @@ test('GC retains only the active capture and returns an idempotent completion ID
   assert.equal((await f.api.action(f.token,tick)).gcCompletedRunId,1);
   const stored=await f.repo.get(f.pk,'q-U5P5');assert.equal(stored.state.interaction.activeRun,null);assert.deepEqual(stored.state.interaction.results,[]);
   const rows=await f.repo.list({partitionKey:f.pk});assert.ok(!JSON.stringify(rows).includes('12.5'));
-  assert.deepEqual((await f.api.hydrate(f.token)).questions.U5P5.attempt.interaction.results,[]);
+  assert.equal((await f.api.hydrate(f.token)).questions.U5P5.attempt.interaction,undefined);
+  assert.deepEqual((await f.api.question(f.token,{questionId:'U5P5'})).attempt.interaction.results,[]);
 });

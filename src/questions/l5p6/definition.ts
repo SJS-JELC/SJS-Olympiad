@@ -10,9 +10,9 @@ export function normaliseFormula(value: string, display = false): string {
     }).join('');
 }
 export const l5p6: QuestionDefinition = {
-    id: 'L5P6', year: 'L5', number: 6, title: 'Fire in the Hole!', points: 2, cooldownMs: 20000,
+    id: 'L5P6', year: 'L5', number: 6, title: 'Question 6', protectedContent: true, points: 2, cooldownMs: 20000,
     lockCorrectParts: false, allowIncompleteSubmission: true,
-    parts: [['mass47', 'Mᵣ 47.1'], ['mass74', 'Mᵣ 74'], ['mass45', 'Mᵣ 45']].map(([id, label]) => ({
-        id, label, fields: [{ id, label, acceptsEdit: value => value.length <= 12 }],
+    parts: ['field1', 'field2', 'field3'].map(id => ({
+        id, label: 'Answer', fields: [{ id, label: 'Answer', acceptsEdit: value => value.length <= 12 }],
     })),
 };

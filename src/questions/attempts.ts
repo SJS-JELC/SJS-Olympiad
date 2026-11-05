@@ -1,7 +1,7 @@
 import type { GcAction, GcInteraction } from './u5p5/types';
 /** Browser presentation state. Only server responses can mark or award a question. */
 export type Answers = Readonly<Record<string, string>>;
-export type Part = { id: string; label: string; fields: readonly { id: string; label: string; acceptsEdit?: (value: string) => boolean }[] };
+export type Part = { id: string; label: string; fields: readonly { id: string; label: string; unit?:string; ariaLabel?:string; acceptsEdit?: (value: string) => boolean }[] };
 export type GroupingInteraction = { kind: 'grouping'; selected: readonly string[] };
 export type TimedInteraction = {
   kind: 'timed'; formula: string | null; step: number; deadline: number;
@@ -17,8 +17,11 @@ export type QuestionDefinition = {
   id: string; number: number; title: string; year: string; points: number; cooldownMs: number;
   /** Presentation only. Omit to use the shared Olympiad eagle. */
   headerArtwork?: { src: string; alt?: string; className?: string };
+  protectedContent?: boolean;
   lockCorrectParts?: boolean; allowIncompleteSubmission?: boolean;
   parts: readonly Part[];
+  /** Configure generic behavior from authorized inputs, never from public defaults. */
+  configure?: (definition: QuestionDefinition, payload: unknown) => QuestionDefinition;
   /** Pure custom transitions; router retains and reconciles state across all routes. */
   reduce?: (state: Attempt, action: AttemptAction) => Attempt;
 };

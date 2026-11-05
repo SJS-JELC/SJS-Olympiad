@@ -1,0 +1,12 @@
+{
+  "api": {
+    "passed": 171,
+    "failed": 0
+  },
+  "unit": "Tests  548 passed (548)",
+  "contracts": "tests 9",
+  "build": "all stages completed; wrapper exit1 caused by native stderr deprecation warning, separate typecheck exit0",
+  "profile": "protected-baseline",
+  "externalEvidence": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline/test-results",
+  "limitations": "Local only; existing dependencies show 3 npm audit vulnerabilities (1 moderate,2 critical). No dependency changes/cloud/runtime acceptance."
+}

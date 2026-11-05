@@ -1,0 +1,59 @@
+{
+  "measuredAt": "2026-11-05T00:02:56.384Z",
+  "contentId": "L6P5",
+  "schemaVersion": 1,
+  "version": "1",
+  "record": {
+    "raw": 3829,
+    "gzip": 1206,
+    "brotli": 980
+  },
+  "assets": [
+    {
+      "id": "example",
+      "mimeType": "image/svg+xml",
+      "raw": 26248,
+      "gzip": 8291,
+      "brotli": 7043
+    },
+    {
+      "id": "question",
+      "mimeType": "image/svg+xml",
+      "raw": 10946,
+      "gzip": 2115,
+      "brotli": 1720
+    }
+  ],
+  "total": {
+    "raw": 41023,
+    "gzip": 11612,
+    "brotli": 9743
+  },
+  "batches": [
+    {
+      "clients": 25,
+      "requests": 75,
+      "errors": 0,
+      "totalMs": 9.85,
+      "medianMs": 9.33,
+      "p95Ms": 9.5
+    },
+    {
+      "clients": 50,
+      "requests": 150,
+      "errors": 0,
+      "totalMs": 11.84,
+      "medianMs": 11.61,
+      "p95Ms": 11.74
+    },
+    {
+      "clients": 100,
+      "requests": 300,
+      "errors": 0,
+      "totalMs": 25.37,
+      "medianMs": 25.1,
+      "p95Ms": 25.22
+    }
+  ],
+  "scope": "Local in-process production HTTP handler, distinct synthetic authenticated teacher sessions, memory repository; record then two sequential binary assets per client. No network/browser/TLS/Azure runtime or capacity claim. Compression measured locally, not observed HTTP compression."
+}

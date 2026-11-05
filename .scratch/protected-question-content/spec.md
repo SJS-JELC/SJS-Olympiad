@@ -1,6 +1,6 @@
 # Protected question content
 
-Status: Planned; implementation and deployment not started.
+Status: Complete locally and accepted by root after independent reviews/rechecks. No deployment authorised or performed.
 
 ## Authority and outcome
 

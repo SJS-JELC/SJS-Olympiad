@@ -1,0 +1,83 @@
+{
+  "baseline": "Accepted J08 pre-J10 screenshots; original scientific geometry checked independently by j10-science.json",
+  "pairs": [
+    {
+      "width": 1200,
+      "stage": "lab",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1200-chromium\\gc-lab-1200.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1200-chromium\\gc-lab-1200.png",
+      "baselineSha256": "0f4bdb65e4b8242d5f07bf845c975a710010f4f112274222d129e424fe77b1cb",
+      "currentSha256": "76be2761726e56eb5d445889bae4f1d253ac6afff1247583bc77ad50c86595dd"
+    },
+    {
+      "width": 1200,
+      "stage": "preview",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1200-chromium\\gc-preview-1200.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1200-chromium\\gc-preview-1200.png",
+      "baselineSha256": "54a3d1b97fd84d549720ad975c4305d30bc004ebe61c1cadcc8ad29937496840",
+      "currentSha256": "45b0d59839b5de58ae1fa68f3f23fe22a2f790f0786d0e565f3cab41c392241c"
+    },
+    {
+      "width": 1200,
+      "stage": "report",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1200-chromium\\gc-report-1200.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1200-chromium\\gc-report-1200.png",
+      "baselineSha256": "30cb9a4dca1e0464a1db10d27d237bb124960c890ad1e55403a1cf1506a2fac4",
+      "currentSha256": "30cb9a4dca1e0464a1db10d27d237bb124960c890ad1e55403a1cf1506a2fac4"
+    },
+    {
+      "width": 1920,
+      "stage": "lab",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1920-chromium\\gc-lab-1920.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1920-chromium\\gc-lab-1920.png",
+      "baselineSha256": "a70f4879f439fdd04f515de00b55d45b25830227a0e5afdf8edae378d6fd8667",
+      "currentSha256": "47aa0a5dd49aa2db8cc40f69049d1e21cdb866509fa597468416dd7d8c71a626"
+    },
+    {
+      "width": 1920,
+      "stage": "preview",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1920-chromium\\gc-preview-1920.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1920-chromium\\gc-preview-1920.png",
+      "baselineSha256": "6fc645d173017a3aa716fb9b3d77449c3a619b3fc836f38d3298669cbaa6efe6",
+      "currentSha256": "c10815fee91389a104aab5b036b0430cef64539db97ccbc7352f9e4f7ecf296a"
+    },
+    {
+      "width": 1920,
+      "stage": "report",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1920-chromium\\gc-report-1920.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-1920-chromium\\gc-report-1920.png",
+      "baselineSha256": "63d78a1e8436aded47c8022ac35cb85aa7346419a217685a114f7da2d904bd97",
+      "currentSha256": "63d78a1e8436aded47c8022ac35cb85aa7346419a217685a114f7da2d904bd97"
+    },
+    {
+      "width": 2560,
+      "stage": "lab",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-2560-chromium\\gc-lab-2560.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-2560-chromium\\gc-lab-2560.png",
+      "baselineSha256": "6183a6115b40446fee1bcff7f8bdf81b4a7ebf5c700dbe555acca9e1b30439d8",
+      "currentSha256": "189b525a85a2aacbf929a98b612036de7f3f37b95dfa9e011ac39242f70cf424"
+    },
+    {
+      "width": 2560,
+      "stage": "preview",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-2560-chromium\\gc-preview-2560.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-2560-chromium\\gc-preview-2560.png",
+      "baselineSha256": "364af6e2afe5df55b9672fb618bef4f7591662182247f5536966d430c555c554",
+      "currentSha256": "46eab35df67ff10b3b240f18f63b3ddc0e957788eb24061302721d48c3ec168b"
+    },
+    {
+      "width": 2560,
+      "stage": "report",
+      "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-2560-chromium\\gc-report-2560.png",
+      "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-final\\u5p5-compact-GC-briefing-and-equal-sample-cards-fit-at-2560-chromium\\gc-report-2560.png",
+      "baselineSha256": "5bc182d1502ba783bf6f1f3aad192fbabc3500020e494e29f859ce4fac8bc6fd",
+      "currentSha256": "5bc182d1502ba783bf6f1f3aad192fbabc3500020e494e29f859ce4fac8bc6fd"
+    }
+  ],
+  "inspectedSheets": [
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\gc-detail-1200.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\gc-detail-1920.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\gc-detail-2560.jpg"
+  ],
+  "visualInspection": "All three detailed sheets inspected: apparatus geometry/labels, miniature traces and enlarged reports retain the accepted appearance."
+}

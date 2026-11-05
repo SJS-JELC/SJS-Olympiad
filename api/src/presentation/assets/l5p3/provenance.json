@@ -1,0 +1,13 @@
+{
+  "sourceArchive": "../Extracted PowerApp/SJS Chemistry Olympiad.msapp",
+  "archiveSha256": "c5364a6e8a3b1632a594dbcc0f80ce9884f15218f59736debc89c5a723851b90",
+  "assets": [
+    {
+      "name": "Bicyclo",
+      "file": "assets/bicyclo.svg",
+      "sourceEntry": "Assets/Images/65a1398c-4a3b-4078-8065-9cbcfb867afa.svg",
+      "sha256": "e4f34a822496ec5cb44d17ace67f9b436f3ecf1055cfc82571c493b7b3c2a516",
+      "treatment": "Unchanged source geometry and embedded lettering; original aspect ratio preserved."
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "job": "J10-standards-recheck",
+  "verdict": "PASS",
+  "tip": "3ce45d0e93140eea17ff1a5074e93d554fcf96e4",
+  "comparison": "37c2d0474ec4af48f891642cb51f305209a9cd5d...HEAD -- src api scripts tests docs",
+  "originalFinding": {
+    "severity": "P2",
+    "status": "RESOLVED",
+    "paths": [
+      "src/cloud/CloudQuestion.tsx:87",
+      "src/cloud/CloudQuestion.tsx:135",
+      "src/cloud/CloudQuestion.tsx:159"
+    ],
+    "reason": "Invalidated selected flights no longer block new authority/context loads; finalizer slot ownership is guarded."
+  },
+  "newFindings": {
+    "documented": 0,
+    "heuristic": 0
+  },
+  "independentChecks": [
+    {
+      "name": "Original actual-transpiled-hook reproduction extended to race matrix",
+      "pass": 24,
+      "fail": 0,
+      "axes": {
+        "question": [
+          "L6P3",
+          "U5P5"
+        ],
+        "transition": [
+          "competitor lock/recovery",
+          "teacher context away/back"
+        ],
+        "obsoleteResult": [
+          "success",
+          "423 error",
+          "transport error"
+        ],
+        "settlementOrder": [
+          "old-first",
+          "fresh-first"
+        ]
+      },
+      "method": "Execute new checkout CloudQuestion.tsx transpiled by TypeScript with isolated stable hook slots and deferred transport; actual attempts.ts and question-state.ts reconciliation modules. Start recovery/context-return load before obsolete settlement; no post-settlement manual load.",
+      "assertions": [
+        "Two reads begin before either held response settles",
+        "Old-first finalizer preserves replacement flight object",
+        "Fresh selected data wins in both orders",
+        "Old errors do not call mutation-error handler",
+        "Page working and exact frozen pending object preserved"
+      ]
+    },
+    {
+      "name": "Fresh selected failure and explicit Retry while obsolete read stays held",
+      "pass": 2,
+      "fail": 0,
+      "assertions": [
+        "Fresh operational error appears as loadError",
+        "Explicit Retry creates third request and succeeds",
+        "Late obsolete response cannot overwrite retry data",
+        "Page working and frozen pending object preserved"
+      ],
+      "harnessCorrection": "Initial reviewer harness incorrectly expected zero handleMutationError invocations even for the current operational failure. Corrected expectation permits the existing current-error handler call; no product change needed."
+    },
+    {
+      "name": "Evidence-only scientific invariant",
+      "command": "node scripts/check-protected-science.mjs",
+      "pass": true,
+      "records": 38,
+      "note": "Reviewed explicit key-only alias allowances; scientific strings/values/assets and independent original GC geometry checks pass."
+    },
+    {
+      "name": "Read-only validated external mirror source comparison",
+      "profile": "protected-j10",
+      "changedPaths": 18,
+      "normalizedSourceMismatches": [],
+      "note": "Five initial raw hash differences were CRLF/LF only; normalized text and git diff --no-index confirmed no content difference. Mirror was not mutated."
+    },
+    {
+      "name": "Read-only emitted names/source-map inspection",
+      "files": 20,
+      "obsoleteNameLeaks": [],
+      "sourceMaps": 0
+    }
+  ],
+  "reviewedPaths": [
+    "api/src/presentation/records/u5p5.mjs",
+    "docs/api-contract.md",
+    "docs/question-framework.md",
+    "scripts/check-protected-presentations.mjs",
+    "scripts/check-protected-science.mjs",
+    "scripts/compare-protected-visuals.py",
+    "scripts/test-protected-boundary.mjs",
+    "src/cloud/CloudQuestion.tsx",
+    "src/questions/u5p5/Chromatogram.tsx",
+    "src/questions/u5p5/GcInstrument.tsx",
+    "src/questions/u5p5/ScentsAndScentsibility.css",
+    "src/questions/u5p5/ScentsAndScentsibility.tsx",
+    "src/questions/u5p5/model.ts",
+    "src/questions/u5p5/presentation.ts",
+    "tests/browser/selected-load-races.spec.ts",
+    "tests/browser/u5p5-compact.spec.ts",
+    "tests/unit/network-policy.test.ts",
+    "tests/unit/u5p5-model.test.ts"
+  ],
+  "evidenceRead": [
+    "../j09-standards/.scratch/protected-question-content/evidence/review-standards.md",
+    ".scratch/protected-question-content/evidence/j10-fix.md",
+    ".scratch/protected-question-content/evidence/j10-reproduction.json",
+    ".scratch/protected-question-content/evidence/j10-validation.json",
+    ".scratch/protected-question-content/evidence/j10-aliases.json",
+    ".scratch/protected-question-content/evidence/j10-negative.json"
+  ],
+  "providedEvidenceNotRerun": {
+    "api": 269,
+    "unit": 590,
+    "contracts": 22,
+    "build": true,
+    "negativeBoundaryProbes": 16,
+    "distinctPassedAffectedBrowsers": 77,
+    "exactParityPairs": 114,
+    "additionalGcVisualPairs": 9
+  },
+  "limitations": [
+    "No new browser run or full suite rerun; real-browser regressions and supplied results inspected.",
+    "Hook harness executes actual production hook logic with lightweight hook/transport isolation; it is not itself a browser acceptance test.",
+    "No source or external preview-profile changes; only the two owned report artifacts created.",
+    "No Azure/managed Node22/live-storage/deployment acceptance claim.",
+    "The intentional neutral names follow the strict identifier contract and override a generic naming-smell preference."
+  ]
+}

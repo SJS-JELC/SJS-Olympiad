@@ -1,0 +1,335 @@
+{
+  "sourceCommit": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "questions": {
+    "L5P1": {
+      "title": "CAN'T TAKE THE HEAT?",
+      "paragraphs": [
+        "A metal carbonate, M₂(CO₃)₃, loses 46.8% of its mass when heated.",
+        "Give the name of the metal, M?"
+      ],
+      "labels": [],
+      "descriptions": [],
+      "accessibleLabels": [
+        "Name of the metal, M"
+      ],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Name of the metal, M",
+          "fields": [
+            {
+              "id": "answer",
+              "label": "Name of the metal, M"
+            }
+          ]
+        }
+      ],
+      "assets": {
+        "equipment-9.png": "9f5f34f4a245c157bca3a33d27c0595b15e30ebfe85184baed72d86785e043ee",
+        "equipment-4.png": "2aadec73e5e5f075d39fbbf5de269d2e10c18ca253e1043500edac89e52143ee"
+      }
+    },
+    "L5P2": {
+      "title": "THE DESTROYER OF WORLDS",
+      "paragraphs": [
+        "Nuclear fusion is easiest to achieve using ²H (deuterium) and ³H (tritium).",
+        "Deuterium is quite easy to obtain from natural sources, but tritium must be made by adding a neutron to a ⁶Li atom. To obtain this we enrich naturally occurring lithium until, by mass, 50% of it is ⁶Li.",
+        "What is the relative atomic mass of this enriched lithium? Give your answer to 3 significant figures.",
+        "For interest:",
+        "²H + ³H → ⁴He + ¹n",
+        "⁶Li + ¹n → ⁴He + ³H"
+      ],
+      "labels": [
+        "Relative atomic mass"
+      ],
+      "descriptions": [],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Answer",
+          "fields": [
+            {
+              "id": "answer",
+              "label": "Relative atomic mass"
+            }
+          ]
+        }
+      ],
+      "assets": {}
+    },
+    "L5P3": {
+      "title": "TAKING THE STABILISERS OFF",
+      "paragraphs": [
+        "It is easier to display organic molecules as skeletal formula. Skeletal formulae follow these rules:",
+        "Each line represents a bond between two carbon atoms | Each corner or end of a line represents a carbon atom | Hydrogen atoms attached to carbon are not shown but are implied.",
+        "The names of 3 of the molecules below are bicyclo[2.2.1]heptane, bicyclo[2.2.2]octane, bicyclo[3.2.1]octane.",
+        "Deduce the name of the other molecule."
+      ],
+      "labels": [
+        "Name of the other molecule"
+      ],
+      "descriptions": [
+        "Four bicyclic skeletal structures to compare"
+      ],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Answer",
+          "fields": [
+            {
+              "id": "answer",
+              "label": "Name of the other molecule"
+            }
+          ]
+        }
+      ],
+      "assets": {
+        "bicyclo.svg": "e4f34a822496ec5cb44d17ace67f9b436f3ecf1055cfc82571c493b7b3c2a516"
+      }
+    },
+    "L5P4": {
+      "title": "GOBLINS",
+      "paragraphs": [
+        "Give the symbol of the mystery element?",
+        "- It is named after the German word for goblin as miners blamed goblins when its ores released poisonous arsenic fumes when heated.",
+        "- It is one of the few elements that will be strongly attracted to a magnet at room temperature.",
+        "- Its compounds produce a deep blue colour in glass and ceramics.",
+        "- It is found in the important biological molecule vitamin B₁₂."
+      ],
+      "labels": [
+        "Symbol of the mystery element"
+      ],
+      "descriptions": [],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Answer",
+          "fields": [
+            {
+              "id": "answer",
+              "label": "Symbol of the mystery element"
+            }
+          ]
+        }
+      ],
+      "assets": {}
+    },
+    "L5P5": {
+      "title": "HAVEN'T I SEEN YOU BEFORE?",
+      "paragraphs": [
+        "How many isomers do molecules with the following molecular formulae have?"
+      ],
+      "labels": [
+        "C₂H₄O",
+        "C₄H₈",
+        "C₃H₉N"
+      ],
+      "descriptions": [
+        "C₂H₄O",
+        "C₄H₈",
+        "C₃H₉N"
+      ],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Answer",
+          "fields": [
+            {
+              "id": "c2h4o",
+              "label": "C₂H₄O"
+            },
+            {
+              "id": "c4h8",
+              "label": "C₄H₈"
+            },
+            {
+              "id": "c3h9n",
+              "label": "C₃H₉N"
+            }
+          ]
+        }
+      ],
+      "assets": {
+        "c2h4o.svg": "06b9fa9ceea02f544f5a65e6f737f24bfc8c5dd4c3e7ffd0f8eb8842109d79a9",
+        "c4h8.svg": "e161cd6706bd4b12be070af63b381906cb1253c518bc4ad407ae57290aefe8e6",
+        "c3h9n.svg": "442437268e1bc1260ecd2349d11f84588d8cdcfa4300b3f6c5fdb75b57fccdc0"
+      }
+    },
+    "L5P6": {
+      "title": "Fire in the Hole!",
+      "paragraphs": [
+        "One method chemists use to study molecules is to break them into smaller fragments and measure the mass of each fragment.",
+        "When the molecule shown is fragmented, ions with masses 47.1, 74 and 45 are detected.",
+        "Deduce the formula of the fragment that could produce each mass."
+      ],
+      "labels": [],
+      "descriptions": [
+        "Methionine structural formula"
+      ],
+      "accessibleLabels": [
+        "Question and molecule"
+      ],
+      "parts": [
+        {
+          "id": "mass47",
+          "label": "Mᵣ 47.1",
+          "fields": [
+            {
+              "id": "mass47",
+              "label": "Mᵣ 47.1"
+            }
+          ]
+        },
+        {
+          "id": "mass74",
+          "label": "Mᵣ 74",
+          "fields": [
+            {
+              "id": "mass74",
+              "label": "Mᵣ 74"
+            }
+          ]
+        },
+        {
+          "id": "mass45",
+          "label": "Mᵣ 45",
+          "fields": [
+            {
+              "id": "mass45",
+              "label": "Mᵣ 45"
+            }
+          ]
+        }
+      ],
+      "assets": {
+        "methionine.svg": "7478f3891458fd9493a316eea2b3349030bcac72d4a3f98c05db09228045a889"
+      }
+    },
+    "L5P7": {
+      "title": "CRYSTAL CLEAR",
+      "paragraphs": [
+        "The structure of giant lattices have a huge impact on their properties.",
+        "We represent repeating crystal structures using a unit cell. A unit cell is the smallest repeating 3-dimensional block that can be stacked to recreate the entire crystal.",
+        "Below are 2 materials that have or are likely to revolutionise our world. Count the total number of atoms within each unit cell (n.b. only fractions of some atoms may sit within the unit cell.)"
+      ],
+      "labels": [
+        "Perovskite",
+        "Gallium Nitride"
+      ],
+      "descriptions": [
+        "Perovskite unit cell",
+        "Gallium nitride unit cell"
+      ],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Answer",
+          "fields": [
+            {
+              "id": "perovskite",
+              "label": "Perovskite"
+            },
+            {
+              "id": "gan",
+              "label": "Gallium Nitride"
+            }
+          ]
+        }
+      ],
+      "captions": [
+        [
+          "Perovskite",
+          "(Used in next gen solar cells)"
+        ],
+        [
+          "Gallium Nitride",
+          "(Used in LEDs and lasers)"
+        ]
+      ],
+      "assets": {
+        "perovskite.svg": "1b5960eab819f7838b263d99b707265f648b03a3ff97582c932da6b108470982",
+        "gan.svg": "94b51e4f7bf582c2381f220dd5dd7ef100af12a474b292a9b1bad48c5d76b022"
+      }
+    },
+    "L5P8": {
+      "title": "ALKANE ISOTOPES",
+      "paragraphs": [
+        "Alkanes have the general formula CₙH₂ₙ₊₂.",
+        "Carbon exists naturally as a mixture of isotopes: 98.9% ¹²C and 1.1% ¹³C.",
+        "For larger alkanes, molecules with Mᵣ + 1 arise when exactly one carbon atom is ¹³C and the remaining carbons are ¹²C.",
+        "Assume they contain only H. For what value of n will the abundance at Mᵣ equal the abundance at Mᵣ + 1?"
+      ],
+      "labels": [
+        "n ="
+      ],
+      "descriptions": [],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "answer",
+          "label": "Answer",
+          "fields": [
+            {
+              "id": "answer",
+              "label": "n ="
+            }
+          ]
+        }
+      ],
+      "assets": {}
+    },
+    "L5P9": {
+      "title": "Thinking Oxide the Box",
+      "paragraphs": [],
+      "labels": [],
+      "descriptions": [],
+      "accessibleLabels": [],
+      "parts": [
+        {
+          "id": "groups",
+          "label": "Three groups of three",
+          "fields": []
+        }
+      ],
+      "wording": "These oxides can be sorted into three groups of three. Find the groups.",
+      "itemLabels": [
+        "ZnO₂",
+        "TiO₂",
+        "Fe₃O₄",
+        "MgO₂",
+        "Al₂O₃",
+        "V₆O₁₃",
+        "Na₂O₂",
+        "MgO",
+        "Ti₄O₇"
+      ],
+      "itemIds": [
+        "ZnO2",
+        "TiO2",
+        "Fe3O4",
+        "MgO2",
+        "Al2O3",
+        "V6O13",
+        "Na2O2",
+        "MgO",
+        "Ti4O7"
+      ],
+      "assets": {
+        "ZnO2.svg": "908f171f0901e5bca45e05e55232fe3d39b2f410e6a3e355babc1dc2234de13e",
+        "TiO2.svg": "f871e4cd28961b013e74728c870aec3251a53a1cc0151afcd8e14a845c866dfa",
+        "Fe3O4.svg": "84cc243ad97c1da34d49f277adc86ae38154cb5398f61b8677497e85a2b446f2",
+        "MgO2.svg": "e293645979f0808ebc02c8049c1f6de2afda37b9b51fb6af3b72a5e9f830b075",
+        "Al2O3.svg": "3ea35ff6c7d9e20770e864433b9cf9e1f816cc0963393a359ebd29205b51af58",
+        "V6O13.svg": "f70456052743ae3e4f1eae8604a8972227da3dc38a39a28d7aa1ae3b14c9c90f",
+        "Na2O2.svg": "afd8c83aaf0af89281f52d3956d2f76a1030c21ee3def5bfb5836c65d68fddaf",
+        "MgO.svg": "1b6d94c8c9c84796c4236f33752261b146d1f6aa74821a231b5aed4a8cacbd06",
+        "Ti4O7.svg": "9a631c0f7dec77184d19175766e2d382642f7d971ab6be261b1b05e0638fa6ed"
+      }
+    }
+  }
+}

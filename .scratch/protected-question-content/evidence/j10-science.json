@@ -1,0 +1,372 @@
+{
+  "baseline": "5f5c69b471937cbf0ba13d724466733ef7815a3c",
+  "records": [
+    {
+      "kind": "question",
+      "id": "L6P5",
+      "previousVersion": "1",
+      "version": "2",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P1",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P2",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P3",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P4",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P5",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P6",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P7",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P8",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L5P9",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P1",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P2",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P3",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P4",
+      "previousVersion": "1",
+      "version": "2",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P6",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P7",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P8",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "L6P9",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P2",
+      "previousVersion": "1",
+      "version": "2",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P3",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P4",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P5",
+      "previousVersion": "1",
+      "version": "4",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P6",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P7",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P8",
+      "previousVersion": "1",
+      "version": "2",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U5P9",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P1",
+      "previousVersion": "1",
+      "version": "2",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P2",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P3",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P4",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P5",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P6",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P7",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P8",
+      "previousVersion": "1",
+      "version": "2",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "question",
+      "id": "U6P9",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "practical",
+      "id": "L5",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "practical",
+      "id": "L6",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    },
+    {
+      "kind": "practical",
+      "id": "U6",
+      "previousVersion": "1",
+      "version": "1",
+      "exactScientificValues": true,
+      "exactAssets": true
+    }
+  ],
+  "instrumentPaths": true,
+  "instrumentRectangles": true,
+  "instrumentLabels": true,
+  "formulationColours": true,
+  "permittedSchemaChanges": {
+    "L6P4": {
+      "orbitals": "panels",
+      "phaseAssets": "choiceAssets",
+      "phaseLabel": "valueLabel"
+    },
+    "L6P5": {
+      "conformations": "captions"
+    },
+    "U5P8": {
+      "flask": "diagram",
+      "cap": "referenceDiagram"
+    },
+    "U6P1": {
+      "nmr": "detail"
+    },
+    "U6P8": {
+      "slowLabel": "annotation"
+    },
+    "U5P5": {
+      "retentionTimes": "guideValues",
+      "instrument": "graphic",
+      "tube": "path1",
+      "sampleTube": "path2",
+      "carrierInlet": "path3",
+      "injectorStem": "path4",
+      "injectorCap": "path5",
+      "detectorWave": "path6",
+      "housing": "shape1",
+      "carrierBody": "shape2",
+      "carrierTop": "shape3",
+      "injectorBody": "shape4",
+      "detectorBody": "shape5",
+      "detectorLight": "shape6",
+      "column": "label1",
+      "carrier": "label2",
+      "injector": "label3",
+      "detector": "label4",
+      "injectorSuffix": "addSuffix",
+      "instrumentLabel": "graphicLabel"
+    }
+  },
+  "permittedSelectorChanges": {
+    "gc-chromatogram": "gc-chart",
+    "gc-instrument": "gc-graphic",
+    "gc-tube-inner": "gc-path-inner",
+    "gc-reduced-coil": "gc-reduced-path",
+    "gc-carrier-flow": "gc-stream-flow",
+    "gc-carrier-inlet": "gc-stream-inlet",
+    "gc-carrier-common": "gc-stream-common",
+    "gc-carrier-source": "gc-stream-source",
+    "gc-carrier-duration": "gc-stream-duration",
+    "gc-injecting": "gc-transfer",
+    "gc-inject": "gc-transfer-motion",
+    "gc-detector-flash": "gc-indicator-flash",
+    "u5p8-flask": "u5p8-diagram",
+    "u5p8-cap": "u5p8-reference-diagram"
+  },
+  "removedMetadata": "U5P2 editor.layoutId: generic layout configuration replaces the named legacy selector"
+}

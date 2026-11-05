@@ -26,7 +26,7 @@ competitor('stamp waits for confirmed save, keeps its original time on revisit/r
 
 test('timed five-name completion receives the same confirmed shared stamp',async({page})=>{
  await openTeacher(page, '/?theory&question=3');await page.getByRole('button',{name:'GO: start oxyanion challenge'}).click();
- for(let step=0;step<5;step++){const formula=await page.locator('.l6p3-formula').getAttribute('aria-label'),prompt=oxyanions.find((row:{formula:string;name:string})=>row.formula===formula);expect(prompt).toBeTruthy();await page.getByRole('textbox',{name:'Oxyanion name'}).fill(prompt!.name);await page.getByRole('button',{name:'Submit oxyanion name'}).click();if(step<4)await expect(page.locator('.l6p3-formula')).not.toHaveAttribute('aria-label',formula!);}
+ for(let step=0;step<5;step++){const formula=await page.locator('.l6p3-prompt-display').getAttribute('aria-label'),prompt=oxyanions.find((row:{formula:string;name:string})=>row.formula===formula);expect(prompt).toBeTruthy();await page.getByRole('textbox',{name:'Oxyanion name'}).fill(prompt!.name);await page.getByRole('button',{name:'Submit oxyanion name'}).click();if(step<4)await expect(page.locator('.l6p3-prompt-display')).not.toHaveAttribute('aria-label',formula!);}
  await expect(page.locator('.completion-stamp')).toHaveAttribute('data-animated','true');await expect(page.locator('.event-status')).toHaveCount(0);await expect(page.getByText('Teacher Mode',{exact:true})).toHaveCount(0);
 });
 

@@ -62,8 +62,11 @@ test('fresh restore strips old drawings/groupings/formulations/reports but retai
  const complete=restoredAttempt({...empty(),answers:{answer:'485'},solvedAt:1000});assert.equal(complete.solvedAt,1000);assert.deepEqual(complete.answers,{});
 });
 test('GC keeps reports locally, reconstructs captured inputs on retry and never resurrects old reports',async()=>{
- const {u5p5}=require('../../src/questions/u5p5/definition.ts');
- const record=questions.get(u5p5.id);record.loaded=true;
+ const {u5p5:publicDefinition}=require('../../src/questions/u5p5/definition.ts');
+ const {presentedDefinition}=require('../../src/contracts/presentation.ts');
+ const {u5p5Presentation}=require('../../api/src/presentation/records/u5p5.mjs');
+ const u5p5=presentedDefinition(publicDefinition,u5p5Presentation.presentation);
+ const record=questions.get(u5p5.id);record.stateLoaded=true;
  await send(u5p5,{type:'gc-enter',now:Date.now()});await send(u5p5,{type:'gc-load',sample:'citrus',concentration:12.5,now:Date.now()});
  const now=Date.now(),activeRun={id:4,startedAt:now,deadline:now+4000};
  const canonical={kind:'gc',entered:true,activeRun,nextRunId:5,analyses:[],reference:'citrus',interval:[.5,.7],measurements:[],results:[{id:1,sample:'mystery',concentration:100,interval:[0,0]}]};

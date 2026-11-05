@@ -1,5 +1,9 @@
 import {it,expect} from 'vitest';
-import {atoms,bonds,rotate} from '../../src/questions/u5p6/cubaneGeometry';
+import {rotate} from '../../src/questions/u5p6/cubaneGeometry';
+import type {CubanePresentation} from '../../src/questions/u5p6/U5Problem6';
+// @ts-expect-error Node-only protected scientific reference.
+import {u5p6Presentation} from '../../api/src/presentation/records/u5p6.mjs';
+const {atoms,bonds}=u5p6Presentation.presentation as CubanePresentation;
 it('uses exact stated bond lengths and invariant rotations',()=>{
  expect(atoms).toHaveLength(16);expect(bonds).toHaveLength(20);
  for(const [a,b] of bonds) {

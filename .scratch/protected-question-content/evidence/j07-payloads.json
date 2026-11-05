@@ -1,0 +1,54 @@
+{
+  "profile": "protected-j07",
+  "records": [
+    {
+      "id": "L5",
+      "version": "1",
+      "record": {
+        "raw": 3385,
+        "gzip": 1424,
+        "brotli": 1155
+      },
+      "protocolSha256": "32d17bfcb56c9ef1f5aaf32a41193ce3e48525ccef9a5dbc021a5f52b6e66cc6",
+      "assets": []
+    },
+    {
+      "id": "L6",
+      "version": "1",
+      "record": {
+        "raw": 1806,
+        "gzip": 1027,
+        "brotli": 833
+      },
+      "protocolSha256": "b1af8699256c4899d09913b9454b64c6fca5405320ca77801bcf1ba4d5ded6f2",
+      "assets": [
+        {
+          "id": "protocol-image",
+          "mimeType": "image/png",
+          "sha256": "5affd65491889ccf25f05df047120a4d28ef8494c8929266e99cfa06755f5e24",
+          "raw": 2149009,
+          "gzip": 2144593,
+          "brotli": 2144524
+        }
+      ]
+    },
+    {
+      "id": "U6",
+      "version": "1",
+      "record": {
+        "raw": 3096,
+        "gzip": 1383,
+        "brotli": 1102
+      },
+      "protocolSha256": "1fd391b0dbc80bc0544f9205d819eeca073219c2b3eee6492c4000357f78ca22",
+      "assets": []
+    }
+  ],
+  "productionAudit": {
+    "files": 39,
+    "forbiddenStrings": 6,
+    "assetHashes": 2,
+    "violations": []
+  },
+  "limitations": "Local payload compression measurements only; no Azure runtime compression/load/capacity acceptance. Full 38-record emission audit belongs to integration."
+}

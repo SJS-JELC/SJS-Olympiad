@@ -1,0 +1,3081 @@
+{
+  "phase": "baseline",
+  "viewport": {
+    "width": 1200,
+    "height": 800
+  },
+  "captures": [
+    {
+      "id": "L5P1",
+      "text": "SCORE000000L5 · Problem 1CAN'T TAKE THE HEAT? A metal carbonate, M₂(CO₃)₃, loses 46.8% of its mass when heated.Give the name of the metal, M?CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Name of the metal, M"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 2363,
+          "height": 1770,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 1126,
+          "height": 1901,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P2",
+      "text": "SCORE000000L5 · Problem 2THE DESTROYER OF WORLDS Nuclear fusion is easiest to achieve using ²H (deuterium) and ³H (tritium).Deuterium is quite easy to obtain from natural sources, but tritium must be made by adding a neutron to a ⁶Li atom. To obtain this we enrich naturally occurring lithium until, by mass, 50% of it is ⁶Li.What is the relative atomic mass of this enriched lithium? Give your answer to 3 significant figures.For interest:²H + ³H → ⁴He + ¹n⁶Li + ¹n → ⁴He + ³HRelative atomic massCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P3",
+      "text": "SCORE000000L5 · Problem 3TAKING THE STABILISERS OFF It is easier to display organic molecules as skeletal formula. Skeletal formulae follow these rules:Each line represents a bond between two carbon atoms | Each corner or end of a line represents a carbon atom | Hydrogen atoms attached to carbon are not shown but are implied.The names of 3 of the molecules below are bicyclo[2.2.1]heptane, bicyclo[2.2.2]octane, bicyclo[3.2.1]octane.Deduce the name of the other molecule.Name of the other moleculeCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Four bicyclic skeletal structures to compare"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Four bicyclic skeletal structures to compare",
+          "width": 300,
+          "height": 98,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P4",
+      "text": "SCORE000000L5 · Problem 4GOBLINS Give the symbol of the mystery element?- It is named after the German word for goblin as miners blamed goblins when its ores released poisonous arsenic fumes when heated.- It is one of the few elements that will be strongly attracted to a magnet at room temperature.- Its compounds produce a deep blue colour in glass and ceramics.- It is found in the important biological molecule vitamin B₁₂.Symbol of the mystery elementCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "Goblin"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "Goblin",
+          "width": 1024,
+          "height": 1024,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P5",
+      "text": "SCORE000000L5 · Problem 5HAVEN'T I SEEN YOU BEFORE? How many isomers do molecules with the following molecular formulae have?C₂H₄OC₄H₈C₃H₉NCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "C₂H₄O"
+        },
+        {
+          "tag": "IMG",
+          "label": "C₄H₈"
+        },
+        {
+          "tag": "IMG",
+          "label": "C₃H₉N"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "C₂H₄O",
+          "width": 296,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "C₄H₈",
+          "width": 250,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "C₃H₉N",
+          "width": 300,
+          "height": 146,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P6",
+      "text": "SCORE000000L5 · Problem 6FIRE IN THE HOLE! One method chemists use to study molecules is to break them into smaller fragments and measure the mass of each fragment.When the molecule shown is fragmented, ions with masses 47.1, 74 and 45 are detected.Deduce the formula of the fragment that could produce each mass.Mᵣ 47.1Mᵣ 74Mᵣ 45CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and molecule"
+        },
+        {
+          "tag": "IMG",
+          "label": "Methionine structural formula"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Methionine structural formula",
+          "width": 174,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P7",
+      "text": "SCORE000000L5 · Problem 7CRYSTAL CLEAR The structure of giant lattices have a huge impact on their properties.We represent repeating crystal structures using a unit cell. A unit cell is the smallest repeating 3-dimensional block that can be stacked to recreate the entire crystal.Below are 2 materials that have or are likely to revolutionise our world. Count the total number of atoms within each unit cell (n.b. only fractions of some atoms may sit within the unit cell.)Perovskite(Used in next gen solar cells)Gallium Nitride(Used in LEDs and lasers)PerovskiteGallium NitrideCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Perovskite unit cell"
+        },
+        {
+          "tag": "IMG",
+          "label": "Gallium nitride unit cell"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Perovskite unit cell",
+          "width": 157,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Gallium nitride unit cell",
+          "width": 144,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P8",
+      "text": "SCORE000000L5 · Problem 8ALKANE ISOTOPES Alkanes have the general formula CₙH₂ₙ₊₂.Carbon exists naturally as a mixture of isotopes: 98.9% ¹²C and 1.1% ¹³C.For larger alkanes, molecules with Mᵣ + 1 arise when exactly one carbon atom is ¹³C and the remaining carbons are ¹²C.Assume they contain only H. For what value of n will the abundance at Mᵣ equal the abundance at Mᵣ + 1?n =CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5P9",
+      "text": "SCORE000000L5 · Problem 9THINKING OXIDE THE BOX These oxides can be sorted into three groups of three. Find the groups.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and grouping grid"
+        },
+        {
+          "tag": "DIV",
+          "label": "Select three items for each group"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "ZnO₂, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "TiO₂, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Fe₃O₄, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "MgO₂, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Al₂O₃, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "V₆O₁₃, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Na₂O₂, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "MgO, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ti₄O₇, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Reset / clear groups"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 296,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 229,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 139,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 140,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 292,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 147,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 131,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 138,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 271,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 118,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P2",
+      "text": "SCORE000000U5 · Problem 2CROSS YOUR FINGERS One molecular formula doesn’t always tell the whole story, even outside organic chemistry! The formula N₂O allows several formal dot-and-cross arrangements, although not all describe the bonding in nitrous oxide.Draw three different arrangements on the same canvas: two with nitrogen in the middle and one with oxygen in the middle. Show all outer-shell electrons and give every atom a full outer shell. Alternate dots and crosses between neighbouring atoms to show where the electrons come from.NO● Dot× Cross⌫ EraseUndoRedoClear0 atoms, 0 electrons, 0 bracket groups. Outer-shell circles shown.Build your diagram hereSelect or drag an element to the canvas.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Diagram builder"
+        },
+        {
+          "tag": "DIV",
+          "label": "Drawing palette"
+        },
+        {
+          "tag": "DIV",
+          "label": "Element palette"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "N atom"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "O atom"
+        },
+        {
+          "tag": "DIV",
+          "label": "Drawing controls"
+        },
+        {
+          "tag": "DIV",
+          "label": "Electron and edit tools"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Dot electron"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Cross electron"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Erase"
+        },
+        {
+          "tag": "DIV",
+          "label": "Diagram history"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Undo the last edit"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Redo the last undone edit"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Clear the diagram"
+        },
+        {
+          "tag": "DIV",
+          "label": "Canvas view"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zoom in"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zoom out"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Pan canvas"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Fit diagram"
+        },
+        {
+          "tag": "svg",
+          "label": "Dot-and-cross drawing canvas. Use arrow keys to move the drawing cursor and Space to place an atom."
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P3",
+      "text": "SCORE000000U5 · Problem 3CHAINSPOTTING A section of an addition polymer is shown below.CClClCHHCHFCHClCFFCFClCHHCHFCHHCFHCClClCFFCHClCClClCFHCHHCFClCHClCFFCHFCHHCClClThis section was made from the fewest possible number of different alkene monomers. Decide how many and show the monomers below.CHFClClean upClear structureTap to place atoms; drag to bond. Tap a bond to cycle its order. Draw hydrogens explicitly. Select an element, then tap an atom to replace it.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "svg",
+          "label": "Section of an addition polymer, with all carbon, hydrogen, fluorine and chlorine atoms displayed"
+        },
+        {
+          "tag": "SECTION",
+          "label": "Alkene monomers"
+        },
+        {
+          "tag": "DIV",
+          "label": "Drawing tools"
+        },
+        {
+          "tag": "DIV",
+          "label": "Element"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Carbon"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Hydrogen"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Fluorine"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Chlorine"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Carbon chain"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Erase"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Undo"
+        },
+        {
+          "tag": "DIV",
+          "label": "Canvas view"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zoom in"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zoom out"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Pan canvas"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Fit molecule"
+        },
+        {
+          "tag": "svg",
+          "label": "Alkene monomers. Molecule drawing area. Drag to grow bonds. Arrow keys on an atom preview a bond; Enter commits."
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P4",
+      "text": "SCORE000000U5 · Problem 4RINGS OF POWER Organic molecules are often shown using skeletal formulae. In these diagrams:each line represents a covalent bondeach corner or end of a line represents a carbon atom, unless another atom is shownhydrogen atoms attached to carbon are not shown, but are impliedThe names of five of the molecules below are:1,2-diazepine, 1,3-oxazole, 1,3-diazole, 1,2-oxazine and 1,3-diazine.Use these names to work out the pattern, then name the sixth molecule.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "The One Ring"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Six skeletal ring structures, traced around each ring; single lines are single bonds and equals signs are double bonds. Top left: O–C=N–C=C (closed to O). Top middle: O–C=C–N=C–C=C (closed to O). Top right: N=C–C=C–N=C (closed to N). Bottom left: O–N=C–C=C–C (closed to O). Bottom middle: NH–C=N–C=C (closed to NH). Bottom right: NH–N=C–C=C–C=C (closed to NH)."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Name of the sixth molecule"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "The One Ring",
+          "width": 1016,
+          "height": 805,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Six skeletal ring structures, traced around each ring; single lines are single bonds and equals signs are double bonds. Top left: O–C=N–C=C (closed to O). Top middle: O–C=C–N=C–C=C (closed to O). Top right: N=C–C=C–N=C (closed to N). Bottom left: O–N=C–C=C–C (closed to O). Bottom middle: NH–C=N–C=C (closed to NH). Bottom right: NH–N=C–C=C–C=C (closed to NH).",
+          "width": 1620,
+          "height": 1080,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P5",
+      "text": "SCORE000000U5 · Problem 5SCENTS AND SCENTSIBILITY You are Chief Chemist at Leatherhead's third-most prestigious perfume house. Your boss, Mr Sniffington has acquired a rival's bestselling fragrance. He wants a copy. Immediately.The mystery perfume contains Citrus, Floral and Woody scents dissolved in ethanol. Each scent is a blend of several substances.Use gas chromatography to investigate the ingredients and recreate the perfume's formulation.ENTER LABORATORY>?MYSTERY",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Enter Laboratory"
+        },
+        {
+          "tag": "svg",
+          "label": "A suspiciously grand mystery perfume bottle"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P6",
+      "text": "SCORE000000U5 · Problem 6CUBONE The molecule shown, C₈H₈, is called cubane, for fairly obvious reasons.C–C bonds are 154 pm long and C–H bonds are 109 pm.Calculate the greatest possible distance between any two hydrogen atoms in a molecule of cubane.Give your answer to the nearest pm.Drag to rotateGreatest hydrogen separation in pmCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "Cubone"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "svg",
+          "label": "Cubane molecule. Drag to rotate, or use the arrow keys. Home resets the view."
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "Cubone",
+          "width": 160,
+          "height": 172,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P7",
+      "text": "SCORE000000U5 · Problem 7DOUBLE TROUBLE These organic molecules can be sorted into three groups of three. Find the groups.C₄H₈C₃H₄OC₁₀H₂₂OC₂H₂OC₄H₁₁NC₂H₆C₅H₁₀C₂H₅NC₅₀H₉₈CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and grouping grid"
+        },
+        {
+          "tag": "DIV",
+          "label": "Select three items for each group"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₄H₈, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₃H₄O, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₁₀H₂₂O, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₂H₂O, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₄H₁₁N, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₂H₆, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₅H₁₀, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₂H₅N, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "C₅₀H₉₈, unselected"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Reset / clear groups"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 118,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P8",
+      "text": "SCORE000000U5 · Problem 8BOUNDARIES Some curious reactions happen in a two-dimensional world. A nice example is the liquid interface between reagents that don’t mix, such as propyl propanoate and aqueous sodium hydroxide.A round-bottomed flask contains a layer of pure propyl propanoate 2.0 cm deep, floating on a 1.4 cm deep layer of 1.00 mol/dm³ sodium hydroxide solution. The initial reaction rate is 0.0300 mol/s.More 1.00 mol/dm³ sodium hydroxide solution is carefully added beneath the ester.What is the volume of solution that must be added to double the initial reaction rate? Give your answer in cm³ to one decimal place.10.0 cmPropyl propanoateNaOH(aq)2.0 cm1.4 cm?cm³CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "svg",
+          "label": "Round-bottomed flask, internal diameter 10.0 cm, containing a 2.0 cm deep layer of pure propyl propanoate above a 1.4 cm deep layer of aqueous sodium hydroxide."
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Open spherical cap volume reference"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Volume of solution added in cm³"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U5P9",
+      "text": "SCORE000000U5 · Problem 9CUT AND SHUT Ozonolysis cuts a C=C bond and replaces it with two C=O bonds. The attached groups stay in place; cutting a double bond in a ring can open the ring.X has formula C₁₀H₁₆, two C=C bonds and no triple bonds. Cutting both double bonds gives one molecule of each product shown.In skeletal formulae, each unlabelled corner or line end is a carbon atom. Hydrogens on carbon are implied to give each carbon four bonds; other atoms are labelled.Draw all possible structures of X using skeletal formulae.OOOOCHOClean upClear structureTap to place atoms; drag to bond. Tap a bond to cycle its order. Unlabelled corners and ends are carbon atoms; hydrogens on carbon are implied.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "svg",
+          "label": "Ozonolysis products: one methanal molecule, H2C=O, and the skeletal structure OHC-CH2-CH[C(=O)CH3]-CH2-CH2-C(=O)-CH3. Unlabelled corners and line ends are carbon atoms; hydrogens bonded to carbon are implied."
+        },
+        {
+          "tag": "SECTION",
+          "label": "Structures of X"
+        },
+        {
+          "tag": "DIV",
+          "label": "Drawing tools"
+        },
+        {
+          "tag": "DIV",
+          "label": "Element"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Carbon"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Hydrogen"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Oxygen"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Carbon chain"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Erase"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Undo"
+        },
+        {
+          "tag": "DIV",
+          "label": "Canvas view"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zoom in"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zoom out"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Pan canvas"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Fit molecule"
+        },
+        {
+          "tag": "svg",
+          "label": "Structures of X. Molecule drawing area. Drag to grow bonds. Arrow keys on an atom preview a bond; Enter commits."
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P1",
+      "text": "SCORE000000L6 · Problem 1SINGLES NIGHT The following elements can be sorted into three groups of three. Find the groups.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and grouping grid"
+        },
+        {
+          "tag": "DIV",
+          "label": "Select three items for each group"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ta, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "S, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "As, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Cu, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "V, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Zr, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "F, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Th, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Na, unselected"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Reset / clear groups"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 200,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 98,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 213,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 208,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 134,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 183,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 88,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 200,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 231,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 300,
+          "height": 118,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P2",
+      "text": "SCORE000000L6 · Problem 2CHARIOTS PULLED BY CATS Give the symbol of the mystery element.\nIt is named after a Norse goddess associated with beauty, reflecting the wide range of colours shown by its compounds.\nIt can exist in several different oxidation states, each often producing a distinctly coloured solution.\nIts compounds are used as catalysts in the manufacture of sulfuric acid in the Contact Process.\nIt is found in some steels, where it increases strength and resistance to corrosion.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Element symbol"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P3",
+      "text": "SCORE000000L6 · Problem 3WHO ATE ALL THE NAMES? You need to name 5 oxyanions.Clock's ticking.Oxyanion nameSUBMIT",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "GO: start oxyanion challenge"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Submit oxyanion name"
+        },
+        {
+          "tag": "SPAN",
+          "label": "SUBMIT"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 186,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P4",
+      "text": "SCORE000000L6 · Problem 4SUPERPOSITION π bonds form by overlap of p orbitals. In-phase overlap gives a bonding interaction; out-of-phase overlap gives an antibonding interaction.More bonding interactions mean lower orbital energy.Buta-1,3-diene has four p orbitals (one electron each), forming four molecular orbitals. The lowest has three bonding interactions; the highest has none.Click on the orbitals below to show the molecular orbitals of hexa-1,3,5-triene.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and worked molecular orbital example"
+        },
+        {
+          "tag": "IMG",
+          "label": "Buta-1,3-diene molecular orbital example, from lowest to highest energy"
+        },
+        {
+          "tag": "DIV",
+          "label": "HOMO phases"
+        },
+        {
+          "tag": "IMG",
+          "label": "HOMO hexa-1,3,5-triene skeleton"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "HOMO orbital 1: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "HOMO orbital 2: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "HOMO orbital 3: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "HOMO orbital 4: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "HOMO orbital 5: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "HOMO orbital 6: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "DIV",
+          "label": "LUMO phases"
+        },
+        {
+          "tag": "IMG",
+          "label": "LUMO hexa-1,3,5-triene skeleton"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "LUMO orbital 1: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "LUMO orbital 2: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "LUMO orbital 3: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "LUMO orbital 4: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "LUMO orbital 5: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "LUMO orbital 6: not selected. Change phase."
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Buta-1,3-diene molecular orbital example, from lowest to highest energy",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "HOMO hexa-1,3,5-triene skeleton",
+          "width": 300,
+          "height": 113,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "LUMO hexa-1,3,5-triene skeleton",
+          "width": 300,
+          "height": 113,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 47,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P5",
+      "text": "SCORE000000L6 · Problem 5TWIST AND BUMP As a molecule rotates about a single bond, it adopts a range of different conformations, some of which are more stable than others.For each of the molecules shown, consider the view along the indicated C–C bond from left to right (i.e. the front carbon is on the left). As the bond rotates, the back carbon turns clockwise relative to the front.Suggest the angle(s) of rotation that give the most and least stable conformations.CCClClHHHHClClHHHHMost StableConformation: 0°Least StableConformation: 180°OOHHHClClClClHHMost stableLeast stableMolecule 1 Most stableLeast stableMolecule 2 Most stableLeast stableMolecule 3 Most stableLeast stableCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and diagrams"
+        },
+        {
+          "tag": "svg",
+          "label": "Worked Newman projection example: view from left to right along the carbon–carbon bond, with the back carbon rotating clockwise. The most stable conformation is at 0 degrees and the least stable at 180 degrees."
+        },
+        {
+          "tag": "svg",
+          "label": "The three molecules to solve, corresponding to Molecules 1, 2 and 3 from left to right, with their indicated carbon–carbon bonds."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 1 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 2 Least stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Most stable angle in degrees"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule 3 Least stable angle in degrees"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P6",
+      "text": "SCORE000000L6 · Problem 6RADICAL MESS Radical reactions are pretty messy. Sometimes a molecule gets substituted lots of times, and sometimes it does not react at all.\n\nA sample of propane is mixed with chlorine and left in UV light.\n\nHow many different organic molecules containing 3 carbon atoms could the mixture contain?\n\nAssume that the only organic reactions taking place are halogen substitution reactions.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Number of organic molecules"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P7",
+      "text": "SCORE000000L6 · Problem 7RINGS OF POWER A crucial tool in forming rings is the Diels-Alder reaction between a diene and an alkene. \nFor example cyclohexene can be made from ethene and 1,3-butadiene.\nThe target molecule given can be made from the reaction of (1E,3E)-penta-1,3-dien-1-ol and one other molecule.\nName the other molecule.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "The One Ring"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Diels-Alder example: ethene and 1,3-butadiene form cyclohexene"
+        },
+        {
+          "tag": "IMG",
+          "label": "Diels-Alder target molecule"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Name of the other molecule"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "The One Ring",
+          "width": 1016,
+          "height": 805,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Diels-Alder example: ethene and 1,3-butadiene form cyclohexene",
+          "width": 300,
+          "height": 125,
+          "complete": true
+        },
+        {
+          "alt": "Diels-Alder target molecule",
+          "width": 204,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P8",
+      "text": "SCORE000000L6 · Problem 8LOOKS PRETTY SIMPLE A ⇌ B + C    (Kc = 3.4)\nB + C ⇌ D    (Kc = 1.6)\n\nA closed system initially has [A] = 0.8 M.\nFind [B] at equilibrium.\n\nGive your answer to 3 significant figures.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Equilibrium concentration of B"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6P9",
+      "text": "SCORE000000L6 · Problem 9FLATLAND Molecules are terrible at staying on the page. When we first draw cyclohexane, it is tempting to imagine it as a neat, flat hexagon. In the first diagram, cyclohexane has been forced to live in this flat 2D world.\n\nReal cyclohexane refuses to behave. Instead, it folds up into the 3D geometry shown in the second diagram. Assuming all the C–C bond lengths stay the same, what is the straight-line distance through space between a and b in the 3D chair structure?\nGive your answer to the nearest pm.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Flat cyclohexane structure with supplied dimensions"
+        },
+        {
+          "tag": "IMG",
+          "label": "Chair cyclohexane structure with points a and b"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Distance between a and b in pm"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Flat cyclohexane structure with supplied dimensions",
+          "width": 206,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Chair cyclohexane structure with points a and b",
+          "width": 250,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P1",
+      "text": "SCORE000000U6 · Problem 1NICE, SIMPLE NMR Molecular formula C₆H₁₀O₂. ¹H NMR spectrum below.The integration values (relative proton ratios) are shown in red.Name the molecule.Full spectrumSelected detail · 8× horizontal magnificationCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "svg",
+          "label": "NMR detail region. Use left and right arrows to move, Home and End for the boundaries."
+        },
+        {
+          "tag": "svg",
+          "label": "Original NMR spectrum detail with horizontal magnification and unchanged vertical scale."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule name"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P2",
+      "text": "SCORE000000U6 · Problem 2HOT STUFF A 75 g block of copper at 150 °C is dropped into 100 g of water at 20 °C in a perfectly insulated container.After a while, the copper and the water reach a constant temperature T.The specific heat capacity of copper is 0.39 J g⁻¹ °C⁻¹.The specific heat capacity of water is 4.18 J g⁻¹ °C⁻¹.Calculate the final temperature in °C, to 3 significant figures, assuming no heat is lost to the surroundings.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Final temperature (°C)"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P3",
+      "text": "SCORE000000U6 · Problem 3SPYRO 3 members of a molecular family are shown below. The names of two are:6,8-dimethylspiro[3.5]nonane and4-chloro-7-fluoro-5,6-dimethylspiro[2.4]heptane.What is the other called?CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Three spiro molecules, including the two named examples and the molecule to name."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule name"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "",
+          "width": 632,
+          "height": 821,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Three spiro molecules, including the two named examples and the molecule to name.",
+          "width": 300,
+          "height": 121,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P4",
+      "text": "SCORE000000U6 · Problem 4CHARGE HOPPER Ion stability depends on charge delocalisation. In the example below, the negative charge is delocalised over four atoms, shown in each of the 4 resonance structures. For each of the three molecules below, state how many atoms the charge can be delocalised over.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Four resonance structures in the worked example, followed by molecules A, B and C."
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule A"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule B"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecule C"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Four resonance structures in the worked example, followed by molecules A, B and C.",
+          "width": 292,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P5",
+      "text": "SCORE000000U6 · Problem 5HOW HARD CAN ISOMERISM BE? Stereoisomerism makes your head hurt when there is more than 1 chiral centre.3,4,5-trimethylheptane has 2 (or maybe 3) chiral centres but only 4 stereoisomers.Of these stereoisomers there is only 1 pair of enantiomers. Find the pair.ABCD+CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "IMG",
+          "label": "Four stereoisomers of 3,4,5-trimethylheptane, labelled A to D from left to right."
+        },
+        {
+          "tag": "INPUT",
+          "label": "First enantiomer"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Second enantiomer"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Four stereoisomers of 3,4,5-trimethylheptane, labelled A to D from left to right.",
+          "width": 300,
+          "height": 100,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P6",
+      "text": "SCORE000000U6 · Problem 6JUMBO MASS SPECTROMETRY Electrospray ionisation is used to carry out mass spectrometry on a large protein and the protein becomes positively charged by gaining H+ ions.Peaks for two consecutive ions (i.e. with a charge difference of 1 e.g. 4+, 5+) are seen at m/z values of 1297 & 1243.Work out the molecular mass of the original protein.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Molecular mass"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P7",
+      "text": "SCORE000000U6 · Problem 7PROPANE'S CLOSEST ENCOUNTER I am propane, C3H8.Three carbon atoms stand in a chain, each arranged with ideal tetrahedral geometry.One hydrogen is attached to the first carbon.Another is attached to the third.Through space, how close can these two hydrogens come?C-C bond length = 154 pmC-H bond length = 109 pmGive your answer in picometres (pm), correct to 3 significant figures.CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "INPUT",
+          "label": "Distance (pm)"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P8",
+      "text": "SCORE000000U6 · Problem 8SPEEDY The reaction below can take place via an SN1 or an SN2 mechanism.Given the initial rate data, calculate, to 3 significant figures, the percentage of the bromoethane that proceeds via each mechanism in experiment 1.Experiment[CH₃CH₂Br] / mol dm−3[OH−] / mol dm−3Rate / mol dm−3 s−110.10.33.20 × 10−520.20.36.40 × 10−530.20.68.94 × 10−5SN 1 MechanismSLOWSN 2 MechanismSN1 (%)SN2 (%)CHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question"
+        },
+        {
+          "tag": "TABLE",
+          "label": "Initial rate data"
+        },
+        {
+          "tag": "IMG",
+          "label": "SN1 mechanism for bromoethane reacting with hydroxide. The first ionisation step is labelled SLOW."
+        },
+        {
+          "tag": "IMG",
+          "label": "SN2 mechanism for bromoethane reacting with hydroxide."
+        },
+        {
+          "tag": "INPUT",
+          "label": "SN1 (%)"
+        },
+        {
+          "tag": "INPUT",
+          "label": "SN2 (%)"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "SN1 mechanism for bromoethane reacting with hydroxide. The first ionisation step is labelled SLOW.",
+          "width": 300,
+          "height": 67,
+          "complete": true
+        },
+        {
+          "alt": "SN2 mechanism for bromoethane reacting with hydroxide.",
+          "width": 300,
+          "height": 96,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6P9",
+      "text": "SCORE000000U6 · Problem 9SPINNING & FLIPPING The symmetry of molecules is especially important to spectroscopy. Different molecules can be classified by how symmetrical they are. Molecules that share the same symmetry operations can be grouped into groups called point groups. Choose the right point group for each molecule below.Symmetry Operations(a molecule has this symmetry operation if it is unchanged after this is applied to it)EIdentity – do nothing.C₂Rotate the molecule 180° about a particular line.C₃Rotate the molecule 120° and 240° about a particular axis.σᵥA mirror plane that contains the highest-order rotation axis.σₕA mirror plane perpendicular to the highest-order rotation axis.iInversion – from a central point, every atom has an identical partner the same distance away in the opposite direction.HClOSelect a point groupC₁ – ECₛ – E, σCᵢ – E, iC₂ – E, C₂C₂ᵥ – E, C₂, 2 × σᵥC₂ₕ – E, C₂, σₕ, iD₂ – E, 3 × C₂D₂ₕ – E, 3 × C₂, i, 3 × σC₃ – E, C₃C₃ᵥ – E, C₃, 3 × σᵥD₃ – E, C₃, 3 × C₂D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥSF₄Select a point groupC₁ – ECₛ – E, σCᵢ – E, iC₂ – E, C₂C₂ᵥ – E, C₂, 2 × σᵥC₂ₕ – E, C₂, σₕ, iD₂ – E, 3 × C₂D₂ₕ – E, 3 × C₂, i, 3 × σC₃ – E, C₃C₃ᵥ – E, C₃, 3 × σᵥD₃ – E, C₃, 3 × C₂D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥPCl₅Select a point groupC₁ – ECₛ – E, σCᵢ – E, iC₂ – E, C₂C₂ᵥ – E, C₂, 2 × σᵥC₂ₕ – E, C₂, σₕ, iD₂ – E, 3 × C₂D₂ₕ – E, 3 × C₂, i, 3 × σC₃ – E, C₃C₃ᵥ – E, C₃, 3 × σᵥD₃ – E, C₃, 3 × C₂D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥCHECK",
+      "labels": [
+        {
+          "tag": "SPAN",
+          "label": "Score"
+        },
+        {
+          "tag": "OUTPUT",
+          "label": "Score: 00"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Question and symmetry operations"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Check answers"
+        }
+      ],
+      "images": [
+        {
+          "alt": "",
+          "width": 859,
+          "height": 480,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L5-practical",
+      "text": "L5 PracticalFLOATYThe 'bone' inside a cuttlefish is called the cuttlebone. Despite the name, it is not a bone at all. It is actually the cuttlefish’s internal shell, made mostly of calcium carbonate (CaCO₃) arranged in a very light, porous structure.Inside the cuttlebone are thousands of tiny chambers separated by thin walls. A cuttlefish can control how much liquid and gas are inside these chambers, allowing it to adjust its buoyancy. By changing the pressure inside the cuttlebone, the animal can rise or sink in the water without swimming, much like a submarine using ballast tanks.Your job is to calculate the density of a dry cuttlebone.Instructions1) Using a 50 cm³ measuring cylinder and some distilled water, measure the volume of your cuttlebone.Hint: work quickly, as the cuttlebone will begin to absorb water. You can hold it just below the water level with a stirring rod.ENTER THE VOLUME BELOW2) Dry the cuttlebone with blue roll, then crush it using a pestle and mortar.3) React it with 114 cm³ of 2 mol/dm³ HCl in a beaker. You will need to stir this well to ensure the acid reacts fully with the crushed cuttlebone.Hint: it might be quite time efficient for one of you to skip ahead to step 5 to start getting the titration ready to go.4) Transfer the reaction mixture to a 250 cm³ volumetric flask and fill to the line with distilled water.Hint: make sure all of the mixture is transferred into the volumetric flask.5) Fill the burette with 1 mol/dm³ NaOH. Take a 25 cm³ sample of the solution containing the cuttlebone reaction mixture and add a few drops of phenolphthalein.6) Titrate the solution (if you have not done a titration before, ask the supervising teacher for help).7) Repeat the titration until you obtain consistent results (or run out of time). Calculate the average titration result (the mean titre).ENTER THE MEAN TITRE BELOW8) Calculate the moles of NaOH used in the titration.NaOH reacts with HCl as follows:NaOH(aq) + HCl(aq) → NaCl(aq) + H₂O(l)9) Calculate the moles of HCl in 25 cm³ of solution.10) Calculate the moles of HCl in 250 cm³ of solution.11) Calculate the moles of HCl that reacted with the cuttlebone.ENTER THE MOLES OF HCl BELOWCalcium carbonate reacts as follows:CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + CO₂(g) + H₂O(l)12) Calculate the moles of CaCO₃ in the cuttlebone.13) Calculate the mass of CaCO₃ in the cuttlebone.14) Calculate the density of the cuttlebone.ENTER THE DENSITY BELOWPractical responsesVolume of cuttlebone / cm³Average titre / cm³Moles of HCl reacted with cuttlebone / molDensity of cuttlebone / g/cm³",
+      "labels": [
+        {
+          "tag": "IMG",
+          "label": "Cuttlefish"
+        },
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Practical protocol"
+        },
+        {
+          "tag": "FIELDSET",
+          "label": "Practical responses"
+        }
+      ],
+      "images": [
+        {
+          "alt": "Cuttlefish",
+          "width": 972,
+          "height": 497,
+          "complete": true
+        },
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "L6-practical",
+      "text": "L6 PracticalMOHR CRISPSYou are trying to work out just how salty your crisps are. Luckily there's a cunning titration for that, invented by this guy →You may only use the equipment provided at your experimental station.You may ask for experimental help at any time in the practical.1. Open your bag of crisps and transfer to your big beaker. (Try not to crush them as the crisp dust will cause all sorts of headaches down the line...)2. Using distilled water, dissolve all the salt. (Do not use more than 80 cm³ of water, and be aware crisps go pretty soggy if left soaking...)3. Add solution to a volumetric flask (filter on the way in to remove any excess crisp debris)4. Fill your burette with 0.1 mol dm⁻³ AgNO₃.5. Fill the volumetric flask up to the mark with distilled water.6. To a 250 cm³ conical flask add 40 cm³ of water, 20 cm³ of your salt solution and 2 cm³ of potassium chromate.7. Upon titration Ag⁺ will form a white precipitate with the chloride ions present. You’ll gradually see this. When all of the Cl⁻ has been used up, it will react with the CrO₄²⁻ to form silver chromate, which is a distinctive red-brown colour.8. Repeat for concordant titres. RECORD YOUR AVERAGE TITRE BELOW9. Find the mass of salt in a bag of crisps. RECORD THIS MASS BELOWPractical responsesAverage titre / cm³Mass of salt in bag of crisps / g",
+      "labels": [
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Practical protocol"
+        },
+        {
+          "tag": "IMG",
+          "label": "Mohr Crisps"
+        },
+        {
+          "tag": "FIELDSET",
+          "label": "Practical responses"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "Mohr Crisps",
+          "width": 139,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "U6-practical",
+      "text": "U6 PracticalCLIPPYYou are trying to work out what percentage of a paperclip is manganese, Mn. Follow the instructions below.You may only use the equipment provided at your experimental station.You may ask for experimental help at any time in the practical.1. Accurately weigh about 0.2 g of paperclip, you can cut pieces up to get this approximate mass. RECORD THIS BELOW2. Add the paperclip to 70 cm³ of 2 M nitric acid and take it to the fume cupboard. Gently warm. (the teacher may add some extra acid to help the paperclip dissolve).3. Use a pipette to add 10 cm³ of 85% H₃PO₄ and 10 cm³ of 0.217M KIO₄ (potassium periodate(VII)) and boil for 10 minutes. (This will oxidise the Mn in the paperclip into MnO₄⁻ via a series of pretty colours.)4. While this is reacting you will need to make a calibration curve by determining the absorbance of different concentration solutions of MnO₄⁻. To do this, first make a 0.0005 mol dm⁻³ solution of KMnO₄ mol dm⁻³ by dissolving solid KMnO₄ in 1M H₂SO₄(you may wish to make a more concentrated solution and then dilute it using the volumetric flasks provided.)5. You need to dilute this solution further to make a range of differing concentrations.6. Once you have at least 5 solutions with a range of concentrations (with 0.0005 mol dm⁻³  being the highest) you need to use the colorimeter to record the absorbance of these solutions.7. To use the colorimeter turn it on, then using the RGB button set the light to green, using the A/T button set the colorimeter to absorbance (A). Then add a cuvette of water and press CAL, the reading on the screen should be .0008. You are now ready to add your samples, which also need to be transferred to cuvettes, no buttons need to be pressed, just add the sample, close the lid and record the absorbance.9. You will need to plot a graph of absorbance against concentration, this is a calibration curve that will be used to find the concentration of your unknown solution made from the paperclip.10. Take your cooled beaker from the fume cupboard, transfer all of the solution to a 100 cm³ volumetric flask and make it up to the mark with distilled water.11. Invert to ensure a homogeneous solution and then add a sample to the cuvette, recording the absorbance. RECORD THIS BELOW12. Using your calibration curve find the concentration of your solution of MnO₄⁻ RECORD THIS BELOW13. Finally, find the mass of Mn in the paperclip and the percentage by mass that is Mn. RECORD THIS BELOWPractical responsesMass of paperclip / gAbsorbance of MnO₄⁻ from paperclipConcentration of MnO₄⁻ / mol dm⁻³Percentage of paperclip's mass that is Mn / %",
+      "labels": [
+        {
+          "tag": "IMG",
+          "label": "St John’s Olympiad eagle"
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Back to settings"
+        },
+        {
+          "tag": "IMG",
+          "label": ""
+        },
+        {
+          "tag": "SECTION",
+          "label": "Practical protocol"
+        },
+        {
+          "tag": "FIELDSET",
+          "label": "Practical responses"
+        }
+      ],
+      "images": [
+        {
+          "alt": "St John’s Olympiad eagle",
+          "width": 268,
+          "height": 150,
+          "complete": true
+        },
+        {
+          "alt": "",
+          "width": 190,
+          "height": 150,
+          "complete": true
+        }
+      ],
+      "bounds": {
+        "width": 1200,
+        "height": 800
+      }
+    }
+  ]
+}

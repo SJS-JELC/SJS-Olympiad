@@ -23,7 +23,7 @@ for (const viewport of [{width:960,height:640},{width:1920,height:1080},{width:2
     await page.setViewportSize(viewport);
     await openTeacher(page,'/?theory&year=U5&question=4');
     await page.evaluate(()=>document.fonts.ready);
-    const diagram=page.locator('.u5p4-molecules');
+    const diagram=page.locator('.u5p4-diagram');
     await expect(diagram).toBeVisible();
     expect(await diagram.evaluate((img:HTMLImageElement)=>img.complete && img.naturalWidth===1620)).toBe(true);
     const fits=await page.evaluate(()=>{

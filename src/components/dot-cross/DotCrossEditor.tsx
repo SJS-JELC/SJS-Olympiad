@@ -7,10 +7,10 @@ import type {
   ElectronSymbol,
   Point,
 } from './contracts';
-interface EditorSurfaceProps { part: {kind:'dot-and-cross'; initial:DotCrossState; markingPolicyId:string}; response:DotCrossState; readOnly:boolean; onResponse:(state:DotCrossState)=>void; workspaceAside?:import('react').ReactNode; initialZoomOutSteps?:number }
+export type DotCrossConfiguration = {organisation:'igcse'|'alevel';elements:readonly DotCrossElement[];initialElement:DotCrossElement;symbols:readonly ElectronSymbol[];layout:{shellRadii?:Readonly<Record<string,number>>}};
+interface EditorSurfaceProps { configuration:DotCrossConfiguration; part: {kind:'dot-and-cross'; initial:DotCrossState; markingPolicyId:string}; response:DotCrossState; readOnly:boolean; onResponse:(state:DotCrossState)=>void; workspaceAside?:import('react').ReactNode; initialZoomOutSteps?:number }
 import { dotCrossEngine, type DotCrossCommand } from './engine';
 import { createLayout, type ElectronRegion } from './layout.js';
-const editorLayoutQuestionId = (_id:string) => 'n2o';
 import {
   clampPoint,
   snapPoint,
@@ -92,6 +92,7 @@ const regionOf = (target: Element | null): ElectronRegion | null => {
 /** Source drawing controller adapted to local React previews and shared semantic response commits. */
 export function DotCrossEditor({
   part,
+  configuration,
   response,
   readOnly,
   onResponse,
@@ -108,15 +109,11 @@ export function DotCrossEditor({
   }
   const [, paint] = useState(0),
     state = stateRef.current;
-  const igcse = part.markingPolicyId.startsWith('igcse-dot-cross:'),
-    questionId = editorLayoutQuestionId(part.markingPolicyId);
-  const elements: readonly DotCrossElement[] = ['N', 'O'];
-  const symbols: readonly ElectronSymbol[] = igcse
-    ? ['dot', 'cross']
-    : ['dot', 'cross', 'triangle'];
-  const layout = useMemo(() => createLayout(questionId), [questionId]);
+  const {elements,symbols}=configuration;
+  const igcse=configuration.organisation==='igcse';
+  const layout = useMemo(() => createLayout(configuration.layout), [configuration.layout]);
   const [tool, setToolState] = useState<DrawingTool>('atom'),
-    [element, setElement] = useState<DotCrossElement>('N'),
+    [element, setElement] = useState<DotCrossElement>(configuration.initialElement),
     [pendingCharge, setPendingCharge] = useState(1);
   const [selected, setSelected] = useState<readonly string[]>([]),
     [hover, setHover] = useState<DotCrossAnchor | null>(null),
@@ -137,7 +134,7 @@ export function DotCrossEditor({
     [camera,setCamera] = useState<MoleculeCamera | null>(null),
     openingAtoms = useRef(state.atoms);
   const drawingScale = drawingScaleForHeight(window.innerHeight);
-  const fit = (atoms = state.atoms) => fitMoleculeCamera({atoms:atoms.map((a,i)=>({id:i,element:'N',x:a.x,y:a.y})),bonds:[]},size.w,size.h,drawingScale,{x:160,y:160});
+  const fit = (atoms = state.atoms) => fitMoleculeCamera({atoms:atoms.map((a,i)=>({id:i,element:'C',x:a.x,y:a.y})),bonds:[]},size.w,size.h,drawingScale,{x:160,y:160});
   let initialCamera = openingAtoms.current.length ? fit(openingAtoms.current) : {x:500,y:325,scale:drawingScale};
   for (let step = 0; step < initialZoomOutSteps; step++) initialCamera = zoomMoleculeCamera(initialCamera, .8);
   const currentCamera = camera ?? initialCamera;
@@ -180,7 +177,7 @@ export function DotCrossEditor({
     setFirst('');
     setSecond('');
     setElectronId('');
-  }, [questionId]);
+  }, [configuration.layout]);
   const apply = (command: DotCrossCommand, success = 'Diagram updated.') => {
     if (readOnly) return false;
     const next = dotCrossEngine.apply(stateRef.current, {
@@ -491,7 +488,7 @@ export function DotCrossEditor({
   };
   const handlers = useRef({ move, up, cancelDrag, highlightedAction, historyKey });
   handlers.current = { move, up, cancelDrag, highlightedAction, historyKey };
-  useEffect(() => () => handlers.current.cancelDrag(), [questionId]);
+  useEffect(() => () => handlers.current.cancelDrag(), [configuration.layout]);
   // Palette drag prevents native focus; retain source document shortcuts for body focus.
   useEffect(() => {
     const key = (event: globalThis.KeyboardEvent) => {
@@ -713,7 +710,6 @@ export function DotCrossEditor({
   return (
     <div
       className={`dot-cross-editor type-body${igcse ? ' dc-igcse' : ' dc-alevel'}`}
-      data-question-id={questionId}
       ref={root}
       onKeyDownCapture={keyCapture}
       onLostPointerCapture={(event) => {

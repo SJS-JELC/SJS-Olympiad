@@ -1,0 +1,3608 @@
+{
+  "status": "FAIL: oneP2 residualGC scientific runtime-name disclosure;scientific/visual parity passed",
+  "reviewTip": "37c2d0474ec4af48f891642cb51f305209a9cd5d",
+  "sourceBaseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "sourceArchive": {
+    "path": "..\\baseline-source.zip",
+    "sha256": "2d43075f0cc6fef7424467a26f030c28c0a0da5fe20400f73a50cfec0ca96ad3",
+    "allPerContentSourceHashesMatch": true,
+    "GitEOLNormalizationOnly": [
+      "src/questions/l5p9/GroupingQuestion.css",
+      "src/questions/l5p9/GroupingQuestion.tsx",
+      "src/questions/l5p9/definition.ts",
+      "src/questions/l5p9/grouping.ts",
+      "src/questions/l6p1/definition.ts",
+      "src/questions/l6p3/L6Problem3.tsx",
+      "src/questions/l6p3/definition.ts",
+      "src/questions/u5p2/CrossYourFingers.css",
+      "src/questions/u5p2/CrossYourFingers.tsx",
+      "src/questions/u5p3/Chainspotting.css",
+      "src/questions/u5p3/Chainspotting.tsx",
+      "src/questions/u5p3/assets/polymer.provenance.json",
+      "src/questions/u5p4/U5Problem4.css",
+      "src/questions/u5p4/U5Problem4.tsx",
+      "src/questions/u5p4/definition.ts",
+      "src/questions/u5p5/Chromatogram.tsx",
+      "src/questions/u5p5/DraggablePrintout.tsx",
+      "src/questions/u5p5/FormulationBar.tsx",
+      "src/questions/u5p5/GcInstrument.tsx",
+      "src/questions/u5p5/ScentsAndScentsibility.css",
+      "src/questions/u5p5/ScentsAndScentsibility.tsx",
+      "src/questions/u5p5/definition.ts",
+      "src/questions/u5p5/model.ts",
+      "src/questions/u5p5/sampleColour.ts",
+      "src/questions/u5p5/types.ts",
+      "src/questions/u5p6/CubaneModel.tsx",
+      "src/questions/u5p6/U5Problem6.css",
+      "src/questions/u5p6/U5Problem6.tsx",
+      "src/questions/u5p6/assets/cubone-provenance.json",
+      "src/questions/u5p6/cubaneGeometry.ts",
+      "src/questions/u5p6/definition.ts",
+      "src/questions/double-trouble/DoubleTrouble.tsx",
+      "src/questions/double-trouble/definition.ts",
+      "src/questions/u5p8/FlaskDiagram.tsx",
+      "src/questions/u5p8/U5Problem8.css",
+      "src/questions/u5p8/U5Problem8.tsx",
+      "src/questions/u5p8/content.ts",
+      "src/questions/u5p7/SkeletalProducts.tsx",
+      "src/questions/u5p7/U5Problem7.css",
+      "src/questions/u5p7/U5Problem7.tsx",
+      "src/questions/u5p7/definition.ts",
+      "src/questions/u5p7/productGraphs.ts",
+      "src/questions/u6p1/U6Problem1.tsx",
+      "src/questions/u6p1/nmr-view.provenance.json",
+      "src/questions/u6p2/U6Problem2.css",
+      "src/questions/u6p2/U6Problem2.tsx",
+      "src/questions/u6p3/U6Problem3.css",
+      "src/questions/u6p3/U6Problem3.tsx",
+      "src/questions/u6p3/assets/spiro-dragon.provenance.json",
+      "src/questions/u6p4/U6Problem4.tsx",
+      "src/questions/u6p5/U6Problem5.css",
+      "src/questions/u6p5/U6Problem5.tsx",
+      "src/questions/u6p6/U6Problem6.css",
+      "src/questions/u6p6/U6Problem6.tsx",
+      "src/questions/u6p7/U6Problem7.css",
+      "src/questions/u6p7/U6Problem7.tsx",
+      "src/questions/u6p8/U6Problem8.tsx",
+      "src/questions/u6p8/mechanisms-view.provenance.json",
+      "src/questions/u6p8/table.provenance.json",
+      "src/questions/u6p9/U6Problem9.tsx"
+    ]
+  },
+  "counts": {
+    "content": 38,
+    "exactDOMComparisons": 114,
+    "screenshotHashesVerified": 228,
+    "visualContactSheetsInspected": 15,
+    "emittedFileHashesVerified": 20
+  },
+  "visualContactSheetsInspected": [
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1200-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1200-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1200-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1200-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1200-5.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1920-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1920-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1920-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1920-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-1920-5.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-2560-1.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-2560-2.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-2560-3.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-2560-4.jpg",
+    "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-visual\\compare-2560-5.jpg"
+  ],
+  "additionalImagesInspected": [
+    "j08-final-visual/gc-apparatus-pairs.jpg",
+    "j08-final-v3/*1920*/j08-final-U5P3.png",
+    "j08-final-v3/*1920*/j08-final-U5P6.png",
+    "j08-final-v3/*1920*/j08-final-U6P1.png",
+    "j08-final-v3/*1920*/j08-final-L6P4.png",
+    "j08-final-v3/*1920*/j08-final-L6P5.png",
+    "j08-final-v3/*1920*/j08-final-U5P8.png",
+    "j08-final-v3/*1920*/j08-final-U6P8.png",
+    "j08-browser/*1920*/protected-L5-1920-end.png",
+    "j08-browser/*1920*/protected-L6-1920-end.png",
+    "j08-browser/*1920*/protected-U6-1920-end.png"
+  ],
+  "scientificGuard": "Reviewed key-only normalizer/projector and independently reran all38 values/assets invariant successfully;only enumerated schema/className changes allowed,no arbitrary prose normalization.Original U5P3/U5P6/U5P9 arrays reconstructed independently and all3 protocols compared exactly.",
+  "schemaAllowances": {
+    "L6P4": {
+      "orbitals": "panels",
+      "phaseAssets": "choiceAssets",
+      "phaseLabel": "valueLabel"
+    },
+    "L6P5": {
+      "conformations": "captions"
+    },
+    "U5P8": {
+      "flask": "diagram",
+      "cap": "referenceDiagram"
+    },
+    "U6P1": {
+      "nmr": "detail"
+    },
+    "U6P8": {
+      "slowLabel": "annotation"
+    }
+  },
+  "selectorAllowances": {
+    "u5p8-flask": "u5p8-diagram",
+    "u5p8-cap": "u5p8-reference-diagram"
+  },
+  "rasterIntrinsicExceptions": {
+    "L5P7": "Gallium nitride unit cell",
+    "L6-practical": "Mohr Crisps"
+  },
+  "boundaryReview": "Actual248dependency graph,20emitted files,450markers,74asset hashes,898SVGfragments,4graphvalues,3coordinatearrays and all10negative probe implementations inspected.ResidualGC runtime names evade current gate.",
+  "runtimeReview": "Content role/year/event/claim/generation/window(includingdraft/asset),bulkstatus,teacher isolation;memory dedup/retry/versionpin/abort+late fences/revocation;selectedtimed/GC cleanup/recovery;practical independent save/result/localteacher;effectiveIDs/validators;GC receipt recovery;pilot exception and unchanged private marking.",
+  "measurementReview": "ActualHTTPloopback25/50/100syntheticclients,identityencoding,largePNG/GC/numericstate included;localgzip/Brotli separately labelled.NoAzurecapacity claim.",
+  "limitations": "No fresh browser/broadsuite rerun;inspectedAPI269/unit564/contracts22,broad157/159thenaffected41/41/final114captures.LocalNode24/Chrome/memoryrepository do not establishAzure/Node22/storage/compression/deploymentacceptance.",
+  "contents": [
+    {
+      "id": "L5P1",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p1/L5Problem1.css",
+          "sourceArchiveSha256": "ae98c394206f1bbc6b4481f40b9c3c089b904933c15ea5d4a91ce7777b3b4267",
+          "gitBlobSha256": "ae98c394206f1bbc6b4481f40b9c3c089b904933c15ea5d4a91ce7777b3b4267"
+        },
+        {
+          "path": "src/questions/l5p1/L5Problem1.tsx",
+          "sourceArchiveSha256": "ace42f225bf0d497449699847dac8c04da244571174b50036904bfc3db90e835",
+          "gitBlobSha256": "ace42f225bf0d497449699847dac8c04da244571174b50036904bfc3db90e835"
+        },
+        {
+          "path": "src/questions/l5p1/assets/equipment-4.png",
+          "sourceArchiveSha256": "2aadec73e5e5f075d39fbbf5de269d2e10c18ca253e1043500edac89e52143ee",
+          "gitBlobSha256": "2aadec73e5e5f075d39fbbf5de269d2e10c18ca253e1043500edac89e52143ee"
+        },
+        {
+          "path": "src/questions/l5p1/assets/equipment-9.png",
+          "sourceArchiveSha256": "9f5f34f4a245c157bca3a33d27c0595b15e30ebfe85184baed72d86785e043ee",
+          "gitBlobSha256": "9f5f34f4a245c157bca3a33d27c0595b15e30ebfe85184baed72d86785e043ee"
+        },
+        {
+          "path": "src/questions/l5p1/assets/provenance.json",
+          "sourceArchiveSha256": "0349b7156157371d87bac7805359524dcbf8cdd398df28c6ac8c757a5d009f5e",
+          "gitBlobSha256": "0349b7156157371d87bac7805359524dcbf8cdd398df28c6ac8c757a5d009f5e"
+        },
+        {
+          "path": "src/questions/l5p1/definition.ts",
+          "sourceArchiveSha256": "3f9795b6d2211ba63aeadd62eb86fcb2448974be3b6b895e6d0f67f4b6a0ef1d",
+          "gitBlobSha256": "3f9795b6d2211ba63aeadd62eb86fcb2448974be3b6b895e6d0f67f4b6a0ef1d"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p1.mjs",
+      "recordSha256": "74b2967c97a9ef0ac7dce10c8b735d7cf84aba192226b2fd9611b6e6944e4a98",
+      "version": "1",
+      "assets": [
+        {
+          "id": "equipment9",
+          "bytes": 301070,
+          "sha256": "9f5f34f4a245c157bca3a33d27c0595b15e30ebfe85184baed72d86785e043ee"
+        },
+        {
+          "id": "equipment4",
+          "bytes": 217103,
+          "sha256": "2aadec73e5e5f075d39fbbf5de269d2e10c18ca253e1043500edac89e52143ee"
+        }
+      ],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P1",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P1.png",
+          "baselineSha256": "ae9b3d03c4ee4d2b8c37b980858dc1afc484ab72f98467a78f7f2804562e89ea",
+          "currentSha256": "ff09ead9cfcda8e3d4ea60c8ef423a15194a83940cff015c61f8d52ec66eaead",
+          "meanAbsoluteRGB": 0.6124604166666666,
+          "changedPixelsThreshold12": 9783
+        },
+        {
+          "id": "L5P1",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P1.png",
+          "baselineSha256": "aebc0ac2403dd8fb4445d59507b8842313397e6f7bc5c0de732588f631d03514",
+          "currentSha256": "d915fd134dce9d134e57b04adba41a5e1f4d64d1e1e2702299b12d9bb74e9279",
+          "meanAbsoluteRGB": 0.5518034657921811,
+          "changedPixelsThreshold12": 15967
+        },
+        {
+          "id": "L5P1",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P1.png",
+          "baselineSha256": "e7ef84b1ed3dc71e69cd2bb607c07a76e734a5afea6389e50fc9f0bb9a4588ad",
+          "currentSha256": "36cedac0df68f987642b3d739701eca76c9860697f264665ca663ef16b3313c4",
+          "meanAbsoluteRGB": 0.5007936378761574,
+          "changedPixelsThreshold12": 21371
+        }
+      ]
+    },
+    {
+      "id": "L5P2",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p2/L5Problem2.css",
+          "sourceArchiveSha256": "bd6bb051323e0315671fff6749229cbd33759f76f5591a4c87bcdaddae35d18c",
+          "gitBlobSha256": "bd6bb051323e0315671fff6749229cbd33759f76f5591a4c87bcdaddae35d18c"
+        },
+        {
+          "path": "src/questions/l5p2/L5Problem2.tsx",
+          "sourceArchiveSha256": "3472f5941d3aa19d59e4dd44756413b1ac33310e21919211c48bb57f9b86fe58",
+          "gitBlobSha256": "3472f5941d3aa19d59e4dd44756413b1ac33310e21919211c48bb57f9b86fe58"
+        },
+        {
+          "path": "src/questions/l5p2/definition.ts",
+          "sourceArchiveSha256": "ab61ab01961a3276d1f86aff4c36066e490d12c244f9a1f368bba25bd794ee70",
+          "gitBlobSha256": "ab61ab01961a3276d1f86aff4c36066e490d12c244f9a1f368bba25bd794ee70"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p2.mjs",
+      "recordSha256": "3dd8a3bf4e41b429aabb4b9a435ecb0157a3d3a25a44802a85092aaabc621067",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P2",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P2.png",
+          "baselineSha256": "67f20711044be31da83e96b9520aebd9fa13f4a1810ded86aaeff6786150e002",
+          "currentSha256": "571f0ef2f58a576e0992542829e863c3f8f877aecabc98e35eec384dd76a2cf3",
+          "meanAbsoluteRGB": 0.35006354166666664,
+          "changedPixelsThreshold12": 1950
+        },
+        {
+          "id": "L5P2",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P2.png",
+          "baselineSha256": "36b46d6f3d643489101745c46316bad5d5741f5135ac4117c99b494f57c208c5",
+          "currentSha256": "fc4e5d7d0e1bfcc4a2e864040d422abbce3c34305c685547f5ef922b9b55f109",
+          "meanAbsoluteRGB": 0.34784272119341564,
+          "changedPixelsThreshold12": 2742
+        },
+        {
+          "id": "L5P2",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P2.png",
+          "baselineSha256": "0c887cdf75b0d50103ae7be3435d89e83754ecac527c5e0f002e4a38e7fbca7d",
+          "currentSha256": "4aabe0444063967fe2677826eac90e300d6c4d02639f0cb4bd2dc36073ca3bca",
+          "meanAbsoluteRGB": 0.32923321759259255,
+          "changedPixelsThreshold12": 3488
+        }
+      ]
+    },
+    {
+      "id": "L5P3",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p3/L5Problem3.css",
+          "sourceArchiveSha256": "889515e0ddc329f8e008cbdad7d7b0a6b97d206eb23e8dbb2d1a34a63ff4fdab",
+          "gitBlobSha256": "889515e0ddc329f8e008cbdad7d7b0a6b97d206eb23e8dbb2d1a34a63ff4fdab"
+        },
+        {
+          "path": "src/questions/l5p3/L5Problem3.tsx",
+          "sourceArchiveSha256": "c4fecd158f856530cfb71fc3bfb38c4ac1fb7e78f3e135a9572afc136622a025",
+          "gitBlobSha256": "c4fecd158f856530cfb71fc3bfb38c4ac1fb7e78f3e135a9572afc136622a025"
+        },
+        {
+          "path": "src/questions/l5p3/assets/bicyclo.svg",
+          "sourceArchiveSha256": "e4f34a822496ec5cb44d17ace67f9b436f3ecf1055cfc82571c493b7b3c2a516",
+          "gitBlobSha256": "e4f34a822496ec5cb44d17ace67f9b436f3ecf1055cfc82571c493b7b3c2a516"
+        },
+        {
+          "path": "src/questions/l5p3/assets/provenance.json",
+          "sourceArchiveSha256": "072ca10b3f15f1eecb0d4159b9a3c6371393607a1404e0b17a2fac8a494bd83b",
+          "gitBlobSha256": "072ca10b3f15f1eecb0d4159b9a3c6371393607a1404e0b17a2fac8a494bd83b"
+        },
+        {
+          "path": "src/questions/l5p3/definition.ts",
+          "sourceArchiveSha256": "ee2f23ecb397e637664b8f47284d08c796cc8edd64370c43e73dc630b5e646e1",
+          "gitBlobSha256": "ee2f23ecb397e637664b8f47284d08c796cc8edd64370c43e73dc630b5e646e1"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p3.mjs",
+      "recordSha256": "58d4f333ee4fb07a739085dc9f21ac6e94a6d565ff6e8422a7579fed97472ac3",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram1",
+          "bytes": 1933,
+          "sha256": "e4f34a822496ec5cb44d17ace67f9b436f3ecf1055cfc82571c493b7b3c2a516"
+        }
+      ],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P3",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P3.png",
+          "baselineSha256": "166d93b6b1d72df34f1cf2fdaec34feef7ca560ec496b216609807f8c4a8a5ba",
+          "currentSha256": "195708ff4d7dd9d2dc1a6ad0b6c4710566ce3c2598bf1d8c95e0decf4e38ab1f",
+          "meanAbsoluteRGB": 0.34438437499999996,
+          "changedPixelsThreshold12": 4284
+        },
+        {
+          "id": "L5P3",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P3.png",
+          "baselineSha256": "3acda00038bc18efd57889272e788bb97b2a68f3a4773cee8d8d9636777424ac",
+          "currentSha256": "d2ecc7211803ebd7ea3a480e4fa58ef9d97b0a4d12397ea57e952e357e201b6d",
+          "meanAbsoluteRGB": 0.29865885416666665,
+          "changedPixelsThreshold12": 5994
+        },
+        {
+          "id": "L5P3",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P3.png",
+          "baselineSha256": "1ccc50a1c6527e3c419151ed7fda2ca55045ce00e553ba862378764569c7770e",
+          "currentSha256": "dbeacce0485df92d10271b0de95c29ef53435d0eabe3686fc6e77775145a6e73",
+          "meanAbsoluteRGB": 0.26970703125,
+          "changedPixelsThreshold12": 7453
+        }
+      ]
+    },
+    {
+      "id": "L5P4",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p4/L5Problem4.css",
+          "sourceArchiveSha256": "8f0cfb0bed190ab20786d578256d142fff148f0c539518e5ba03e07444c604a0",
+          "gitBlobSha256": "8f0cfb0bed190ab20786d578256d142fff148f0c539518e5ba03e07444c604a0"
+        },
+        {
+          "path": "src/questions/l5p4/L5Problem4.tsx",
+          "sourceArchiveSha256": "1652ba79ba77a74dcbf576b9840b39b17ef65befbeb4c6dd583e07acc1aa693c",
+          "gitBlobSha256": "1652ba79ba77a74dcbf576b9840b39b17ef65befbeb4c6dd583e07acc1aa693c"
+        },
+        {
+          "path": "src/questions/l5p4/assets/goblin.png",
+          "sourceArchiveSha256": "105f66b191c9a9ec02c662a602c271b0f54b01273819f211b10c650728940bf3",
+          "gitBlobSha256": "105f66b191c9a9ec02c662a602c271b0f54b01273819f211b10c650728940bf3"
+        },
+        {
+          "path": "src/questions/l5p4/assets/provenance.json",
+          "sourceArchiveSha256": "50f563933e5b964b3f3a1e4f5e278c8d1591e2059704491dc568624bf1a41590",
+          "gitBlobSha256": "50f563933e5b964b3f3a1e4f5e278c8d1591e2059704491dc568624bf1a41590"
+        },
+        {
+          "path": "src/questions/l5p4/definition.ts",
+          "sourceArchiveSha256": "830051be8a324cf046cf58e5078b792f352f106f2e8271ed92121c42acad78f3",
+          "gitBlobSha256": "830051be8a324cf046cf58e5078b792f352f106f2e8271ed92121c42acad78f3"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p4.mjs",
+      "recordSha256": "19a591ff287a2eefbf079aa8d65c0300f0d7aee5f57210d211868e62a0566d79",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P4",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P4.png",
+          "baselineSha256": "102d0ac4e10eb83fcfabdbe445cbd21789f63a0478b7d9467cc4c2cf24c9f673",
+          "currentSha256": "f2632be5104536d82c20e93391f4dfe407bc3b9e77525b33e4ce83fdf2c7cc7d",
+          "meanAbsoluteRGB": 0.33895000000000003,
+          "changedPixelsThreshold12": 811
+        },
+        {
+          "id": "L5P4",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P4.png",
+          "baselineSha256": "f67a3359e66ca999a7abe3d76e696b8000766a65c5a6864e6f01904adda051c5",
+          "currentSha256": "a8ea3b5c226e21e2131c27c27963ba2e049309e52c1c07c721ac8a63ef21ec71",
+          "meanAbsoluteRGB": 0.3494828639403292,
+          "changedPixelsThreshold12": 1288
+        },
+        {
+          "id": "L5P4",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P4.png",
+          "baselineSha256": "267a243a56da44796612313f400133798c283dd2ebc2da583e845e07e8844707",
+          "currentSha256": "3e43247ebee0921639222cc32e4ebb123e524fab02e7212797c57c8e13757a89",
+          "meanAbsoluteRGB": 0.33722819010416666,
+          "changedPixelsThreshold12": 2067
+        }
+      ]
+    },
+    {
+      "id": "L5P5",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p5/L5Problem5.css",
+          "sourceArchiveSha256": "12242fd34861042f4ef540877a8eb65c7b2631ce773bcf760ce98ee48a8e1280",
+          "gitBlobSha256": "12242fd34861042f4ef540877a8eb65c7b2631ce773bcf760ce98ee48a8e1280"
+        },
+        {
+          "path": "src/questions/l5p5/L5Problem5.tsx",
+          "sourceArchiveSha256": "2d937dc50f3e7c5b65c86684dcb68bd7a0bf832493041c1b0d8507a842454100",
+          "gitBlobSha256": "2d937dc50f3e7c5b65c86684dcb68bd7a0bf832493041c1b0d8507a842454100"
+        },
+        {
+          "path": "src/questions/l5p5/assets/c2h4o.svg",
+          "sourceArchiveSha256": "06b9fa9ceea02f544f5a65e6f737f24bfc8c5dd4c3e7ffd0f8eb8842109d79a9",
+          "gitBlobSha256": "06b9fa9ceea02f544f5a65e6f737f24bfc8c5dd4c3e7ffd0f8eb8842109d79a9"
+        },
+        {
+          "path": "src/questions/l5p5/assets/c3h9n.svg",
+          "sourceArchiveSha256": "442437268e1bc1260ecd2349d11f84588d8cdcfa4300b3f6c5fdb75b57fccdc0",
+          "gitBlobSha256": "442437268e1bc1260ecd2349d11f84588d8cdcfa4300b3f6c5fdb75b57fccdc0"
+        },
+        {
+          "path": "src/questions/l5p5/assets/c4h8.svg",
+          "sourceArchiveSha256": "e161cd6706bd4b12be070af63b381906cb1253c518bc4ad407ae57290aefe8e6",
+          "gitBlobSha256": "e161cd6706bd4b12be070af63b381906cb1253c518bc4ad407ae57290aefe8e6"
+        },
+        {
+          "path": "src/questions/l5p5/assets/provenance.json",
+          "sourceArchiveSha256": "edf60966b81b2a03be7abbb5fbefb4cca712aca422fb5a9572fc677cea3bdd9e",
+          "gitBlobSha256": "edf60966b81b2a03be7abbb5fbefb4cca712aca422fb5a9572fc677cea3bdd9e"
+        },
+        {
+          "path": "src/questions/l5p5/definition.ts",
+          "sourceArchiveSha256": "fbf02b1ff11f56679a4969e6a19544a5c8f2b874a5692641b3cdc079a79ea214",
+          "gitBlobSha256": "fbf02b1ff11f56679a4969e6a19544a5c8f2b874a5692641b3cdc079a79ea214"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p5.mjs",
+      "recordSha256": "0e6e14dcb983434a2b70c47ea5f4d67bf9fbcce08b07e5c749033b503fa394f8",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram1",
+          "bytes": 2897,
+          "sha256": "06b9fa9ceea02f544f5a65e6f737f24bfc8c5dd4c3e7ffd0f8eb8842109d79a9"
+        },
+        {
+          "id": "diagram2",
+          "bytes": 2574,
+          "sha256": "e161cd6706bd4b12be070af63b381906cb1253c518bc4ad407ae57290aefe8e6"
+        },
+        {
+          "id": "diagram3",
+          "bytes": 2867,
+          "sha256": "442437268e1bc1260ecd2349d11f84588d8cdcfa4300b3f6c5fdb75b57fccdc0"
+        }
+      ],
+      "scientificCheck": "Three formula assets/field IDs exact",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P5",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P5.png",
+          "baselineSha256": "12c76de0c305e58de30563ea7d2be2d71464fb174c3ad7d9a1fab8e3f5b3e8ab",
+          "currentSha256": "32622c43c59ba782b9efdf23404c3c86e837c896961497600e2a890887deea46",
+          "meanAbsoluteRGB": 0.39635173611111113,
+          "changedPixelsThreshold12": 5910
+        },
+        {
+          "id": "L5P5",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P5.png",
+          "baselineSha256": "8f44955622ac689a738afe2069ed465e6f2b73990ff18bab6f1bf8d9042c3579",
+          "currentSha256": "9242d79471a994b557c89b93086e735e874a10f9d1c02828627bc2f7e9de171f",
+          "meanAbsoluteRGB": 0.3496521347736626,
+          "changedPixelsThreshold12": 9364
+        },
+        {
+          "id": "L5P5",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P5.png",
+          "baselineSha256": "1ee167cf75285ae477855ea0f5c6b652ba3b1168bf584276849ad2b120a8905c",
+          "currentSha256": "08e0d58bc2a1ed290887b3a40ccec1571ee3068b9a6d5593636e6cf5f3bdf8d1",
+          "meanAbsoluteRGB": 0.30592185691550927,
+          "changedPixelsThreshold12": 11278
+        }
+      ]
+    },
+    {
+      "id": "L5P6",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p6/L5Problem6.css",
+          "sourceArchiveSha256": "325c80caae0a25529767591558f668731b4e80e76d741caff762983a42850361",
+          "gitBlobSha256": "325c80caae0a25529767591558f668731b4e80e76d741caff762983a42850361"
+        },
+        {
+          "path": "src/questions/l5p6/L5Problem6.tsx",
+          "sourceArchiveSha256": "206b2df997a07cdb6074e358a56d25d04b9ba6b01a2fc5358a406c746bdddab2",
+          "gitBlobSha256": "206b2df997a07cdb6074e358a56d25d04b9ba6b01a2fc5358a406c746bdddab2"
+        },
+        {
+          "path": "src/questions/l5p6/assets/methionine.svg",
+          "sourceArchiveSha256": "7478f3891458fd9493a316eea2b3349030bcac72d4a3f98c05db09228045a889",
+          "gitBlobSha256": "7478f3891458fd9493a316eea2b3349030bcac72d4a3f98c05db09228045a889"
+        },
+        {
+          "path": "src/questions/l5p6/definition.ts",
+          "sourceArchiveSha256": "95d79a3a9d0bd22722f223c66be27b27afc0311f28e46fb92201c6a013f360e8",
+          "gitBlobSha256": "95d79a3a9d0bd22722f223c66be27b27afc0311f28e46fb92201c6a013f360e8"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p6.mjs",
+      "recordSha256": "eb6fc0c68f9e7f38ef5c941b10a6b0108081ef3369a1dd74956d358eb60b1f3b",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram1",
+          "bytes": 15549,
+          "sha256": "7478f3891458fd9493a316eea2b3349030bcac72d4a3f98c05db09228045a889"
+        }
+      ],
+      "scientificCheck": "Methionine and fragments47/74/45 exact",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P6",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P6.png",
+          "baselineSha256": "f807e13673981c7c73683a6949cf74ec4b456ea69d5d357fe81f8521775abcb4",
+          "currentSha256": "725347bff9691ffb37f0c0ecc6b9a98a8e681f61249d5a93921aaa7870a6d846",
+          "meanAbsoluteRGB": 0.3834565972222222,
+          "changedPixelsThreshold12": 5348
+        },
+        {
+          "id": "L5P6",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P6.png",
+          "baselineSha256": "e824900c946ddb715c6543aeb72a3c3d80787f541ec05f2535a5e00cefe4eabd",
+          "currentSha256": "fd1830287d7a220403f99654957da4e4aaf325c73b6fc465f484cb32f844e612",
+          "meanAbsoluteRGB": 0.34855420524691355,
+          "changedPixelsThreshold12": 8846
+        },
+        {
+          "id": "L5P6",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P6.png",
+          "baselineSha256": "0a1315a93e076f4faeab546b891318caf35b6b9d04997b9e1c93dc658c3d3389",
+          "currentSha256": "66660bdc82cc34fbb54961ac69a325cfb2da034a7c6886e32984d7ff6be1d251",
+          "meanAbsoluteRGB": 0.3087380642361111,
+          "changedPixelsThreshold12": 11248
+        }
+      ]
+    },
+    {
+      "id": "L5P7",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p7/L5Problem7.css",
+          "sourceArchiveSha256": "1ddd418f41e1e14a313168b90aa89e230062ddb788c8bf80391a0d7a20881660",
+          "gitBlobSha256": "1ddd418f41e1e14a313168b90aa89e230062ddb788c8bf80391a0d7a20881660"
+        },
+        {
+          "path": "src/questions/l5p7/L5Problem7.tsx",
+          "sourceArchiveSha256": "026ebcace3ee91ab97a357475f05699bb087a1ab695218beab36450ce08ca571",
+          "gitBlobSha256": "026ebcace3ee91ab97a357475f05699bb087a1ab695218beab36450ce08ca571"
+        },
+        {
+          "path": "src/questions/l5p7/assets/gan.svg",
+          "sourceArchiveSha256": "94b51e4f7bf582c2381f220dd5dd7ef100af12a474b292a9b1bad48c5d76b022",
+          "gitBlobSha256": "94b51e4f7bf582c2381f220dd5dd7ef100af12a474b292a9b1bad48c5d76b022"
+        },
+        {
+          "path": "src/questions/l5p7/assets/perovskite.svg",
+          "sourceArchiveSha256": "1b5960eab819f7838b263d99b707265f648b03a3ff97582c932da6b108470982",
+          "gitBlobSha256": "1b5960eab819f7838b263d99b707265f648b03a3ff97582c932da6b108470982"
+        },
+        {
+          "path": "src/questions/l5p7/assets/provenance.json",
+          "sourceArchiveSha256": "a53a8a37d7e47457bd0c4d27306ca719c175d910c6c0b6f3c445c8bf896a31d8",
+          "gitBlobSha256": "a53a8a37d7e47457bd0c4d27306ca719c175d910c6c0b6f3c445c8bf896a31d8"
+        },
+        {
+          "path": "src/questions/l5p7/definition.ts",
+          "sourceArchiveSha256": "e54e8463ce741af9e99d26453fcd45517e430525b89e3a763feb961e8219ffff",
+          "gitBlobSha256": "e54e8463ce741af9e99d26453fcd45517e430525b89e3a763feb961e8219ffff"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p7.mjs",
+      "recordSha256": "a2aaa02c51289bc1b339fd7d5dd174b2fe75bf0a333823b93edcee5477933ee8",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram1",
+          "bytes": 14566,
+          "sha256": "1b5960eab819f7838b263d99b707265f648b03a3ff97582c932da6b108470982"
+        },
+        {
+          "id": "diagram2",
+          "bytes": 252275,
+          "sha256": "234c7bb50a2d7fe9c7a21fa4096d3fd0d921e206b609fafa362e6ef273e53985"
+        }
+      ],
+      "scientificCheck": "Perovskite/GaN geometry and labels;approved raster exception",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P7",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P7.png",
+          "baselineSha256": "2e8dbcaa44622dddaa7f720070240dce791a6cfbfd840fe1e3bf50f14110c519",
+          "currentSha256": "d8b8db6e13585a783279133a7686289585cd1dc78f3a2e99eabb6fbfcc6124cf",
+          "meanAbsoluteRGB": 0.4270215277777778,
+          "changedPixelsThreshold12": 8292
+        },
+        {
+          "id": "L5P7",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P7.png",
+          "baselineSha256": "ca6b6f2b915a96cbba56f0a29e876a033b5409ce4cc03d00f5f89652ffd6f6ee",
+          "currentSha256": "5b4601140f20288c500a9becc0b438ea6850173c15e6dcd30f2b6e38141d0613",
+          "meanAbsoluteRGB": 0.39314155735596706,
+          "changedPixelsThreshold12": 14282
+        },
+        {
+          "id": "L5P7",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P7.png",
+          "baselineSha256": "e7d62b055c1316a8cebc56429c3955c427b5546321c9a4dcfea4a476937d291a",
+          "currentSha256": "ca7835b6d347f4680305abc6daee67d7b07b1dc92b1f7b2bca33e3e5713d509c",
+          "meanAbsoluteRGB": 0.31273084852430555,
+          "changedPixelsThreshold12": 14489
+        }
+      ]
+    },
+    {
+      "id": "L5P8",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p8/L5Problem8.css",
+          "sourceArchiveSha256": "0cc7974002705425b46320c0fea1d7eb24983f3ae7a366f67b9894456017d791",
+          "gitBlobSha256": "0cc7974002705425b46320c0fea1d7eb24983f3ae7a366f67b9894456017d791"
+        },
+        {
+          "path": "src/questions/l5p8/L5Problem8.tsx",
+          "sourceArchiveSha256": "a24770962760600275fd5c2d60daa8cf53b9cdc383db42234e2bdad1c402dfce",
+          "gitBlobSha256": "a24770962760600275fd5c2d60daa8cf53b9cdc383db42234e2bdad1c402dfce"
+        },
+        {
+          "path": "src/questions/l5p8/definition.ts",
+          "sourceArchiveSha256": "fa5b18cd6b457fa67495aa38f0b8720161fada1a1678e6a6610982955520107a",
+          "gitBlobSha256": "fa5b18cd6b457fa67495aa38f0b8720161fada1a1678e6a6610982955520107a"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p8.mjs",
+      "recordSha256": "3532e86c0e6a0ad110a8bcd984d5757865bd57e6ffebc2b19a0c9fbc6ab216aa",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P8",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P8.png",
+          "baselineSha256": "5bae61ca4f44d40ed66805376958bbd2ca37d917e5596b79426765b33925900f",
+          "currentSha256": "b690f8c7387f104a64a46719fd3a6d511ae28d9960ec5ba67a164ec3e3e9594f",
+          "meanAbsoluteRGB": 0.364784375,
+          "changedPixelsThreshold12": 1949
+        },
+        {
+          "id": "L5P8",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P8.png",
+          "baselineSha256": "c3c848b53d06a846932ff2fe36b98b217fec7e0b8dc0be61878a78724150040c",
+          "currentSha256": "3915b8dbb80d4fb9c0b216e1e3810a23375dd982aa555f6a7d9c036eb9e36ab9",
+          "meanAbsoluteRGB": 0.36158982767489717,
+          "changedPixelsThreshold12": 2742
+        },
+        {
+          "id": "L5P8",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P8.png",
+          "baselineSha256": "967308edfe192bc00d7acbe92f00fe28860c28f600ba405397d492bb88025f6c",
+          "currentSha256": "fc97ed537599e9656ca434cb1224eb6cbad9346a7fe6347850d9d2ba98cf5f09",
+          "meanAbsoluteRGB": 0.3436600296585648,
+          "changedPixelsThreshold12": 3488
+        }
+      ]
+    },
+    {
+      "id": "L5P9",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l5p9/GroupingQuestion.css",
+          "sourceArchiveSha256": "fc882dc2ce9fdf11137fb4348356895e2a16263bf3341774a6b0151177242b07",
+          "gitBlobSha256": "0f1bfa728859b852c52369c851f6d796da21bd20e3f4e59458a8d0a950cde0dc"
+        },
+        {
+          "path": "src/questions/l5p9/GroupingQuestion.tsx",
+          "sourceArchiveSha256": "6549db0675926357c29f4125e5ce51bba5ac8b05d360b6be8b4095643b841b78",
+          "gitBlobSha256": "8fa53c7a7a535d2a67ada6fadc7c7992d1c256807cc9c8e7a3c62337a2d83a28"
+        },
+        {
+          "path": "src/questions/l5p9/L5Problem9.tsx",
+          "sourceArchiveSha256": "55e424812dface29458a6cfe7eb5d248e689b736a3e9784a4a2d9a522168975a",
+          "gitBlobSha256": "55e424812dface29458a6cfe7eb5d248e689b736a3e9784a4a2d9a522168975a"
+        },
+        {
+          "path": "src/questions/l5p9/assets/Al2O3.svg",
+          "sourceArchiveSha256": "3ea35ff6c7d9e20770e864433b9cf9e1f816cc0963393a359ebd29205b51af58",
+          "gitBlobSha256": "3ea35ff6c7d9e20770e864433b9cf9e1f816cc0963393a359ebd29205b51af58"
+        },
+        {
+          "path": "src/questions/l5p9/assets/Fe3O4.svg",
+          "sourceArchiveSha256": "84cc243ad97c1da34d49f277adc86ae38154cb5398f61b8677497e85a2b446f2",
+          "gitBlobSha256": "84cc243ad97c1da34d49f277adc86ae38154cb5398f61b8677497e85a2b446f2"
+        },
+        {
+          "path": "src/questions/l5p9/assets/MgO.svg",
+          "sourceArchiveSha256": "1b6d94c8c9c84796c4236f33752261b146d1f6aa74821a231b5aed4a8cacbd06",
+          "gitBlobSha256": "1b6d94c8c9c84796c4236f33752261b146d1f6aa74821a231b5aed4a8cacbd06"
+        },
+        {
+          "path": "src/questions/l5p9/assets/MgO2.svg",
+          "sourceArchiveSha256": "e293645979f0808ebc02c8049c1f6de2afda37b9b51fb6af3b72a5e9f830b075",
+          "gitBlobSha256": "e293645979f0808ebc02c8049c1f6de2afda37b9b51fb6af3b72a5e9f830b075"
+        },
+        {
+          "path": "src/questions/l5p9/assets/Na2O2.svg",
+          "sourceArchiveSha256": "afd8c83aaf0af89281f52d3956d2f76a1030c21ee3def5bfb5836c65d68fddaf",
+          "gitBlobSha256": "afd8c83aaf0af89281f52d3956d2f76a1030c21ee3def5bfb5836c65d68fddaf"
+        },
+        {
+          "path": "src/questions/l5p9/assets/Ti4O7.svg",
+          "sourceArchiveSha256": "9a631c0f7dec77184d19175766e2d382642f7d971ab6be261b1b05e0638fa6ed",
+          "gitBlobSha256": "9a631c0f7dec77184d19175766e2d382642f7d971ab6be261b1b05e0638fa6ed"
+        },
+        {
+          "path": "src/questions/l5p9/assets/TiO2.svg",
+          "sourceArchiveSha256": "f871e4cd28961b013e74728c870aec3251a53a1cc0151afcd8e14a845c866dfa",
+          "gitBlobSha256": "f871e4cd28961b013e74728c870aec3251a53a1cc0151afcd8e14a845c866dfa"
+        },
+        {
+          "path": "src/questions/l5p9/assets/V6O13.svg",
+          "sourceArchiveSha256": "f70456052743ae3e4f1eae8604a8972227da3dc38a39a28d7aa1ae3b14c9c90f",
+          "gitBlobSha256": "f70456052743ae3e4f1eae8604a8972227da3dc38a39a28d7aa1ae3b14c9c90f"
+        },
+        {
+          "path": "src/questions/l5p9/assets/ZnO2.svg",
+          "sourceArchiveSha256": "908f171f0901e5bca45e05e55232fe3d39b2f410e6a3e355babc1dc2234de13e",
+          "gitBlobSha256": "908f171f0901e5bca45e05e55232fe3d39b2f410e6a3e355babc1dc2234de13e"
+        },
+        {
+          "path": "src/questions/l5p9/definition.ts",
+          "sourceArchiveSha256": "b2aef8911387b59f2f205b34542a9ec1b4abd9c56df0d816f63da1a34f4cb609",
+          "gitBlobSha256": "c4a3733f1e894b1e9f3b6ff518061809a6e87daf32abf9d367704782424988f4"
+        },
+        {
+          "path": "src/questions/l5p9/grouping.ts",
+          "sourceArchiveSha256": "6fcc1e9eaa8402a11da5e940254f54ea2ae0c75d338ca9b9955c176c56015a4a",
+          "gitBlobSha256": "48c1cd0e968e765e8ab3c07cfe3d2e2b592624ce9f58b977d818ad494b46359e"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l5p9.mjs",
+      "recordSha256": "a4db24159a8d63d41c244894d9ccd6ba593e14d5d36351f32689fbf2d673188a",
+      "version": "1",
+      "assets": [
+        {
+          "id": "tile1",
+          "bytes": 2570,
+          "sha256": "908f171f0901e5bca45e05e55232fe3d39b2f410e6a3e355babc1dc2234de13e"
+        },
+        {
+          "id": "tile2",
+          "bytes": 2499,
+          "sha256": "f871e4cd28961b013e74728c870aec3251a53a1cc0151afcd8e14a845c866dfa"
+        },
+        {
+          "id": "tile3",
+          "bytes": 3002,
+          "sha256": "84cc243ad97c1da34d49f277adc86ae38154cb5398f61b8677497e85a2b446f2"
+        },
+        {
+          "id": "tile4",
+          "bytes": 3102,
+          "sha256": "e293645979f0808ebc02c8049c1f6de2afda37b9b51fb6af3b72a5e9f830b075"
+        },
+        {
+          "id": "tile5",
+          "bytes": 2977,
+          "sha256": "3ea35ff6c7d9e20770e864433b9cf9e1f816cc0963393a359ebd29205b51af58"
+        },
+        {
+          "id": "tile6",
+          "bytes": 3270,
+          "sha256": "f70456052743ae3e4f1eae8604a8972227da3dc38a39a28d7aa1ae3b14c9c90f"
+        },
+        {
+          "id": "tile7",
+          "bytes": 3236,
+          "sha256": "afd8c83aaf0af89281f52d3956d2f76a1030c21ee3def5bfb5836c65d68fddaf"
+        },
+        {
+          "id": "tile8",
+          "bytes": 2677,
+          "sha256": "1b6d94c8c9c84796c4236f33752261b146d1f6aa74821a231b5aed4a8cacbd06"
+        },
+        {
+          "id": "tile9",
+          "bytes": 2483,
+          "sha256": "9a631c0f7dec77184d19175766e2d382642f7d971ab6be261b1b05e0638fa6ed"
+        }
+      ],
+      "scientificCheck": "Nine oxide images/IDs/order/grouping",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5P9",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5P9.png",
+          "baselineSha256": "8eb1a5e5257087777a5f5988204bfd64e12672d8a728fec84c6431c286cb26a4",
+          "currentSha256": "b94ffbd50264b880242846af7494ac41f463d299d2b61553716ee64d4e7d4aa6",
+          "meanAbsoluteRGB": 0.4054479166666667,
+          "changedPixelsThreshold12": 8096
+        },
+        {
+          "id": "L5P9",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5P9.png",
+          "baselineSha256": "92d909eb2f50675c14788be20264e730b1e53a870d40e126e4451b1fd137095d",
+          "currentSha256": "4572e681d591d7821ef983ab490168536cab26748e0ce500ac14ec0c07124742",
+          "meanAbsoluteRGB": 0.31624276620370373,
+          "changedPixelsThreshold12": 10409
+        },
+        {
+          "id": "L5P9",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5P9.png",
+          "baselineSha256": "955d1ff367c9d37e09bab7cc7b3ee80c28331e83b0a540616d842b493fc1e712",
+          "currentSha256": "caf2756d12d8222d055988627f178f508c0d6cace6829d145ce278549019ce89",
+          "meanAbsoluteRGB": 0.27684154369212965,
+          "changedPixelsThreshold12": 14009
+        }
+      ]
+    },
+    {
+      "id": "L6P1",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p1/L6Problem1.tsx",
+          "sourceArchiveSha256": "e65cd443ea39d27233127a692cc4e83b80ccd9a2e186b0204d79f0bdaf91aaef",
+          "gitBlobSha256": "e65cd443ea39d27233127a692cc4e83b80ccd9a2e186b0204d79f0bdaf91aaef"
+        },
+        {
+          "path": "src/questions/l6p1/assets/As.svg",
+          "sourceArchiveSha256": "30fa24ecd712a368f016f0bbc9fc98c7c2ef89e6178ea9fef742a9189b477c02",
+          "gitBlobSha256": "30fa24ecd712a368f016f0bbc9fc98c7c2ef89e6178ea9fef742a9189b477c02"
+        },
+        {
+          "path": "src/questions/l6p1/assets/Cu.svg",
+          "sourceArchiveSha256": "be6f9c066ffc96a3efe9bc0c29da2635aff6c194ac5c0f1c045bfc14dec8149e",
+          "gitBlobSha256": "be6f9c066ffc96a3efe9bc0c29da2635aff6c194ac5c0f1c045bfc14dec8149e"
+        },
+        {
+          "path": "src/questions/l6p1/assets/F.svg",
+          "sourceArchiveSha256": "0995297a5e79999fb3f8fed9eda6f23fdc35736bcb980143ad54aa3efb415eb9",
+          "gitBlobSha256": "0995297a5e79999fb3f8fed9eda6f23fdc35736bcb980143ad54aa3efb415eb9"
+        },
+        {
+          "path": "src/questions/l6p1/assets/Na.svg",
+          "sourceArchiveSha256": "7dc17a919479064d3ba1d6cb69c2a92cc94d6719558590132ef3a008febf65a3",
+          "gitBlobSha256": "7dc17a919479064d3ba1d6cb69c2a92cc94d6719558590132ef3a008febf65a3"
+        },
+        {
+          "path": "src/questions/l6p1/assets/S.svg",
+          "sourceArchiveSha256": "6adf71b538946d9250012b7999bdd759476b647785b13f3bba04857147b68803",
+          "gitBlobSha256": "6adf71b538946d9250012b7999bdd759476b647785b13f3bba04857147b68803"
+        },
+        {
+          "path": "src/questions/l6p1/assets/Ta.svg",
+          "sourceArchiveSha256": "c1d4cd4f287588ed35311151db35e19963df9d05230a1119474b73d5565be57c",
+          "gitBlobSha256": "c1d4cd4f287588ed35311151db35e19963df9d05230a1119474b73d5565be57c"
+        },
+        {
+          "path": "src/questions/l6p1/assets/Th.svg",
+          "sourceArchiveSha256": "689d679fef9ba0accfb31fe0bd1e87587743bfc71367f2c051a74079116bc4cc",
+          "gitBlobSha256": "689d679fef9ba0accfb31fe0bd1e87587743bfc71367f2c051a74079116bc4cc"
+        },
+        {
+          "path": "src/questions/l6p1/assets/V.svg",
+          "sourceArchiveSha256": "ba01110b951f9451e9672527b44060b8e606f5cceaedc5251fc5c899b6bec6e4",
+          "gitBlobSha256": "ba01110b951f9451e9672527b44060b8e606f5cceaedc5251fc5c899b6bec6e4"
+        },
+        {
+          "path": "src/questions/l6p1/assets/Zr.svg",
+          "sourceArchiveSha256": "d7593b735547543d76eef64380ef5937bc3de210c6136e03206cea0e34b48728",
+          "gitBlobSha256": "d7593b735547543d76eef64380ef5937bc3de210c6136e03206cea0e34b48728"
+        },
+        {
+          "path": "src/questions/l6p1/definition.ts",
+          "sourceArchiveSha256": "525a877db227d8fcc2dc8d3e19899e70442b321af37832c84bfd35e2eb884e61",
+          "gitBlobSha256": "cc12d5c166f1e9ef8bb5b55d0550b6236aed93d89de805e8f21ac705027a2dbc"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p1.mjs",
+      "recordSha256": "ef7894d61ff78b57cbe799f89988df6ac2e650e2cdced48a8f752613f3186d5b",
+      "version": "1",
+      "assets": [
+        {
+          "id": "tile0",
+          "bytes": 1539,
+          "sha256": "c1d4cd4f287588ed35311151db35e19963df9d05230a1119474b73d5565be57c"
+        },
+        {
+          "id": "tile1",
+          "bytes": 1575,
+          "sha256": "6adf71b538946d9250012b7999bdd759476b647785b13f3bba04857147b68803"
+        },
+        {
+          "id": "tile2",
+          "bytes": 2048,
+          "sha256": "30fa24ecd712a368f016f0bbc9fc98c7c2ef89e6178ea9fef742a9189b477c02"
+        },
+        {
+          "id": "tile3",
+          "bytes": 1709,
+          "sha256": "be6f9c066ffc96a3efe9bc0c29da2635aff6c194ac5c0f1c045bfc14dec8149e"
+        },
+        {
+          "id": "tile4",
+          "bytes": 1205,
+          "sha256": "ba01110b951f9451e9672527b44060b8e606f5cceaedc5251fc5c899b6bec6e4"
+        },
+        {
+          "id": "tile5",
+          "bytes": 1286,
+          "sha256": "d7593b735547543d76eef64380ef5937bc3de210c6136e03206cea0e34b48728"
+        },
+        {
+          "id": "tile6",
+          "bytes": 1004,
+          "sha256": "0995297a5e79999fb3f8fed9eda6f23fdc35736bcb980143ad54aa3efb415eb9"
+        },
+        {
+          "id": "tile7",
+          "bytes": 1300,
+          "sha256": "689d679fef9ba0accfb31fe0bd1e87587743bfc71367f2c051a74079116bc4cc"
+        },
+        {
+          "id": "tile8",
+          "bytes": 1661,
+          "sha256": "7dc17a919479064d3ba1d6cb69c2a92cc94d6719558590132ef3a008febf65a3"
+        }
+      ],
+      "scientificCheck": "Nine element images/IDs/order/grouping",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P1",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P1.png",
+          "baselineSha256": "17971e078878e07bd45f791242a443642f04f3529562290cd6127e90d4b3da86",
+          "currentSha256": "39c0f8f4930dd0a31a6e58db96b578ae3cedee9d1085ef33f4a7dd0209d68075",
+          "meanAbsoluteRGB": 0.32450659722222225,
+          "changedPixelsThreshold12": 5692
+        },
+        {
+          "id": "L6P1",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P1.png",
+          "baselineSha256": "999945c19e988fcb0c01bb4a490019af4458fbed4032f6656fbcf15591d66974",
+          "currentSha256": "99043d8d785c013f4174ac19950e69e2f3ad92d4a96f5ce7ff3d2b4da71ea21f",
+          "meanAbsoluteRGB": 0.2708079346707819,
+          "changedPixelsThreshold12": 7521
+        },
+        {
+          "id": "L6P1",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P1.png",
+          "baselineSha256": "c08519a29b47b57c62b23378756323f60d27a1ad199d618e3872d0f61009254b",
+          "currentSha256": "7190488dbbc0e5df05be55d814234285b50407a2bcf8870328a9c51189c89941",
+          "meanAbsoluteRGB": 0.2397953739872685,
+          "changedPixelsThreshold12": 9507
+        }
+      ]
+    },
+    {
+      "id": "L6P2",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p2/L6Problem2.css",
+          "sourceArchiveSha256": "5c3ab4644ab47a7696c8a81837597b77fd3c521fa331a9744141d022f99b6b51",
+          "gitBlobSha256": "5c3ab4644ab47a7696c8a81837597b77fd3c521fa331a9744141d022f99b6b51"
+        },
+        {
+          "path": "src/questions/l6p2/L6Problem2.tsx",
+          "sourceArchiveSha256": "c4f85fa099a7fea6f5d825be9228f8731ad602a7f9c8cb3fa92249e87b081978",
+          "gitBlobSha256": "c4f85fa099a7fea6f5d825be9228f8731ad602a7f9c8cb3fa92249e87b081978"
+        },
+        {
+          "path": "src/questions/l6p2/content.ts",
+          "sourceArchiveSha256": "0e9ef5cf8c4012d8c7d85cb7a891b6bb276ae6fedcf2ff2fba639be215d9b9e3",
+          "gitBlobSha256": "0e9ef5cf8c4012d8c7d85cb7a891b6bb276ae6fedcf2ff2fba639be215d9b9e3"
+        },
+        {
+          "path": "src/questions/l6p2/definition.ts",
+          "sourceArchiveSha256": "ad9e8062751b570ad93ed61340e826a4d9ac44a9891750ca4ffb9ee3bb5a6fdb",
+          "gitBlobSha256": "ad9e8062751b570ad93ed61340e826a4d9ac44a9891750ca4ffb9ee3bb5a6fdb"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p2.mjs",
+      "recordSha256": "2b205a9ac85c7a8b7c02b739463fcaf3c72eb0a085fc5e247d4a51c829550c3c",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P2",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P2.png",
+          "baselineSha256": "e94895c5e9696f52d64d918dc00623b50243a81f3790d172fad9b1f404fbad14",
+          "currentSha256": "76321e535a6d457948d42305a09c7733106b7d9a98db07e323e9522fcdf6fdb0",
+          "meanAbsoluteRGB": 0.3527034722222222,
+          "changedPixelsThreshold12": 1949
+        },
+        {
+          "id": "L6P2",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P2.png",
+          "baselineSha256": "7c00237fa4e798b95f6993e2c39a84d2ae9241feef82b22017ce19e1e92c2373",
+          "currentSha256": "30d9174c9f5791c38f4351e4ebd92b68f2604462472abc9d95edeb6d51bf4521",
+          "meanAbsoluteRGB": 0.34931295010288066,
+          "changedPixelsThreshold12": 2743
+        },
+        {
+          "id": "L6P2",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P2.png",
+          "baselineSha256": "fd152d9b4c9e3424c773e00d713cc8f96561cc4d8e989cf0efe7d134a376f397",
+          "currentSha256": "8a6c30e2cfd7ea72e4116b0304758bad50d192b8bc4fa5d0ddb5c252c06f6609",
+          "meanAbsoluteRGB": 0.3308890335648148,
+          "changedPixelsThreshold12": 3487
+        }
+      ]
+    },
+    {
+      "id": "L6P3",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p3/L6Problem3.css",
+          "sourceArchiveSha256": "bb5d7b4376f342df9cc4956e046f4368134eba8b06f8147840e3da2d8c052138",
+          "gitBlobSha256": "bb5d7b4376f342df9cc4956e046f4368134eba8b06f8147840e3da2d8c052138"
+        },
+        {
+          "path": "src/questions/l6p3/L6Problem3.tsx",
+          "sourceArchiveSha256": "03446d03e49f3c44c3c969f7b5cca009f5da62d4e45122c71d180fb0316a68c9",
+          "gitBlobSha256": "1b5443e737a890681cec8450cb5ec9a0a477971030b546c37a3514d1331aac0e"
+        },
+        {
+          "path": "src/questions/l6p3/assets/GO.svg",
+          "sourceArchiveSha256": "410fcb2122caeb1c434fbff85b9325d15221702649238763d6f0638e2e6c4d9b",
+          "gitBlobSha256": "410fcb2122caeb1c434fbff85b9325d15221702649238763d6f0638e2e6c4d9b"
+        },
+        {
+          "path": "src/questions/l6p3/assets/RedCross.svg",
+          "sourceArchiveSha256": "75066809535f5b8c22cfd92aaccbbbfc0d69b997418c58c030dad2d6c1589b7f",
+          "gitBlobSha256": "75066809535f5b8c22cfd92aaccbbbfc0d69b997418c58c030dad2d6c1589b7f"
+        },
+        {
+          "path": "src/questions/l6p3/assets/Tick.svg",
+          "sourceArchiveSha256": "ce0649659be567ebba804cbe9d8242be705b51b96f9a05689a48d21e16bbd05c",
+          "gitBlobSha256": "ce0649659be567ebba804cbe9d8242be705b51b96f9a05689a48d21e16bbd05c"
+        },
+        {
+          "path": "src/questions/l6p3/assets/provenance.json",
+          "sourceArchiveSha256": "2a8fb59acdb655776f97cb1dbbe8a5cb2614750b49281c45596f732e539fe57b",
+          "gitBlobSha256": "2a8fb59acdb655776f97cb1dbbe8a5cb2614750b49281c45596f732e539fe57b"
+        },
+        {
+          "path": "src/questions/l6p3/definition.ts",
+          "sourceArchiveSha256": "b4fa4e5c83ce42987ae376ea6d83c0b8c5e583c6901ebd4c2d6897b5bbe398a2",
+          "gitBlobSha256": "3e716b7b560090635d2c8dc0c244e645afa4aa67a2c260769fdd59ac0fa8e1fe"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p3.mjs",
+      "recordSha256": "05df7f3893df879bf6fbc7f9f0aa91c5c77510756e97e91cfdef5d0a66e7c7b6",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Timed GO/current prompt/reveal only;no future challenge data",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P3",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P3.png",
+          "baselineSha256": "29891df92948b30dd85653dc5482e51485647a4824316b7442ce00d3af7f420d",
+          "currentSha256": "1bf4c7e58eee133e2b650d3b8177e6ad24353a11d02d32b7967326826266a1f8",
+          "meanAbsoluteRGB": 0.35223333333333334,
+          "changedPixelsThreshold12": 1479
+        },
+        {
+          "id": "L6P3",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P3.png",
+          "baselineSha256": "0db3ea8e725117f8debb6cbd5cf56f63d4c74e383855f6ec8bc4535aae283e5d",
+          "currentSha256": "72f1a9bfa5b927f6d0b1908649c04fda4c643f70183e55941600feb6b26c65a4",
+          "meanAbsoluteRGB": 0.33771572788065846,
+          "changedPixelsThreshold12": 2100
+        },
+        {
+          "id": "L6P3",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P3.png",
+          "baselineSha256": "8e167b9be26d90f2cac455763b1c5ae80b6e3af7ddee50209bce88cc6946e4f0",
+          "currentSha256": "3f18f99bf9644095f8cc808fa55a0f1f44fb0b9f2e69a2e48055ecfa814422b5",
+          "meanAbsoluteRGB": 0.32584074797453705,
+          "changedPixelsThreshold12": 3327
+        }
+      ]
+    },
+    {
+      "id": "L6P4",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p4/L6Problem4.css",
+          "sourceArchiveSha256": "487a065115ed2b64d847c92bd5234c82738bb5b202b9f06d2926d5b291179f26",
+          "gitBlobSha256": "487a065115ed2b64d847c92bd5234c82738bb5b202b9f06d2926d5b291179f26"
+        },
+        {
+          "path": "src/questions/l6p4/L6Problem4.tsx",
+          "sourceArchiveSha256": "3ba7ffa08cefd2bc4541f6fa4f2b0f5a4e103c7d8ff576461608a28c78fc6fcd",
+          "gitBlobSha256": "3ba7ffa08cefd2bc4541f6fa4f2b0f5a4e103c7d8ff576461608a28c78fc6fcd"
+        },
+        {
+          "path": "src/questions/l6p4/assets/mo-example.svg",
+          "sourceArchiveSha256": "82e0f0b713831ea41711cf14c79a747df6de0f49006864218feaa9b0a8d378b0",
+          "gitBlobSha256": "82e0f0b713831ea41711cf14c79a747df6de0f49006864218feaa9b0a8d378b0"
+        },
+        {
+          "path": "src/questions/l6p4/assets/mo-question-homo.svg",
+          "sourceArchiveSha256": "8071490ff851a186ab7159b2e80caf681008a7f71734c7aa13b57a0ee014e630",
+          "gitBlobSha256": "8071490ff851a186ab7159b2e80caf681008a7f71734c7aa13b57a0ee014e630"
+        },
+        {
+          "path": "src/questions/l6p4/assets/mo-question-lumo.svg",
+          "sourceArchiveSha256": "86e600d0abb54b22d688c1183c3bcc827be36070140f11caa960168225021cfa",
+          "gitBlobSha256": "86e600d0abb54b22d688c1183c3bcc827be36070140f11caa960168225021cfa"
+        },
+        {
+          "path": "src/questions/l6p4/assets/porbitalempty.svg",
+          "sourceArchiveSha256": "af1268b3c4252901f6868b4ae9e21cfc00e36e4e310f3196ae9c0b12c4d25bc7",
+          "gitBlobSha256": "af1268b3c4252901f6868b4ae9e21cfc00e36e4e310f3196ae9c0b12c4d25bc7"
+        },
+        {
+          "path": "src/questions/l6p4/assets/porbitalphase1.svg",
+          "sourceArchiveSha256": "0d81b8e7ae297c1b5744daf810dea29b0cb44ae6bc7f6deb9a4f2cd78be98ffa",
+          "gitBlobSha256": "0d81b8e7ae297c1b5744daf810dea29b0cb44ae6bc7f6deb9a4f2cd78be98ffa"
+        },
+        {
+          "path": "src/questions/l6p4/assets/porbitalphase2.svg",
+          "sourceArchiveSha256": "1de379274e42220fb2fc48e79778c16d8a0ef2b13bc401b274b6a966a6b10e7c",
+          "gitBlobSha256": "1de379274e42220fb2fc48e79778c16d8a0ef2b13bc401b274b6a966a6b10e7c"
+        },
+        {
+          "path": "src/questions/l6p4/definition.ts",
+          "sourceArchiveSha256": "53133421018a446d11fecac60cea38b30cee2ec7d72ba624f69f67614fb9e22d",
+          "gitBlobSha256": "53133421018a446d11fecac60cea38b30cee2ec7d72ba624f69f67614fb9e22d"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p4.mjs",
+      "recordSha256": "0f02d9cd18b28245c4e3e52780d17b27c8476121cb3ab8d6c3eaf4aac8511068",
+      "version": "2",
+      "assets": [
+        {
+          "id": "example",
+          "bytes": 33060,
+          "sha256": "82e0f0b713831ea41711cf14c79a747df6de0f49006864218feaa9b0a8d378b0"
+        },
+        {
+          "id": "reference1",
+          "bytes": 12891,
+          "sha256": "8071490ff851a186ab7159b2e80caf681008a7f71734c7aa13b57a0ee014e630"
+        },
+        {
+          "id": "reference2",
+          "bytes": 14049,
+          "sha256": "86e600d0abb54b22d688c1183c3bcc827be36070140f11caa960168225021cfa"
+        },
+        {
+          "id": "empty",
+          "bytes": 560,
+          "sha256": "af1268b3c4252901f6868b4ae9e21cfc00e36e4e310f3196ae9c0b12c4d25bc7"
+        },
+        {
+          "id": "phase1",
+          "bytes": 639,
+          "sha256": "0d81b8e7ae297c1b5744daf810dea29b0cb44ae6bc7f6deb9a4f2cd78be98ffa"
+        },
+        {
+          "id": "phase2",
+          "bytes": 639,
+          "sha256": "1de379274e42220fb2fc48e79778c16d8a0ef2b13bc401b274b6a966a6b10e7c"
+        }
+      ],
+      "scientificCheck": "Restored prose,phase assets,HOMO/LUMO fields and12click positions",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P4",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P4.png",
+          "baselineSha256": "3b2647f9e9a6701ec6a62cc07ad16b816063b875caac0d66f71064a897643dfa",
+          "currentSha256": "160d1dffb6eed316417f65cafaac41081e17038e71e00d33bec6afa610c369cb",
+          "meanAbsoluteRGB": 0.6208354166666666,
+          "changedPixelsThreshold12": 14191
+        },
+        {
+          "id": "L6P4",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P4.png",
+          "baselineSha256": "e720598c43132203f867bba1286e3bb5205b1cd8564a02caca7c30bd56a20d0e",
+          "currentSha256": "553d548c69e3f0aaf6c321e4ed94a793bab54402d4027da3234b71bbbec1f55d",
+          "meanAbsoluteRGB": 0.493382683899177,
+          "changedPixelsThreshold12": 22127
+        },
+        {
+          "id": "L6P4",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P4.png",
+          "baselineSha256": "adc456e971bab1f7f712576c23b3988bd0421eced24f2fc260cd8135d02f796a",
+          "currentSha256": "92ef85a6b1d367ae085b93d3ac3bcf6f59e8fac86acad3ca70d943c597201619",
+          "meanAbsoluteRGB": 0.39048593026620376,
+          "changedPixelsThreshold12": 27052
+        }
+      ]
+    },
+    {
+      "id": "L6P5",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p5/TwistAndBump.css",
+          "sourceArchiveSha256": "d983624ae40d80e5b214db6e57ee56cc0650c0ea81501b78c5728ba7ed98ff1f",
+          "gitBlobSha256": "d983624ae40d80e5b214db6e57ee56cc0650c0ea81501b78c5728ba7ed98ff1f"
+        },
+        {
+          "path": "src/questions/l6p5/TwistAndBump.tsx",
+          "sourceArchiveSha256": "c5267fdd1beec796cadf12ee1304f2f62a42064edfe5dd0f39b67ad8eed12e73",
+          "gitBlobSha256": "c5267fdd1beec796cadf12ee1304f2f62a42064edfe5dd0f39b67ad8eed12e73"
+        },
+        {
+          "path": "src/questions/l6p5/assets/live-labels-provenance.json",
+          "sourceArchiveSha256": "f0256dd42551e8b7686571b2fd734e10d798a5392d5f13db9aa79bc50defdee5",
+          "gitBlobSha256": "f0256dd42551e8b7686571b2fd734e10d798a5392d5f13db9aa79bc50defdee5"
+        },
+        {
+          "path": "src/questions/l6p5/assets/newman-example-geometry.svg",
+          "sourceArchiveSha256": "2a86bb079370447d3d482b2ff8d1be04203ff0698a0e906c895265604245d42b",
+          "gitBlobSha256": "2a86bb079370447d3d482b2ff8d1be04203ff0698a0e906c895265604245d42b"
+        },
+        {
+          "path": "src/questions/l6p5/assets/newman-example-labels.json",
+          "sourceArchiveSha256": "cf43a967a04ba9abcc4a35fb342ec13fd2747b01f0422bcdabecdd46f3a902d8",
+          "gitBlobSha256": "cf43a967a04ba9abcc4a35fb342ec13fd2747b01f0422bcdabecdd46f3a902d8"
+        },
+        {
+          "path": "src/questions/l6p5/assets/newman-example.svg",
+          "sourceArchiveSha256": "4be1b913036d575f748c26a904257728623a977681987d5d03b355ae06f8737f",
+          "gitBlobSha256": "4be1b913036d575f748c26a904257728623a977681987d5d03b355ae06f8737f"
+        },
+        {
+          "path": "src/questions/l6p5/assets/newman-question-geometry.svg",
+          "sourceArchiveSha256": "f54c308899bd18d1a0a5e0d9399477e575f707a2675e221266f57f98ae829e2f",
+          "gitBlobSha256": "f54c308899bd18d1a0a5e0d9399477e575f707a2675e221266f57f98ae829e2f"
+        },
+        {
+          "path": "src/questions/l6p5/assets/newman-question-labels.json",
+          "sourceArchiveSha256": "8f67c7edb73af12ce4d84ffb397c9ac429aaa7ec13a98943a9723208b593f8a3",
+          "gitBlobSha256": "8f67c7edb73af12ce4d84ffb397c9ac429aaa7ec13a98943a9723208b593f8a3"
+        },
+        {
+          "path": "src/questions/l6p5/assets/newman-question.svg",
+          "sourceArchiveSha256": "bc20fd88a62d9767a66ba77941d7c6c8c67f556d39bb5781c423ea56958a5a05",
+          "gitBlobSha256": "bc20fd88a62d9767a66ba77941d7c6c8c67f556d39bb5781c423ea56958a5a05"
+        },
+        {
+          "path": "src/questions/l6p5/assets/provenance.json",
+          "sourceArchiveSha256": "124529a17c055193a5b5f99e8cef6209625521beecbbe02cb0d1df9a979c9866",
+          "gitBlobSha256": "124529a17c055193a5b5f99e8cef6209625521beecbbe02cb0d1df9a979c9866"
+        },
+        {
+          "path": "src/questions/l6p5/definition.ts",
+          "sourceArchiveSha256": "bd9599678e58803eb4b9f5dfb9a9efcd8d30bac75ef8b9473da83b72288e5713",
+          "gitBlobSha256": "bd9599678e58803eb4b9f5dfb9a9efcd8d30bac75ef8b9473da83b72288e5713"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p5.mjs",
+      "recordSha256": "43b0e3639f8b9d0867f7f5ab2364e5f3b1bb4aabdc6f30f4224bd4b3db2e258d",
+      "version": "2",
+      "assets": [
+        {
+          "id": "example",
+          "bytes": 26248,
+          "sha256": "2a86bb079370447d3d482b2ff8d1be04203ff0698a0e906c895265604245d42b"
+        },
+        {
+          "id": "question",
+          "bytes": 10946,
+          "sha256": "f54c308899bd18d1a0a5e0d9399477e575f707a2675e221266f57f98ae829e2f"
+        }
+      ],
+      "scientificCheck": "Restored conformations prose,Newmangeometry/live labels,0/180degrees,paired fields",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P5",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P5.png",
+          "baselineSha256": "352ad79a7993a21d8acbe049fae57b9ac722e46494649e82bf87646e107b58da",
+          "currentSha256": "9d447e9bb826046aabe1bb465c3f4072d92091599252bb5ccc06f6af0fdf8618",
+          "meanAbsoluteRGB": 0.36564444444444444,
+          "changedPixelsThreshold12": 4959
+        },
+        {
+          "id": "L6P5",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P5.png",
+          "baselineSha256": "ef717647452b801427efdbe4923520519835b0b25d6743ff73ecdad1bf238678",
+          "currentSha256": "2b84ddcc31880797122e4ddf79c3dc8cff681724080f02edb70e1c7b34740b33",
+          "meanAbsoluteRGB": 0.3240988297325103,
+          "changedPixelsThreshold12": 7326
+        },
+        {
+          "id": "L6P5",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P5.png",
+          "baselineSha256": "45579e6a20378bab64b61cbb9b755ed5d9ffc73a471b41afdb6bd94a2371a70d",
+          "currentSha256": "3d2ef194fa7d6235f1d973a22c38a2fdac44c4b26754f0e34ca16d6bee4aadad",
+          "meanAbsoluteRGB": 0.2882574688946759,
+          "changedPixelsThreshold12": 9338
+        }
+      ]
+    },
+    {
+      "id": "L6P6",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p6/L6Problem6.css",
+          "sourceArchiveSha256": "b4f3ae38a913685d6afb71bcd388f5889b83f2b995cb64afa4f0d8493796361a",
+          "gitBlobSha256": "b4f3ae38a913685d6afb71bcd388f5889b83f2b995cb64afa4f0d8493796361a"
+        },
+        {
+          "path": "src/questions/l6p6/L6Problem6.tsx",
+          "sourceArchiveSha256": "359c853bb41c29f76948ebb9e67c1a15a089f187319e3747c062836ac7322fb8",
+          "gitBlobSha256": "359c853bb41c29f76948ebb9e67c1a15a089f187319e3747c062836ac7322fb8"
+        },
+        {
+          "path": "src/questions/l6p6/content.ts",
+          "sourceArchiveSha256": "97162a09c879e6392d7cf12442ff43171dcfd0e806e12dd8c805232a96f57586",
+          "gitBlobSha256": "97162a09c879e6392d7cf12442ff43171dcfd0e806e12dd8c805232a96f57586"
+        },
+        {
+          "path": "src/questions/l6p6/definition.ts",
+          "sourceArchiveSha256": "02657ff685f0ab35255e81e109eaa121165813538d3e6148d7c297bbe6668885",
+          "gitBlobSha256": "02657ff685f0ab35255e81e109eaa121165813538d3e6148d7c297bbe6668885"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p6.mjs",
+      "recordSha256": "8d2d3e7d76c2a0334cdf53614208ee3e95ed6d322dd866da88df125e98fea169",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P6",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P6.png",
+          "baselineSha256": "b4b35f081e2a646fafa6051818ca715016df01abfbc5237c614b87536586217d",
+          "currentSha256": "487bb81a5a1ce2494933e7d2c8e4f0c9ccca4b3ad254e3f104c0cc2a391f4d5b",
+          "meanAbsoluteRGB": 0.3029899305555555,
+          "changedPixelsThreshold12": 1948
+        },
+        {
+          "id": "L6P6",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P6.png",
+          "baselineSha256": "a10ea1d803462906a5dbd3a828910063ea2f59aa234108ca7e8ed0a6e7d2f861",
+          "currentSha256": "e1c4b1e3756f5a4f9e34dea23993406ae4a39ef72ade356ae0990ceace3d2588",
+          "meanAbsoluteRGB": 0.3067692258230453,
+          "changedPixelsThreshold12": 2742
+        },
+        {
+          "id": "L6P6",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P6.png",
+          "baselineSha256": "9789f66845e527c1735ec60c40db64838db8baf898c48066a60d452bc1f5083a",
+          "currentSha256": "121b2ab48fe1766739371c27b93815dac089f8e6ab9fb4fa421cbba6a167b832",
+          "meanAbsoluteRGB": 0.2893183051215278,
+          "changedPixelsThreshold12": 3487
+        }
+      ]
+    },
+    {
+      "id": "L6P7",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p7/L6Problem7.css",
+          "sourceArchiveSha256": "89cd753e67d3585df4687be1ced669f764a9438f341fd9b74a38c19f70f1b376",
+          "gitBlobSha256": "89cd753e67d3585df4687be1ced669f764a9438f341fd9b74a38c19f70f1b376"
+        },
+        {
+          "path": "src/questions/l6p7/L6Problem7.tsx",
+          "sourceArchiveSha256": "332231f0c4df448b83369e15eb3d2aecda41aeb29a5867742c41e11e376a3b29",
+          "gitBlobSha256": "332231f0c4df448b83369e15eb3d2aecda41aeb29a5867742c41e11e376a3b29"
+        },
+        {
+          "path": "src/questions/l6p7/assets/diels-alder-example.svg",
+          "sourceArchiveSha256": "9efb564739b56ff634a9f8f89ab063df50ad50b6b55781519d429b185172ba5b",
+          "gitBlobSha256": "9efb564739b56ff634a9f8f89ab063df50ad50b6b55781519d429b185172ba5b"
+        },
+        {
+          "path": "src/questions/l6p7/assets/diels-alder-target.svg",
+          "sourceArchiveSha256": "d0572305f4f13490e474ebd2b2fab1ebd5788d04cbd6ede4aece0e9cc48800e9",
+          "gitBlobSha256": "d0572305f4f13490e474ebd2b2fab1ebd5788d04cbd6ede4aece0e9cc48800e9"
+        },
+        {
+          "path": "src/questions/l6p7/assets/provenance.json",
+          "sourceArchiveSha256": "f65d8dad5885d530eff34c8c4f22075ebcf501854e2c24689afe13b6d3150213",
+          "gitBlobSha256": "f65d8dad5885d530eff34c8c4f22075ebcf501854e2c24689afe13b6d3150213"
+        },
+        {
+          "path": "src/questions/l6p7/assets/the-ring.png",
+          "sourceArchiveSha256": "d4fdf16a04095a9ced65c56e6542131e0dc40512f91b66df24eaa7a96d526305",
+          "gitBlobSha256": "d4fdf16a04095a9ced65c56e6542131e0dc40512f91b66df24eaa7a96d526305"
+        },
+        {
+          "path": "src/questions/l6p7/content.ts",
+          "sourceArchiveSha256": "34b61bda667da0d5b2c7e909ff7d5d8c751cb663e3437098a8658a1ab0fd6787",
+          "gitBlobSha256": "34b61bda667da0d5b2c7e909ff7d5d8c751cb663e3437098a8658a1ab0fd6787"
+        },
+        {
+          "path": "src/questions/l6p7/definition.ts",
+          "sourceArchiveSha256": "11f426849eb635f83d0b0731bf28fc5933b8272216a185f4f1b4bac3879ab788",
+          "gitBlobSha256": "11f426849eb635f83d0b0731bf28fc5933b8272216a185f4f1b4bac3879ab788"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p7.mjs",
+      "recordSha256": "b0a156be7703bac31e6a32c521ca7930bd71f794d39051def63e5e9fed27f830",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram0",
+          "bytes": 6047,
+          "sha256": "9efb564739b56ff634a9f8f89ab063df50ad50b6b55781519d429b185172ba5b"
+        },
+        {
+          "id": "diagram1",
+          "bytes": 7157,
+          "sha256": "d0572305f4f13490e474ebd2b2fab1ebd5788d04cbd6ede4aece0e9cc48800e9"
+        }
+      ],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P7",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P7.png",
+          "baselineSha256": "950da4b7aecbde15a29b5b090b90a2fce966635edd5b974a0f32148ef1e56513",
+          "currentSha256": "b81002739dcbb41cd7739776df15ad13a3bc7483f4c98ace1b57d3a9216b9e5a",
+          "meanAbsoluteRGB": 0.34646493055555555,
+          "changedPixelsThreshold12": 4626
+        },
+        {
+          "id": "L6P7",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P7.png",
+          "baselineSha256": "31657eadf2271e59cc3f6e5538b1b3230bbed74904de7c770c6222389049f68d",
+          "currentSha256": "47262016cabf1f514afb9ae10aa74a69653207ae2de26e092340dd0ccfb22c1a",
+          "meanAbsoluteRGB": 0.29847334747942383,
+          "changedPixelsThreshold12": 6145
+        },
+        {
+          "id": "L6P7",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P7.png",
+          "baselineSha256": "56d257ac96a0cb58cc04f2d5acc27c4c7f16573f90c0f49ab8896a1218994c9c",
+          "currentSha256": "959c84b8346aa0bf748db47ffa443f6aab397b40743def585fb933b353cca807",
+          "meanAbsoluteRGB": 0.27067274305555555,
+          "changedPixelsThreshold12": 7987
+        }
+      ]
+    },
+    {
+      "id": "L6P8",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p8/L6Problem8.css",
+          "sourceArchiveSha256": "bb5a3355ef09106aac049083d09918881f745c715631ac32aa9a993f757ef192",
+          "gitBlobSha256": "bb5a3355ef09106aac049083d09918881f745c715631ac32aa9a993f757ef192"
+        },
+        {
+          "path": "src/questions/l6p8/L6Problem8.tsx",
+          "sourceArchiveSha256": "43efbf201cc506e29eb10245a9d1418f5680b57e7a88c0495c4ec4d0c008b442",
+          "gitBlobSha256": "43efbf201cc506e29eb10245a9d1418f5680b57e7a88c0495c4ec4d0c008b442"
+        },
+        {
+          "path": "src/questions/l6p8/content.ts",
+          "sourceArchiveSha256": "7e5f029679a944fc29d2238d55cd53410b9715f5a440747c89ede7be5aad7c42",
+          "gitBlobSha256": "7e5f029679a944fc29d2238d55cd53410b9715f5a440747c89ede7be5aad7c42"
+        },
+        {
+          "path": "src/questions/l6p8/definition.ts",
+          "sourceArchiveSha256": "26360dcbfdefabb815f4702b70591b46f37695c3b81ed51ea866c85b322eaa02",
+          "gitBlobSha256": "26360dcbfdefabb815f4702b70591b46f37695c3b81ed51ea866c85b322eaa02"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p8.mjs",
+      "recordSha256": "e02a03f7ccdf9207ada5493e1bfc8d9b6f8f4eedb7ec230faf20aa4702ef50e3",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P8",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P8.png",
+          "baselineSha256": "336d1fb99e612853ca800a964ac2bccf5da3a94c8ced105d20e5bdc162efec35",
+          "currentSha256": "eb62788aa23a30ee5a776c331ca1e0a4074fde9c6122cb69b9995a70e1ee37fe",
+          "meanAbsoluteRGB": 0.40203090277777775,
+          "changedPixelsThreshold12": 1949
+        },
+        {
+          "id": "L6P8",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P8.png",
+          "baselineSha256": "fe48740022bed113c487a4e377b24bd0a8535dcdaa9608a40e4630d3a5c92067",
+          "currentSha256": "c88b649111885923bc2e06717cd0633e933381657728e20d13b01aef66aa1200",
+          "meanAbsoluteRGB": 0.3915502829218107,
+          "changedPixelsThreshold12": 2741
+        },
+        {
+          "id": "L6P8",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P8.png",
+          "baselineSha256": "8bc95e4bdab3db6ef279a43c5507f6b8d9033def94d30aef6c26cb76d569969e",
+          "currentSha256": "405a6d10b4694e664f175190197ad48a447c20bdd036e1ec0d09dc3bbd47b7a0",
+          "meanAbsoluteRGB": 0.37400173611111115,
+          "changedPixelsThreshold12": 3489
+        }
+      ]
+    },
+    {
+      "id": "L6P9",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/l6p9/L6Problem9.css",
+          "sourceArchiveSha256": "1a87621a6d627f35cb4b936782b1bd1125f698dc836585196b07dc9e34db89b8",
+          "gitBlobSha256": "1a87621a6d627f35cb4b936782b1bd1125f698dc836585196b07dc9e34db89b8"
+        },
+        {
+          "path": "src/questions/l6p9/L6Problem9.tsx",
+          "sourceArchiveSha256": "21fc7ddca3ce253172412c37bed3de4512b3ea16d6eb6a18780bd708f3cd790c",
+          "gitBlobSha256": "21fc7ddca3ce253172412c37bed3de4512b3ea16d6eb6a18780bd708f3cd790c"
+        },
+        {
+          "path": "src/questions/l6p9/assets/chair-cyclohexane.svg",
+          "sourceArchiveSha256": "b942e9b336087326183200d52f125c2c5b4eee62c74c31b86db3994db7da68a8",
+          "gitBlobSha256": "b942e9b336087326183200d52f125c2c5b4eee62c74c31b86db3994db7da68a8"
+        },
+        {
+          "path": "src/questions/l6p9/assets/flat-cyclohexane.svg",
+          "sourceArchiveSha256": "c64bacb69cd20f6986d16ca88d0483a80a65a2345bf4cd992a8678e086eea024",
+          "gitBlobSha256": "c64bacb69cd20f6986d16ca88d0483a80a65a2345bf4cd992a8678e086eea024"
+        },
+        {
+          "path": "src/questions/l6p9/assets/provenance.json",
+          "sourceArchiveSha256": "7ec20028d18f94c90ec278fa19355ddb386085907090ae2fe3025e7895ef4d5b",
+          "gitBlobSha256": "7ec20028d18f94c90ec278fa19355ddb386085907090ae2fe3025e7895ef4d5b"
+        },
+        {
+          "path": "src/questions/l6p9/content.ts",
+          "sourceArchiveSha256": "44f9fbadb55ed8eae70d8c623ed93333db223ba1a1e8065b1454ead7a2df94e9",
+          "gitBlobSha256": "44f9fbadb55ed8eae70d8c623ed93333db223ba1a1e8065b1454ead7a2df94e9"
+        },
+        {
+          "path": "src/questions/l6p9/definition.ts",
+          "sourceArchiveSha256": "dd7d1d3944728512abe10bfe5ccb7bc732a4e006954f561bc56f81854f6514c4",
+          "gitBlobSha256": "dd7d1d3944728512abe10bfe5ccb7bc732a4e006954f561bc56f81854f6514c4"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/l6p9.mjs",
+      "recordSha256": "b69bb6a72d10ca99dc27d9f8ba66b19ae5198ec7a81f77ddcb8472c9d7b86c1f",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram0",
+          "bytes": 9745,
+          "sha256": "c64bacb69cd20f6986d16ca88d0483a80a65a2345bf4cd992a8678e086eea024"
+        },
+        {
+          "id": "diagram1",
+          "bytes": 10701,
+          "sha256": "b942e9b336087326183200d52f125c2c5b4eee62c74c31b86db3994db7da68a8"
+        }
+      ],
+      "scientificCheck": "Flat/chair cyclohexane labels/dimensions",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6P9",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6P9.png",
+          "baselineSha256": "535a9c49dde9eb12d7f566d151aa10888db2ceb20149c1677a6b3f974fb6cf45",
+          "currentSha256": "49e76879a82e181f8e3ad127ab0efe1bc65b52f1418a494eb3e1bcbcf1d118a7",
+          "meanAbsoluteRGB": 0.33284270833333335,
+          "changedPixelsThreshold12": 3920
+        },
+        {
+          "id": "L6P9",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6P9.png",
+          "baselineSha256": "bc3c6cd457ddd74517a0237fe6fbd29fb3c2d03283ddd25e2e972804c81150c9",
+          "currentSha256": "1dd9bffe4772e93a2243b42a7ddbe9a59c8d9cadcbce4e20664286db397f62b1",
+          "meanAbsoluteRGB": 0.29224987139917696,
+          "changedPixelsThreshold12": 5623
+        },
+        {
+          "id": "L6P9",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6P9.png",
+          "baselineSha256": "266cd11c391d0624eed83e5876c0e9c949ab963eba08ed2ef68fc5e790c588aa",
+          "currentSha256": "dd283295f27067e6f20162462ac76fd7cce94cb455cf157476dc764179e2997d",
+          "meanAbsoluteRGB": 0.26822509765624997,
+          "changedPixelsThreshold12": 7155
+        }
+      ]
+    },
+    {
+      "id": "U5P2",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p2/CrossYourFingers.css",
+          "sourceArchiveSha256": "f877ce3acab1af1174a3c30975cca9e2b0e82dace914d6073d37b5e3b0746b75",
+          "gitBlobSha256": "999bfd48af00f8921f826286bb00e773d8e20fc8ce4dbf96d031e11f6c87357f"
+        },
+        {
+          "path": "src/questions/u5p2/CrossYourFingers.tsx",
+          "sourceArchiveSha256": "88810f7156d6d4c44ec4b3a8487bb18c289dcd3f861a3bac9decbf3e15122d51",
+          "gitBlobSha256": "1114af99fdd320a777b91807d4aa73766e6232bc14de30f58bbba3fca1c7575d"
+        },
+        {
+          "path": "src/questions/u5p2/definition.ts",
+          "sourceArchiveSha256": "d32b4fa2744a5acf6fbf0b3f8d4f3caf89fc1c2cdbe486c6c02ebcc044480286",
+          "gitBlobSha256": "d32b4fa2744a5acf6fbf0b3f8d4f3caf89fc1c2cdbe486c6c02ebcc044480286"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p2.mjs",
+      "recordSha256": "87a57d4a3ceffa1619864d7a6293c11de3e2650ffc70463acf40c19013f1da4b",
+      "version": "2",
+      "assets": [],
+      "scientificCheck": "N/O palette,initialN,igcse,dot/cross,defaultshell layout matched original",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P2",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P2.png",
+          "baselineSha256": "18dac96eee753e005998cc0c4774174e84c40747a9f1c43b9165c153b688f151",
+          "currentSha256": "064f6e1ebf94f144135c70771cc295e2022c4ae40eae3fd3e0cf4501a2bee4c4",
+          "meanAbsoluteRGB": 0.2535236111111111,
+          "changedPixelsThreshold12": 2211
+        },
+        {
+          "id": "U5P2",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P2.png",
+          "baselineSha256": "cb4646b35f1bd712e51ee6689033b805bf9a041c0c434580ff51ab5be947342d",
+          "currentSha256": "e6e4a44e0b1450eaa0389139eb1317a2defd6e1a87d28624fefb0ce5e36f6375",
+          "meanAbsoluteRGB": 0.23358603395061728,
+          "changedPixelsThreshold12": 3147
+        },
+        {
+          "id": "U5P2",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P2.png",
+          "baselineSha256": "97772f387a68591eb6cb8a2de5e9458fa6431b5cd0b0307eebb0a0bd3bad7467",
+          "currentSha256": "cf9ac58b619221ce8645271bec5cdcc845e2fff4f0ea5dfc967f711ca3376d24",
+          "meanAbsoluteRGB": 0.21732530381944445,
+          "changedPixelsThreshold12": 4015
+        }
+      ]
+    },
+    {
+      "id": "U5P3",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p3/Chainspotting.css",
+          "sourceArchiveSha256": "e47048f08e8b705cea223eda34ffcffd7c9e4e8490c344f35bb18b4d6a2c4d4a",
+          "gitBlobSha256": "462bcd2be2a8e9415c7601483fe0e06265603aec8c792dd178f23a8469000813"
+        },
+        {
+          "path": "src/questions/u5p3/Chainspotting.tsx",
+          "sourceArchiveSha256": "5a9ef2e1b7af3ebe70361b7a617b4a4fcd5244fc12380462a115dceac1ff5f7d",
+          "gitBlobSha256": "45824f03c13015de4718a42bcce4b40d42f77e723bdd78791b8c6b2b4d9799a7"
+        },
+        {
+          "path": "src/questions/u5p3/PolymerDiagram.tsx",
+          "sourceArchiveSha256": "a2c1c50d8ed984d785c7801339cfad45e83ee2ee80dacdadc146c77d3954b5a2",
+          "gitBlobSha256": "a2c1c50d8ed984d785c7801339cfad45e83ee2ee80dacdadc146c77d3954b5a2"
+        },
+        {
+          "path": "src/questions/u5p3/assets/polymer.provenance.json",
+          "sourceArchiveSha256": "d27a76505f27150f59654c16912c1c25e04826d0d815c4de5a7821901f4c84c6",
+          "gitBlobSha256": "24e712065d47101577d97d6284d94447d3a75318bb1b6ed109943beec3754076"
+        },
+        {
+          "path": "src/questions/u5p3/assets/polymer.svg",
+          "sourceArchiveSha256": "97f00321f8a7a8daf9776cd48775697611755f66756147ca03bb9c67696824e6",
+          "gitBlobSha256": "97f00321f8a7a8daf9776cd48775697611755f66756147ca03bb9c67696824e6"
+        },
+        {
+          "path": "src/questions/u5p3/definition.ts",
+          "sourceArchiveSha256": "1c4ccff7de214fa9671768e5265426436153b5df6e7979d2ada3c7c402042067",
+          "gitBlobSha256": "1c4ccff7de214fa9671768e5265426436153b5df6e7979d2ada3c7c402042067"
+        },
+        {
+          "path": "src/questions/u5p3/moleculeAnswer.ts",
+          "sourceArchiveSha256": "a817babcd8e8c28ff32e45aea98a30d3ea24cfecc3ebd4c29ca27a401b31bfbe",
+          "gitBlobSha256": "a817babcd8e8c28ff32e45aea98a30d3ea24cfecc3ebd4c29ca27a401b31bfbe"
+        },
+        {
+          "path": "src/questions/u5p3/polymerGraph.ts",
+          "sourceArchiveSha256": "793b5c7d80c3843445f94e560d4677119446645aa971dc148e35f99f7158b97a",
+          "gitBlobSha256": "793b5c7d80c3843445f94e560d4677119446645aa971dc148e35f99f7158b97a"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p3.mjs",
+      "recordSha256": "6246deffc373b2f72c524d265d3cbd69df69348cefb3aefcba940c749558bb26",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Original22carbon substituent sequence66atoms/65bonds reconstructed exactly",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P3",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P3.png",
+          "baselineSha256": "c20827963bcd68aa3364751b154dd7bb4f7d49f0a6783cd97b3dfe13d91d3f47",
+          "currentSha256": "1d363174464b90b6f4c98fa1392e5e0d22a0b35ebab1956dd7b081c938ac25a6",
+          "meanAbsoluteRGB": 0.26952916666666665,
+          "changedPixelsThreshold12": 3450
+        },
+        {
+          "id": "U5P3",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P3.png",
+          "baselineSha256": "9ae3dd83a29350458074701639f142385ca32892523be33ce938294ce6107008",
+          "currentSha256": "8b15a20a083f5eda728df9b188025027cdafdedb94a38dbc62535aa13f8be942",
+          "meanAbsoluteRGB": 0.24065682870370372,
+          "changedPixelsThreshold12": 4786
+        },
+        {
+          "id": "U5P3",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P3.png",
+          "baselineSha256": "664aca719429d440fe9e95606308e8434c21845a320c2da6cc60ff1dfc1f3ea5",
+          "currentSha256": "64067f456aa87dd0c0ded0e642ddadf59c2bd2a4922f3d054527c6579536a904",
+          "meanAbsoluteRGB": 0.22027388961226854,
+          "changedPixelsThreshold12": 6176
+        }
+      ]
+    },
+    {
+      "id": "U5P4",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p4/U5Problem4.css",
+          "sourceArchiveSha256": "097573bbae58b52b1799a7700beab087f14bd65b687e4f8d2e63e006743f84bb",
+          "gitBlobSha256": "49b88e4151e5ac27a1beb4731eac657281552a8c5756da3da1b76916d2ccde1b"
+        },
+        {
+          "path": "src/questions/u5p4/U5Problem4.tsx",
+          "sourceArchiveSha256": "959630e0443359061c232a196a5799ebbd8beea9686869eceb5c5b8f5834df20",
+          "gitBlobSha256": "83e4502c993edf97beec3679deaded357eddf3c0b5f373c845f4ede9345e9090"
+        },
+        {
+          "path": "src/questions/u5p4/assets/heterocyclic-naming-original.png",
+          "sourceArchiveSha256": "5a23c39f690200c881a71cd2797dd798ea1c713bf60e1909d7c5d861500bf87f",
+          "gitBlobSha256": "5a23c39f690200c881a71cd2797dd798ea1c713bf60e1909d7c5d861500bf87f"
+        },
+        {
+          "path": "src/questions/u5p4/definition.ts",
+          "sourceArchiveSha256": "9900ad986c648336b08f41f3e7c85b8ea5ff24510d87f421a4be779fcee32431",
+          "gitBlobSha256": "3aaad87d63d01c9300c28f127d18a033c3fa465caafe94161da4df6e92a755b7"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p4.mjs",
+      "recordSha256": "7b0c5a841e07b6d06437b014070a99a1d56e7b8dab61a48e030c58270125cb6c",
+      "version": "1",
+      "assets": [
+        {
+          "id": "molecules",
+          "bytes": 129751,
+          "sha256": "5a23c39f690200c881a71cd2797dd798ea1c713bf60e1909d7c5d861500bf87f"
+        }
+      ],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P4",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P4.png",
+          "baselineSha256": "61d96b310768f40aca2b27ead1df2dbb084c93c8444df56c34bc9ee5dd3578c0",
+          "currentSha256": "d9867604f836221d69df87567ed34d99d6f3f7bf8d39bb119cd61c5264598cf0",
+          "meanAbsoluteRGB": 0.32346423611111114,
+          "changedPixelsThreshold12": 1969
+        },
+        {
+          "id": "U5P4",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P4.png",
+          "baselineSha256": "e6fa238c5c403716d73ca3de9827c731f7d20ac13c6c6838ca3414e1b715bc70",
+          "currentSha256": "6ebeba0077354a911059ea25920b2247724a1a40103c8c08fa5ce5d804058036",
+          "meanAbsoluteRGB": 0.2788191229423868,
+          "changedPixelsThreshold12": 2555
+        },
+        {
+          "id": "U5P4",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P4.png",
+          "baselineSha256": "319c314ef2594c8f549cd543829c8a8f4f00966f34a2e904bf7d4e5387ff5099",
+          "currentSha256": "aa549c483677e05d792a75fac33bf2192d699ba974c29ca4cae3d791c2d74562",
+          "meanAbsoluteRGB": 0.26943495008680557,
+          "changedPixelsThreshold12": 3614
+        }
+      ]
+    },
+    {
+      "id": "U5P5",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p5/Chromatogram.tsx",
+          "sourceArchiveSha256": "f1344230b3e71bc07c470cde5c578f1e4899e898655e51443758fd39303a96f4",
+          "gitBlobSha256": "da424b14eed204d266d02e3709675eedd854473694173dbd17ca1a7e23469864"
+        },
+        {
+          "path": "src/questions/u5p5/DraggablePrintout.tsx",
+          "sourceArchiveSha256": "7dda2fd96dc0a8a8235a42374591c8ace5876f270a9e5c7587ecdd6dca18fb4f",
+          "gitBlobSha256": "a7791938e40413979c450d46dc5a80cae5a1ac256ec16c5bd220a0361e347918"
+        },
+        {
+          "path": "src/questions/u5p5/FormulationBar.tsx",
+          "sourceArchiveSha256": "49978e189ab8b3f54adeb6f4b7c19bbc96da4c57793bf9670e5936a3158b3561",
+          "gitBlobSha256": "64808bef1605ba23d2001217016c95e00d68460b2b6f8273f056e718a83fcbe9"
+        },
+        {
+          "path": "src/questions/u5p5/GcInstrument.tsx",
+          "sourceArchiveSha256": "da3bfaa5f57ca1b35c47fabc92227909d504571a236edab40175d9e08d592c1b",
+          "gitBlobSha256": "325b6add7892381ccc58f7a66c75a82e1f69d45b1fd41dcee4f58fd250dce570"
+        },
+        {
+          "path": "src/questions/u5p5/ScentsAndScentsibility.css",
+          "sourceArchiveSha256": "b893e32dddf9edbe80e16ef773f3a841876d575eb9002b927d3436d12d52bf7f",
+          "gitBlobSha256": "ef1e37525549a4d0d4ec6f8b815d50befca329d1518653b192e9f275b19fe4a0"
+        },
+        {
+          "path": "src/questions/u5p5/ScentsAndScentsibility.tsx",
+          "sourceArchiveSha256": "0dfb66a1af79efc25cdaf55cffa0b4ecc853896f86fce71fed477ddef64ff4ca",
+          "gitBlobSha256": "42c95b5c450fdd93d7230e5377d5ab30716f83e1f55fd9029d4bce68753071d4"
+        },
+        {
+          "path": "src/questions/u5p5/definition.ts",
+          "sourceArchiveSha256": "dfb8290624ef9e6a7d1715d1ccc9051a98fac3d4b4c7a4b132ce2a9fd45d1110",
+          "gitBlobSha256": "a286760fd72ab12a0df179ca4cc55a226f5dbad044ea22b134544ed208db22cb"
+        },
+        {
+          "path": "src/questions/u5p5/model.ts",
+          "sourceArchiveSha256": "a41fdc144fe196af8694f647685dbe8b3838a17f3815d71dedc4291768420516",
+          "gitBlobSha256": "9d4352dfa5635c6c2b0aee75962e38a78984bb99586106559376f43d7b631326"
+        },
+        {
+          "path": "src/questions/u5p5/provenance.json",
+          "sourceArchiveSha256": "470de07f7b569f6e4a65908adbfe04ed05a89705736717de32e2b6a392289806",
+          "gitBlobSha256": "470de07f7b569f6e4a65908adbfe04ed05a89705736717de32e2b6a392289806"
+        },
+        {
+          "path": "src/questions/u5p5/sampleColour.ts",
+          "sourceArchiveSha256": "a7b3b055f79f932c2fb697b7e26e28e01ff9e07ba54c446ce2089ac22380fc9d",
+          "gitBlobSha256": "3bc83af6aa3b519fc2ce73611ab8ff70dbb3341e450c60e9ecabc827e93f3721"
+        },
+        {
+          "path": "src/questions/u5p5/types.ts",
+          "sourceArchiveSha256": "c7053c7a7faee627247c2679c256572bac339526163fff672b4e3e0a2769cacf",
+          "gitBlobSha256": "3b42cb2241f901590e839d730e15d0c31e755bdd1dcdc1580b9bb9f4c8137f2e"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p5.mjs",
+      "recordSha256": "8b0f1566a60ef6b5aadeba4146b96a3b930aab25bbe85434d1d2d5133d2cec16",
+      "version": "3",
+      "assets": [],
+      "scientificCheck": "GC apparatus shapes/paths/labels/colours invariant;noninitial workbench/report/state diff inspected;residual names finding",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P5",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P5.png",
+          "baselineSha256": "07a59e26002c813040b939cd534d12c8a77efc95b7033a2b8ab5e94998651dff",
+          "currentSha256": "475f6d747253cc3bcbfd6e11f222aab16946e2de854ac6044873684ae21e6b0a",
+          "meanAbsoluteRGB": 0.3927555555555555,
+          "changedPixelsThreshold12": 2868
+        },
+        {
+          "id": "U5P5",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P5.png",
+          "baselineSha256": "a0079835ffd076fc4505b0b43f5895ae419c71459815d2248653488ecf0745f5",
+          "currentSha256": "d0fa0f84ad0858de139c1c1da3a5cf1c3ca3cdf0fb5614c4982670678cd67354",
+          "meanAbsoluteRGB": 0.367195859053498,
+          "changedPixelsThreshold12": 4008
+        },
+        {
+          "id": "U5P5",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P5.png",
+          "baselineSha256": "c2cce548a548e7b07b32c08f2b668f7734bd3109f7043e208ae51e3f4a2fe968",
+          "currentSha256": "7830464170f45b98d8418d6f3fcde60c910ac0bed80d56b17c22a14436e6fa66",
+          "meanAbsoluteRGB": 0.33760760271990736,
+          "changedPixelsThreshold12": 3916
+        }
+      ]
+    },
+    {
+      "id": "U5P6",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p6/CubaneModel.tsx",
+          "sourceArchiveSha256": "84e7e3a381d3fa4e35d25845df9e7feb29be9e5ab93481ee7d19f67c64ba6016",
+          "gitBlobSha256": "c48ed8093c283e311bdd3c971b8d6e14b175307eadeb393568405d393935e7f3"
+        },
+        {
+          "path": "src/questions/u5p6/U5Problem6.css",
+          "sourceArchiveSha256": "51359044f5cdac6950a42ab3b7cd5044f03cb8cfb6a03ce5a44ff3005c7c1bbd",
+          "gitBlobSha256": "379993624246fd2d8fdd394f277978f4f789099f7152358d7c2270ff2b3f0098"
+        },
+        {
+          "path": "src/questions/u5p6/U5Problem6.tsx",
+          "sourceArchiveSha256": "44ee5f84501716a63231cbe4541167f748e067f0c57921facae18b83026dc2dc",
+          "gitBlobSha256": "c6a3f0d17925af4bd3f8423e2755743c3ca3265b711325798699fadc2079f0d7"
+        },
+        {
+          "path": "src/questions/u5p6/assets/cubane.png",
+          "sourceArchiveSha256": "4f144eb64944db8d11469a195044d939308f3e04bba457dbeb01a4b67d0503fd",
+          "gitBlobSha256": "4f144eb64944db8d11469a195044d939308f3e04bba457dbeb01a4b67d0503fd"
+        },
+        {
+          "path": "src/questions/u5p6/assets/cubone-provenance.json",
+          "sourceArchiveSha256": "daf45b2364056a5cad073cc28896baf8f338f70116027bb42a5501af34d589c0",
+          "gitBlobSha256": "940e2a9cd19b6c6b887387b69f34c3425407202d4ea2c5f0fe61166a17a37cbd"
+        },
+        {
+          "path": "src/questions/u5p6/assets/cubone.svg",
+          "sourceArchiveSha256": "1b7eff2d542132c6295720e3745c4fa2c0b0c492ad6acd1183922c1d02bd555a",
+          "gitBlobSha256": "1b7eff2d542132c6295720e3745c4fa2c0b0c492ad6acd1183922c1d02bd555a"
+        },
+        {
+          "path": "src/questions/u5p6/cubaneGeometry.ts",
+          "sourceArchiveSha256": "96ed7c9223418133788d6c6c354146ed54c0ae2a3c05b6ee087cde80d049c6c5",
+          "gitBlobSha256": "2a1736601bd96e5ba4cd4a272f6dbebd764097d2923b7695bdbc3e3423dc0fd5"
+        },
+        {
+          "path": "src/questions/u5p6/definition.ts",
+          "sourceArchiveSha256": "ce266c69b0bda9d2276101d7c5c8599431e6a5e08e2fdb6c62ffcde4dfd5aebe",
+          "gitBlobSha256": "b4853f812575bc486ba0111362bce6a20fbaf2f1850eff2bce9e9238ad92d4b2"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p6.mjs",
+      "recordSha256": "b51b3a09fabffd5e6fa037f9025d4f262aa6769f45e8c652ceb56c7f4eb2ce84",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Original16atom cube/radialH formulas,20bonds,initialangles reconstructed exactly",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P6",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P6.png",
+          "baselineSha256": "02c260ba5860d489765351f6ce3161c6c9ee6a29ac2313b6ed559915a7e2d910",
+          "currentSha256": "7f0cd5d7dd1a6886538cae541b52b8674a434d8e27d785c9db8dbc3d2a8a7372",
+          "meanAbsoluteRGB": 0.29441979166666665,
+          "changedPixelsThreshold12": 2061
+        },
+        {
+          "id": "U5P6",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P6.png",
+          "baselineSha256": "8b71cd320d79cda40fb442d564054248664ab9b1f8eda0a3f9a2c76f38855cdb",
+          "currentSha256": "082d3faaef4299fad9f16ebbb71500936e9a086de4d2b695a5b03b385a299853",
+          "meanAbsoluteRGB": 0.27556262860082303,
+          "changedPixelsThreshold12": 3108
+        },
+        {
+          "id": "U5P6",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P6.png",
+          "baselineSha256": "34a7d714b476a03843ddb9976db1f21519a9bfa385072995260700bf6674328b",
+          "currentSha256": "0e011fdf2353ed5df9e76794ed51908d8cee310e3ba8b477acf6e750438494bc",
+          "meanAbsoluteRGB": 0.2515388997395833,
+          "changedPixelsThreshold12": 2604
+        }
+      ]
+    },
+    {
+      "id": "U5P7",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/double-trouble/DoubleTrouble.tsx",
+          "sourceArchiveSha256": "e170ca4286fbf35d35df9236ba6178659b9ddbe46bf46872be8d0a5c9ab31d9d",
+          "gitBlobSha256": "eae5f6ce6cd40472afa0505b89a030a45953376d133b7cc386bf55d5db0f6bdd"
+        },
+        {
+          "path": "src/questions/double-trouble/definition.ts",
+          "sourceArchiveSha256": "b6b25954f2b697d1612d1b30699923da99aefb7dfc45cacd07fb09d5ce98f40f",
+          "gitBlobSha256": "f5b962a6b614648b690bafbbd40efaa39471fc3a7ee813407c259661f23efe97"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p7.mjs",
+      "recordSha256": "91dd1abfd4f8e2d13ccce6912fd860e2effe5350a1b84002c60024684b57861d",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P7",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P7.png",
+          "baselineSha256": "bebb4bfe2105e04449b0d9a7610c9c0c18a58025625c426fc1800592e3b218d4",
+          "currentSha256": "b3a5872082d7a98653f37653708b968b11cf5ea7bfc3b66287b67643e491c94e",
+          "meanAbsoluteRGB": 0.23933020833333332,
+          "changedPixelsThreshold12": 3001
+        },
+        {
+          "id": "U5P7",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P7.png",
+          "baselineSha256": "3067e4ac20f41cfede272f40430ba6924027c7ed4fdec4f0dcec3047a8163e45",
+          "currentSha256": "64bb2350fce0d4cd4b5291b79b6d3c608e878b446748f44c2176cdbc9d92dc42",
+          "meanAbsoluteRGB": 0.2165848443930041,
+          "changedPixelsThreshold12": 3837
+        },
+        {
+          "id": "U5P7",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P7.png",
+          "baselineSha256": "091339e4b3eb50ee9c4e3a7840da26a89bde9eb5de6b024ba0ee4ce180ca6385",
+          "currentSha256": "2505378546db71147f25ff1a643b41d873d6f5c2a592e725fc11d9c218708eff",
+          "meanAbsoluteRGB": 0.20165834780092592,
+          "changedPixelsThreshold12": 5077
+        }
+      ]
+    },
+    {
+      "id": "U5P8",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p8/FlaskDiagram.tsx",
+          "sourceArchiveSha256": "03606af4c4b5729ef6f2b94b30c67794111e7cdb08cbf8a9a8820ab83c4427d0",
+          "gitBlobSha256": "884f9fe6259db0214840a56dde0786926edc6b1dd9e40b06349b992eaf24fea4"
+        },
+        {
+          "path": "src/questions/u5p8/U5Problem8.css",
+          "sourceArchiveSha256": "e909bbdf0bd346847f43c526baa702dd2ab5722886c6b0e3c20cfdb37787b629",
+          "gitBlobSha256": "623ab120026d5f3beb73f5756609fb4dee5e5a7c62389416a333e082b4811729"
+        },
+        {
+          "path": "src/questions/u5p8/U5Problem8.tsx",
+          "sourceArchiveSha256": "5079fe846b5d0bc5936fbe093c3003e48c50755a277ada5bed96fd63ca4fffd2",
+          "gitBlobSha256": "8780471a71858c3f09e14b09cca74ffe17ad4cfdaa4eac3487a955b396d7f08c"
+        },
+        {
+          "path": "src/questions/u5p8/content.ts",
+          "sourceArchiveSha256": "626e6ffb1990189f1e80748bc683d61dcd0d4f12c04f0e331082644705239aae",
+          "gitBlobSha256": "30d4fa0ef5a7ca06390562c1e3bc86414b9301457854737ad322e4446d790055"
+        },
+        {
+          "path": "src/questions/u5p8/definition.ts",
+          "sourceArchiveSha256": "eccfb62266485d3fa97ad0498ed2da47411aa75611823a6944ff0b5f2abd8955",
+          "gitBlobSha256": "eccfb62266485d3fa97ad0498ed2da47411aa75611823a6944ff0b5f2abd8955"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p8.mjs",
+      "recordSha256": "44f3017c5c24343f7f92a2fc25b8a1215a0aeb2abca4e50bff1614b2b2f2886c",
+      "version": "2",
+      "assets": [],
+      "scientificCheck": "Flask/reference geometry,10cm/2.0cm/1.4cm/1M/0.0300mol/s values",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P8",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P8.png",
+          "baselineSha256": "3e4be8280c41b986bfded3bf9a51122d870734a29498b4a8fa2b49129720cadc",
+          "currentSha256": "54dc200c7f256a2eb3fee4cbfb4ad1868d0c7598f8d3b8102a839f14c6b13024",
+          "meanAbsoluteRGB": 0.32960972222222223,
+          "changedPixelsThreshold12": 3702
+        },
+        {
+          "id": "U5P8",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P8.png",
+          "baselineSha256": "bba3ed84ee736f5d21ed8fb289e039d9395eb227060e0ac44bd88d8564ba5a39",
+          "currentSha256": "a6194d78e970b9d9eb25da6bf3ff08c133c5088a8f3002a1d3791a9afd1a2f65",
+          "meanAbsoluteRGB": 0.2940258487654321,
+          "changedPixelsThreshold12": 4233
+        },
+        {
+          "id": "U5P8",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P8.png",
+          "baselineSha256": "9fec47aa927f998b4eda8949e776b4ade6b1a3ca367b91c243cd2a8aec40dd7a",
+          "currentSha256": "87e760192e5436c706934ac4b187fb92b0d90e9e4894a20c86cf6fc0fde53dce",
+          "meanAbsoluteRGB": 0.274139087818287,
+          "changedPixelsThreshold12": 5132
+        }
+      ]
+    },
+    {
+      "id": "U5P9",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u5p7/SkeletalProducts.tsx",
+          "sourceArchiveSha256": "9f13b12e89dceca5f097dc737540883bd528401153c60c7c6bc63f8e31b840ae",
+          "gitBlobSha256": "b32f370a21f6fa8d5663400c40a92852240c01fb0a419cc211f6baaf212e69b7"
+        },
+        {
+          "path": "src/questions/u5p7/U5Problem7.css",
+          "sourceArchiveSha256": "a17c0027340b2ba5a26dd13be426a55b654b850e45fda33b0fdc57fee80fd38b",
+          "gitBlobSha256": "b308ab29fc098633695cd869724167eb355469a90eb47a55715a430b7385bf4a"
+        },
+        {
+          "path": "src/questions/u5p7/U5Problem7.tsx",
+          "sourceArchiveSha256": "a1342a6e0b7771b2fb81626338ccb7f124b53b4827d4e8a49de27f211835d7e6",
+          "gitBlobSha256": "db34670128e7bc59be2cf8ca165eaba05211484b57d9605642e180a470a22084"
+        },
+        {
+          "path": "src/questions/u5p7/assets/ozonolysis-products.labels.json",
+          "sourceArchiveSha256": "3bdc65e44d8f377b4a2bf439c6bf72a6f7ce0b5913d7daafb45c8283ecdefaf3",
+          "gitBlobSha256": "3bdc65e44d8f377b4a2bf439c6bf72a6f7ce0b5913d7daafb45c8283ecdefaf3"
+        },
+        {
+          "path": "src/questions/u5p7/assets/ozonolysis-products.provenance.json",
+          "sourceArchiveSha256": "19a63e3e13c67087400c76dedba2365d58d6c88d4f3557d580113604978e2c79",
+          "gitBlobSha256": "19a63e3e13c67087400c76dedba2365d58d6c88d4f3557d580113604978e2c79"
+        },
+        {
+          "path": "src/questions/u5p7/assets/ozonolysis-products.source.json",
+          "sourceArchiveSha256": "505ae7aa91c5966dafbe1af5257150f4c09f5ba8bfbbbf27bdfbf930bae2c207",
+          "gitBlobSha256": "505ae7aa91c5966dafbe1af5257150f4c09f5ba8bfbbbf27bdfbf930bae2c207"
+        },
+        {
+          "path": "src/questions/u5p7/assets/ozonolysis-products.svg",
+          "sourceArchiveSha256": "22a09c39420cba86c571a7cbbad2e45e6f1c8c74298992de9a5fc37858784d9f",
+          "gitBlobSha256": "22a09c39420cba86c571a7cbbad2e45e6f1c8c74298992de9a5fc37858784d9f"
+        },
+        {
+          "path": "src/questions/u5p7/definition.ts",
+          "sourceArchiveSha256": "2c81af00a36546c3e35d6b6d1fff2b181c6eb3ef4ac50855366137d0dd85683c",
+          "gitBlobSha256": "a745807d6b1a7028a65b246fa1fffa630c425a4d6b922a6a882f9a3ba951a1d5"
+        },
+        {
+          "path": "src/questions/u5p7/model.ts",
+          "sourceArchiveSha256": "45a6c34326960bcc3d6f51b222a6c5a726839dd292252cf344a569a7ee700d0e",
+          "gitBlobSha256": "45a6c34326960bcc3d6f51b222a6c5a726839dd292252cf344a569a7ee700d0e"
+        },
+        {
+          "path": "src/questions/u5p7/productGraphs.ts",
+          "sourceArchiveSha256": "0811c7f7087abda8c1932caf32dd1fc7bcf880e3fa158779d73ac011b04c169d",
+          "gitBlobSha256": "1856e561a4677755f1f9abf9539a328951440da732de7c27a8cd119ec16b9057"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u5p9.mjs",
+      "recordSha256": "386f61f830f5cea7bd0f677556dab44302e35dc43c195b2b6fc1d43cb291e31b",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Original productJSON and positions reconstructed exactly;skeletal editor retained",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U5P9",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U5P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U5P9.png",
+          "baselineSha256": "ffe5872f744d4fb960b99c38f15c1d4d4a53027370de9fa87f0251569fc0c66c",
+          "currentSha256": "2ce25aade7c8098576ef3dea75d545bd69bcd487abd6a4a13c3c8f76161f1567",
+          "meanAbsoluteRGB": 0.2628173611111111,
+          "changedPixelsThreshold12": 3125
+        },
+        {
+          "id": "U5P9",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U5P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U5P9.png",
+          "baselineSha256": "4e3e62d14f7ac06ce0a0b7495cc2db52a4b14e271e02f5f5622f04f7991005ab",
+          "currentSha256": "2a4b9be247d64cdf6550287f778f9b1399ac82c4ce5427b5f350014a7a3ac307",
+          "meanAbsoluteRGB": 0.2378734246399177,
+          "changedPixelsThreshold12": 4420
+        },
+        {
+          "id": "U5P9",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U5P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U5P9.png",
+          "baselineSha256": "de276165085ecc669a782b7f09b3e52e92d422ec59ab380a4d94422d32b2b362",
+          "currentSha256": "fae3e4e17c9a02e33865e5c645e92daa13258d3e2d17b036fa2f2749f4acf121",
+          "meanAbsoluteRGB": 0.21826958550347222,
+          "changedPixelsThreshold12": 5741
+        }
+      ]
+    },
+    {
+      "id": "U6P1",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p1/NmrExplorer.tsx",
+          "sourceArchiveSha256": "fb36548b15981df06cdacde58415b2de56ab8db8230cd190d67f7252736530b3",
+          "gitBlobSha256": "fb36548b15981df06cdacde58415b2de56ab8db8230cd190d67f7252736530b3"
+        },
+        {
+          "path": "src/questions/u6p1/U6Problem1.css",
+          "sourceArchiveSha256": "fef68149c16d3811f85dcd09c039264db46c08afb6a231a62b3a7964e2fe0bbb",
+          "gitBlobSha256": "fef68149c16d3811f85dcd09c039264db46c08afb6a231a62b3a7964e2fe0bbb"
+        },
+        {
+          "path": "src/questions/u6p1/U6Problem1.tsx",
+          "sourceArchiveSha256": "14a1fe92440d5e37ab1f75ced55f6379d449b5f94af8df1f3e6d9a7389f12513",
+          "gitBlobSha256": "ad04185d2cf71244fcb392015512cd24142b04c6f5ea2136f88671bfbed1b46d"
+        },
+        {
+          "path": "src/questions/u6p1/assets/nmr.svg",
+          "sourceArchiveSha256": "2d5b20bfa8fffcd6ae24b284d2ca19e80d66883b1afe2037dd42fddf77e229b8",
+          "gitBlobSha256": "2d5b20bfa8fffcd6ae24b284d2ca19e80d66883b1afe2037dd42fddf77e229b8"
+        },
+        {
+          "path": "src/questions/u6p1/definition.ts",
+          "sourceArchiveSha256": "b922723484c595d7068f6d22b76bde159d3f463acb15108941876bdcaad4e2da",
+          "gitBlobSha256": "b922723484c595d7068f6d22b76bde159d3f463acb15108941876bdcaad4e2da"
+        },
+        {
+          "path": "src/questions/u6p1/nmr-view.provenance.json",
+          "sourceArchiveSha256": "b8067fe949b628c9be40f798f5cbd5b3992b9e6590371c3dd7a77b9a84eab61b",
+          "gitBlobSha256": "c14c9c03e06a5372f79718fb4bdd62bae8fe3af4aa2c8a221ae6454ba6a7d752"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p1.mjs",
+      "recordSha256": "a2e656bed53f70b4a3b14d61dd7af04fbd38834b3a974a50a241ae79f3cc19c8",
+      "version": "2",
+      "assets": [
+        {
+          "id": "spectrum",
+          "bytes": 18513,
+          "sha256": "2d5b20bfa8fffcd6ae24b284d2ca19e80d66883b1afe2037dd42fddf77e229b8"
+        }
+      ],
+      "scientificCheck": "SourceNMRsvg,C6H10O2,ratios1/1/4/4,321.8x150.97,detail40/center248,X-only magnification",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P1",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P1.png",
+          "baselineSha256": "6cfe38bd4e0fbc8d78960ef5853dc0a511e9333958e4e0372c78bb9681b568ab",
+          "currentSha256": "90c47dc1bb11ba1a3dcad6ff99f38dbaa33ad26580819a30e8519ab70e968694",
+          "meanAbsoluteRGB": 0.33877951388888894,
+          "changedPixelsThreshold12": 4131
+        },
+        {
+          "id": "U6P1",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P1.png",
+          "baselineSha256": "7b8a6c5f20fd37583bb86374a876ed54f9a136868b0c0b286ea4bbb652018ef8",
+          "currentSha256": "c7fb53bdd526c38a3b21956f5e481d6ce88aa0168aa63d994097c5652fde338b",
+          "meanAbsoluteRGB": 0.3405880272633745,
+          "changedPixelsThreshold12": 9520
+        },
+        {
+          "id": "U6P1",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P1.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P1.png",
+          "baselineSha256": "2cd701e5ed713032e969f86ee2ffbcdb9acf3ce4b01c05e20e7e9323f7ec2683",
+          "currentSha256": "8117a03d22555edbaeae5217c0837236046caa251ec8364eb0033b96a60d63fa",
+          "meanAbsoluteRGB": 0.29666359230324074,
+          "changedPixelsThreshold12": 11922
+        }
+      ]
+    },
+    {
+      "id": "U6P2",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p2/U6Problem2.css",
+          "sourceArchiveSha256": "770fb36e0e22123173e148f4904df5c616391039260f7f0649ff8c04d6366fbb",
+          "gitBlobSha256": "2f668c6c1a43aa4d9b3e31780a584de25f5709c87c004580f24b7f392ad4a8f5"
+        },
+        {
+          "path": "src/questions/u6p2/U6Problem2.tsx",
+          "sourceArchiveSha256": "ef6634c040d04699d7534ac59180fbe65f241ba34e1cea6d084d9b5a5a0e232e",
+          "gitBlobSha256": "bbc3c11fbed3b2e861cf336a1ff1bd0a5050e274e0a7ad1d887b2ae125b324e5"
+        },
+        {
+          "path": "src/questions/u6p2/definition.ts",
+          "sourceArchiveSha256": "715bf6d6f4e40704d8add3c71ad8ef8951ab24faf9ab45ef3316edd672b60313",
+          "gitBlobSha256": "715bf6d6f4e40704d8add3c71ad8ef8951ab24faf9ab45ef3316edd672b60313"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p2.mjs",
+      "recordSha256": "8fba1a67145bfd8ee29ea1fc4bdcf94c8e9ca16ddc10283585fa7b3edce16f6d",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P2",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P2.png",
+          "baselineSha256": "a8bf7bf20886fbc0e3b162ad1ddd0a394a0d81c86b8aea00d1d8c53b1a4a6dce",
+          "currentSha256": "f80d633e7b5d2c936fe150bdf2dd328c3b044555eec7a2fe8d5087c8ea209b54",
+          "meanAbsoluteRGB": 0.361109375,
+          "changedPixelsThreshold12": 1949
+        },
+        {
+          "id": "U6P2",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P2.png",
+          "baselineSha256": "ca07568f533a26ae56de84054ea9141eee7ffe4893748f01c8941e44d791fc6a",
+          "currentSha256": "2d1aec20adfc388264fd85385b5e15d067308d16a8e6e0853613cf8ddc39bf9d",
+          "meanAbsoluteRGB": 0.3593721064814815,
+          "changedPixelsThreshold12": 2743
+        },
+        {
+          "id": "U6P2",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P2.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P2.png",
+          "baselineSha256": "1c438d38fa6d42f2ba5d29898c9574cfb21cb927e66e9368da9eb4cf8c6a7aeb",
+          "currentSha256": "188a8c6f552fc52d51a553280ca711c82e45e22fe2e7ef2f280e7304464e06bd",
+          "meanAbsoluteRGB": 0.3413981119791667,
+          "changedPixelsThreshold12": 3486
+        }
+      ]
+    },
+    {
+      "id": "U6P3",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p3/U6Problem3.css",
+          "sourceArchiveSha256": "ac83055515b7fa752721eb1ac9d46c55a3fa26b922de3d9208b16b4191b79cfa",
+          "gitBlobSha256": "c1dd3e252970367a9fa880b4ddc7b63dc07945250ee99030e7439b9074ed3613"
+        },
+        {
+          "path": "src/questions/u6p3/U6Problem3.tsx",
+          "sourceArchiveSha256": "15dd464ab52526bcb91bea4b8da5fbb1af5563a68206e71696c5ab3066769bfe",
+          "gitBlobSha256": "c780435fca5a16ad066664439c512cac5466d75f4f72167f8c4a1f54f9a0ba8f"
+        },
+        {
+          "path": "src/questions/u6p3/assets/spiro-dragon.png",
+          "sourceArchiveSha256": "af83f785553e0c791bb929f2093ddaae22b97f31899c1f48271b60cc7d4c0696",
+          "gitBlobSha256": "af83f785553e0c791bb929f2093ddaae22b97f31899c1f48271b60cc7d4c0696"
+        },
+        {
+          "path": "src/questions/u6p3/assets/spiro-dragon.provenance.json",
+          "sourceArchiveSha256": "f203d484e4e6cf8e91ed5ab7f6b7feff392ecbd8f0f08f5158c9e6d1faaa3e6c",
+          "gitBlobSha256": "4e9bd8b47e9009b3ba965e0ea4644e57f9d9b5e0f6db744442d4f38eb0b0177d"
+        },
+        {
+          "path": "src/questions/u6p3/assets/spiros.svg",
+          "sourceArchiveSha256": "91d0ff7b1a421f2a6ca598c871e4a001e0ac00d6e7e26adf4e0454ed53ea74f2",
+          "gitBlobSha256": "91d0ff7b1a421f2a6ca598c871e4a001e0ac00d6e7e26adf4e0454ed53ea74f2"
+        },
+        {
+          "path": "src/questions/u6p3/definition.ts",
+          "sourceArchiveSha256": "5b18c5f3ee326876c2e580a3a0f2998cc5fff5e10a02300192d3d1bf3cfb6ff1",
+          "gitBlobSha256": "5b18c5f3ee326876c2e580a3a0f2998cc5fff5e10a02300192d3d1bf3cfb6ff1"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p3.mjs",
+      "recordSha256": "c066228fba1da4f2d1e27c1235d32c8d4ecd3dd389d5dc04839b397d0cc99946",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram0",
+          "bytes": 4114,
+          "sha256": "91d0ff7b1a421f2a6ca598c871e4a001e0ac00d6e7e26adf4e0454ed53ea74f2"
+        }
+      ],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P3",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P3.png",
+          "baselineSha256": "33cc580dfea972c6e856b61cd75fa98811d53028f82f8808ecb1d737c8ae4e35",
+          "currentSha256": "aa43e6038259c387be3eb1288c1d8e61e80788e13e62863ab411fbf11c25c25c",
+          "meanAbsoluteRGB": 0.3084166666666667,
+          "changedPixelsThreshold12": 3201
+        },
+        {
+          "id": "U6P3",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P3.png",
+          "baselineSha256": "0d0fe36d1bb7548866e209640ead849d2000131e072220ee8faddb67f029f787",
+          "currentSha256": "1fdab1727a0834ce9ef0cda521c426d1487a1b8321022c5472350e9d152c2229",
+          "meanAbsoluteRGB": 0.27447418338477364,
+          "changedPixelsThreshold12": 4296
+        },
+        {
+          "id": "U6P3",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P3.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P3.png",
+          "baselineSha256": "30ad538a54f64cbe68ab299699f75bb4f605f906083fa6b8423cab24f580d855",
+          "currentSha256": "0b5f21a7c9b073adc3bc95daddcb15e35ecb391c5307545938fc33b8237d3fa7",
+          "meanAbsoluteRGB": 0.25734474464699075,
+          "changedPixelsThreshold12": 5934
+        }
+      ]
+    },
+    {
+      "id": "U6P4",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p4/U6Problem4.css",
+          "sourceArchiveSha256": "4631471ee3e765a56490daa75487620b64ec83891a795490d3d14d5d01b93891",
+          "gitBlobSha256": "4631471ee3e765a56490daa75487620b64ec83891a795490d3d14d5d01b93891"
+        },
+        {
+          "path": "src/questions/u6p4/U6Problem4.tsx",
+          "sourceArchiveSha256": "b1e19dbbc2921ac3bcd8c3497ebd61066ef18c6b842ca9fa6b81001a63fcd9d0",
+          "gitBlobSha256": "f40c46b87b13d41aa0cdbf3f31cfc8fcff71f28885a2e23d60d66d09efbc637e"
+        },
+        {
+          "path": "src/questions/u6p4/assets/resonance.svg",
+          "sourceArchiveSha256": "c7280818fee0628ab4c1b1b430fe8a1c665015ecd356a1bf29345fd3d85822c2",
+          "gitBlobSha256": "c7280818fee0628ab4c1b1b430fe8a1c665015ecd356a1bf29345fd3d85822c2"
+        },
+        {
+          "path": "src/questions/u6p4/definition.ts",
+          "sourceArchiveSha256": "8a3b80742ececdfd925c736610c28fab4db1493cb229c1d6fd5d1c2f722c074b",
+          "gitBlobSha256": "8a3b80742ececdfd925c736610c28fab4db1493cb229c1d6fd5d1c2f722c074b"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p4.mjs",
+      "recordSha256": "88b1112705519cab7a11832b08aad9b0aeddc9aee3d6a1228a1610dc3f276fa6",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram0",
+          "bytes": 13749,
+          "sha256": "c7280818fee0628ab4c1b1b430fe8a1c665015ecd356a1bf29345fd3d85822c2"
+        }
+      ],
+      "scientificCheck": "Source resonanceSVG/ABC labels/answer centres",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P4",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P4.png",
+          "baselineSha256": "5cda29d51af94270a44d20392ac6ee2ab4ec7f44d38d0e3b7592c989cd8da454",
+          "currentSha256": "456bd4d3b596198666173d5b2cf3d2c3a2aa515cc4dfd7334c1ec2e0ca80cba2",
+          "meanAbsoluteRGB": 0.4290364583333333,
+          "changedPixelsThreshold12": 6763
+        },
+        {
+          "id": "U6P4",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P4.png",
+          "baselineSha256": "288d1d932349dd64aabc73f75f922808309466e87a18631fdfc0c5a299c87c55",
+          "currentSha256": "48fa8116811a93ddf7b8da6fed01c5cad8dc9dfdc643f3873481d64f9876f571",
+          "meanAbsoluteRGB": 0.3563011188271605,
+          "changedPixelsThreshold12": 9639
+        },
+        {
+          "id": "U6P4",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P4.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P4.png",
+          "baselineSha256": "ab3f11d2248a6749389814e1b18984cd3e5ea552b65282cf58173878a81e5f15",
+          "currentSha256": "d33b425be6a600d452c60fa6114c337bf535dea6b41a4e960d0ce433950e33ae",
+          "meanAbsoluteRGB": 0.3085113751446759,
+          "changedPixelsThreshold12": 11542
+        }
+      ]
+    },
+    {
+      "id": "U6P5",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p5/U6Problem5.css",
+          "sourceArchiveSha256": "639dda50da29d5caf99d857cf3b4030c413589ea33bf5defbd5b1fa4e5a307c2",
+          "gitBlobSha256": "611124e54464a92a9f5c9b934b01cc2c907770d5982b36a61f2cf94ac7c78397"
+        },
+        {
+          "path": "src/questions/u6p5/U6Problem5.tsx",
+          "sourceArchiveSha256": "d1cb35e3dde3cba2354d474476c052dbadd7be3c596f21e7e8ecf5caa3ad18bb",
+          "gitBlobSha256": "990b606d0855f2e1d63bbb5a603a81ff14c83e8e04b15b5fdab6b0c197339f70"
+        },
+        {
+          "path": "src/questions/u6p5/assets/stereoisomers.svg",
+          "sourceArchiveSha256": "7afa2a8ebd3d548926a223ce77363ef709e0322b3540e0e5274e0eb958d026e3",
+          "gitBlobSha256": "7afa2a8ebd3d548926a223ce77363ef709e0322b3540e0e5274e0eb958d026e3"
+        },
+        {
+          "path": "src/questions/u6p5/definition.ts",
+          "sourceArchiveSha256": "3f3bf521156915b98d612e141a5367e34d5f81e52826cbdf044abe16d6b56a26",
+          "gitBlobSha256": "3f3bf521156915b98d612e141a5367e34d5f81e52826cbdf044abe16d6b56a26"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p5.mjs",
+      "recordSha256": "f83f853277484852adfed387301c7f270ec00ec8ae52f07d0458ca5e1568818e",
+      "version": "1",
+      "assets": [
+        {
+          "id": "diagram0",
+          "bytes": 10563,
+          "sha256": "7afa2a8ebd3d548926a223ce77363ef709e0322b3540e0e5274e0eb958d026e3"
+        }
+      ],
+      "scientificCheck": "Source stereoisomerSVG/ABCDlabels/centres/pairedfields",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P5",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P5.png",
+          "baselineSha256": "c105e1b6e1e5af45651f300bc6ca4f362a3344d756f36b9b1eb713f23eff07cd",
+          "currentSha256": "539c5cb8423656310b4cd4baa42a25652992a294b30fd4f81f7a391189b7a2a8",
+          "meanAbsoluteRGB": 0.3176465277777778,
+          "changedPixelsThreshold12": 3102
+        },
+        {
+          "id": "U6P5",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P5.png",
+          "baselineSha256": "24f0731126f8da858aa1937a27e85509c899921796276c45cfff5b9ef214a176",
+          "currentSha256": "65d13770131ded07cbd3a0aef07e08b6f7bd1a0c428be955f6e9d71daaeeb5ac",
+          "meanAbsoluteRGB": 0.2850405092592593,
+          "changedPixelsThreshold12": 4517
+        },
+        {
+          "id": "U6P5",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P5.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P5.png",
+          "baselineSha256": "df38819279d4942323ea9119fd3273bca27ed9b0b8ba922d3c1b41e278fd9d51",
+          "currentSha256": "5643c99e990c957ca140e3ea419bd2f107c4445fcc30c6cd0b6a8308a861cb38",
+          "meanAbsoluteRGB": 0.26337944878472225,
+          "changedPixelsThreshold12": 5891
+        }
+      ]
+    },
+    {
+      "id": "U6P6",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p6/U6Problem6.css",
+          "sourceArchiveSha256": "206593ad0e66b49cf770db924bcd4307a84425f983344cbf88f59aad6d3543aa",
+          "gitBlobSha256": "e3f29afebaffebbe2525f4b30631c84f6e697c9223b39348098d85562274abc1"
+        },
+        {
+          "path": "src/questions/u6p6/U6Problem6.tsx",
+          "sourceArchiveSha256": "333a96d9d1d5f3f2f4a8b0631219fccbb8704fce32e5f54ae2e893ee0b3c099a",
+          "gitBlobSha256": "ad3e0ff020d1ca887a16a3e773bc50bfda4189701f9081af8a3df8e553aafb58"
+        },
+        {
+          "path": "src/questions/u6p6/definition.ts",
+          "sourceArchiveSha256": "86e6be6ceda2e84332c2e2f775a99d8eb28782a28c0dd24f6756c35f3611ed4d",
+          "gitBlobSha256": "86e6be6ceda2e84332c2e2f775a99d8eb28782a28c0dd24f6756c35f3611ed4d"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p6.mjs",
+      "recordSha256": "37973ca1af18ec72a33c3cce62c4353245f551e6cfeee9401983e65a522082b3",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P6",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P6.png",
+          "baselineSha256": "02b1bc6af4a65ec3f3e86e60bd6495b5de8b4b7fb4f953818d7d92e0f8449c61",
+          "currentSha256": "50234aa0b345f6c24ca8ca30a37b8b6f05246cf5775ed3dae652ca2147f357bf",
+          "meanAbsoluteRGB": 0.3834416666666667,
+          "changedPixelsThreshold12": 1949
+        },
+        {
+          "id": "U6P6",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P6.png",
+          "baselineSha256": "dc9415108e855c1f769cf04331f59e1bf1f5f57f3ceb631491ba180aa92f1d24",
+          "currentSha256": "d1e821bc530857f44202266e425d43855edef10d678d7a2e46f158cc2a14d425",
+          "meanAbsoluteRGB": 0.3764422582304527,
+          "changedPixelsThreshold12": 2743
+        },
+        {
+          "id": "U6P6",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P6.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P6.png",
+          "baselineSha256": "028787512f89a21434d92360291c93e43b802c3c992acbebb685856b72615ee6",
+          "currentSha256": "c257fee37e97375afa7136b6388f48578b5a754fc897ecf8740329d4366a2805",
+          "meanAbsoluteRGB": 0.3580381040219907,
+          "changedPixelsThreshold12": 3486
+        }
+      ]
+    },
+    {
+      "id": "U6P7",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p7/U6Problem7.css",
+          "sourceArchiveSha256": "3d7c328a07b756aa3227fbbb0a448fe2d5b9d12f51f427eb0a3c77eb05e20109",
+          "gitBlobSha256": "3aecca60e93347382d36d1b0a0f7a4da0a0323d6c9d11ade0aa62518a36a0c81"
+        },
+        {
+          "path": "src/questions/u6p7/U6Problem7.tsx",
+          "sourceArchiveSha256": "7ab8c280d5591c7c91174fc8cebcae53e0e9627f65d7c615d64131b42bda9b04",
+          "gitBlobSha256": "8637e47c0cbe0bed6050fb71ce86875b25258ef3d9684f8c62c892020a04538e"
+        },
+        {
+          "path": "src/questions/u6p7/definition.ts",
+          "sourceArchiveSha256": "2db4f644cd5b948336f41497afcbd405f8d78fb87276b225fbeaefd25e8f4140",
+          "gitBlobSha256": "2db4f644cd5b948336f41497afcbd405f8d78fb87276b225fbeaefd25e8f4140"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p7.mjs",
+      "recordSha256": "7848982c3cd7321574f20e10f2feaf0e187c3304821903e2dbaa1b8d4f989d84",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Exact original prose/Unicode/units/field labels and scientific illustration compared via source/diff plus full captured DOM and visual pairs",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P7",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P7.png",
+          "baselineSha256": "34b77f4d67da82298d10ddfc356333fa0d874c62146de5a8d851312d0813c38b",
+          "currentSha256": "523276ba73bed73e01563e96b3f41f34822f193a02e7ab16b212420b6056c0db",
+          "meanAbsoluteRGB": 0.34576215277777783,
+          "changedPixelsThreshold12": 1950
+        },
+        {
+          "id": "U6P7",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P7.png",
+          "baselineSha256": "00a37508a7fa0d20cecc0fdd6ba71d3635ceaaef964fe7bed9ed427a8c00a7d3",
+          "currentSha256": "8d02d5c5fb3bd5b9b154dcfe500fdb66ebadf7ceeae98c3c0c28277820d2db7d",
+          "meanAbsoluteRGB": 0.3495397698045268,
+          "changedPixelsThreshold12": 2743
+        },
+        {
+          "id": "U6P7",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P7.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P7.png",
+          "baselineSha256": "8b0cf8d897cb40ad8a2b8fd6e6b089fce951e709a613863dcf6dbb76a4481038",
+          "currentSha256": "6ed1da4e8dcc4da9ba467171ed758a8cdc54a6bb203bdf2eccd7c6288f7ce82c",
+          "meanAbsoluteRGB": 0.3312773980034722,
+          "changedPixelsThreshold12": 3486
+        }
+      ]
+    },
+    {
+      "id": "U6P8",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p8/U6Problem8.css",
+          "sourceArchiveSha256": "aaa2f6dabc6dd0ef509723c7bf714b244a025faa08b18491b7241f7a159e5d50",
+          "gitBlobSha256": "aaa2f6dabc6dd0ef509723c7bf714b244a025faa08b18491b7241f7a159e5d50"
+        },
+        {
+          "path": "src/questions/u6p8/U6Problem8.tsx",
+          "sourceArchiveSha256": "753efe44bfd9943142336e99e657a55581a843c7e320bcc498ad69f895e374ae",
+          "gitBlobSha256": "df45024792af350ebdb1d850aa4709f2f79f38211a8b8e6777019b59b34b86bf"
+        },
+        {
+          "path": "src/questions/u6p8/assets/rate-data.svg",
+          "sourceArchiveSha256": "2f7c336c04ed4b0c4440ce2da17cb2a6bcb04d8c9117a943bd04eb10f33d9e33",
+          "gitBlobSha256": "2f7c336c04ed4b0c4440ce2da17cb2a6bcb04d8c9117a943bd04eb10f33d9e33"
+        },
+        {
+          "path": "src/questions/u6p8/assets/sn1-mechanism.svg",
+          "sourceArchiveSha256": "1bd43aa3cd6ca1d96d1e241ed37f730aef6c6a04f9e48623adb2e1c83840f582",
+          "gitBlobSha256": "1bd43aa3cd6ca1d96d1e241ed37f730aef6c6a04f9e48623adb2e1c83840f582"
+        },
+        {
+          "path": "src/questions/u6p8/assets/sn2-mechanism.svg",
+          "sourceArchiveSha256": "3c05927ed4dacedd7b1d08424f5d4749fa556717fd2b62b91cbd6fd3e311c391",
+          "gitBlobSha256": "3c05927ed4dacedd7b1d08424f5d4749fa556717fd2b62b91cbd6fd3e311c391"
+        },
+        {
+          "path": "src/questions/u6p8/definition.ts",
+          "sourceArchiveSha256": "b85626b85ecf77c9afea258925212cc73ec90cff95ea275657d623e7342e3f88",
+          "gitBlobSha256": "b85626b85ecf77c9afea258925212cc73ec90cff95ea275657d623e7342e3f88"
+        },
+        {
+          "path": "src/questions/u6p8/mechanisms-view.provenance.json",
+          "sourceArchiveSha256": "4621daf07cb7dff6392e01456dfddd6fb46154e522b8091b8979f5485e7c4d2e",
+          "gitBlobSha256": "a5d7dd664c1c800f28d899dec02e4cd299a8d6cf291c7d57a6210701359e844e"
+        },
+        {
+          "path": "src/questions/u6p8/table.provenance.json",
+          "sourceArchiveSha256": "fb6a2af660b74fb26e03d77bda168e0c844210ee142a13b8f236bd1707506b20",
+          "gitBlobSha256": "6aa87106ac1f2cfbbb88af71faefc675d8ddd99944ddd05c744e7bb35bf470f9"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p8.mjs",
+      "recordSha256": "00599bf6368c8163b63fb60c8c72aa9eac08baf822329e918ce690ae98007cc8",
+      "version": "2",
+      "assets": [
+        {
+          "id": "diagram0",
+          "bytes": 16182,
+          "sha256": "1bd43aa3cd6ca1d96d1e241ed37f730aef6c6a04f9e48623adb2e1c83840f582"
+        },
+        {
+          "id": "diagram1",
+          "bytes": 12057,
+          "sha256": "3c05927ed4dacedd7b1d08424f5d4749fa556717fd2b62b91cbd6fd3e311c391"
+        }
+      ],
+      "scientificCheck": "Exact kinetics rows/mechanismSVG/SLOW and arrows",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P8",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P8.png",
+          "baselineSha256": "2acdcdf03bc3a89102feb5b2650db7800c1186c56c6a3ba2135a0b59c663d1cc",
+          "currentSha256": "96bed283bf998e529460877b4c167b992d5747cc8afc60e7784c214dc5766d20",
+          "meanAbsoluteRGB": 0.3000510416666667,
+          "changedPixelsThreshold12": 4530
+        },
+        {
+          "id": "U6P8",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P8.png",
+          "baselineSha256": "2ff6d90fbac14b631768fe555d3532c69f92b7bae7ead6cf0434ce30997c0aaf",
+          "currentSha256": "eb0c0e18bfb412ca2246408599470924b08613f9302ff2b48f11e8b70c726392",
+          "meanAbsoluteRGB": 0.25903147505144036,
+          "changedPixelsThreshold12": 6484
+        },
+        {
+          "id": "U6P8",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P8.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P8.png",
+          "baselineSha256": "48a4946fe43011c72204e606b7efa23bbeb9b02b8ca7d81c63c8a238359a1db9",
+          "currentSha256": "1e09479406260409169e0f08894662fe3e99a96e72c472505917b9e2a657a8d0",
+          "meanAbsoluteRGB": 0.22879512080439815,
+          "changedPixelsThreshold12": 8534
+        }
+      ]
+    },
+    {
+      "id": "U6P9",
+      "kind": "question",
+      "sourceFiles": [
+        {
+          "path": "src/questions/u6p9/U6Problem9.css",
+          "sourceArchiveSha256": "3faf8b72106277641f195b008eec54bfb93e7fd81b69560d580077d5d5e366e0",
+          "gitBlobSha256": "3faf8b72106277641f195b008eec54bfb93e7fd81b69560d580077d5d5e366e0"
+        },
+        {
+          "path": "src/questions/u6p9/U6Problem9.tsx",
+          "sourceArchiveSha256": "ab65e7371c3053b828bd81c39b917c855cb84155c37df68d241786e66f96f391",
+          "gitBlobSha256": "42c7d8f0660524c9927aa2bd927d500c0ad3c5e5226948c8e3fbf26735ad5f1f"
+        },
+        {
+          "path": "src/questions/u6p9/definition.ts",
+          "sourceArchiveSha256": "c83feeb71beebad8f5afa2bb5da8ba4676825870211ccd99a5d10993ad6d0cee",
+          "gitBlobSha256": "c83feeb71beebad8f5afa2bb5da8ba4676825870211ccd99a5d10993ad6d0cee"
+        }
+      ],
+      "recordPath": "api/src/presentation/records/u6p9.mjs",
+      "recordSha256": "99a1ee7502430489d7b9e72266e8d1d4505123dd974f2684e0be89f9fa279abf",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "ExactHClO/SF4/PCl5 fields,operations/options;originalno-geometry dropdown",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6P9",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6P9.png",
+          "baselineSha256": "252196ada47729e929a23b56f8f35a7dcf64814c3b02c47afb2354a6677e9aa2",
+          "currentSha256": "c04fd6c489b301fb6cbe67d208913041f71ce9be59ae73965b74dd0980ec854c",
+          "meanAbsoluteRGB": 0.2554486111111111,
+          "changedPixelsThreshold12": 2015
+        },
+        {
+          "id": "U6P9",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6P9.png",
+          "baselineSha256": "9efb2e16d513c85060574c4747f9bfda946d3bd011f91f0d9acedc76aa7e5929",
+          "currentSha256": "da7944b96d9ec853cc1a8d9c075ea3fc53938431c4f4a2437be20fac03494df9",
+          "meanAbsoluteRGB": 0.23293563528806582,
+          "changedPixelsThreshold12": 2949
+        },
+        {
+          "id": "U6P9",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6P9.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6P9.png",
+          "baselineSha256": "150a90ecaf6aaa7dc68d33308a9a17e46165369e0fd09f9480372dd41baea005",
+          "currentSha256": "b93dfbcf42ae3a3957f1acc5eff0c8200b43345f50cbfa97db0070764384c243",
+          "meanAbsoluteRGB": 0.2171460865162037,
+          "changedPixelsThreshold12": 3576
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "kind": "practical",
+      "sourcePath": "src/practicals/protocols.json",
+      "originalSourceSha256": "5b2bc91eb9f3e06eee4ad060776fb42ef945266b72e2bcd8e99a805f1fb2e9b2",
+      "recordPath": "api/src/presentation/records/l5.mjs",
+      "recordSha256": "8dd08536a79b27fef51f545ea907db243c02ebdcaddf97256440e3bd21d20483",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Complete original protocol/title/html independently compared via immutableGit;top and scroll-end artifacts inspected;all labels/units and numeric fields retained",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L5-practical",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L5-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L5-practical.png",
+          "baselineSha256": "5ace5caf22b45836bc6e63a481b349cc3ae3ca954e0853507ed715cb7253faa3",
+          "currentSha256": "ebcc81842ebb1108cf2c949cf37dbe0d168bd008a20c682a4655fd379292ab2d",
+          "meanAbsoluteRGB": 0.3534069444444445,
+          "changedPixelsThreshold12": 4668
+        },
+        {
+          "id": "L5-practical",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L5-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L5-practical.png",
+          "baselineSha256": "a20bc7c8bf6ebfba8772d4340b12218d9209a5224df0b043415a038e660e13a4",
+          "currentSha256": "1fff54cff93e7369891b36b7185b92355ad28826df8e0c342f19ce21036ca42a",
+          "meanAbsoluteRGB": 0.2606336805555556,
+          "changedPixelsThreshold12": 4810
+        },
+        {
+          "id": "L5-practical",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L5-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L5-practical.png",
+          "baselineSha256": "539eeff4beb3e69afe6d9e86326db832eee18e7584001121044d433ef2ddf2bc",
+          "currentSha256": "d335372805a055673f2c8f420e0631c866e9c8f9b669c51548fc30cf2c1f35d1",
+          "meanAbsoluteRGB": 0.23222864221643516,
+          "changedPixelsThreshold12": 7094
+        }
+      ]
+    },
+    {
+      "id": "L6",
+      "kind": "practical",
+      "sourcePath": "src/practicals/protocols.json",
+      "originalSourceSha256": "5b2bc91eb9f3e06eee4ad060776fb42ef945266b72e2bcd8e99a805f1fb2e9b2",
+      "recordPath": "api/src/presentation/records/l6.mjs",
+      "recordSha256": "471a0a014641ad30fa41fddeaa8eebd739d4e39c75fdf0d140f1594b5ef3eeb8",
+      "version": "1",
+      "assets": [
+        {
+          "id": "protocol-image",
+          "bytes": 2149009,
+          "sha256": "5affd65491889ccf25f05df047120a4d28ef8494c8929266e99cfa06755f5e24"
+        }
+      ],
+      "scientificCheck": "Complete original protocol/title/html independently compared via immutableGit;top and scroll-end artifacts inspected;all labels/units and numeric fields retained",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "L6-practical",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-L6-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-L6-practical.png",
+          "baselineSha256": "8007c6c9aba748540d621e3810b0cfacf51801229e21b53cb7dee2babd228eda",
+          "currentSha256": "47b99f0af8cde81fe8157ad81a0f0ee85672ad3555fc981bc8d0ef971d3affd8",
+          "meanAbsoluteRGB": 0.28572881944444445,
+          "changedPixelsThreshold12": 3302
+        },
+        {
+          "id": "L6-practical",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-L6-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-L6-practical.png",
+          "baselineSha256": "f235b2737653e228c4cb7b210c910eebf4c544be8c3b875f4553bf75c09013f1",
+          "currentSha256": "08b73eb5a1dad48da0f0990699962872bff47f152eadcdbab3290373a0ba2ae2",
+          "meanAbsoluteRGB": 0.2050221836419753,
+          "changedPixelsThreshold12": 5448
+        },
+        {
+          "id": "L6-practical",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-L6-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-L6-practical.png",
+          "baselineSha256": "9b7a0a2bb9e4aa0d5a3e8b49b14d0f8f87b6d8ddef05a96207d7fcd1b70778d5",
+          "currentSha256": "4fe90d97e8eb396a0a35d708d78e884d2561f115340b34af84a30e51470e1416",
+          "meanAbsoluteRGB": 0.1881585467303241,
+          "changedPixelsThreshold12": 7670
+        }
+      ]
+    },
+    {
+      "id": "U6",
+      "kind": "practical",
+      "sourcePath": "src/practicals/protocols.json",
+      "originalSourceSha256": "5b2bc91eb9f3e06eee4ad060776fb42ef945266b72e2bcd8e99a805f1fb2e9b2",
+      "recordPath": "api/src/presentation/records/u6.mjs",
+      "recordSha256": "248caffe2d58a66880a97295dce21bb8a2a0a467014babdc6a40afae8792edec",
+      "version": "1",
+      "assets": [],
+      "scientificCheck": "Complete original protocol/title/html independently compared via immutableGit;top and scroll-end artifacts inspected;all labels/units and numeric fields retained",
+      "exactDOMAriaImagesBounds": [
+        1200,
+        1920,
+        2560
+      ],
+      "visualPairs": [
+        {
+          "id": "U6-practical",
+          "viewport": [
+            1200,
+            800
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\baseline-U6-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c4532-ion-parity-capture-1200x800-chromium\\j08-final-U6-practical.png",
+          "baselineSha256": "489345056273c889125f1281a9619344c199525d68ab83e4accbdaa7806bf559",
+          "currentSha256": "776e52782ffb9ba78c989901d7b04b66fc3c7e6c8767cf44088b60a257cb9041",
+          "meanAbsoluteRGB": 0.26339583333333333,
+          "changedPixelsThreshold12": 1381
+        },
+        {
+          "id": "U6-practical",
+          "viewport": [
+            1920,
+            1080
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\baseline-U6-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-20950-on-parity-capture-1920x1080-chromium\\j08-final-U6-practical.png",
+          "baselineSha256": "3f819fdeb96736b052ea5eefeda5c1799eca2d395f350388cf5050cdc1186590",
+          "currentSha256": "63cfee637145bb9540811bfbeac7047df3b2163ec08a65cd5aa886472dfaf06c",
+          "meanAbsoluteRGB": 0.22187564300411522,
+          "changedPixelsThreshold12": 1960
+        },
+        {
+          "id": "U6-practical",
+          "viewport": [
+            2560,
+            1440
+          ],
+          "baseline": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-baseline\\test-results\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\baseline-U6-practical.png",
+          "current": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3\\protected-content-parity-p-c2dc1-on-parity-capture-2560x1440-chromium\\j08-final-U6-practical.png",
+          "baselineSha256": "a570df9a57d3ada40741635a6405a36770bef2cd94da8d5f084f217d50a034dc",
+          "currentSha256": "7e83e307e0a60a873a42fdf2643060560ca43dafd960391212ee268baa715ece",
+          "meanAbsoluteRGB": 0.20015181929976852,
+          "changedPixelsThreshold12": 2862
+        }
+      ]
+    }
+  ]
+}

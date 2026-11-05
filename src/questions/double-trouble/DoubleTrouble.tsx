@@ -1,10 +1,9 @@
 import type { QuestionViewProps } from '../catalog';
 import { GroupingQuestion } from '../l5p9/GroupingQuestion';
-import { doubleTrouble, doubleTroubleItems } from './definition';
-
-const subscripts = '₀₁₂₃₄₅₆₇₈₉';
-const items = doubleTroubleItems.map(id => ({ id, label: id.replace(/\d/g, digit => subscripts[Number(digit)]) }));
-export function DoubleTrouble(props: QuestionViewProps) {
-  return <GroupingQuestion {...props} definition={doubleTrouble} items={items}
-    wording="These organic molecules can be sorted into three groups of three. Find the groups." />;
+import { doubleTrouble } from './definition';
+import { requirePresentation,presentedDefinition,type PresentationPayload } from '../../contracts/presentation';
+export interface DoubleTroublePresentation extends PresentationPayload {renderer:'U5P7';items:{id:string;label:string}[];wording:string;}
+export function DoubleTrouble(props:QuestionViewProps){
+ const {record:{presentation:content}}=requirePresentation<DoubleTroublePresentation>(props.presentation,'U5P7');
+ return <GroupingQuestion {...props} definition={presentedDefinition(doubleTrouble,content)} items={content.items} wording={content.wording}/>;
 }

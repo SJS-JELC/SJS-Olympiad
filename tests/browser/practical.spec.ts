@@ -8,7 +8,7 @@ async function schedule(api: ApiHarness, startsIn = -60000, endsIn = 3600000) {
 }
 
 for (const [year, title, count] of [['L5','FLOATY',4],['L6','MOHR CRISPS',2],['U6','CLIPPY',4]] as const) {
-  test(`${year} teacher practical is local-only and navigates without the service`, async ({ page, api }) => {
+  test(`${year} teacher practical loads protected content and then previews locally without saves`, async ({ page, api }) => {
     await page.clock.install();
     await openEvents(page, '/?settings');
     await page.getByRole('button', { name: 'Preview Questions', exact: true }).click();
@@ -31,6 +31,8 @@ for (const [year, title, count] of [['L5','FLOATY',4],['L6','MOHR CRISPS',2],['U
     await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('');
     expect(api.requests.some(item=>item.action==='practical-save' || item.action==='practical')).toBe(false);
     expect(api.requests.some(item=>item.action==='submit')).toBe(false);
+    expect(api.requests.filter(item=>item.action==='practical-content')).toHaveLength(2);
+    expect(api.requests.filter(item=>item.action==='content-asset')).toHaveLength(year==='L6'?2:0);
   });
 }
 
@@ -124,9 +126,14 @@ competitor('practical closes read-only without a breach and retains its final re
   await expect(page.getByText('Saved',{exact:true})).toBeVisible();
   await page.locator('#practical-numPracticalResponse3').fill('1e-'); await page.locator('#practical-numPracticalResponse3').blur();
   await page.clock.fastForward(20001);
-  await expect(page.locator('#practical-numPracticalResponse4')).toBeDisabled({timeout:20000});
+  await expect(page.locator('.practical-protocol')).toHaveCount(0,{timeout:20000});
+  await expect(page.locator('.practical-title')).not.toContainText('MOHR CRISPS');
+  await expect(page.getByText('Average titre',{exact:false})).toHaveCount(0);
+  await expect(page.locator('#practical-numPracticalResponse4')).toBeDisabled();
   await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('1.50'); await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('button',{name:'Discard unsaved changes and reload',exact:true}).click();
+  await expect.poll(async()=> (await api.service.practical(api.token)).responses.numPracticalResponse4?.text).toBe('1.50');
+  await expect(page.locator('.practical-protocol')).toHaveCount(0);
   await expect(page.locator('#practical-numPracticalResponse3')).toHaveValue('');await expect(page.locator('.navigation-error')).toHaveCount(0);
   await page.getByRole('button',{name:'Theory challenge',exact:true}).click(); await expect(page.locator('.theory-stage')).toBeVisible();
 });

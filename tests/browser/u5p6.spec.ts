@@ -59,13 +59,13 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
       expect(box!.y).toBeGreaterThanOrEqual(0);
       expect(box!.y + box!.height).toBeLessThanOrEqual(viewport.height + 1);
     }
-    await expect(page.locator('.cubane-model [data-atom]')).toHaveCount(16);
-    await expect(page.locator('.cubane-model text')).toHaveCount(0);
-    await expect(page.locator('.cubane-model [data-atom^="C"] circle')).toHaveCount(8);
-    await expect(page.locator('.cubane-model [data-atom^="H"] circle')).toHaveCount(8);
+    await expect(page.locator('.u5p6-model [data-atom]')).toHaveCount(16);
+    await expect(page.locator('.u5p6-model text')).toHaveCount(0);
+    await expect(page.locator('.u5p6-model [data-atom^="C"] circle')).toHaveCount(8);
+    await expect(page.locator('.u5p6-model [data-atom^="H"] circle')).toHaveCount(8);
     for(const [element,kind,stops]of [['C','carbon',['#d7dade','#a0a6ad','#555e69']],['H','hydrogen',['#fff','#f9fbfc','#c7d0da']]] as const){
-      const gradient=page.locator(`.cubane-model radialGradient[id$="${kind}"]`),id=await gradient.getAttribute('id');expect(await gradient.locator('stop').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('stop-color')))).toEqual(stops);
-      for(const ball of await page.locator(`.cubane-model [data-atom^="${element}"] circle`).all())await expect(ball).toHaveAttribute('fill',`url(#${id})`);
+      const gradient=page.locator(`.u5p6-model radialGradient[id$="${kind}"]`),id=await gradient.getAttribute('id');expect(await gradient.locator('stop').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('stop-color')))).toEqual(stops);
+      for(const ball of await page.locator(`.u5p6-model [data-atom^="${element}"] circle`).all())await expect(ball).toHaveAttribute('fill',`url(#${id})`);
     }
     await page.screenshot({path:'test-results/cubane-3d-'+viewport.width+'.png'});
   });

@@ -28,7 +28,7 @@ await service.eventActivate(teacher.token,{eventId:seeded.createdEventId,expecte
 
 function respond(res, status, body, headers = {}) {
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...headers });
-  res.end(JSON.stringify(body));
+  res.end(Buffer.isBuffer(body) ? body : JSON.stringify(body));
 }
 function incomingCookie(raw = '') {
   return raw.split(';').map(value => value.trim()).filter(value => !value.startsWith(productionCookie + '='))

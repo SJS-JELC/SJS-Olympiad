@@ -1,31 +1,17 @@
-import type { AccordId, Composition, Interval, SampleId } from './types';
+import type { Composition, Interval, SampleId } from './types';
 
-/** 100% accord reference samples plus one unnamed mixture. */
-export const SAMPLE_LABELS: Record<SampleId, string> = {
-  citrus: 'Citrus scent',
-  floral: 'Floral scent',
-  woody: 'Woody scent',
-  mystery: 'Mystery sample',
-};
 
-export const ACCORDS: readonly AccordId[] = ['citrus', 'floral', 'woody'];
-export const SAMPLES: readonly SampleId[] = ['citrus', 'floral', 'woody', 'mystery'];
 export const RUN_MS = 4000;
-export const TIME_MAX = 5.4;
-export const RETENTION_TIMES: readonly number[] = [1.1, 2.0, 2.8, 3.2, 3.4, 4.1, 4.8];
 
-const STEP = 0.002;
-const BASELINE = 7.5;
-const DEFAULT_COMPOSITION: Composition = [50, 50, 50, 50];
 
 export type TracePoint = { time: number; response: number };
 export type TraceDataset = Partial<Record<SampleId, readonly TracePoint[]>>;
 /** Traces arrive only from an authorized question response. No recipe is shipped. */
 export function getTrace(sample: SampleId, data: TraceDataset = {}): readonly TracePoint[] {
-  return data[sample] ?? Array.from({length:Math.round(TIME_MAX/STEP)+1},(_,index)=>({time:index*STEP,response:BASELINE}));
+  return data[sample] ?? [{time:0,response:0}];
 }
 
-function boundedInterval(interval: Interval): Interval {
+function boundedInterval(interval: Interval, TIME_MAX:number): Interval {
   const first = Number.isFinite(interval[0]) ? interval[0] : 0;
   const second = Number.isFinite(interval[1]) ? interval[1] : TIME_MAX;
   const low = Math.max(0, Math.min(TIME_MAX, Math.min(first, second)));
@@ -34,6 +20,7 @@ function boundedInterval(interval: Interval): Interval {
 }
 
 function responseAt(trace: readonly TracePoint[], time: number): number {
+  const TIME_MAX=trace[trace.length-1].time, STEP=trace.length>1?trace[1].time-trace[0].time:1;
   if (time <= 0) return trace[0].response;
   if (time >= TIME_MAX) return trace[trace.length - 1].response;
   const index = time / STEP;
@@ -46,10 +33,10 @@ function responseAt(trace: readonly TracePoint[], time: number): number {
 
 /** Integrates a selected window with a constant-baseline correction and trapezoids. */
 export function integrate(sample: SampleId, interval: Interval, data: TraceDataset = {}): number {
-  const [start, end] = boundedInterval(interval);
-  if (end <= start) return 0;
-
   const trace = getTrace(sample, data);
+  const TIME_MAX=trace[trace.length-1].time, STEP=trace.length>1?trace[1].time-trace[0].time:1, BASELINE=trace[0].response;
+  const [start,end]=boundedInterval(interval,TIME_MAX);
+  if(end<=start)return 0;
   const points: TracePoint[] = [{ time: start, response: responseAt(trace, start) }];
   const firstInterior = Math.floor(start / STEP) + 1;
   for (let index = firstInterior; index < trace.length && trace[index].time < end; index++) {
@@ -74,45 +61,46 @@ export function integrate(sample: SampleId, interval: Interval, data: TraceDatas
  * minute of space on each side. A narrow click can snap to a peak within 0.05
  * minute. Broad or ambiguous windows are only clamped to the run bounds.
  */
-export function snapInterval(interval: Interval): Interval {
-  const [start, end] = boundedInterval(interval);
+export function snapInterval(interval: Interval, GUIDE_VALUES:readonly number[],TIME_MAX:number): Interval {
+  const [start, end] = boundedInterval(interval,TIME_MAX);
   const center = (start + end) / 2;
-  const enclosed = RETENTION_TIMES.filter(time => time >= start && time <= end);
+  const enclosed = GUIDE_VALUES.filter(time => time >= start && time <= end);
   let selected: number | undefined;
 
   if (enclosed.length === 1) {
     selected = enclosed[0];
   } else if (enclosed.length === 0 && end - start <= 0.05) {
-    const distances = RETENTION_TIMES.map(time => Math.abs(time - center));
+    const distances = GUIDE_VALUES.map(time => Math.abs(time - center));
     const nearestDistance = Math.min(...distances);
-    const nearest = RETENTION_TIMES.filter((_, index) => Math.abs(distances[index] - nearestDistance) < 1e-9);
+    const nearest = GUIDE_VALUES.filter((_, index) => Math.abs(distances[index] - nearestDistance) < 1e-9);
     if (nearest.length === 1 && nearestDistance <= 0.05) selected = nearest[0];
   }
 
   if (selected === undefined) return [start, end];
-  const index = RETENTION_TIMES.indexOf(selected);
-  const previous = RETENTION_TIMES[index - 1];
-  const next = RETENTION_TIMES[index + 1];
+  const index = GUIDE_VALUES.indexOf(selected);
+  const previous = GUIDE_VALUES[index - 1];
+  const next = GUIDE_VALUES[index + 1];
   const leftLimit = previous === undefined ? 0 : (previous + selected) / 2;
   const rightLimit = next === undefined ? TIME_MAX : (selected + next) / 2;
   return [Number(Math.max(leftLimit, selected - 0.09).toFixed(3)), Number(Math.min(rightLimit, selected + 0.09).toFixed(3))];
 }
 
 /** Parse JSON-encoded half-percentage-point units, defaulting incomplete or invalid input. */
-export function getComposition(answers: Readonly<Record<string, string>>): Composition {
+export function getComposition(answers: Readonly<Record<string, string>>, initialComposition:Composition): Composition {
   const encoded = answers.composition?.trim();
-  if (!encoded) return DEFAULT_COMPOSITION;
+  if (!encoded) return initialComposition;
   try {
     const units: unknown = JSON.parse(encoded);
-    return validComposition(units) ? [units[0], units[1], units[2], units[3]] : DEFAULT_COMPOSITION;
+    return validComposition(units,initialComposition) ? [...units] : initialComposition;
   } catch {
-    return DEFAULT_COMPOSITION;
+    return initialComposition;
   }
 }
 
-export function validComposition(units: unknown): units is Composition {
+export function validComposition(units: unknown, initial: Composition): units is Composition {
+  const total=initial.reduce((sum,value)=>sum+value,0);
   return Array.isArray(units)
-    && units.length === 4
-    && units.every(value => Number.isInteger(value) && value >= 0 && value <= 200)
-    && units.reduce<number>((sum, value) => sum + value, 0) === 200;
+    && units.length === initial.length
+    && units.every(value => Number.isInteger(value) && value >= 0 && value <= total)
+    && units.reduce<number>((sum, value) => sum + value, 0) === total;
 }

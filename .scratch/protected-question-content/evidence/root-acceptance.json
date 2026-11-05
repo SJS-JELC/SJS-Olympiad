@@ -1,0 +1,22 @@
+{
+  "status": "accepted-locally",
+  "owner": "root",
+  "recordedAt": "2026-11-05T02:39:40.027Z",
+  "reviewedRuntimeTip": "3ce45d0e93140eea17ff1a5074e93d554fcf96e4",
+  "acceptedMetadataTip": "7f5f0be1142e7138e23b2d19e1484319f50235a0",
+  "basis": [
+    "Root read final-delivery.md and both independent dispositions",
+    "Root checked clean integration status and history",
+    "Required local gates and zero-open-findings evidence satisfy the authorised plan"
+  ],
+  "openStandardsFindings": 0,
+  "openSpecFindings": 0,
+  "noFurtherRuntimeChanges": true,
+  "noFurtherTestingRequired": true,
+  "limitations": [
+    "Local Windows/Node24/Chrome/in-memory verification only",
+    "Managed Node22/Azure/storage/compression/capacity/deployment acceptance not verified",
+    "Initial browser timeouts and trace-output preview limitation retained",
+    "No deployment, publishing, cloud changes or live-data tests authorised/performed"
+  ]
+}

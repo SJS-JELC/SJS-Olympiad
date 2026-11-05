@@ -1,24 +1,12 @@
 import type { PracticalField, PracticalYear } from '../cloud/api';
-import protocols from './protocols.json';
+import type { PresentationPayload } from '../contracts/presentation';
 
-export type PracticalDefinition = { year: PracticalYear; title: string; protocol: string; html: boolean; fields: { key: PracticalField; label: string; unit: string }[] };
+export type PracticalDefinition = { year: PracticalYear; title: string; fields: { key: PracticalField }[] };
+export interface PracticalPresentation extends PresentationPayload { protocol: string; html: boolean; fields: { key: PracticalField; label: string; unit: string }[]; image?: {assetId:string;alt:string;width:number;height:number}; }
 export const practicalCatalog: PracticalDefinition[] = [
-  { year: 'L5', ...protocols.L5, fields: [
-    { key: 'numPracticalResponse1', label: 'Volume of cuttlebone', unit: 'cm³' },
-    { key: 'numPracticalResponse2', label: 'Average titre', unit: 'cm³' },
-    { key: 'numPracticalResponse3', label: 'Moles of HCl reacted with cuttlebone', unit: 'mol' },
-    { key: 'numPracticalResponse4', label: 'Density of cuttlebone', unit: 'g/cm³' },
-  ] },
-  { year: 'L6', ...protocols.L6, fields: [
-    { key: 'numPracticalResponse3', label: 'Average titre', unit: 'cm³' },
-    { key: 'numPracticalResponse4', label: 'Mass of salt in bag of crisps', unit: 'g' },
-  ] },
-  { year: 'U6', ...protocols.U6, fields: [
-    { key: 'numPracticalResponse1', label: 'Mass of paperclip', unit: 'g' },
-    { key: 'numPracticalResponse2', label: 'Absorbance of MnO₄⁻ from paperclip', unit: '' },
-    { key: 'numPracticalResponse3', label: 'Concentration of MnO₄⁻', unit: 'mol dm⁻³' },
-    { key: 'numPracticalResponse4', label: "Percentage of paperclip's mass that is Mn", unit: '%' },
-  ] },
+  { year: 'L5', title: 'Practical', fields: [{key:'numPracticalResponse1'},{key:'numPracticalResponse2'},{key:'numPracticalResponse3'},{key:'numPracticalResponse4'}] },
+  { year: 'L6', title: 'Practical', fields: [{key:'numPracticalResponse3'},{key:'numPracticalResponse4'}] },
+  { year: 'U6', title: 'Practical', fields: [{key:'numPracticalResponse1'},{key:'numPracticalResponse2'},{key:'numPracticalResponse3'},{key:'numPracticalResponse4'}] },
 ];
 export const findPractical = (year: string | undefined) => practicalCatalog.find(item => item.year === year);
 /** Keep the raw value (including entered precision) separate from numeric validation. */

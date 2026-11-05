@@ -1,9 +1,9 @@
-export type AccordId = 'citrus' | 'floral' | 'woody';
-export type SampleId = AccordId | 'mystery';
+export type AccordId = string;
+export type SampleId = string;
 export type Interval = readonly [number, number];
 /** Half-percentage-point units, summing to 200. */
-export type Composition = readonly [number, number, number, number];
-export type Measurement = { accord: AccordId; interval: Interval; referenceArea: number; mysteryArea: number };
+export type Composition = readonly number[];
+export type Measurement = { accord: AccordId; interval: Interval; referenceArea: number; comparisonArea: number };
 export type GcInteraction = {
   kind: 'gc'; entered: boolean; concentrations?: Record<AccordId, number>; loaded?: {sample: SampleId; concentration: number} | null; results?: {id: number; sample: SampleId; concentration: number; interval: Interval; position?: readonly [number, number]; layer?: number}[];
   activeRun: { id: number; sample: SampleId; concentration?: number; startedAt: number; deadline: number } | null;

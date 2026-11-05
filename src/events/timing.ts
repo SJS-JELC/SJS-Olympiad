@@ -37,13 +37,13 @@ export function theoryPhase(event: EventRecord | null | undefined, now: number):
     if (!event || event.status === 'ended') return 'closed';
     const timing = eventTiming(event);
     if (now >= timing.theoryEndsAt) return 'closed';
-    return event.status === 'active' && timing.theoryStartsAt !== null && now < timing.theoryStartsAt ? 'waiting' : 'open';
+    return timing.theoryStartsAt !== null && now < timing.theoryStartsAt ? 'waiting' : 'open';
 }
 export function practicalPhase(event: EventRecord | null | undefined, now: number): 'waiting' | 'open' | 'closed' {
     if (!event || event.status === 'ended') return 'closed';
     const timing = eventTiming(event);
     if (timing.practicalStartsAt === null || timing.practicalEndsAt === null || now >= timing.practicalEndsAt) return 'closed';
-    return event.status === 'active' && now < timing.practicalStartsAt ? 'waiting' : 'open';
+    return now < timing.practicalStartsAt ? 'waiting' : 'open';
 }
 export function durationText(milliseconds: number): string {
     const seconds = Math.max(0, Math.ceil(milliseconds / 1000));

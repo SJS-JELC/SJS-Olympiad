@@ -1,0 +1,9 @@
+{
+  "source": "src/questions/l5p7/assets/gan.svg",
+  "sourceCommit": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "sourceSha256": "94b51e4f7bf582c2381f220dd5dd7ef100af12a474b292a9b1bad48c5d76b022",
+  "outputSha256": "234c7bb50a2d7fe9c7a21fa4096d3fd0d921e206b609fafa362e6ef273e53985",
+  "viewBox": "0 0 1557.96 1618.83",
+  "render": "Installed Chrome, full original SVG in img; CSS size 1557.96x1618.83, deviceScaleFactor 2, transparent element screenshot. No scientific drawing edits.",
+  "reason": "Conservative fixedAsset SVG audit excludes embedded images and use references."
+}

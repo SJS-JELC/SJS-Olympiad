@@ -1,0 +1,39 @@
+{
+  "scope": "actual React useServerQuestions hook in jsdom, against reviewed source before the flight fix",
+  "expectedQuestionRequests": 2,
+  "observedQuestionRequests": 1,
+  "affectedCases": 24,
+  "axes": {
+    "questions": [
+      "L6P3",
+      "U5P5"
+    ],
+    "transitions": [
+      "lock/recovery",
+      "teacher context away/back"
+    ],
+    "oldOutcomes": [
+      "success",
+      "423",
+      "transport error"
+    ],
+    "settlementOrders": [
+      "old-first",
+      "fresh-first"
+    ]
+  },
+  "preFixLog": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-reproduce.log",
+  "preFixLogSha256": "0a6d061509b6a3d8173f5540dda48d7f56cae50b1c4e6b10ed3513f8f34547d6",
+  "preFixRunNote": "The 24 race assertions each failed with one request rather than two. The two fresh-retry cases then timed out; unresolved act work caused additional cascading failures in this deliberately failing whole-file reproduction. These cascading failures are not separate product findings.",
+  "afterFixActualHook": {
+    "networkPolicyTests": 38,
+    "newRaceAndRetryCases": 26,
+    "pass": true
+  },
+  "browserDelayedResponse": {
+    "cases": 6,
+    "productionHandlerResponseComputedBeforeHold": true,
+    "finalRecheckPending": false,
+    "finalRecheckPass": true
+  }
+}

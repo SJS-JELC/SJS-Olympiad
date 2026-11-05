@@ -4,7 +4,7 @@ This is the application's versioned work tracker. Paths below are relative to th
 
 | Priority | Effort | Authority/status | Next step |
 | --- | --- | --- | --- |
-| Next | [Protected question content](protected-question-content/spec.md) | Plan requested and recorded; implementation not started | [Implementation ticket](protected-question-content/issues/01-implement.md); public decorative headers, authorised first-open content delivery |
+| Complete locally | [Protected question content](protected-question-content/final-delivery.md) | Accepted delivery integrated into main; not pushed or deployed | [Main integration and checks](protected-question-content/issues/12-main-integration.md); deployed acceptance remains separate |
 | Complete locally | [Readiness pilot](readiness-pilot/spec.md) | Redesigned and verified locally | [Verification](readiness-pilot/verification.md); build and focused browser checks passed; not deployed |
 | Complete | [Schools and numbered teams](school-teams/spec.md) | Implemented locally; validation limited | [Root review complete](school-teams/issues/02-review.md); [159 backend tests/static checks passed](school-teams/verification.md), full types/build/browser blocked; no deployment authorised |
 | Complete | [U5P2 oxygen centre](u5p2-oxygen-centre/spec.md) | Completed locally; validation limited | Direct marker/lifecycle checks passed; build/browser checks blocked; not deployed |

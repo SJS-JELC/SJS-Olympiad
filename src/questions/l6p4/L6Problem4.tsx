@@ -1,37 +1,34 @@
 import type { QuestionViewProps } from '../catalog';
 import { QuestionAnswerForm } from '../QuestionAnswerForm';
 import { l6p4 } from './definition';
-import example from './assets/mo-example.svg';
-import homo from './assets/mo-question-homo.svg';
-import lumo from './assets/mo-question-lumo.svg';
-import empty from './assets/porbitalempty.svg';
-import phase1 from './assets/porbitalphase1.svg';
-import phase2 from './assets/porbitalphase2.svg';
 import './L6Problem4.css';
 
-const positions = [19, 96, 168, 243, 317, 392];
-const widths = [46, 41, 45, 46, 46, 46];
-export function L6Problem4({ attempt, onAction }: QuestionViewProps) {
+import { requirePresentation, presentedDefinition, type PresentationPayload } from '../../contracts/presentation';
+export interface L6P4Presentation extends PresentationPayload {
+  renderer: 'L6P4'; paragraphs: readonly string[]; briefLabel: string; exampleDescription: string; exampleAsset: string;
+  choiceAssets: Readonly<Record<string, string>>; valueLabel: string; unselectedLabel: string; changeLabel: string;
+  panels: readonly { id: string; groupLabel: string; assetId: string; description: string; viewWidth: number; viewHeight: number; positions: readonly (readonly [number, number, number])[] }[];
+}
+export function L6Problem4({ attempt, onAction, presentation }: QuestionViewProps) {
+  const { record: { presentation: content }, assets } = requirePresentation<L6P4Presentation>(presentation, 'L6P4');
+  const definition = presentedDefinition(l6p4, content);
   return <div className="question-content l6p4-question" data-testid="l6p4-content">
-    <QuestionAnswerForm definition={l6p4} attempt={attempt} onAction={onAction} layout="dense">
+    <QuestionAnswerForm definition={definition} attempt={attempt} onAction={onAction} layout="dense">
       {({ disabled, onEdit }) => <>
-        <section className="question-brief" aria-label="Question and worked molecular orbital example">
+        <section className="question-brief" aria-label={content.briefLabel}>
           <div className="l6p4-brief-layout"><div>
-            <p>π bonds form by overlap of p orbitals. In-phase overlap gives a bonding interaction; out-of-phase overlap gives an antibonding interaction.</p>
-            <p>More bonding interactions mean lower orbital energy.</p>
-            <p>Buta-1,3-diene has four p orbitals (one electron each), forming four molecular orbitals. The lowest has three bonding interactions; the highest has none.</p>
-            <p>Click on the orbitals below to show the molecular orbitals of hexa-1,3,5-triene.</p>
-          </div><img src={example} alt="Buta-1,3-diene molecular orbital example, from lowest to highest energy" /></div>
+            {content.paragraphs.map((text, index) => <p key={index}>{text}</p>)}
+          </div><img src={assets[content.exampleAsset]} alt={content.exampleDescription} /></div>
         </section>
-        <div className="l6p4-orbital-answers">{l6p4.parts.map(part => <div className="l6p4-orbital" key={part.id} role="group" aria-label={part.id + ' phases'}>
-          <img className="l6p4-orbital-reference" src={part.id === 'HOMO' ? homo : lumo} alt={part.id + ' hexa-1,3,5-triene skeleton'} />
+        <div className="l6p4-panel-answers">{definition.parts.map((part, partIndex) => <div className="l6p4-panel" key={part.id} role="group" aria-label={content.panels[partIndex].groupLabel}>
+          <img className="l6p4-panel-reference" src={assets[content.panels[partIndex].assetId]} alt={content.panels[partIndex].description} />
           {part.fields.map((field, index) => {
             const value = attempt.answers[field.id];
-            return <button key={field.id} type="button" className="l6p4-phase" disabled={disabled}
-              aria-label={field.label + ': ' + (value ? 'phase ' + value : 'not selected') + '. Change phase.'}
-              style={{ left: (part.id === 'LUMO' ? [20, 97, 170, 243, 317, 392][index] : positions[index]) / 448 * 100 + '%', top: (index % 2 === 0 ? 50 : 25) / 169 * 100 + '%', width: widths[index] / 448 * 100 + '%' }}
+            return <button key={field.id} type="button" className="l6p4-choice" disabled={disabled}
+              aria-label={field.label + ': ' + (value ? content.valueLabel + value : content.unselectedLabel) + content.changeLabel}
+              style={{ left: content.panels[partIndex].positions[index][0] / content.panels[partIndex].viewWidth * 100 + '%', top: content.panels[partIndex].positions[index][1] / content.panels[partIndex].viewHeight * 100 + '%', width: content.panels[partIndex].positions[index][2] / content.panels[partIndex].viewWidth * 100 + '%' }}
               onClick={() => onEdit(field.id, value === '1' ? '2' : '1')}>
-              <img src={value === '1' ? phase1 : value === '2' ? phase2 : empty} alt="" />
+              <img src={assets[content.choiceAssets[value === '1' || value === '2' ? value : 'empty']]} alt="" />
             </button>;
           })}
         </div>)}</div>

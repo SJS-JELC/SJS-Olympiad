@@ -80,10 +80,17 @@ export type QuestionState = {
 export class HttpError extends Error {
     constructor(public status: number, message: string, public code?: string) { super(message); }
 }
-export async function request<T>(action: string, body?: unknown): Promise<T> {
-    const response = await fetch('/api/olympiad/' + action, { credentials: 'same-origin', cache: 'no-store', ...(body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }) });
+export async function request<T>(action: string, body?: unknown, signal?:AbortSignal): Promise<T> {
+    const response = await fetch('/api/olympiad/' + action, { credentials: 'same-origin', cache: 'no-store', signal, ...(body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }) });
     const value = await response.json().catch(() => { throw new Error('The competition service is unavailable.'); });
     if (!response.ok)
         throw new HttpError(response.status, value.error || 'The request could not be completed.', value.code);
     return value;
+}
+
+/** Protected assets are bytes, never public URLs or base64 JSON. */
+export async function requestAsset(body:unknown,signal?:AbortSignal):Promise<Blob> {
+ const response=await fetch('/api/olympiad/content-asset',{method:'POST',credentials:'same-origin',cache:'no-store',signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ if(!response.ok){const error=await response.json().catch(()=>({}));throw new HttpError(response.status,error.error || 'Unable to load question diagram.',error.code);}
+ return response.blob();
 }

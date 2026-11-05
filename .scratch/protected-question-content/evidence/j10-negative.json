@@ -1,0 +1,69 @@
+{
+  "cleanPass": true,
+  "probes": [
+    {
+      "name": "short scientific identifier",
+      "detected": true
+    },
+    {
+      "name": "escaped scientific identifier",
+      "detected": true
+    },
+    {
+      "name": "short scientific payload label",
+      "detected": true
+    },
+    {
+      "name": "prose in source map",
+      "detected": true
+    },
+    {
+      "name": "original SVG bytes",
+      "detected": true
+    },
+    {
+      "name": "base64 SVG bytes",
+      "detected": true
+    },
+    {
+      "name": "SVG path equivalent",
+      "detected": true
+    },
+    {
+      "name": "molecular graph equivalent",
+      "detected": true
+    },
+    {
+      "name": "apparatus path equivalent",
+      "detected": true
+    },
+    {
+      "name": "code-only chart selector",
+      "detected": true
+    },
+    {
+      "name": "escaped code-only selector",
+      "detected": true
+    },
+    {
+      "name": "code-only apparatus property",
+      "detected": true
+    },
+    {
+      "name": "quoted apparatus key",
+      "detected": true
+    },
+    {
+      "name": "computed apparatus key",
+      "detected": true
+    },
+    {
+      "name": "code-only chart property",
+      "detected": true
+    },
+    {
+      "name": "coordinate geometry equivalent",
+      "detected": true
+    }
+  ]
+}

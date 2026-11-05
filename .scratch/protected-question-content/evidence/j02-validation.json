@@ -1,0 +1,237 @@
+{
+  "recordedAt": "2026-11-05T00:14:06.855790+00:00",
+  "baseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "parent": "7b1c986355c83d8cd1940dd137e251a75f035adb",
+  "profile": "protected-j02",
+  "apiTests": 187,
+  "frontendUnitTests": 549,
+  "nodeContractTests": 22,
+  "finalFocusedBrowserTests": 34,
+  "otherRelevantBrowserTestsPassedEarlier": 36,
+  "build": "pass",
+  "parityViewports": [
+    [
+      1200,
+      800
+    ],
+    [
+      1920,
+      1080
+    ],
+    [
+      2560,
+      1440
+    ]
+  ],
+  "limitations": "J02 representative only; remaining migrations, integrated audit/independent review and deployed Azure acceptance outstanding.",
+  "files": [
+    {
+      "path": ".scratch/protected-question-content/evidence/j02-payloads.json",
+      "sha256": "ed39de0585f6fc68ad9fb70f1e9533547829b16e5fa61b3998203c8a523fc8f4"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j02-render-baseline.json",
+      "sha256": "9d8ae1668e6050d1ee6471e6612ec80bcd985236843d0c0258a7d2918359fd92"
+    },
+    {
+      "path": ".scratch/protected-question-content/evidence/j02.md",
+      "sha256": "87338e71c0723e456734e6af39ee44722cd49470e7e706ba9c53029683663c02"
+    },
+    {
+      "path": ".scratch/protected-question-content/inventory.md",
+      "sha256": "72dc081bb2461640a82bc04afbbf94feb3a1345c0d7676c5be0b8ef63843e607"
+    },
+    {
+      "path": ".scratch/protected-question-content/issues/03-secure-slice.md",
+      "sha256": "8ccfd4dbe5aded2965d19b2cc44699ee9a221030e3406fe824c1cacb7a044a8f"
+    },
+    {
+      "path": ".scratch/protected-question-content/map.md",
+      "sha256": "9c8982594ad126340de4e6d971f6b5665413fd78b0a8ea338e142286173884f2"
+    },
+    {
+      "path": ".scratch/protected-question-content/renderer-seam.md",
+      "sha256": "7a24fb034faf4dff0331baee9319a9fa02ab933e9b9c9d8893fe2ee3a4c635d3"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "37fa4b7c5cfdb13370199b662bc8260115f1168beac99a320f1817a0f9887283"
+    },
+    {
+      "path": "api/olympiad/index.js",
+      "sha256": "a1a0a52275c3bedfb205aa49762f90bcfe8360fe24d6929df6bdd6e02acb05dc"
+    },
+    {
+      "path": "api/src/event-timing.mjs",
+      "sha256": "b80c59453422b48fd2fb8ebca2d4a43e84f8c1e40040fb2afee32797c04a9019"
+    },
+    {
+      "path": "api/src/http.mjs",
+      "sha256": "f0a3118424ab3efc7d455722881fa689d21a240435cd6616f560516463a3717a"
+    },
+    {
+      "path": "api/src/presentation/assets/l6p5/newman-example-geometry.svg",
+      "sha256": "2a86bb079370447d3d482b2ff8d1be04203ff0698a0e906c895265604245d42b"
+    },
+    {
+      "path": "api/src/presentation/assets/l6p5/newman-question-geometry.svg",
+      "sha256": "f54c308899bd18d1a0a5e0d9399477e575f707a2675e221266f57f98ae829e2f"
+    },
+    {
+      "path": "api/src/presentation/record.mjs",
+      "sha256": "67f508719f506c074deb97cdcca61052ab9dd71370e2e7558ef11206b51857c0"
+    },
+    {
+      "path": "api/src/presentation/records/l6p5.mjs",
+      "sha256": "f4fc2b8444029b0bae79f55a694ff2c5c7a8c7e49fdfcb5835e7f4ce8f7cfddf"
+    },
+    {
+      "path": "api/src/presentation/registry.mjs",
+      "sha256": "8af03e46611fd59bf3e9ea509ed808e8664400ee6b366e54f91b56cfd9bb520d"
+    },
+    {
+      "path": "api/src/presentation/validate.mjs",
+      "sha256": "a7c21592a1c10edeccdbeffb82b768d4c3d0b3041e6474bd217c13ba5b93577f"
+    },
+    {
+      "path": "api/src/service.mjs",
+      "sha256": "8c323052a584d58d50a690700ab863397596a4e500e143d430fb6a14f1c42e84"
+    },
+    {
+      "path": "api/tests/draft-roster.test.mjs",
+      "sha256": "4b227ed30f258901220616b3d8cf4c49567b8257d7a75fd3e1ecea0c1015b7bf"
+    },
+    {
+      "path": "api/tests/hydration-lifecycle.test.mjs",
+      "sha256": "d82951dd3bf346173777d791d79e90b97c428a4a09a47c2756644e4043cc0fbe"
+    },
+    {
+      "path": "api/tests/practical.test.mjs",
+      "sha256": "3341f14b254fd0aae02a8c548c98974d71bb57705a084c4ede6bd7a39a4e2b95"
+    },
+    {
+      "path": "api/tests/protected-content.test.mjs",
+      "sha256": "1cef07e1e863922d2d9282f3f7da732838dc14bcf2fcc4b3de256de237439e19"
+    },
+    {
+      "path": "api/tests/theory-retention.test.mjs",
+      "sha256": "6ac6f7511ddb623df864475d4cf43f8b47f4c2c90c2345eabc7f7c04673f29f5"
+    },
+    {
+      "path": "docs/api-contract.md",
+      "sha256": "c6f108a8405d3e9684d46166d6af76461b1f4d0ecfe3153bd32b3b91abaf5e06"
+    },
+    {
+      "path": "docs/azure-backend-pilot.md",
+      "sha256": "de02c0be6e643bf17c3ac044e3135700937e633567d395f9c0dafdb7474805c1"
+    },
+    {
+      "path": "docs/question-framework.md",
+      "sha256": "354ea9d7c1e7d68d89b2cc19a3115675f1deb47385140038ecdcd616272e8c24"
+    },
+    {
+      "path": "package.json",
+      "sha256": "b948aeb5252b5be2c82e38380bcca57fec4c589c835982237fab282b9564f9bb"
+    },
+    {
+      "path": "scripts/check-protected-presentations.mjs",
+      "sha256": "475c11fd11c1e6a407558715c3e0331df2eeb73d6afb18e61ef302f64a922a39"
+    },
+    {
+      "path": "scripts/local-preview.mjs",
+      "sha256": "3ce751792c05ced28763071c602c02891d2542b7043969952c94e7cf0c349654"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "a12edf2a4b3098fd12150967ea1e99f7290ebcdf5a067db7652c378e0086d8fa"
+    },
+    {
+      "path": "src/cloud/CloudQuestion.tsx",
+      "sha256": "56be29223aec69f571fe58c07f5ac12e8848f688d76694275ab834abe3bb32bd"
+    },
+    {
+      "path": "src/cloud/api.ts",
+      "sha256": "9cde13baf321268bb12798901bab1aec90cbd5e1d5d21e91b5bad37ad7c6768c"
+    },
+    {
+      "path": "src/cloud/content-store.ts",
+      "sha256": "f18bea476fd097fa8ab5c6a6815b486508bbe6650611a170bac6c6d8d4a2c166"
+    },
+    {
+      "path": "src/cloud/useContentStore.ts",
+      "sha256": "75095b0c135d4c11f300ea51ce23f4e029b729e0d078ca7e9b3d160c11efa2ea"
+    },
+    {
+      "path": "src/components/ProblemTesting.tsx",
+      "sha256": "4f31d2b1f62d3660bad5c3033fa450c2132f5853761ad86c45c316959b8e6e12"
+    },
+    {
+      "path": "src/contracts/presentation.ts",
+      "sha256": "3f14cb2f0d1b93e7f54c18dcce7049733b207693cbf313d46f34451b3df94cce"
+    },
+    {
+      "path": "src/events/timing.ts",
+      "sha256": "18e2b4b1d6f97cf4f904be7e07b00cd742ad95f3f37308b8c0bccd54876f1ef9"
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "cf2f8399305e8222bd8e93f8ace996999825c9164e6190041599309281f31ce6"
+    },
+    {
+      "path": "src/questions/AnswerPart.tsx",
+      "sha256": "be707a5ebbd91a7d16b15c278e84e729b386b50130b267ee4dc6ef806af8bb20"
+    },
+    {
+      "path": "src/questions/attempts.ts",
+      "sha256": "1771904eef49024b159a27f35cf50578c25b1c57ab37f3a6a5b39e26783ecc10"
+    },
+    {
+      "path": "src/questions/catalog.ts",
+      "sha256": "e494575d33293523e5eff1c193eb5dc8f5b228fe242ff65012664251beecee57"
+    },
+    {
+      "path": "src/questions/l6p5/TwistAndBump.css",
+      "sha256": "df0f3275882a31ca324f5e380f983afaffe802792c5c81267985794828de51d2"
+    },
+    {
+      "path": "src/questions/l6p5/TwistAndBump.tsx",
+      "sha256": "c7d604332d856fa0bc26b19f4c6779a9f1d0e7d8199e85309e539f78352f8459"
+    },
+    {
+      "path": "src/questions/l6p5/definition.ts",
+      "sha256": "17fec4235d5f472d0af57ccd0fb22162c58e23781148dbf77df3082f90bb59a5"
+    },
+    {
+      "path": "tests/browser/draft-competitor.spec.ts",
+      "sha256": "bd8362513b5b115beab9a814c108939388768e3ff56006ee9ed4c107fb6a56df"
+    },
+    {
+      "path": "tests/browser/draft-practice.spec.ts",
+      "sha256": "570e5770df78860c68aae1d4cc76f6f656f6fca475203fc221f4a1746b443324"
+    },
+    {
+      "path": "tests/browser/fixtures.ts",
+      "sha256": "dbbcfb052c31ba0f9ab1ed60744c173203ce76ed6b1e6acdb38eee21c842ac67"
+    },
+    {
+      "path": "tests/browser/protected-content.spec.ts",
+      "sha256": "495338e1138ee4d81e96d338c998886863578dcc50960a3fbc4167e04489d0cb"
+    },
+    {
+      "path": "tests/node/content-store.test.cjs",
+      "sha256": "bcba084e500d8a14fa58c6e0c00c5f3574d9e3b759753e162cba773b93f135b0"
+    },
+    {
+      "path": "tests/node/local-working.test.cjs",
+      "sha256": "032891b24a5860c40446299b9c4ee8ebe3192854fae9f32733d49d5b001c5ce3"
+    },
+    {
+      "path": "tests/unit/event-timing.test.ts",
+      "sha256": "f892a75b56c5f81f6a7be0074a168a7c8ce2bb26584599247a02f4dc476b68f3"
+    },
+    {
+      "path": "tests/unit/network-policy.test.ts",
+      "sha256": "ca9815f5fd89fe2ec20fa5799a714758ffe4ab47665bffca2a405f605235606c"
+    }
+  ]
+}

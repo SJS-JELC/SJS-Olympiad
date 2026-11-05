@@ -3,7 +3,7 @@ import { test, expect, openCompetitorQuestion, type Page } from './fixtures';
 const competitor=test.extend({accessRole:'competitor' as const});
 
 async function selectedWindow(page: Page) {
-  return page.locator('.u6p1-nmr-selection').evaluate(rect => ({
+  return page.locator('.u6p1-detail-selection').evaluate(rect => ({
     x: Number(rect.getAttribute('x')), y: Number(rect.getAttribute('y')),
     width: Number(rect.getAttribute('width')), height: Number(rect.getAttribute('height')),
   }));
@@ -15,12 +15,12 @@ test('NMR magnifies X only and clamps direct overview pointer and keyboard selec
   const answer = page.getByRole('textbox', { name: 'Molecule name' });
   await expect(answer).toBeFocused();
   await answer.fill('retained');
-  const images = await page.locator('.u6p1-nmr image').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
+  const images = await page.locator('.u6p1-detail image').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
   expect(images).toHaveLength(2);
   expect(images[0]).toBe(images[1]);
-  expect(images[0]).toContain('nmr.svg');
+  expect(images[0]).toMatch(/^blob:/);
   const overview = page.getByRole('slider', { name: /^NMR detail region/ });
-  await expect(page.locator('.u6p1-nmr input, .u6p1-nmr figcaption')).toHaveCount(0);
+  await expect(page.locator('.u6p1-detail input, .u6p1-detail figcaption')).toHaveCount(0);
   const bounds = await overview.boundingBox();
   if (!bounds) throw Error('No overview bounds');
   await page.mouse.move(bounds.x + 1, bounds.y + 1);
@@ -42,9 +42,9 @@ test('NMR magnifies X only and clamps direct overview pointer and keyboard selec
   selection = await selectedWindow(page);
   expect(selection.y).toBe(0);
   expect(selection.height).toBe(150.97);
-  const scales = await page.locator('.u6p1-nmr').evaluate(figure => {
-    const overviewScale = figure.querySelector<SVGGraphicsElement>('.u6p1-nmr-overview image')!.getScreenCTM()!;
-    const detailScale = figure.querySelector<SVGGraphicsElement>('.u6p1-nmr-detail image')!.getScreenCTM()!;
+  const scales = await page.locator('.u6p1-detail').evaluate(figure => {
+    const overviewScale = figure.querySelector<SVGGraphicsElement>('.u6p1-detail-overview image')!.getScreenCTM()!;
+    const detailScale = figure.querySelector<SVGGraphicsElement>('.u6p1-detail-detail image')!.getScreenCTM()!;
     return { horizontalRatio: detailScale.a / overviewScale.a, overviewY: overviewScale.d, detailY: detailScale.d };
   });
   expect(scales.horizontalRatio).toBeCloseTo(321.8 / 40);
@@ -57,7 +57,7 @@ test.use({viewport:{width:1200,height:800},hasTouch:true});
 test('NMR touch selection pans the original detail without changing an answer', async ({ page }) => {
   await openTeacher(page, '/?theory&year=U6&question=1');
   await page.getByRole('textbox', { name: 'Molecule name' }).fill('retained');
-  const box = await page.locator('.u6p1-nmr-overview').boundingBox();
+  const box = await page.locator('.u6p1-detail-overview').boundingBox();
   if (!box) throw Error('No overview bounds');
   await page.touchscreen.tap(box.x + box.width * .5, box.y + box.height * .5);
   const selected = await selectedWindow(page);
@@ -120,7 +120,7 @@ test.describe(`U6 inline geometry ${width}x${height}`,()=>{
       expect(geometry.overlap).toBe(false);
       if (number === 8) {
         expect(geometry.scroll).toBeLessThanOrEqual(1);
-        expect(await page.locator('.u6p8-rate-data th, .u6p8-rate-data td').evaluateAll(cells => cells.every(cell => getComputedStyle(cell).backgroundColor === 'rgb(255, 255, 255)'))).toBe(true);
+        expect(await page.locator('.u6p8-table th, .u6p8-table td').evaluateAll(cells => cells.every(cell => getComputedStyle(cell).backgroundColor === 'rgb(255, 255, 255)'))).toBe(true);
         expect(await page.locator('.u6p8-answer').evaluateAll(labels => labels.every(label => label.firstElementChild!.getBoundingClientRect().right < label.querySelector('input')!.getBoundingClientRect().left))).toBe(true);
       }
     }

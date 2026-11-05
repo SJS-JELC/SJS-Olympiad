@@ -1,0 +1,45 @@
+
+ RUN  v3.2.7 C:/Users/jelc/AppData/Local/SJS-Olympiad-Security-PoC/worktrees/protected-baseline
+
+ ✓ tests/unit/u5p5-model.test.ts (15 tests) 44ms
+ ✓ tests/unit/molecule-editor-engine.test.ts (12 tests) 82ms
+ ✓ tests/unit/timed-oxyanions.test.ts (8 tests) 34ms
+ ✓ tests/unit/formula-select.test.ts (26 tests) 18ms
+ ✓ tests/unit/u5p3.test.ts (10 tests) 81ms
+ ✓ tests/unit/u6-standard.test.ts (36 tests) 55ms
+ ✓ tests/unit/grouping.test.ts (18 tests) 525ms
+ ✓ tests/unit/u5p5-state.test.ts (6 tests) 33ms
+ ✓ tests/unit/u5p7.test.ts (12 tests) 251ms
+ ✓ tests/unit/l5-standard.test.ts (70 tests) 23ms
+ ✓ tests/unit/question-state.test.ts (5 tests) 8ms
+ ✓ tests/unit/l6-standard.test.ts (54 tests) 19ms
+ ✓ tests/unit/u5p8.test.ts (31 tests) 13ms
+ ✓ tests/unit/leaderboard-polling.test.ts (4 tests) 19ms
+ ✓ tests/unit/event-timing.test.ts (6 tests) 10ms
+ ✓ tests/unit/years.test.ts (3 tests) 6ms
+ ✓ tests/unit/questions.test.ts (11 tests) 10ms
+ ✓ tests/unit/u5p6.test.ts (20 tests) 12ms
+ ✓ tests/unit/u5p2.test.ts (11 tests) 19ms
+ ✓ tests/unit/practical.test.ts (21 tests) 10ms
+ ✓ tests/unit/cut-skeletal-products.test.ts (2 tests) 9ms
+ ✓ tests/unit/security.test.ts (33 tests) 53ms
+ ✓ tests/unit/l5-u5-units.test.ts (17 tests) 95ms
+ ✓ tests/unit/double-trouble.test.ts (2 tests) 6ms
+ ✓ tests/unit/cloud-drafts.test.ts (3 tests) 6ms
+ ✓ tests/unit/u5p5-colour.test.ts (2 tests) 6ms
+ ✓ tests/unit/completion-stamp.test.ts (5 tests) 18ms
+ ✓ tests/unit/content-gating.test.ts (10 tests) 159ms
+ ✓ tests/unit/cubane-geometry.test.ts (1 test) 6ms
+ ✓ tests/unit/network-policy.test.ts (9 tests) 130ms
+ ✓ tests/unit/dot-cross-editor-ui.test.ts (1 test) 188ms
+ ✓ tests/unit/leaderboard.test.ts (3 tests) 393ms
+ ✓ tests/unit/access-entry-authority.test.ts (3 tests) 456ms
+ ✓ tests/unit/molecule-editor-ui.test.ts (11 tests) 751ms
+ ✓ tests/unit/public-question-boundary.test.ts (36 tests) 7ms
+ ✓ tests/unit/registry.test.ts (31 tests) 42ms
+
+ Test Files  36 passed (36)
+      Tests  548 passed (548)
+   Start at  23:44:05
+   Duration  5.68s (transform 6.76s, setup 0ms, collect 20.39s, tests 3.60s, environment 18.79s, prepare 9.31s)
+

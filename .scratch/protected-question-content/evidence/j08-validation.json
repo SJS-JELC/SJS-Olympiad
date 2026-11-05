@@ -1,0 +1,88 @@
+{
+  "job": "J08",
+  "status": "PASS locally; independent review pending",
+  "sourceBaseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "acceptedMigrations": "5f5c69b471937cbf0ba13d724466733ef7815a3c",
+  "profile": "protected-j08",
+  "versions": {
+    "node": "24.13.1",
+    "vite": "7.3.7",
+    "react": "19.3.0",
+    "playwright": "1.63.0",
+    "chrome": "157.0.8103.38"
+  },
+  "checks": {
+    "api": {
+      "pass": 269,
+      "fail": 0
+    },
+    "frontendUnits": {
+      "files": 37,
+      "pass": 564,
+      "fail": 0
+    },
+    "contracts": {
+      "pass": 22,
+      "fail": 0
+    },
+    "build": true,
+    "exactScientificRecords": 38,
+    "finalExactComparisons": 114,
+    "finalVisualPairsInspected": 114,
+    "negativeBoundaryProbes": 10,
+    "browser": {
+      "initial": {
+        "pass": 157,
+        "fail": 2,
+        "total": 159
+      },
+      "finalAffected": {
+        "pass": 41,
+        "fail": 0
+      },
+      "finalParityAndL6": {
+        "pass": 8,
+        "fail": 0
+      }
+    }
+  },
+  "commands": [
+    "node --test api/tests/*.test.mjs",
+    "SJS_OLYMPIAD_TOOLING_PROFILE=protected-j08 node scripts/local-tooling.mjs test",
+    "npm run test:contracts in isolated mirror",
+    "SJS_OLYMPIAD_TOOLING_PROFILE=protected-j08 node scripts/local-tooling.mjs build",
+    "node scripts/test-protected-boundary.mjs in isolated mirror",
+    "node scripts/check-protected-science.mjs (evidence only, isolated Git objects required)",
+    "TEST_BASE_URL=http://127.0.0.1:4288 PLAYWRIGHT_CHANNEL=chrome playwright test (explicit suites in external logs)",
+    "node scripts/measure-protected-content.mjs <external-evidence-path>"
+  ],
+  "logs": [
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-browser.log",
+      "sha256": "07ade5bdaeafebbad0c41420f60e0e18610d6f47fb060daa6bfc6f105865928e"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v2.log",
+      "sha256": "e649359eeddaf351f76faafa7cef8db09790206ea4696135015b36e22fba32d3"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-accepted.log",
+      "sha256": "954fc3f82ecb8a7d557491cc6dbeb5a77e69598ccc11b5c2434ca77e08c6bdc9"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-final-v3.log",
+      "sha256": "b4dba63ca866515e03a26dc7fe9bd6fe419cb2c4e03df90707696b4d252bb0c3"
+    },
+    {
+      "path": "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j08\\j08-transfer-load-complete.log",
+      "sha256": "cd00106e6c256998cd4ec1ff6cc073c5e0f96c2c5e191d366bbc9da61159886b"
+    }
+  ],
+  "limitations": [
+    "Independent Standards and Spec review/root acceptance pending",
+    "Local Node24 and Chrome verification; target hosted Node22 unverified",
+    "Loopback HTTP + in-memory repositories, warm modules/sessions; no Azure capacity/storage/compression/deployment claim",
+    "Two documented raster intrinsic-size exceptions; pixel identity not claimed",
+    "Git-based scientific comparison is evidence-only and is not a required build/API/CI dependency"
+  ]
+}

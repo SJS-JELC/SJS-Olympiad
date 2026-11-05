@@ -1,18 +1,24 @@
+// @ts-expect-error Node-only protected scientific fixtures.
+import {presentationRecord} from '../../api/src/presentation/registry.mjs';
+import { presentedDefinition } from '../../src/contracts/presentation';
+import { u6p9Presentation } from '../../api/src/presentation/records/u6p9.mjs';
 import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
 import { emptyAttempt, score, transition, type Answers, type QuestionDefinition } from './server-markers';
 import { l5p6 as public_l5p6, normaliseFormula } from '../../src/questions/l5p6/definition';
 import {formulaCounts} from '../../api/src/private/l5p6.mjs';
 import { l6p4 as public_l6p4 } from '../../src/questions/l6p4/definition';
-import { u6p9 as public_u6p9, pointGroupOptions } from '../../src/questions/u6p9/definition';
-const l5p6=serverDefinition(public_l5p6);
-const l6p4=serverDefinition(public_l6p4);
-const u6p9=serverDefinition(public_u6p9);
+import { u6p9 as public_u6p9 } from '../../src/questions/u6p9/definition';
+const l5p6=serverDefinition(presentedDefinition(public_l5p6,presentationRecord('question','L5P6').presentation));
+const l6p4=serverDefinition(presentedDefinition(public_l6p4,presentationRecord('question','L6P4').presentation));
+const pointGroupOptions:string[]=u6p9Presentation.presentation.options;
+const presentedU6=presentedDefinition(public_u6p9,u6p9Presentation.presentation);
+const u6p9=serverDefinition({...presentedU6,parts:presentedU6.parts.map(part=>({...part,fields:part.fields.map(field=>({...field,acceptsEdit:(value:string)=>value===''||pointGroupOptions.includes(value)}))}))});
 
 
 const pointGroupKeys = { HClO: 'Cₛ – E, σ', SF4: 'C₂ᵥ – E, C₂, 2 × σᵥ', PCl5: 'D₃ₕ – E, C₃, 3 × C₂, σₕ, 3 × σᵥ' };
 const fragments = { mass47: 'CH3S', mass74: 'C2H4NO2', mass45: 'CHO2' };
-const orbitals = (homo = '112211', lumo = '122112'): Answers => Object.fromEntries([
+const panels = (homo = '112211', lumo = '122112'): Answers => Object.fromEntries([
   ...[...homo].map((value, index) => ['HOMO' + (index + 1), value]),
   ...[...lumo].map((value, index) => ['LUMO' + (index + 1), value]),
 ]);
@@ -38,21 +44,21 @@ describe('L5P6 source formula parser', () => {
   });
 });
 describe('L6P4 orbital phase selection', () => {
-  it.each([['112211', '122112'], ['221122', '122112'], ['112211', '211221'], ['221122', '211221']])('accepts independently inverted orbitals %s/%s', (homo, lumo) => {
-    expect(complete(l6p4, orbitals(homo, lumo)).solvedAt).toBe(0);
+  it.each([['112211', '122112'], ['221122', '122112'], ['112211', '211221'], ['221122', '211221']])('accepts independently inverted panels %s/%s', (homo, lumo) => {
+    expect(complete(l6p4, panels(homo, lumo)).solvedAt).toBe(0);
   });
   it('ignores incomplete Check like the original and rejects partial inversion, wrong patterns and invalid phases', () => {
-    const partial = { ...emptyAttempt(), answers: orbitals('11221') };
+    const partial = { ...emptyAttempt(), answers: panels('11221') };
     expect(transition(l6p4, partial, { type: 'submit', now: 1000 })).toBe(partial);
-    for (const answers of [orbitals('112212'), orbitals('111111'), orbitals('112211', '112211'), { ...orbitals(), HOMO1: '0' }])
+    for (const answers of [panels('112212'), panels('111111'), panels('112211', '112211'), { ...panels(), HOMO1: '0' }])
       expect(complete(l6p4, answers).solvedAt).toBe(null);
     const state = emptyAttempt();
     expect(transition(l6p4, state, { type: 'edit', field: 'HOMO1', value: '0', now: 0 })).toBe(state);
   });
   it('retains phase edits in the attempt and disables every orbital uniformly during cooldown', () => {
     let state = emptyAttempt();
-    for (const [field, value] of Object.entries(orbitals())) state = transition(l6p4, state, { type: 'edit', field, value, now: 0 });
-    expect(state.answers).toEqual(orbitals());
+    for (const [field, value] of Object.entries(panels())) state = transition(l6p4, state, { type: 'edit', field, value, now: 0 });
+    expect(state.answers).toEqual(panels());
     const wrong = complete(l6p4, { ...state.answers, LUMO1: '2' }, 1000);
     expect(wrong.retryAt).toBe(31000);
     for (const field of ['HOMO1', 'LUMO1']) expect(transition(l6p4, wrong, { type: 'edit', field, value: '1', now: 30999 })).toBe(wrong);
@@ -72,7 +78,7 @@ describe('U6P9 exact source dropdowns', () => {
     expect(complete(u6p9, {}).retryAt).toBe(30_000);
   });
 });
-const lifecycleCases: readonly (readonly [QuestionDefinition, Answers])[] = [[l5p6, fragments], [l6p4, orbitals()], [u6p9, pointGroupKeys]];
+const lifecycleCases: readonly (readonly [QuestionDefinition, Answers])[] = [[l5p6, fragments], [l6p4, panels()], [u6p9, pointGroupKeys]];
 for (const [definition, answers] of lifecycleCases) {
   it(definition.id + ' awards once, preserves navigation state and guards the cooldown boundary', () => {
     const first = definition.parts[0].fields[0].id;

@@ -1,0 +1,111 @@
+{
+  "status": "PASS",
+  "F2": "Resolved. No new spec/scientific finding.",
+  "reviewTip": "3ce45d0e93140eea17ff1a5074e93d554fcf96e4",
+  "priorReviewedTip": "37c2d0474ec4af48f891642cb51f305209a9cd5d",
+  "scope": "18 changed runtime/guides/test paths reviewed; prior all38 original-source/chemistry/visual review reused for unchanged content.",
+  "independentChecks": {
+    "scientificValuesAssets": "Reran node scripts/check-protected-science.mjs:38 records and every asset exact, plus original apparatus shapes/paths/labels/colours.",
+    "registry": "Reran node api/src/presentation/validate.mjs:PASS.",
+    "completeGcObjectComparison": "Final GC presentation equals prior J08 object under explicit key aliases exactly, without projection, additions or deletions. Version3?4.",
+    "cleanActualBoundaryGate": "PASS; actual gate executed read-only with imports/root/dist paths adapted in memory to checkout source and existing external dependencies/build.",
+    "newNegativeActualGateReplay": {
+      "count": 6,
+      "result": "All six newly added probes detected via read-only in-memory additional emitted file; no dist mutation.",
+      "cases": [
+        "code-only selector",
+        "escaped selector",
+        "bare property",
+        "quoted key",
+        "computed key",
+        "chart configuration key"
+      ]
+    },
+    "allNegativeEvidence": "Read actual16 probe implementations and all16 retained PASS results.",
+    "oldNamesAbsent": {
+      "checkedNames": [
+        "Chromatogram",
+        "GcInstrument",
+        "RETENTION_TIMES",
+        "carrier",
+        "carrierBody",
+        "carrierDurationMs",
+        "carrierInlet",
+        "carrierParticles",
+        "carrierSpacing",
+        "carrierTop",
+        "column",
+        "detector",
+        "detectorBody",
+        "detectorLight",
+        "detectorWave",
+        "gc-carrier-common",
+        "gc-carrier-duration",
+        "gc-carrier-flow",
+        "gc-carrier-inlet",
+        "gc-carrier-source",
+        "gc-chromatogram",
+        "gc-detector-flash",
+        "gc-inject",
+        "gc-injecting",
+        "gc-instrument",
+        "gc-reduced-coil",
+        "gc-tube-inner",
+        "housing",
+        "injector",
+        "injectorBody",
+        "injectorCap",
+        "injectorStem",
+        "injectorSuffix",
+        "instrument",
+        "instrumentLabel",
+        "retentionTimes",
+        "sampleTube",
+        "tube"
+      ],
+      "scientificRuntimeHits": [],
+      "genericCssColumnOccurrences": 58,
+      "genericCssColumnJustification": "Every remaining column token is the standard CSS flex-direction:column value or grid-column layout property, independently checked by exact local syntax; none is a GC key/selector."
+    },
+    "exactDOMComparisons": 114,
+    "viewports": [
+      1200,
+      1920,
+      2560
+    ],
+    "rasterIntrinsicExceptions": {
+      "L5P7": "Gallium nitride unit cell",
+      "L6-practical": "Mohr Crisps"
+    },
+    "verifiedHashes": {
+      "screenshots": 246,
+      "emittedFiles": 20,
+      "validationLogs": 9
+    },
+    "visualSheetsInspected": [
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-2.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1200-3.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-2.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-1920-3.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-2.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\compare-2560-3.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\gc-detail-1200.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\gc-detail-1920.jpg",
+      "C:\\Users\\jelc\\AppData\\Local\\SJS-Olympiad-Security-PoC\\worktrees\\protected-j10\\j10-visual\\gc-detail-2560.jpg"
+    ],
+    "detailedGcPairsInspected": 9,
+    "visualConclusion": "GC intro, apparatus labels/geometry, sample palettes, formulation, printed preview, report axes/guides/trace/dialog preserved at all3 sizes. Changed-state loader affects no scientific values. Prior independent all38 visual review remains applicable to unchanged renderers.",
+    "transferEvidence": "All38 version/size records checked; U5P5version4; cohorts25/50/100 each0errors with matching server/client body totals. Local compressed sizes and loopback identity-encoding limits remain explicit."
+  },
+  "sourceOnlyNames": "Only original module path strings and explanatory source comments retain the old filenames. No public output filename/string or source map exposes those names. Runtime exports are TraceChart/RunGraphic. This is not a scientific-vocabulary exemption.",
+  "F1Scope": "Read ownership-object invalidation/finalizer delta,26 actual-hook and6 actual-browser tests; no adverse spec/scientific effect. Independent Standards reviewer owns F1 recheck.",
+  "evidenceInspected": {
+    "API": 269,
+    "units": 590,
+    "contracts": 22,
+    "browserDistinctFinalPass": 77,
+    "browserInitial": "69/71;two timeouts retained;serial31/31 recheck passed",
+    "freshExactComparisons": 114
+  },
+  "limitations": "No fresh browser or broad-suite rerun by this reviewer. Read-only audit reused hash-verified external artifacts without modifying another profile. LocalNode24/Chrome/memory and loopback results do not establishAzure/managedNode22/storage/compression/capacity/deployment acceptance. Root retains final acceptance."
+}

@@ -1,0 +1,1318 @@
+{
+  "records": [
+    {
+      "kind": "question",
+      "id": "L6P5",
+      "version": "2"
+    },
+    {
+      "kind": "question",
+      "id": "L5P1",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P2",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P3",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P4",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P5",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P6",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P7",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P8",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L5P9",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P1",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P2",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P3",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P4",
+      "version": "2"
+    },
+    {
+      "kind": "question",
+      "id": "L6P6",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P7",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P8",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "L6P9",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U5P2",
+      "version": "2"
+    },
+    {
+      "kind": "question",
+      "id": "U5P3",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U5P4",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U5P5",
+      "version": "4"
+    },
+    {
+      "kind": "question",
+      "id": "U5P6",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U5P7",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U5P8",
+      "version": "2"
+    },
+    {
+      "kind": "question",
+      "id": "U5P9",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P1",
+      "version": "2"
+    },
+    {
+      "kind": "question",
+      "id": "U6P2",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P3",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P4",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P5",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P6",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P7",
+      "version": "1"
+    },
+    {
+      "kind": "question",
+      "id": "U6P8",
+      "version": "2"
+    },
+    {
+      "kind": "question",
+      "id": "U6P9",
+      "version": "1"
+    },
+    {
+      "kind": "practical",
+      "id": "L5",
+      "version": "1"
+    },
+    {
+      "kind": "practical",
+      "id": "L6",
+      "version": "1"
+    },
+    {
+      "kind": "practical",
+      "id": "U6",
+      "version": "1"
+    }
+  ],
+  "browserGraph": [
+    {
+      "path": "src/main.tsx",
+      "sha256": "f8170d85fd871fed83e937f50150c1aa533431f8d9fca77b3f056ee959c77839"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "4b58eae98d35ab3127e9f999036d77d8df7e2a779a73c87fae4fcec30ed80c15"
+    },
+    {
+      "path": "src/security/index.ts",
+      "sha256": "63c8c7722efad05e5df2a1f96eaaa1fa3fed68c29d8b93182b7bafb866aab9fb"
+    },
+    {
+      "path": "src/security/CompetitionSecurityProvider.tsx",
+      "sha256": "6e19e63b926f9a31ade926c247ea1f164e39f6651acf894abf763232a006a5ce"
+    },
+    {
+      "path": "src/security/SecurityController.ts",
+      "sha256": "88a0ab78e2b577257b447ea6818c0535a40d6ee0230f96112e738a09131f9654"
+    },
+    {
+      "path": "src/cloud/api.ts",
+      "sha256": "300f8b9bf580255479c56ffc400f2dba279c8309cf711c6a2fd986b27a19e8db"
+    },
+    {
+      "path": "src/events/timing.ts",
+      "sha256": "c62a75634d46ef30e15b38928d7fa6cdafdf2d71a5b0616fdfe322714aa42ee8"
+    },
+    {
+      "path": "src/security/securityEvents.ts",
+      "sha256": "4424acb1614446ad1186d84b2488be9a82ad7c06d476e3024d0e7a00e291fc8d"
+    },
+    {
+      "path": "src/security/breachSiren.ts",
+      "sha256": "7c6b486ceaed2775c29749779ede4f7399fcabc64d814b014f2ec9aa01082250"
+    },
+    {
+      "path": "src/security/securityTypes.ts",
+      "sha256": "9fce38f47566f916f2b541636ee1d96824f2a46f138bca44e5995958a305b5a5"
+    },
+    {
+      "path": "src/components/OlympiadHeading.tsx",
+      "sha256": "e1a254ca91c682589bc6afc259f06715f39403d48fa8634a028221e316463fb0"
+    },
+    {
+      "path": "src/components/OlympiadHeading.css",
+      "sha256": "ec517ecf596996ec7f38b0e8103f089cd5d71c98d674c1bbd5139852120e58fd"
+    },
+    {
+      "path": "src/questions/years.ts",
+      "sha256": "396751ec12b40a02d96d9c907d826d8767eb3ccae1343437f63f7f1010fe6413"
+    },
+    {
+      "path": "src/components/ProblemTesting.tsx",
+      "sha256": "510d6421fdfb31ebbdc4a36d74499533210a63a890285effc959926e14355dc4"
+    },
+    {
+      "path": "src/questions/catalog.ts",
+      "sha256": "3e6bb9a58880019880b8d6520a19e59f3d719e8b68a0b09ab0eb132756265ad7"
+    },
+    {
+      "path": "src/questions/double-trouble/definition.ts",
+      "sha256": "2460d048263e27ba384fa1d950b8b6e2edbfa249eb536887de973ee0b6221b24"
+    },
+    {
+      "path": "src/questions/l5p9/grouping.ts",
+      "sha256": "4be7bb70679427c36834bee0690285a5ae324c7d42201ddaee6e0bd3da3eb9d5"
+    },
+    {
+      "path": "src/questions/double-trouble/DoubleTrouble.tsx",
+      "sha256": "a5f6951f881e83d598eb5c7f1573ce091d9965954dd636c629cc7ea213997588"
+    },
+    {
+      "path": "src/questions/l5p9/GroupingQuestion.tsx",
+      "sha256": "8fa53c7a7a535d2a67ada6fadc7c7992d1c256807cc9c8e7a3c62337a2d83a28"
+    },
+    {
+      "path": "src/questions/QuestionAnswerForm.tsx",
+      "sha256": "f956f9542eb391f1aaac6df4ef0f76e9731ae97defad0c9265b33fef09f9a528"
+    },
+    {
+      "path": "src/components/CheckButton.tsx",
+      "sha256": "9e7f856c074d69dd074c067ff16c09db8acbf35342aeaf2770d858dfabac282c"
+    },
+    {
+      "path": "src/components/IllustratedActionButton.tsx",
+      "sha256": "de25896d25d5f0a2f0bf20d3b10d67b839e9d60a1463ecb47c74e2538351f003"
+    },
+    {
+      "path": "src/components/CheckButton.css",
+      "sha256": "db979b6b1809ddee3badab2ee89e8dde23630ea6f0beb41d70fcebe224b0e180"
+    },
+    {
+      "path": "src/components/IncorrectFeedback.tsx",
+      "sha256": "e5943d5f9303c108274e583601dbe41a805e8d5845e6b7c2726e3fba02ac5643"
+    },
+    {
+      "path": "src/assets/powerapp/redcross.svg",
+      "sha256": "75066809535f5b8c22cfd92aaccbbbfc0d69b997418c58c030dad2d6c1589b7f"
+    },
+    {
+      "path": "src/components/IncorrectFeedback.css",
+      "sha256": "97a794d8886d98a761bdce89555d90038e7ca7ba817c44558a3dfce594f52866"
+    },
+    {
+      "path": "src/assets/powerapp/reset-button.svg",
+      "sha256": "66fccf2584c5531e5c9a94ef16bea0e76ad496b6ff39fc5eb97c2f79b97989e7"
+    },
+    {
+      "path": "src/questions/l5p9/GroupingQuestion.css",
+      "sha256": "0f1bfa728859b852c52369c851f6d796da21bd20e3f4e59458a8d0a950cde0dc"
+    },
+    {
+      "path": "src/contracts/presentation.ts",
+      "sha256": "1154b586ba5ba43f6fca55bb04239f2f0a792d1a5290ac14efed1b4244a247a5"
+    },
+    {
+      "path": "src/questions/u5p4/definition.ts",
+      "sha256": "ccc7a80a38e40f3b261fd40eed073ab848259ffbeb035bdbe4962ce577a25005"
+    },
+    {
+      "path": "src/questions/l6p7/assets/the-ring.png",
+      "sha256": "d4fdf16a04095a9ced65c56e6542131e0dc40512f91b66df24eaa7a96d526305"
+    },
+    {
+      "path": "src/questions/u5p4/U5Problem4.tsx",
+      "sha256": "48108d4d470dbbe6600ad841a29cd203716a8e6e92451bca3149ee865192b4e2"
+    },
+    {
+      "path": "src/questions/AnswerInput.tsx",
+      "sha256": "53d381ef1d1839db52cf25c96e5d5c1c8e03ad48a2e5390f87f97f6284825ef1"
+    },
+    {
+      "path": "src/questions/AnswerInput.css",
+      "sha256": "17a926ddad1a89a3b7539f1be64e58bfc051f2da0bb357a5ec17c046b427b40d"
+    },
+    {
+      "path": "src/questions/u5p4/U5Problem4.css",
+      "sha256": "39ccefe1043d4740e453fdb77b85086af2b41e4c8ef839a842aabcc5b58e5195"
+    },
+    {
+      "path": "src/questions/u5p8/definition.ts",
+      "sha256": "af31367197e77b5d13efa188cb22f9c2249dae30e4dbfe73682cbd526fd19546"
+    },
+    {
+      "path": "src/questions/u5p8/U5Problem8.tsx",
+      "sha256": "eeab091b5f794f05aeb787a994335681d83280c0b82e744a5b52c6141921f68a"
+    },
+    {
+      "path": "src/questions/u5p8/FlaskDiagram.tsx",
+      "sha256": "58718e9ca172f2e0dc36448afcb0a5821224c198e97252df254e52a55ff69d11"
+    },
+    {
+      "path": "src/questions/u5p8/U5Problem8.css",
+      "sha256": "9e13bcc368eff435613e1e8d45610c05e809184af42dcf1946e353f3f9066c81"
+    },
+    {
+      "path": "src/questions/u5p2/definition.ts",
+      "sha256": "c73e924f7cf21e7b3a5dcbf60edca48278b4688af26f4f12f6d35904e5c363b4"
+    },
+    {
+      "path": "src/questions/u5p2/CrossYourFingers.tsx",
+      "sha256": "3d4e67f91ca989008958f180e1ef71c8b4e12f3c1e0ba49c529e84a4adc0027f"
+    },
+    {
+      "path": "src/components/dot-cross/DotCrossEditor.tsx",
+      "sha256": "2b054b7eaf0ed15febd2551f121fdec446f1f2e6faffe306e8984b2f40620b70"
+    },
+    {
+      "path": "src/components/dot-cross/engine.ts",
+      "sha256": "2d77bbfb8899d1029dcac6e7112baba44e4032818211dbd931ec050897e6b78f"
+    },
+    {
+      "path": "src/components/dot-cross/core.js",
+      "sha256": "d0adab89a3e8b4b6a4f4bee82be80a3bc9c81bd06d7d9720a9c7659e4574ad6c"
+    },
+    {
+      "path": "src/components/dot-cross/layout.js",
+      "sha256": "9cf746099f1fa7affacac809c75338129993e292bf441127714e43839ab34986"
+    },
+    {
+      "path": "src/components/dot-cross/interaction.ts",
+      "sha256": "84a76d7764cdb98ba43b0312970c88d6bb0ad29fb08a7da41a05e0603801f33e"
+    },
+    {
+      "path": "src/components/dot-cross/Diagram.tsx",
+      "sha256": "e1b7d48259d4634c7215ffd23491e1fd3b025240e24dcaa73b18d28bd1036098"
+    },
+    {
+      "path": "src/components/EditorViewControls.tsx",
+      "sha256": "b67217bc4092d225c682b92a4759967d59b0bb7d09c39cdcfed82af3246cc911"
+    },
+    {
+      "path": "src/components/editor-view-controls.css",
+      "sha256": "d5d77746bf1fee2afca953be620224462a6c4bb40b959595f4979ef6154bba74"
+    },
+    {
+      "path": "src/components/molecule/camera.ts",
+      "sha256": "c68d6513ca0c09aa3333a13481b0f36b60b6343c4b7a3512b11142efc038bfac"
+    },
+    {
+      "path": "src/components/dot-cross/editor.css",
+      "sha256": "347e8b5ef5cf702a9ac541bbfb8271e6080cdc0fbf3bb5ffed08ab6e0710c01b"
+    },
+    {
+      "path": "src/components/editor-palette.css",
+      "sha256": "7419b7cfdcc049d6f68534ebb2d9b898c0c85bad856e5077107286ea0651cfef"
+    },
+    {
+      "path": "src/questions/u5p2/CrossYourFingers.css",
+      "sha256": "999bfd48af00f8921f826286bb00e773d8e20fc8ce4dbf96d031e11f6c87357f"
+    },
+    {
+      "path": "src/questions/u5p5/definition.ts",
+      "sha256": "bf8a363423f28f6e778315927057da9aabb2b530424b99ef9b0a8aa6a0247eb3"
+    },
+    {
+      "path": "src/questions/attempts.ts",
+      "sha256": "215b3caab4e6eb7bda0eea292f05d0b1b56293cf30b8ec743a91bdd81a875378"
+    },
+    {
+      "path": "src/questions/u5p5/model.ts",
+      "sha256": "1366120b4bca6c9d2ebb68fde136fd97df08243715775bd6dd3d948f6fc24158"
+    },
+    {
+      "path": "src/questions/u5p5/ScentsAndScentsibility.tsx",
+      "sha256": "b35500d5bb332e2b14c6cd74abdf8db2d52226ea6993c538cdcaf43bcb16e652"
+    },
+    {
+      "path": "src/questions/u5p5/BottleDiagram.tsx",
+      "sha256": "d6ddc5d7dc8babddd443cd03e6388f8e34a76c8a23010d77baaeadee37201df4"
+    },
+    {
+      "path": "src/questions/u5p5/sampleColour.ts",
+      "sha256": "427a2326f93b951f00f4d6e2625e4b4d171bfd7e8621b724e630d263327ecf5e"
+    },
+    {
+      "path": "src/questions/u5p5/GcInstrument.tsx",
+      "sha256": "7edc140fec90177882b157b2e28cd8e02f5365d28341888e119cd0f0962c7391"
+    },
+    {
+      "path": "src/questions/u5p5/Chromatogram.tsx",
+      "sha256": "e70514c9970356161980377d3267a088709bfc1c6dc59e377c6ba8b790ac03f5"
+    },
+    {
+      "path": "src/questions/u5p5/DraggablePrintout.tsx",
+      "sha256": "a7791938e40413979c450d46dc5a80cae5a1ac256ec16c5bd220a0361e347918"
+    },
+    {
+      "path": "src/questions/u5p5/FormulationBar.tsx",
+      "sha256": "3eafe4311aab8ea6f54aed7c2a9bef828b7593819a962736472f43e68837fb98"
+    },
+    {
+      "path": "src/questions/u5p5/ScentsAndScentsibility.css",
+      "sha256": "012e1cd2f727ded51d64521d1893076a4b336632154378b13ec837fcea7afcf9"
+    },
+    {
+      "path": "src/questions/u5p3/definition.ts",
+      "sha256": "30e206d1837c5c2e91cf714ab18c523f454d0910be93adfdef3c9174e01b340f"
+    },
+    {
+      "path": "src/questions/u5p3/moleculeAnswer.ts",
+      "sha256": "a817babcd8e8c28ff32e45aea98a30d3ea24cfecc3ebd4c29ca27a401b31bfbe"
+    },
+    {
+      "path": "src/chemistry/molecule/engine.ts",
+      "sha256": "01f6fd2326c009bff1f7db39e4329c3d269ff59686d133ad764cdf20d0116dc0"
+    },
+    {
+      "path": "src/chemistry/molecule/core.js",
+      "sha256": "ede94aa53d35e056ba572997c858e105ed64ac9ecda61f82444d6b5280c9e38d"
+    },
+    {
+      "path": "src/chemistry/molecule/layout.ts",
+      "sha256": "c0371279347b6339c672cdddcf7bf85c158dc7128d6710d65f0eed2cee8409f9"
+    },
+    {
+      "path": "src/questions/u5p3/Chainspotting.tsx",
+      "sha256": "0aa9a728c810a3d9840290e3b381e129811a84850c8d033c67507ed0d08685bc"
+    },
+    {
+      "path": "src/components/molecule/MoleculeEditor.tsx",
+      "sha256": "7743a6b9e815fbfe93e942e33e551b5da8b06699a413520b713bac30b3c675de"
+    },
+    {
+      "path": "src/chemistry/molecule/interaction.ts",
+      "sha256": "1cb63a7089c963fa36a45e1a60e44c01e137194db01f785f64145127148f0d2c"
+    },
+    {
+      "path": "src/chemistry/molecule/depiction.ts",
+      "sha256": "2e6f6ed604ce0b01d640e977bb0fa40bed801e0e128cb97fbf17357e4fadb0ae"
+    },
+    {
+      "path": "src/components/molecule/Structure.tsx",
+      "sha256": "3fbe379eae5685068653a50d2147ebc78e027332554f75d69a21655b9a047653"
+    },
+    {
+      "path": "src/components/molecule/molecule.css",
+      "sha256": "4fbd37b70f4f219d6c6658be37d5fd7d8e49ecd54ea1d8678c25a3aaccfd04db"
+    },
+    {
+      "path": "src/questions/u5p3/PolymerDiagram.tsx",
+      "sha256": "e2484072a4689012d1932204aab14c08b96e8a9b51c087a105c93987b5e73a41"
+    },
+    {
+      "path": "src/questions/u5p3/Chainspotting.css",
+      "sha256": "c58675e3d008409eea2ace36c1283a7fd381b58a95af9465a4c9e6803f71ea4b"
+    },
+    {
+      "path": "src/questions/u5p6/definition.ts",
+      "sha256": "75db2edb7964d6a419d9ba0e51ab069e6b2cfe4e9c79bbb013764e17f5d30a85"
+    },
+    {
+      "path": "src/questions/u5p6/assets/cubone.svg",
+      "sha256": "1b7eff2d542132c6295720e3745c4fa2c0b0c492ad6acd1183922c1d02bd555a"
+    },
+    {
+      "path": "src/questions/u5p6/U5Problem6.tsx",
+      "sha256": "ab3e55f322625f260153ac682df408ee958c9c1dc361db7cc905435e681a4fae"
+    },
+    {
+      "path": "src/questions/u5p6/CubaneModel.tsx",
+      "sha256": "e81ca8de33190d7d5709f4f5652fabc4a0e7a703f6bed4e08887d0569d20e251"
+    },
+    {
+      "path": "src/questions/u5p6/cubaneGeometry.ts",
+      "sha256": "99038ca6f07e698d902712f91d04b098d74804eecb24b0f71df5356578b7152d"
+    },
+    {
+      "path": "src/questions/u5p6/U5Problem6.css",
+      "sha256": "fbb4e36f12515e4819e50c233e8631346b56a53881a5893db43e971042b4ae33"
+    },
+    {
+      "path": "src/questions/u5p7/definition.ts",
+      "sha256": "da56e536d679c77157b74812ce0e1e4da812e081bd8b964c80cf43211cf81da0"
+    },
+    {
+      "path": "src/questions/u5p7/model.ts",
+      "sha256": "45a6c34326960bcc3d6f51b222a6c5a726839dd292252cf344a569a7ee700d0e"
+    },
+    {
+      "path": "src/questions/u5p7/U5Problem7.tsx",
+      "sha256": "8064ece354012a23a9d31cf2dd2f9cf9f2a156c0c05544c280a06f05bcbf6630"
+    },
+    {
+      "path": "src/questions/u5p7/SkeletalProducts.tsx",
+      "sha256": "594b350cfe27e030b5e6f85b68576e9ddb81b8867fe41673c98f0d00c0ae0691"
+    },
+    {
+      "path": "src/questions/u5p7/U5Problem7.css",
+      "sha256": "231410c17207ccd4d39085d6ec68090538b722aa64aff4b9147185ef72f181a5"
+    },
+    {
+      "path": "src/questions/l6p5/definition.ts",
+      "sha256": "9b4414a5e7a88a84b528b956fd0f07e6c006a3f7840daee78e1332e16ae42e88"
+    },
+    {
+      "path": "src/questions/l6p5/TwistAndBump.tsx",
+      "sha256": "1aa129a4e00324d0c28d0c2b354f030c430f7d12eb5b15bbf1034348bd55f9c3"
+    },
+    {
+      "path": "src/questions/l6p5/TwistAndBump.css",
+      "sha256": "88e9429332aaea0d880cd5a572573d3f558918e1f550dd682ce9c6b3301bd7dd"
+    },
+    {
+      "path": "src/questions/AnswerPart.tsx",
+      "sha256": "ffcf93e6283a56db3d03e663d11b6076455143735d27bcff4d3685cf071ffc00"
+    },
+    {
+      "path": "src/questions/AnswerPart.css",
+      "sha256": "0e4d7dc73b5e5a6ae19d500102e22d9bf3d90e1a605a499d21b0d6e81c2a9a70"
+    },
+    {
+      "path": "src/components/ScientificDiagram.tsx",
+      "sha256": "8d927e2a89365bf57d2949992b6eff543f1eebc44c1be138c6124f090f692b35"
+    },
+    {
+      "path": "src/components/ScientificDiagram.css",
+      "sha256": "623a456bd07ebe6329697e6afb4e9adeb0a8b21c67192853ea1f02d8eeacf0b8"
+    },
+    {
+      "path": "src/questions/l5p1/definition.ts",
+      "sha256": "c6c3cffb45143eb79c6619009048dc6cb9f51d9902041512bcf8a262b76ba716"
+    },
+    {
+      "path": "src/questions/l5p1/L5Problem1.tsx",
+      "sha256": "8f018f44d3f838b40429e2944684350d6974f9673fa8cbe168477df41e45c867"
+    },
+    {
+      "path": "src/questions/l5p1/L5Problem1.css",
+      "sha256": "ae98c394206f1bbc6b4481f40b9c3c089b904933c15ea5d4a91ce7777b3b4267"
+    },
+    {
+      "path": "src/questions/l5p2/definition.ts",
+      "sha256": "17be86759ae3d6dd68bdc4c14000f53cb60da243fb20d3026c080abebaeb0cbc"
+    },
+    {
+      "path": "src/questions/l5p2/L5Problem2.tsx",
+      "sha256": "3424d7c2e0e8270b172da3a158d4f83c69f7ca216277d54f8072e21b70eb4e76"
+    },
+    {
+      "path": "src/questions/l5p2/L5Problem2.css",
+      "sha256": "bd6bb051323e0315671fff6749229cbd33759f76f5591a4c87bcdaddae35d18c"
+    },
+    {
+      "path": "src/questions/l5p3/definition.ts",
+      "sha256": "657dd2fe79acfc11444eaa96202702b90c882260094dd2c54b568f40710e7a01"
+    },
+    {
+      "path": "src/questions/l5p3/L5Problem3.tsx",
+      "sha256": "aa941aea4820c35166b9192628ded01c77eb9e0d9e16811355f9434552b40d38"
+    },
+    {
+      "path": "src/questions/l5p3/L5Problem3.css",
+      "sha256": "889515e0ddc329f8e008cbdad7d7b0a6b97d206eb23e8dbb2d1a34a63ff4fdab"
+    },
+    {
+      "path": "src/questions/l5p4/definition.ts",
+      "sha256": "44afa901c403b524a3ae19a5cc6076c92020fc6c77d92023436924d22d42a896"
+    },
+    {
+      "path": "src/questions/l5p4/assets/goblin.png",
+      "sha256": "105f66b191c9a9ec02c662a602c271b0f54b01273819f211b10c650728940bf3"
+    },
+    {
+      "path": "src/questions/l5p4/L5Problem4.tsx",
+      "sha256": "a8ee63bc6a6897184eed1e4f2ec9cd56aaa78e91b270e98825e2b710fc710377"
+    },
+    {
+      "path": "src/questions/l5p4/L5Problem4.css",
+      "sha256": "8f0cfb0bed190ab20786d578256d142fff148f0c539518e5ba03e07444c604a0"
+    },
+    {
+      "path": "src/questions/l5p5/definition.ts",
+      "sha256": "d837f9a46459d51723ac91461e100c8ba04360c2a980240f01177da6db144f83"
+    },
+    {
+      "path": "src/questions/l5p5/L5Problem5.tsx",
+      "sha256": "e72065e543c5593fd88355269ac1da3f6e35d0cdd529ad7564c62665bc28756d"
+    },
+    {
+      "path": "src/questions/l5p5/L5Problem5.css",
+      "sha256": "100efb59c4d4c46ab61af11c750a0e36b14fe7a3f392367c7d3fb6bd191c9bbd"
+    },
+    {
+      "path": "src/questions/l5p7/definition.ts",
+      "sha256": "be7b9d5e5d59d01769ecabaec68e10e78b0e22cb2045b16ee42eaf151b184153"
+    },
+    {
+      "path": "src/questions/l5p7/L5Problem7.tsx",
+      "sha256": "c13868a9433fd971dd345feb9bd605d19be586e410ac82f3fc7f2aef17a8f8ba"
+    },
+    {
+      "path": "src/questions/l5p7/L5Problem7.css",
+      "sha256": "1ddd418f41e1e14a313168b90aa89e230062ddb788c8bf80391a0d7a20881660"
+    },
+    {
+      "path": "src/questions/l5p8/definition.ts",
+      "sha256": "2cfc1d83e824c5944105f6ce11153c481df70f734699f7125487d49262c8cbdf"
+    },
+    {
+      "path": "src/questions/l5p8/L5Problem8.tsx",
+      "sha256": "73cda794a3cd732f20d5c9de01f5ed747b75c5179291a342e476135aa137f850"
+    },
+    {
+      "path": "src/questions/l5p8/L5Problem8.css",
+      "sha256": "0cc7974002705425b46320c0fea1d7eb24983f3ae7a366f67b9894456017d791"
+    },
+    {
+      "path": "src/questions/l5p9/definition.ts",
+      "sha256": "876f107eea7a7cf33a4b572e1f0b7ef09ac65b366df846c741b7152b40ed69d4"
+    },
+    {
+      "path": "src/questions/l5p9/L5Problem9.tsx",
+      "sha256": "3cabce7bcd21833dca89ffbf3b8b513123e5893f3f8b4ef995e968d19a33b14f"
+    },
+    {
+      "path": "src/questions/l6p1/definition.ts",
+      "sha256": "68ed249e0e4e260715f21930c3c360a4362e48d79808843953a1b3f1e525aedb"
+    },
+    {
+      "path": "src/questions/l6p1/L6Problem1.tsx",
+      "sha256": "bf2c18f678722fe1db3edc4f8d7ff7baf04b4d9f7b1daf5b8b8cee0515c8c54a"
+    },
+    {
+      "path": "src/questions/l6p3/definition.ts",
+      "sha256": "a9d5a0dbd390835300572c4b7fda5ea30ae1cb38a428d940a71817e71ec24b6e"
+    },
+    {
+      "path": "src/questions/l6p3/L6Problem3.tsx",
+      "sha256": "50d5b9b08ae8821fe0f95cd79d9a98bc5fffc193dff2a45b3cbe62a382a4506a"
+    },
+    {
+      "path": "src/questions/l6p3/assets/GO.svg",
+      "sha256": "410fcb2122caeb1c434fbff85b9325d15221702649238763d6f0638e2e6c4d9b"
+    },
+    {
+      "path": "src/questions/l6p3/assets/RedCross.svg",
+      "sha256": "75066809535f5b8c22cfd92aaccbbbfc0d69b997418c58c030dad2d6c1589b7f"
+    },
+    {
+      "path": "src/questions/l6p3/assets/Tick.svg",
+      "sha256": "ce0649659be567ebba804cbe9d8242be705b51b96f9a05689a48d21e16bbd05c"
+    },
+    {
+      "path": "src/questions/l6p3/L6Problem3.css",
+      "sha256": "b6e48ef530f7d77fb1c8c9a41028c3dceb2fb0be4212efbaf6f39d1e8d2ca6a9"
+    },
+    {
+      "path": "src/questions/u6p4/definition.ts",
+      "sha256": "44d186a01cb95a59da8688b717c14d3b7e2083353ac9cf0d61ae996736e88141"
+    },
+    {
+      "path": "src/questions/u6p4/U6Problem4.tsx",
+      "sha256": "9663823e65b3d396a376288b8fd4194fe03944c91f2560f713682cb29e8bec4d"
+    },
+    {
+      "path": "src/questions/u6p4/U6Problem4.css",
+      "sha256": "df5e0370182ef7cf8846ae5aed1038e80c4938903a05b062b6fa15cac5de2aa5"
+    },
+    {
+      "path": "src/questions/u6p1/definition.ts",
+      "sha256": "dc91e3a09d5712d2bf6dab317ce7afc8fe118faf9ac41f63fb776aa0b1786e11"
+    },
+    {
+      "path": "src/questions/u6p1/U6Problem1.tsx",
+      "sha256": "0ecae1b248513f1afeaafcfcc271d66845ee6a7efc33055be78d6e14471c06b3"
+    },
+    {
+      "path": "src/questions/u6p1/NmrExplorer.tsx",
+      "sha256": "b4c8240b2ed8ef9a30c20cfa018227fce83a5836b01ba6b105e4765d867ca0e8"
+    },
+    {
+      "path": "src/questions/u6p1/U6Problem1.css",
+      "sha256": "6c4b6de0451c36565a1f10e050500c824971c9b0bea869e20ef1e7bf5bb1dea9"
+    },
+    {
+      "path": "src/questions/u6p2/definition.ts",
+      "sha256": "cf52bc89e6e52e42b20ace754ed844714f809ea4af37c2cb4ca792b55e8547e4"
+    },
+    {
+      "path": "src/questions/u6p2/U6Problem2.tsx",
+      "sha256": "bafcc1ea9ea3ce81e09bc4843a9da31990588f6337cd9ef18470d98a9d6ef1f6"
+    },
+    {
+      "path": "src/questions/u6p2/U6Problem2.css",
+      "sha256": "2f668c6c1a43aa4d9b3e31780a584de25f5709c87c004580f24b7f392ad4a8f5"
+    },
+    {
+      "path": "src/questions/u6p3/definition.ts",
+      "sha256": "2adc4f9455592543c0759cbe332c9c6539a089095e84833afe59c1918f1315af"
+    },
+    {
+      "path": "src/questions/u6p3/assets/spiro-dragon.png",
+      "sha256": "af83f785553e0c791bb929f2093ddaae22b97f31899c1f48271b60cc7d4c0696"
+    },
+    {
+      "path": "src/questions/u6p3/U6Problem3.tsx",
+      "sha256": "aad56872d7a76ecbe4d465126af9cbfc220576547bdafe92205cdc2ae12bb519"
+    },
+    {
+      "path": "src/questions/u6p3/U6Problem3.css",
+      "sha256": "c1dd3e252970367a9fa880b4ddc7b63dc07945250ee99030e7439b9074ed3613"
+    },
+    {
+      "path": "src/questions/u6p5/definition.ts",
+      "sha256": "a7c41e7f61d98a92a9d13b90a5e2708154f71153eecf07800b6c33db4fe16866"
+    },
+    {
+      "path": "src/questions/u6p5/U6Problem5.tsx",
+      "sha256": "5ae29d89ae188424199d3922bb3850997be4c02a60f816d09aafb36edaa348b8"
+    },
+    {
+      "path": "src/questions/u6p5/U6Problem5.css",
+      "sha256": "c63f2e9a688298c4d9d1659925f35fcea9e58654c7334818a1b7b09e444e28b5"
+    },
+    {
+      "path": "src/questions/u6p6/definition.ts",
+      "sha256": "b5fce5fbcd883ae84b5d020d288876bd11f76acb6eb4f94c159a6518eee9f636"
+    },
+    {
+      "path": "src/questions/u6p6/U6Problem6.tsx",
+      "sha256": "e8cf7de6b92df708c11266071a496c1e0afbdc0871b939f68c99c53048e556ff"
+    },
+    {
+      "path": "src/questions/u6p6/U6Problem6.css",
+      "sha256": "e3f29afebaffebbe2525f4b30631c84f6e697c9223b39348098d85562274abc1"
+    },
+    {
+      "path": "src/questions/u6p7/definition.ts",
+      "sha256": "2457ee6b033c1b8625aee26248274a22d7d8bd6ca2fef64e8d4f34912eae7a4d"
+    },
+    {
+      "path": "src/questions/u6p7/U6Problem7.tsx",
+      "sha256": "0293ff44971e013d06e655ffe8893213351815411357ac0ff408f93e46fbe4bb"
+    },
+    {
+      "path": "src/questions/u6p7/U6Problem7.css",
+      "sha256": "3aecca60e93347382d36d1b0a0f7a4da0a0323d6c9d11ade0aa62518a36a0c81"
+    },
+    {
+      "path": "src/questions/u6p8/definition.ts",
+      "sha256": "6542859752727b548e2e6177972b1ab7eb6654fd6ef16fa8e5a0626a744dc2af"
+    },
+    {
+      "path": "src/questions/u6p8/U6Problem8.tsx",
+      "sha256": "374cfdada542a897af2bc0ac8e4e00f7b554abf4f089c784209629ce44ddbee4"
+    },
+    {
+      "path": "src/questions/u6p8/U6Problem8.css",
+      "sha256": "a71149cd9e8a163b869a1baebab40a4cf66bc861a4d82c1d35755a5394bdf81c"
+    },
+    {
+      "path": "src/questions/l6p2/definition.ts",
+      "sha256": "1d3276820cdf8fb42a0959300602ed7d74c1a27f0d7483d50448876130a3c244"
+    },
+    {
+      "path": "src/questions/l6p2/L6Problem2.tsx",
+      "sha256": "b86e9af334063be13be8412841a566a04281bab26dfc66ee4731e1d0b36a6fd0"
+    },
+    {
+      "path": "src/questions/l6p2/L6Problem2.css",
+      "sha256": "5c3ab4644ab47a7696c8a81837597b77fd3c521fa331a9744141d022f99b6b51"
+    },
+    {
+      "path": "src/questions/l6p6/definition.ts",
+      "sha256": "72483bd0cc3c646fbb3806123666b4dd2b22954d05fedae6dbef5b1f5600e0fb"
+    },
+    {
+      "path": "src/questions/l6p6/L6Problem6.tsx",
+      "sha256": "b3e00d95c3eafca69589c8ee8eb5d2c5cf598d980a4b4685c456e6edf30f57ed"
+    },
+    {
+      "path": "src/questions/l6p6/L6Problem6.css",
+      "sha256": "b4f3ae38a913685d6afb71bcd388f5889b83f2b995cb64afa4f0d8493796361a"
+    },
+    {
+      "path": "src/questions/l6p7/definition.ts",
+      "sha256": "3319d0c604f5de06edb8df70fbfe03fca0e1884387f2af3b21d2e4e7004e9d67"
+    },
+    {
+      "path": "src/questions/l6p7/L6Problem7.tsx",
+      "sha256": "01e6752332cc6c351b133a87666fcce284601a9a151491247ea8f7bb41853bc1"
+    },
+    {
+      "path": "src/questions/l6p7/L6Problem7.css",
+      "sha256": "89cd753e67d3585df4687be1ced669f764a9438f341fd9b74a38c19f70f1b376"
+    },
+    {
+      "path": "src/questions/l6p8/definition.ts",
+      "sha256": "fcc0449e9523cae41dd5e0b82bea1341ead98c0680e542f44aa8a67be2c1b63a"
+    },
+    {
+      "path": "src/questions/l6p8/L6Problem8.tsx",
+      "sha256": "86467ed0a94d747f21746306389e479a8f59ab58fe3fcac44ff066e6603ec0ad"
+    },
+    {
+      "path": "src/questions/l6p8/L6Problem8.css",
+      "sha256": "bb5a3355ef09106aac049083d09918881f745c715631ac32aa9a993f757ef192"
+    },
+    {
+      "path": "src/questions/l6p9/definition.ts",
+      "sha256": "74e519deb11968be60d05d4b4040e6b9ef6c522100f21eab1f07f20462aaba3a"
+    },
+    {
+      "path": "src/questions/l6p9/L6Problem9.tsx",
+      "sha256": "113bbb4cdf88c4857dcd3422f6869738ef154e52d84e8a167a41fcab51c6ddfc"
+    },
+    {
+      "path": "src/questions/l6p9/L6Problem9.css",
+      "sha256": "1a87621a6d627f35cb4b936782b1bd1125f698dc836585196b07dc9e34db89b8"
+    },
+    {
+      "path": "src/questions/l5p6/definition.ts",
+      "sha256": "d681bbce980c65c42489b1bbf884976c1f676a67f48d8da57f936b8f18369aff"
+    },
+    {
+      "path": "src/questions/l5p6/L5Problem6.tsx",
+      "sha256": "b2a5c2aa163cedf898b38f4e052719a60c6982b197c7f991caafe6dcbe2c1b79"
+    },
+    {
+      "path": "src/questions/l5p6/L5Problem6.css",
+      "sha256": "325c80caae0a25529767591558f668731b4e80e76d741caff762983a42850361"
+    },
+    {
+      "path": "src/questions/l6p4/definition.ts",
+      "sha256": "0f6f2292108abb1bbbb8f1836899102b722ff50ee43d7b862343abf46d3b74b2"
+    },
+    {
+      "path": "src/questions/l6p4/L6Problem4.tsx",
+      "sha256": "0c315c54a119055fd669ddd6b3d2939d987eb9b34d898430278579d18f03a157"
+    },
+    {
+      "path": "src/questions/l6p4/L6Problem4.css",
+      "sha256": "b4fb996a89b82341f9a152cca0df0fc88f220742a520716c5fb390e23b331b12"
+    },
+    {
+      "path": "src/questions/u6p9/definition.ts",
+      "sha256": "6f4fe7367ee96f8a0c188ae952ca0a8334401ebabb3ca9580b2bf916f6a3dd7e"
+    },
+    {
+      "path": "src/assets/powerapp/flipped-eagle.svg",
+      "sha256": "91efd2d1326d951a5fccb21a1886ff469c8abb3f2ce519c6c95f3e3555a0671f"
+    },
+    {
+      "path": "src/questions/u6p9/U6Problem9.tsx",
+      "sha256": "63f111748afcabc203510a7aa67801ebed66e8581d7e7e94aa5d94b74494b438"
+    },
+    {
+      "path": "src/questions/u6p9/U6Problem9.css",
+      "sha256": "3faf8b72106277641f195b008eec54bfb93e7fd81b69560d580077d5d5e366e0"
+    },
+    {
+      "path": "src/practicals/Practical.tsx",
+      "sha256": "fb8008a9b8cb19f98a3cde854757b69b501070ade405bcdd1ac0fa29734120a1"
+    },
+    {
+      "path": "src/components/SharedNavigation.tsx",
+      "sha256": "5161ee15069bf9ca2d3dcaa5d0db71ce8dd57a3823f285f3aae67d218160e664"
+    },
+    {
+      "path": "src/assets/powerapp/backarrow.svg",
+      "sha256": "d10bd9c443c43486cdd366ef29bc1848b1d974708ff323eaf979aa8516c05964"
+    },
+    {
+      "path": "src/components/SharedNavigation.css",
+      "sha256": "d928cedae385fafcd1b0acd71cb25a37b5eff7d9563d921bf94900f56a1fdd9e"
+    },
+    {
+      "path": "src/practicals/catalog.ts",
+      "sha256": "f298b71419f4a5abf9d98ea646d25eb9f23045d64ad2abb3df3dbb5236935f14"
+    },
+    {
+      "path": "src/practicals/usePractical.ts",
+      "sha256": "9201aee94fc5a2b2837f39ab1080caaacbc613fc4c7a92750485880b6dd06d83"
+    },
+    {
+      "path": "src/assets/powerapp/asset-30.svg",
+      "sha256": "a9453a174ad0ecb6ce171c2ba91975d9c0e0bfb87d1492c5e5d2fd592e503e53"
+    },
+    {
+      "path": "src/practicals/assets/cuttlefish.png",
+      "sha256": "e3310c681e65071510f588a9acbf32d6bc01c54384814195127488edd87d989a"
+    },
+    {
+      "path": "src/practicals/practical.css",
+      "sha256": "434628f26fff3560bc4a627a24202d34899b73edb68235c81a94d95b82081bb1"
+    },
+    {
+      "path": "src/components/SchoolRoster.tsx",
+      "sha256": "c52e4b5d91ac9a83530644c523d8db30138c70d305e5e16c54d9cbf09fc32ccc"
+    },
+    {
+      "path": "src/settings.css",
+      "sha256": "450edf74f29bb0d4b279a1670d40b7fd71ce8a3edad97d710b4c3e28c3b0094b"
+    },
+    {
+      "path": "src/components/BackendDiagnostics.tsx",
+      "sha256": "7be5de614ed30677ba0307d5661e38f723fdfb65aa5bd061af18d91e9564837a"
+    },
+    {
+      "path": "src/pilot/Pilot.tsx",
+      "sha256": "5133abf5ceceedccd14ef560025084362355e754f29b14baff442c9a800a6544"
+    },
+    {
+      "path": "src/components/AccessGate.tsx",
+      "sha256": "fece3cf002ee7cfffe3b78ce841a68d5556698fb2d4fa38a811e8a435e589a6d"
+    },
+    {
+      "path": "src/components/CodePanels.tsx",
+      "sha256": "c1ee67ccf6ca6d32877d75794b307957ccd141fb4f3d88be5d6c03e84e53ea5c"
+    },
+    {
+      "path": "src/components/CodePanels.css",
+      "sha256": "dfcd2efcfb8c8626373ea82150fa49250799568f8ab5ccd059e5c57e96129861"
+    },
+    {
+      "path": "src/components/OlympiadLogo.tsx",
+      "sha256": "c5802aced1bec073e8f26ed2d391735970fd3cffbf7cbd7a74068bb820879fa0"
+    },
+    {
+      "path": "src/assets/olympiad-logo.svg",
+      "sha256": "bfaf050bae1ed8f1a7e586e179ce7c20e63dfe423d6f0179e1a88e5cf949933f"
+    },
+    {
+      "path": "src/components/OlympiadLogo.css",
+      "sha256": "7447a39aaaa746a6660eb7870da564c780e18791d81971146947849a55b9d4ae"
+    },
+    {
+      "path": "src/components/CompetitorEntry.css",
+      "sha256": "c3947bb165e713a6353c81fd7814b5ccd0e7c77784fe2546e8ac275970ec4f90"
+    },
+    {
+      "path": "src/components/LandingEntry.css",
+      "sha256": "b7eff13e4baf2957a71c5032502b88ba2edb89dc1ec1ac1fa2312c5b7e5d6507"
+    },
+    {
+      "path": "src/components/TeacherCodeCooldown.tsx",
+      "sha256": "f938b90f9fb16a897fe208c3244d39cf78c83f192bb849ab6ab55f276581fa6d"
+    },
+    {
+      "path": "src/questions/QuestionShell.tsx",
+      "sha256": "a90877b57befc36390bc0742b2207b2751b3017517b20c39c9ae56c7d3d60aea"
+    },
+    {
+      "path": "src/components/Score.tsx",
+      "sha256": "75bcbcfee309f868753f2db412b4a1afd205367b9490c01e696b679a4b2712ee"
+    },
+    {
+      "path": "src/components/Score.css",
+      "sha256": "893aa25663fff63e7dc4af31a6ada0c7eb198a78bb55240d907031ce7dc59216"
+    },
+    {
+      "path": "src/components/QuestionHeading.tsx",
+      "sha256": "9c287330368e8c7af4ca55ecb2283f98445c4d4b2715216d7a54bf14e1b4cefc"
+    },
+    {
+      "path": "src/components/QuestionHeading.css",
+      "sha256": "55b7a48aa685a106a57d063187b1a620ade46cb7b594feff3a065598ff6ed200"
+    },
+    {
+      "path": "src/background.css",
+      "sha256": "f1a824b387f75b2daf2dbcc8a8669e34d0fdb26966e746979e4775fc2d49b221"
+    },
+    {
+      "path": "src/assets/wall-hairline-cracks.svg",
+      "sha256": "0e4e5072d2ae28080b8a76c80939b3b2d765bb4a1096948ddb466e38c7c77d38"
+    },
+    {
+      "path": "src/assets/graphene-lattice.svg",
+      "sha256": "cebd6bfaaf908c316ab0647efeb0fab8191d70eaa6cdc85999dbd4824581a29e"
+    },
+    {
+      "path": "src/assets/soft-tile-floor.svg",
+      "sha256": "6772a6a72dd1af0afb8bacf16cee43c232bb431dded98ee812ac8cc27f524d7f"
+    },
+    {
+      "path": "src/splash.css",
+      "sha256": "04a32e44c077934b41ed31e56861193cdefe5850eb34453ab23c01e2bba4c04f"
+    },
+    {
+      "path": "src/questions/questions.css",
+      "sha256": "f3a5b4f7d2b62fabf715b7bd5b44d46293e74f63e21916ff0221fe01a40af44f"
+    },
+    {
+      "path": "src/pilot/SkeletalHelp.tsx",
+      "sha256": "e60fc33d34266b849d6db7030132a0c1ae69cc9c23157ae7b516b04124b9ddf3"
+    },
+    {
+      "path": "src/pilot/pilot.css",
+      "sha256": "2b9f2034109904bbf0e03e3745d0d6249d6651dbe2d1150a1f0a8c2d0fbbf915"
+    },
+    {
+      "path": "src/components/OlympiadBackground.tsx",
+      "sha256": "cd3bac5cd201291ba5f448acfc40543d38521037ae0588a78dfa5f44e26314f1"
+    },
+    {
+      "path": "src/components/SplashPreview.tsx",
+      "sha256": "bda679ccce42b3c019d915af3609942f66361c5838c0d0eb163230e0516fb837"
+    },
+    {
+      "path": "src/components/ChallengeButton.tsx",
+      "sha256": "ad076ba7522f81bdbb562e5584da87fa659b544667d16c336e3f526120c0d817"
+    },
+    {
+      "path": "src/assets/powerapp/14-equipment.png",
+      "sha256": "244af0d42d67bed73a171dd616d3455e9af21741fe3941b28ec0499ec3d6c83b"
+    },
+    {
+      "path": "src/styles.css",
+      "sha256": "e62a1fcb5ac4a71f0a80bfc5899667bd566138701b721adf61faebb7979e9d70"
+    },
+    {
+      "path": "src/typography.css",
+      "sha256": "d081bdfe2df86a84f8195803338a8f72f0c0148cd07eafcaf67831ac649f30af"
+    },
+    {
+      "path": "src/assets/fonts/tilt-neon.ttf",
+      "sha256": "c22333dfd1cd14c2a612b36ea1c50ea13e5e9244181e5129a63c944a165823a0"
+    },
+    {
+      "path": "src/assets/fonts/04b-19.ttf",
+      "sha256": "b25fa5563cc8a2e1e9b3913c3129668fa9084b684b5071de34e80ba79b91e89e"
+    },
+    {
+      "path": "src/components/SharedActions.css",
+      "sha256": "13a312ded49a932534e069d186ca962108b91ac02d135f685c733c22aa22c4f1"
+    },
+    {
+      "path": "src/components/TheoryLanding.tsx",
+      "sha256": "9fd26c8ddf11dec0472cead7b8c3a82ef922384a718b82442b1a69272d170566"
+    },
+    {
+      "path": "src/components/theoryButtonArtwork.ts",
+      "sha256": "0ea4112125cce5593669aba9ae2651735e0df3f791f7864d6eb84f13ce98531f"
+    },
+    {
+      "path": "src/assets/animated/1pt-button-vector.svg",
+      "sha256": "c8e1ab6c7685f97856dd371cbfc8fdcdc68002a447ee5f7160b0d606849afe57"
+    },
+    {
+      "path": "src/assets/animated/2pt-button-vector.svg",
+      "sha256": "6d8049b688c5777fe65e64821ecfff7610ffa7e9dafe2d805423990af754c92b"
+    },
+    {
+      "path": "src/assets/animated/3pt-button-vector.svg",
+      "sha256": "b0d21aa72a97fa34bfba723a91e6b65816cc0f15927b65f5b8b6c3e81afcda3b"
+    },
+    {
+      "path": "src/components/TheoryLanding.css",
+      "sha256": "900b828b202eaa9e6624684eb96aa906c0aa120463b4a77de0d9674d7a1008c4"
+    },
+    {
+      "path": "src/components/TheoryQuestionPreview.tsx",
+      "sha256": "6f26a8d451560bcd4f0b6c425bae77cebd4f1f83d9cfbef8039c7fc258296b4f"
+    },
+    {
+      "path": "src/components/TheoryQuestionPreview.css",
+      "sha256": "bdb6e91b96cef7b97b1bfc520c2b564e37e4ea056c60b574a0ee9184a962d42c"
+    },
+    {
+      "path": "src/questions/QuestionGate.tsx",
+      "sha256": "0fa898b72b764681455a904168d2dece9101adbae10e39c3bb8157eb328d0f1c"
+    },
+    {
+      "path": "src/components/BreachModal.tsx",
+      "sha256": "34baf838f9902cdf6918fa495ea22c7f09142f16c5bf6084e9dfa90bf1e1fbc5"
+    },
+    {
+      "path": "src/components/BreachBeacon.tsx",
+      "sha256": "5cce59bd1f427e65a053c7183942bf3c1bf45a9b22904787b14707dc10271456"
+    },
+    {
+      "path": "src/components/BreachBeacon.css",
+      "sha256": "e27fe13b2367c4425837618642d8bda6195c9e8c2a92f88715b2ec3ca3c71afa"
+    },
+    {
+      "path": "src/components/BreachModal.css",
+      "sha256": "d4c52e9c860c61880e6f9da8ad8ae218cbdbd3810f361f08870849609fd817fe"
+    },
+    {
+      "path": "src/components/Leaderboard.tsx",
+      "sha256": "1ab024ea45e96818847f36d7ae4fc48e413eebd12962a864fad03dee8ccdaeee"
+    },
+    {
+      "path": "src/components/leaderboard/assets/equipment-2.png",
+      "sha256": "bd9a5827e1057fc7bdae08b7614ca97824fa80f680235d07492ed4752ea1270d"
+    },
+    {
+      "path": "src/components/leaderboard/assets/equipment-8.png",
+      "sha256": "591908b0b55284c608a2969cec92319eb688ec6e114952b1c49e865a7497002f"
+    },
+    {
+      "path": "src/components/leaderboard/polling.ts",
+      "sha256": "36b2febf3c6742a1696e0e400989587c42945c33a94cbab59eb3ae364a587c5f"
+    },
+    {
+      "path": "src/components/Leaderboard.css",
+      "sha256": "98458e595eb1e225aa85086fb6a067ad52b4195825b8b3e8c1ed33fb2abcf79d"
+    },
+    {
+      "path": "src/cloud/CloudQuestion.tsx",
+      "sha256": "52e088b70b0fff59eddcb9e72c0bc7b49dcaa6beecb1dc36c0dfdf1c89d3a89c"
+    },
+    {
+      "path": "src/cloud/useContentStore.ts",
+      "sha256": "865f913994d03a9ac08f6b82a5ebd3b42de0b5e956921cbc526eb6e76c8164a4"
+    },
+    {
+      "path": "src/cloud/content-store.ts",
+      "sha256": "b3769fb0d00dc64652a6ce3d041d74e818a5aef8d29950cb7beb806837d15770"
+    },
+    {
+      "path": "src/cloud/cloud.css",
+      "sha256": "eb0441b9bf01aa521d87cf854bc88c308feccd494e3920311a27b9a3aa3f48b4"
+    },
+    {
+      "path": "src/components/CompletionStamp.tsx",
+      "sha256": "2a36c78c82bdfd263c67492a925dd714a1a1a7a630b64d6dbb5dd71f8611b6ac"
+    },
+    {
+      "path": "src/components/completion-eagle.json",
+      "sha256": "20d7cab1875e7a8880fc4b4f7438020b7da75821a32f83dfe045be630915418b"
+    },
+    {
+      "path": "src/components/CompletionStamp.css",
+      "sha256": "68b7ca777a2a9f51406d1e4fd88efa53881962a2e53a37cc459e4aa63e0f888e"
+    },
+    {
+      "path": "src/cloud/question-state.ts",
+      "sha256": "df334599f6c5b17e5842e1c33ad421b9056a13ca85314bfa1351c09d7ea33eec"
+    }
+  ],
+  "emitted": [
+    {
+      "path": "dist/assets/04b-19-Cvm8Mtgk.ttf",
+      "bytes": 6632,
+      "sha256": "b25fa5563cc8a2e1e9b3913c3129668fa9084b684b5071de34e80ba79b91e89e"
+    },
+    {
+      "path": "dist/assets/14-equipment-B2fJl2U7.png",
+      "bytes": 308061,
+      "sha256": "244af0d42d67bed73a171dd616d3455e9af21741fe3941b28ec0499ec3d6c83b"
+    },
+    {
+      "path": "dist/assets/asset-30-BXlroJg4.svg",
+      "bytes": 233652,
+      "sha256": "a9453a174ad0ecb6ce171c2ba91975d9c0e0bfb87d1492c5e5d2fd592e503e53"
+    },
+    {
+      "path": "dist/assets/cubone-B2o-pmxo.svg",
+      "bytes": 18074,
+      "sha256": "1b7eff2d542132c6295720e3745c4fa2c0b0c492ad6acd1183922c1d02bd555a"
+    },
+    {
+      "path": "dist/assets/cuttlefish-B3_r5DNc.png",
+      "bytes": 197363,
+      "sha256": "e3310c681e65071510f588a9acbf32d6bc01c54384814195127488edd87d989a"
+    },
+    {
+      "path": "dist/assets/equipment-2-doatdz86.png",
+      "bytes": 2750263,
+      "sha256": "bd9a5827e1057fc7bdae08b7614ca97824fa80f680235d07492ed4752ea1270d"
+    },
+    {
+      "path": "dist/assets/equipment-8-D7X9XuC5.png",
+      "bytes": 287823,
+      "sha256": "591908b0b55284c608a2969cec92319eb688ec6e114952b1c49e865a7497002f"
+    },
+    {
+      "path": "dist/assets/flipped-eagle-D_R_vbnH.svg",
+      "bytes": 228355,
+      "sha256": "91efd2d1326d951a5fccb21a1886ff469c8abb3f2ce519c6c95f3e3555a0671f"
+    },
+    {
+      "path": "dist/assets/GO-CaqaKH15.svg",
+      "bytes": 5247,
+      "sha256": "410fcb2122caeb1c434fbff85b9325d15221702649238763d6f0638e2e6c4d9b"
+    },
+    {
+      "path": "dist/assets/goblin-0LzRrrni.png",
+      "bytes": 1711598,
+      "sha256": "105f66b191c9a9ec02c662a602c271b0f54b01273819f211b10c650728940bf3"
+    },
+    {
+      "path": "dist/assets/index-C2mq7eB_.js",
+      "bytes": 724259,
+      "sha256": "d6249ac921ecaf231a205c4623a6468279fab9d1cce471cd49e39bf517e00520"
+    },
+    {
+      "path": "dist/assets/index-DY9MyR8C.css",
+      "bytes": 106114,
+      "sha256": "551acb0a8309bde5081a0c13db13a3f3c38c80e9a3a04183e5372e16ee614b4d"
+    },
+    {
+      "path": "dist/assets/soft-tile-floor-JOaqB_Gq.svg",
+      "bytes": 15790,
+      "sha256": "6772a6a72dd1af0afb8bacf16cee43c232bb431dded98ee812ac8cc27f524d7f"
+    },
+    {
+      "path": "dist/assets/spiro-dragon-BH9ijokI.png",
+      "bytes": 496131,
+      "sha256": "af83f785553e0c791bb929f2093ddaae22b97f31899c1f48271b60cc7d4c0696"
+    },
+    {
+      "path": "dist/assets/the-ring-G2uzYQ-I.png",
+      "bytes": 953819,
+      "sha256": "d4fdf16a04095a9ced65c56e6542131e0dc40512f91b66df24eaa7a96d526305"
+    },
+    {
+      "path": "dist/assets/tilt-neon-CPzztFPw.ttf",
+      "bytes": 583288,
+      "sha256": "c22333dfd1cd14c2a612b36ea1c50ea13e5e9244181e5129a63c944a165823a0"
+    },
+    {
+      "path": "dist/favicon.provenance.json",
+      "bytes": 427,
+      "sha256": "f021e86a34c0d2008d9abf706b38029d8d9d9a198d9d6bbc49af3efe73b34433"
+    },
+    {
+      "path": "dist/favicon.svg",
+      "bytes": 228404,
+      "sha256": "f7363cceec1877f6d028f7d14305d4c30ae65642df4c0daca7fa6bf518b2304b"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 646,
+      "sha256": "65a42d0253a3abf5c84cd9ce83821da84a262d6249a3070d3742683f9fd8fac7"
+    },
+    {
+      "path": "dist/staticwebapp.config.json",
+      "bytes": 127,
+      "sha256": "d4f01ff19e6aad01e3cbae2933e32e9126f41d988dd7d72dd14e68976de86197"
+    }
+  ],
+  "protectedRuntimeNames": [
+    "retentionTimes",
+    "carrier",
+    "injector",
+    "detector",
+    "carrierInlet",
+    "carrierBody",
+    "carrierTop",
+    "injectorStem",
+    "injectorCap",
+    "injectorBody",
+    "injectorSuffix",
+    "detectorWave",
+    "detectorBody",
+    "detectorLight",
+    "carrierDurationMs",
+    "carrierSpacing",
+    "carrierParticles",
+    "RETENTION_TIMES",
+    "Chromatogram",
+    "GcInstrument"
+  ],
+  "protectedGraphValues": 4,
+  "protectedCoordinateArrays": 3,
+  "protectedMarkers": 450,
+  "protectedAssetHashes": 74,
+  "svgGeometryFragments": 898,
+  "failures": []
+}

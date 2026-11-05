@@ -4,5 +4,5 @@
 .u5p4-prompt p:last-child { margin-bottom: 0; }
 .u5p4-prompt ul { margin: 0 0 1.5svh; padding-left: 1.4em; }
 .u5p4-prompt li { margin-bottom: .6svh; }
-.u5p4-molecules { display: block; width: 100%; max-height: 49svh; object-fit: contain; background: white; }
+.u5p4-diagram { display: block; width: 100%; max-height: 49svh; object-fit: contain; background: white; }
 .u5p4-question { --answer-input-width: 38vw; }

@@ -22,8 +22,8 @@ async function chooseAndStart(page:Page){
 async function durable(api:ApiHarness){return (await api.repo.list({})).filter((row:any)=>!['session','limit'].includes(row.kind));}
 
 for(const [width,height] of [[1366,768],[1920,1080]])anonymous(`dense draft roster shows many real team names at ${width}x${height}`,async({page,api},testInfo)=>{
- await page.setViewportSize({width,height});await prepare(api,'U5',false,40);const before=await durable(api);
- await signIn(page);await expect(page.locator('.team-tile')).toHaveCount(40);await page.getByLabel('Draft team 01',{exact:true}).check();
+ await page.setViewportSize({width,height});await prepare(api,'U5',false,40);await api.service.pilot();const before=await durable(api);
+ await signIn(page);await expect(page.locator('.team-tile')).toHaveCount(44);await page.getByLabel('Draft team 01',{exact:true}).check();
  const metrics=await page.locator('.team-grid').evaluate(grid=>{
   const area=grid.getBoundingClientRect(),tiles=[...grid.querySelectorAll<HTMLElement>('.team-tile')].map(tile=>tile.getBoundingClientRect());
   return {visible:tiles.filter(tile=>tile.top>=area.top&&tile.bottom<=area.bottom&&tile.left>=area.left&&tile.right<=area.right).length,width:tiles[0].width,height:tiles[0].height};
@@ -34,12 +34,19 @@ for(const [width,height] of [[1366,768],[1920,1080]])anonymous(`dense draft rost
  await page.screenshot({path:testInfo.outputPath(`draft-team-grid-${width}x${height}.png`)});expect(await durable(api)).toEqual(before);
 });
 
-for(const [year,past] of [['U5',false],['U5',true],['L6',false],['L6',true]] as const)anonymous(`${year} ${past?'past':'future'} draft opens its own questions and permitted practical uses durable claims and results while respecting end times`,async({page,api})=>{
+for(const [year,past] of [['U5',false],['U5',true],['L6',false],['L6',true]] as const)anonymous(`${year} ${past?'past':'future'} draft respects its starts before opening its own questions with durable claims and results`,async({page,api})=>{
  const {event,staff}=await prepare(api,year,past);await mockFullscreen(page);await signIn(page,past);
  if(past){await expect(page.getByRole('button',{name:'LOCK IN',exact:true})).toHaveCount(0);expect((await api.repo.list({kind:'team',eventId:event.id})).every((team:any)=>!team.owner&&team.score===0)).toBe(true);return;}
  await chooseAndStart(page);await expect(page.locator('.competitor-team-pill__practice')).toHaveCount(0);
  const theory=page.getByRole('button',{name:/^Theoretical Challenge$/i}),practical=page.getByRole('button',{name:/^Practical Challenge$/i});
- await expect(theory).toBeEnabled();
+ await expect(theory).toBeDisabled();await expect(practical).toBeDisabled();
+ const now=Date.now();await api.service.eventUpdate(staff,{eventId:event.id,expectedRevision:event.revision,theoryStartsAt:now-60000,theoryEndsAt:now+3600000,practicalStartsAt:now-60000,practicalEndsAt:now+7200000});
+ // A remote schedule becomes known on the next authorized request.
+ const refreshed=await api.service.session(api.token);await page.evaluate(async()=>{history.pushState(null,'','?theory');dispatchEvent(new PopStateEvent('popstate'));});
+ await expect(api.service.question(api.token,{questionId:year==='U5'?'U5P6':'L6P8'})).resolves.toHaveProperty('attempt');
+ // Continue with a fresh claim because refresh intentionally revokes sessions.
+ await api.service.teamRelease(staff,{eventId:event.id,teamId:refreshed.team.id,confirm:true});
+ await signIn(page);await chooseAndStart(page);await expect(theory).toBeEnabled();
  if(year==='U5')await expect(practical).toBeDisabled();
  else{
   await expect(practical).toBeEnabled();await practical.click();await expect(page.locator('#practical-numPracticalResponse3')).toBeEditable();

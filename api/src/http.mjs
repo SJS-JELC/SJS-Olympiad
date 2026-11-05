@@ -5,6 +5,8 @@ const gets = new Set(['pilot','pilot-report','availability','session','events','
 const posts = new Set(['login','logout','event-create','event-setup','school-create','school-rename','school-teams','school-link','school-resume','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
 const methods = {'event-setup':'eventSetup','school-create':'schoolCreate','school-rename':'schoolRename','school-teams':'schoolTeams','school-link':'schoolLink','school-resume':'schoolResume','event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
 const COOKIE='__Host-olympiad-session';
+for(const action of ['question-content','practical-content','content-asset','content-catalogue'])posts.add(action);
+Object.assign(methods,{'question-content':'questionContent','practical-content':'practicalContent','content-asset':'contentAsset','content-catalogue':'contentCatalogue'});
 posts.add('pilot-enter');posts.add('pilot-submit');posts.add('pilot-mode');
 Object.assign(methods,{'pilot-enter':'pilotEnter','pilot-submit':'pilotSubmit','pilot-report':'pilotReport','pilot-mode':'pilotMode'});
 function validateBody(body) {
@@ -69,6 +71,7 @@ export async function handle(req,getService=service) {
         headers['Set-Cookie']=`${COOKIE}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
       } else body=await api[methods[action] || action](token,method==='GET'?{eventId:req.query?.eventId}:req.body);
     }
+    if(action==='content-asset' && body?.binary===true){headers['Content-Type']=body.mimeType;return {status:200,headers,body:body.body,isRaw:true};}
     return {status:200,headers,body};
   } catch(error) {
     const explicitClear=req.params?.action==='logout' || req.params?.action==='session' && (req.query?.restore==='1' || req.query?.restore===1);

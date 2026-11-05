@@ -1,3 +1,5 @@
+export interface U6P2Presentation extends PresentationPayload { renderer:'U6P2';text:string[]; }
+import { requirePresentation, presentedDefinition, type PresentationPayload } from '../../contracts/presentation';
 import type { QuestionViewProps } from '../catalog';
 import { AnswerInput } from '../AnswerInput';
 import { QuestionAnswerForm } from '../QuestionAnswerForm';
@@ -5,20 +7,22 @@ import { u6p2 } from './definition';
 
 import './U6Problem2.css';
 
-export function U6Problem2({ attempt, onAction }: QuestionViewProps) {
+export function U6Problem2({ attempt, onAction, presentation }: QuestionViewProps) {
+  const {record:{presentation:content},assets}=requirePresentation<U6P2Presentation>(presentation,'U6P2');
+  const definition=presentedDefinition(u6p2,content);
   return <div className="question-content question-content--compact u6p2-question">
-    <section className="question-brief" aria-label="Question">
-      <p className="type-body">{"A 75 g block of copper at 150 °C is dropped into 100 g of water at 20 °C in a perfectly insulated container."}</p>
-      <p className="type-body">{"After a while, the copper and the water reach a constant temperature T."}</p>
-      <p className="type-body">{"The specific heat capacity of copper is 0.39 J g⁻¹ °C⁻¹."}</p>
-      <p className="type-body">{"The specific heat capacity of water is 4.18 J g⁻¹ °C⁻¹."}</p>
-      <p className="type-body">{"Calculate the final temperature in °C, to 3 significant figures, assuming no heat is lost to the surroundings."}</p>
+    <section className="question-brief" aria-label={content.text[0]}>
+      <p className="type-body">{content.text[1]}</p>
+      <p className="type-body">{content.text[2]}</p>
+      <p className="type-body">{content.text[3]}</p>
+      <p className="type-body">{content.text[4]}</p>
+      <p className="type-body">{content.text[5]}</p>
       
     </section>
-    <QuestionAnswerForm layout="compact" definition={u6p2} attempt={attempt} onAction={onAction}>
+    <QuestionAnswerForm layout="compact" definition={definition} attempt={attempt} onAction={onAction}>
       {({ disabled, onEdit }) => <div className="u6p2-answers">
         <label className="u6p2-answer type-label" htmlFor="u6p2-answer">
-          <AnswerInput aria-label="Final temperature (°C)" unit="°C" id="u6p2-answer" name="answer" value={attempt.answers.answer ?? ''} inputMode="decimal" maxLength={6} disabled={disabled}
+          <AnswerInput aria-label={content.text[6]} unit={content.text[7]} id="u6p2-answer" name="answer" value={attempt.answers.answer ?? ''} inputMode="decimal" maxLength={6} disabled={disabled}
             onValueChange={value => onEdit('answer', value)} />
         </label>
       </div>}

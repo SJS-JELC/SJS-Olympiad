@@ -1,8 +1,8 @@
 /* Bespoke timed interaction; deadline and scoring live in definition.ts. */
 .l6p3-question .question-brief { display: flex; flex-direction: column; gap: 1.5svh; }
 .l6p3-prompt { text-align: center; display: grid; align-content: center; justify-items: center; min-height: 0; }
-.l6p3-formula { width: 40vw; height: 14svh; overflow: visible; }
-.l6p3-formula text { --text-size: 70px; --text-leading: 1; }
+.l6p3-prompt-display { width: 40vw; height: 14svh; overflow: visible; }
+.l6p3-prompt-display text { --text-size: 70px; --text-leading: 1; }
 .l6p3-go { position: relative; border: 0; background: transparent; padding: 0; width: 14svh; height: 14svh; cursor: pointer; }
 .l6p3-go img { width: 100%; height: 100%; object-fit: contain; }
 .l6p3-go:disabled { cursor: default; }

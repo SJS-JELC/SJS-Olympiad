@@ -2,7 +2,9 @@ import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
 import { emptyAttempt, score, transition } from './server-markers';
 import { u5p8 as public_u5p8 } from '../../src/questions/u5p8/definition';
-import { wording } from '../../src/questions/u5p8/content';
+// @ts-expect-error Node-only protected scientific reference.
+import {u5p8Presentation} from '../../api/src/presentation/records/u5p8.mjs';
+const wording:string[]=u5p8Presentation.presentation.paragraphs;
 const u5p8=serverDefinition(public_u5p8);
 
 

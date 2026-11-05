@@ -21,7 +21,7 @@ test('Cut and Shut uses the shared skeletal C/H/O canvas and restores drawing/un
   await expect(canvas.locator('.atom-label')).toHaveCount(0);
   await expect(canvas.locator('.implicit-hydrogen')).toHaveCount(0);
   await expect(page.getByRole('group',{name:'Formula representation'})).toHaveCount(0);
-  await expect(page.locator('.cut-prompt')).toContainText('each unlabelled corner or line end is a carbon atom');
+  await expect(page.locator('.u5p9-prompt')).toContainText('each unlabelled corner or line end is a carbon atom');
   const bond = canvas.locator('[data-bond]').first(); await bond.focus(); await bond.press('Enter');
   await expect(bond).toHaveAttribute('aria-label', /^Double bond/);
   await page.getByRole('button', { name: 'Undo', exact: true }).click();
@@ -43,11 +43,11 @@ test('Skeletal product artwork and shared canvas fit supported landscape viewpor
   for (const [width, height] of [[1200,800], [1440,810], [960,640], [1920,1080], [2560,1440]]) {
     await page.setViewportSize({ width, height }); await openTeacher(page, route);
     await expect(page.locator('.molecule-workspace')).toBeVisible(); await page.evaluate(() => document.fonts.ready);
-    await expect(page.locator('.cut-products [data-product="nine-carbon-fragment"] .atom-label')).toHaveText(['O','O','O']);
-    await expect(page.locator('.cut-products [data-product="methanal"] .atom-label')).toHaveText(['O']);
-    await expect(page.locator('.cut-products .implicit-hydrogen')).toHaveCount(0);
+    await expect(page.locator('.u5p9-products [data-product="product-2"] .atom-label')).toHaveText(['O','O','O']);
+    await expect(page.locator('.u5p9-products [data-product="product-1"] .atom-label')).toHaveText(['O']);
+    await expect(page.locator('.u5p9-products .implicit-hydrogen')).toHaveCount(0);
     const canvas = (await page.locator('.molecule-workspace').boundingBox())!, check = (await page.locator('.check-button').boundingBox())!;
-    const pane=(await page.locator('.cut-question > .question-brief').boundingBox())!;
+    const pane=(await page.locator('.u5p9-question > .question-brief').boundingBox())!;
     const task=(await page.getByText('Draw all possible structures of X using skeletal formulae.',{exact:true}).boundingBox())!;
     expect(task.y).toBeGreaterThanOrEqual(pane.y);
     expect(task.y+task.height).toBeLessThanOrEqual(pane.y+pane.height);
@@ -56,9 +56,9 @@ test('Skeletal product artwork and shared canvas fit supported landscape viewpor
     expect(check.y+check.height).toBeLessThanOrEqual(height);
     expect(await page.evaluate(() => document.documentElement.scrollWidth<=innerWidth && document.documentElement.scrollHeight<=innerHeight)).toBe(true);
     await page.screenshot({ path: testInfo.outputPath(`u5p9-skeletal-${width}x${height}.png`) });
-    const questionPane=page.locator('.cut-question > .question-brief');
+    const questionPane=page.locator('.u5p9-question > .question-brief');
     const productExtent=await questionPane.evaluate(node=>{
-      const product=node.querySelector('.cut-products')!.getBoundingClientRect(), area=node.getBoundingClientRect();
+      const product=node.querySelector('.u5p9-products')!.getBoundingClientRect(), area=node.getBoundingClientRect();
       return {top:product.top-area.top+node.scrollTop,bottom:product.bottom-area.top+node.scrollTop,scrollHeight:node.scrollHeight};
     });
     expect(productExtent.top).toBeGreaterThanOrEqual(0);
@@ -66,7 +66,7 @@ test('Skeletal product artwork and shared canvas fit supported landscape viewpor
     // Only the question pane scrolls: the whole product illustration must be
     // reachable while the shared canvas and Check stay in their layout positions.
     await questionPane.evaluate(node=>{node.scrollTop=node.scrollHeight;});
-    const product=(await page.locator('.cut-products').boundingBox())!;
+    const product=(await page.locator('.u5p9-products').boundingBox())!;
     expect(product.y).toBeGreaterThanOrEqual(pane.y);
     expect(product.y+product.height).toBeLessThanOrEqual(pane.y+pane.height);
     expect(await page.locator('.molecule-workspace').boundingBox()).toEqual(canvas);
@@ -86,7 +86,7 @@ competitor('historical unfinished drawings stay stored but cannot restore a canv
     state:{answers:{drawings:original},feedback:{},retryAt:0,solvedAt:null},privateState:{}});
   await openCompetitorQuestion(page,api,'U5',9);
   await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(0);
-  await expect(page.locator('.cut-legacy')).toHaveCount(0);
+  await expect(page.locator('.u5p9-legacy')).toHaveCount(0);
   expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(0);
   expect((await api.repo.get(team.partitionKey,'q-U5P9')).state.answers.drawings).toBe(original);
 });

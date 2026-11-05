@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-05T02:23:52.563Z",
+  "baselineFiles": 611,
+  "unchanged": 610,
+  "expectedDifferences": [
+    {
+      "path": ".scratch/protected-question-content/run-log.md",
+      "type": "changed",
+      "expected": true,
+      "baselineSha256": "1f519f1e7cf4f143111caaba379c75d581de1f1aca227f87a7f107c1b1a09448",
+      "currentSha256": "2ba5229ee8f451ddf7502db62575850662966195584b9d431c7a02fcce1d74f2"
+    }
+  ],
+  "unexpectedDifferences": [],
+  "addedSourceFiles": [],
+  "sourceHead": "6b0b790657507f6e99b637a061e4cc3726461bf4",
+  "currentHead": "6b0b790657507f6e99b637a061e4cc3726461bf4",
+  "historyHeadPreserved": true,
+  "archive": {
+    "path": ".protected-content/baseline-source.zip",
+    "bytes": 10465964,
+    "sha256": "2d43075f0cc6fef7424467a26f030c28c0a0da5fe20400f73a50cfec0ca96ad3"
+  },
+  "note": "Original app source and Git history were not used for implementation; only the authorised foreman-owned run log was appended. Raw archive/source hashes are distinct from Git EOL-normalised blob hashes."
+}

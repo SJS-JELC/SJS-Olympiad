@@ -31,7 +31,7 @@ for (const viewport of [{ width: 1200, height: 800 }, { width: 1440, height: 810
         expect(box!.x + box!.width).toBeLessThan(viewport.width);
       }
       if (question === 5 || question === 7) {
-        const diagrams = page.locator(question === 5 ? '.l5p5-formulae figure' : '.l5p7-diagrams figure');
+        const diagrams = page.locator(question === 5 ? '.l5p5-illustrations figure' : '.l5p7-diagrams figure');
         for (let index = 0; index < await inputs.count(); index++) {
           const diagram = await diagrams.nth(index).boundingBox();
           const answer = await inputs.nth(index).boundingBox();

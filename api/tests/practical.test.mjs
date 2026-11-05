@@ -93,7 +93,7 @@ test('independent practical windows, absent timing, security states and event/te
   f.setTime(300000);
   const closed=await f.api.practical(f.player,{});assert.equal(closed.readOnly,true);assert.equal(closed.revision,1);
   await assert.rejects(f.save({numPracticalResponse3:'2'},1,'practical-late-000001'),{status:403});
-  f.setTime(600000);await assert.rejects(f.api.practical(f.player,{}),{status:403});
+  f.setTime(600000);assert.equal((await f.api.practical(f.player,{})).readOnly,true);
   f.setTime(100000);const state=await f.api.session(f.player);await f.api.breach(f.player,{epoch:state.competition.epoch});
   await assert.rejects(f.api.practical(f.player,{}),{status:423});await assert.rejects(f.save({numPracticalResponse3:'1'}),{status:423});
   const absent=await fixture();await absent.start();await absent.edit({practicalStartsAt:null,practicalEndsAt:null});
@@ -115,6 +115,8 @@ test('teacher catalogue and event preview are session-isolated and do not write 
   await f.start();await f.save({numPracticalResponse4:'5.0'});
   const event=(await f.api.events(f.teacher)).events[0];await f.api.eventEnd(f.teacher,{eventId:f.eventId,expectedRevision:event.revision,confirm:true});
   assert.equal((await f.api.teams(f.teacher,{eventId:f.eventId})).teams[0].practical.responses.numPracticalResponse4.text,'5.0');
+  assert.equal((await f.api.practical(f.player,{})).readOnly,true);
+  assert.equal((await f.api.practical(f.player,{})).responses.numPracticalResponse4.value,5);
   await assert.rejects(f.save({numPracticalResponse4:'6'},1,'ended-practical-0001'),{status:403});
   assert.equal((await f.api.practicalSave(f.teacher,{eventId:f.eventId,requestId:'ended-preview-00001',expectedRevision:0,changes:{numPracticalResponse4:'99'}})).revision,1);
   assert.equal((await f.api.teams(f.teacher,{eventId:f.eventId})).teams[0].practical.responses.numPracticalResponse4.value,5);

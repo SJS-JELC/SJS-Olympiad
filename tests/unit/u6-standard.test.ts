@@ -1,3 +1,12 @@
+import { u6p8Presentation } from '../../api/src/presentation/records/u6p8.mjs';
+import { u6p7Presentation } from '../../api/src/presentation/records/u6p7.mjs';
+import { u6p6Presentation } from '../../api/src/presentation/records/u6p6.mjs';
+import { u6p5Presentation } from '../../api/src/presentation/records/u6p5.mjs';
+import { u6p4Presentation } from '../../api/src/presentation/records/u6p4.mjs';
+import { u6p3Presentation } from '../../api/src/presentation/records/u6p3.mjs';
+import { u6p2Presentation } from '../../api/src/presentation/records/u6p2.mjs';
+import { u6p1Presentation } from '../../api/src/presentation/records/u6p1.mjs';
+import { presentedDefinition } from '../../src/contracts/presentation';
 import { serverDefinition } from './server-markers';
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
@@ -11,14 +20,14 @@ import { u6p5 as public_u6p5 } from '../../src/questions/u6p5/definition';
 import { u6p6 as public_u6p6 } from '../../src/questions/u6p6/definition';
 import { u6p7 as public_u6p7 } from '../../src/questions/u6p7/definition';
 import { u6p8 as public_u6p8 } from '../../src/questions/u6p8/definition';
-const u6p1=serverDefinition(public_u6p1);
-const u6p2=serverDefinition(public_u6p2);
-const u6p3=serverDefinition(public_u6p3);
-const u6p4=serverDefinition(public_u6p4);
-const u6p5=serverDefinition(public_u6p5);
-const u6p6=serverDefinition(public_u6p6);
-const u6p7=serverDefinition(public_u6p7);
-const u6p8=serverDefinition(public_u6p8);
+const u6p1=serverDefinition(presentedDefinition(public_u6p1,u6p1Presentation.presentation));
+const u6p2=serverDefinition(presentedDefinition(public_u6p2,u6p2Presentation.presentation));
+const u6p3=serverDefinition(presentedDefinition(public_u6p3,u6p3Presentation.presentation));
+const u6p4=serverDefinition(presentedDefinition(public_u6p4,u6p4Presentation.presentation));
+const u6p5=serverDefinition(presentedDefinition(public_u6p5,u6p5Presentation.presentation));
+const u6p6=serverDefinition(presentedDefinition(public_u6p6,u6p6Presentation.presentation));
+const u6p7=serverDefinition(presentedDefinition(public_u6p7,u6p7Presentation.presentation));
+const u6p8=serverDefinition(presentedDefinition(public_u6p8,u6p8Presentation.presentation));
 
 
 const correct = { a: '4', b: '10', c: '8' };

@@ -11,7 +11,7 @@ export function restoredAttempt(attempt: Attempt): Attempt {
     if(attempt.interaction?.kind==='gc'){
         const activeRun=attempt.solvedAt===null?attempt.interaction.activeRun:null;
         result.interaction={kind:'gc',entered:!!activeRun,activeRun,nextRunId:attempt.interaction.nextRunId,
-            analyses:[],reference:'citrus',interval:[.5,.7],measurements:[],results:[]};
+            analyses:[],reference:attempt.interaction.reference,interval:attempt.interaction.interval,measurements:[],results:[]};
     }
     return result;
 }

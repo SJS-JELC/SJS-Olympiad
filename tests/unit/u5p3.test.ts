@@ -7,7 +7,11 @@ import type { MoleculeAtom, MoleculeElement, MoleculeGraph, MoleculeState } from
 import { blankMolecule } from '../../src/chemistry/molecule/engine';
 import { u5p3Definition as public_u5p3Definition } from '../../src/questions/u5p3/definition';
 import { parseMoleculeAnswer, readMoleculeAnswer, serializeMoleculeAnswer } from '../../src/questions/u5p3/moleculeAnswer';
-import { polymerContinuations, polymerGraph, polymerSubstituentSequence } from '../../src/questions/u5p3/polymerGraph';
+import type {ChainspottingPresentation} from '../../src/questions/u5p3/Chainspotting';
+// @ts-expect-error Node-only protected scientific reference.
+import {u5p3Presentation} from '../../api/src/presentation/records/u5p3.mjs';
+const {graph:polymerGraph,continuations:polymerContinuations}=u5p3Presentation.presentation as ChainspottingPresentation;
+const polymerSubstituentSequence=Array.from({length:22},(_,i)=>polymerGraph.atoms.filter(a=>a.id===i*3+2||a.id===i*3+3).map(a=>a.element));
 const u5p3Definition=serverDefinition(public_u5p3Definition);
 
 
@@ -38,7 +42,7 @@ function withGraph(state: MoleculeState, graph: MoleculeGraph): MoleculeState { 
 
 describe('U5P3 free molecular drawing and ordinary attempt lifecycle', () => {
   it('has one ordinary serialized drawing field and shared one-point/20-second rules', () => {
-    expect(u5p3Definition.parts).toEqual([{ id: 'monomers', label: 'Alkene monomers', fields: [expect.objectContaining({ id: 'drawing' })] }]);
+    expect(u5p3Definition.parts).toEqual([{ id: 'answer', label: 'Response', fields: [expect.objectContaining({ id: 'drawing' })] }]);
     expect(u5p3Definition.reduce).toBeUndefined();
     expect(u5p3Definition).toMatchObject({ points: 1, cooldownMs: 20000, lockCorrectParts: false, allowIncompleteSubmission: true });
     expect(readMoleculeAnswer({})).toEqual(blankMolecule());

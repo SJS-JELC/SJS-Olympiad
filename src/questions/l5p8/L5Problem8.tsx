@@ -1,3 +1,4 @@
+import { requirePresentation, presentedDefinition, type PresentationPayload } from '../../contracts/presentation';
 import type { QuestionViewProps } from '../catalog';
 import { AnswerInput } from '../AnswerInput';
 import { QuestionAnswerForm } from '../QuestionAnswerForm';
@@ -5,20 +6,23 @@ import { l5p8 } from './definition';
 
 import './L5Problem8.css';
 
-export function L5Problem8({ attempt, onAction }: QuestionViewProps) {
+export interface L5P8Presentation extends PresentationPayload { renderer:'L5P8';paragraphs:string[];fieldLabels:string[]; }
+export function L5Problem8({ attempt, onAction, presentation }: QuestionViewProps) {
+  const {record:{presentation:content}}=requirePresentation<L5P8Presentation>(presentation,'L5P8');
+  const definition=presentedDefinition(l5p8,content);
   return <div className="question-content question-content--compact l5p8-question">
     <section className="question-brief" aria-label="Question">
       <div className="l5p8-prompt">
-        <p>{"Alkanes have the general formula CₙH₂ₙ₊₂."}</p>
-        <p>{"Carbon exists naturally as a mixture of isotopes: 98.9% ¹²C and 1.1% ¹³C."}</p>
-        <p>{"For larger alkanes, molecules with Mᵣ + 1 arise when exactly one carbon atom is ¹³C and the remaining carbons are ¹²C."}</p>
-        <p>{"Assume they contain only H. For what value of n will the abundance at Mᵣ equal the abundance at Mᵣ + 1?"}</p>
+        <p>{content.paragraphs[0]}</p>
+        <p>{content.paragraphs[1]}</p>
+        <p>{content.paragraphs[2]}</p>
+        <p>{content.paragraphs[3]}</p>
       </div>
     </section>
-    <QuestionAnswerForm definition={l5p8} attempt={attempt} onAction={onAction}>
+    <QuestionAnswerForm definition={definition} attempt={attempt} onAction={onAction}>
       {({ disabled, onEdit }) => <div className="l5p8-answer-fields">
         <label className="l5p8-answer type-label" htmlFor="l5p8-answer">
-          <span className="sr-only">n =</span>
+          <span className="sr-only">{content.fieldLabels[0]}</span>
           <AnswerInput id="l5p8-answer" name="answer" value={attempt.answers.answer ?? ''}
             inputMode="decimal" maxLength={6} disabled={disabled} autoComplete="off" spellCheck={false}
             onValueChange={value => onEdit('answer', value)} />

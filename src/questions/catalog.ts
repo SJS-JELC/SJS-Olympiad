@@ -1,3 +1,4 @@
+import type { LoadedPresentation } from '../contracts/presentation';
 import { doubleTrouble } from './double-trouble/definition';
 import { DoubleTrouble } from './double-trouble/DoubleTrouble';
 import { u5p4 } from './u5p4/definition';
@@ -70,7 +71,7 @@ import { l6p4 } from './l6p4/definition';
 import { L6Problem4 } from './l6p4/L6Problem4';
 import { u6p9 } from './u6p9/definition';
 import { U6Problem9 } from './u6p9/U6Problem9';
-export type QuestionViewProps = { attempt: Attempt; onAction: (action: AttemptAction) => void; data?: unknown };
+export type QuestionViewProps = { attempt: Attempt; onAction: (action: AttemptAction) => void; data?: unknown; presentation?: LoadedPresentation };
 export type QuestionEntry = { definition: QuestionDefinition; View: ComponentType<QuestionViewProps> };
 /** Explicit year + number identity; other year groups must never silently fall back to L6. */
 export const questionCatalog: readonly QuestionEntry[] = [

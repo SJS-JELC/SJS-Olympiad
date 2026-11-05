@@ -1,0 +1,113 @@
+{
+  "job": "J09-standards",
+  "verdict": "FAIL",
+  "reviewComplete": true,
+  "baseline": "3e8d8488fb15a64332405aa30ea5dc7361d1e2b4",
+  "tip": "37c2d0474ec4af48f891642cb51f305209a9cd5d",
+  "findings": {
+    "documented": 1,
+    "heuristic": 0,
+    "highestSeverity": "P2"
+  },
+  "standardsSources": [
+    "../../AGENTS.md",
+    "AGENTS.md",
+    "README.md",
+    "GLOSSARY.md",
+    "docs/question-framework.md",
+    "docs/api-contract.md",
+    "docs/azure-backend-pilot.md",
+    "docs/typography.md",
+    "docs/source-provenance.md",
+    "docs/readiness-pilot.md",
+    "docs/schools-and-teams.md",
+    "docs/agents/issue-tracker.md",
+    "docs/agents/domain.md",
+    "docs/adr/0001-app-and-workspace-ownership.md",
+    "docs/adr/0002-school-identity-and-roster-allocation.md",
+    "docs/adr/0003-protected-runtime-identifiers.md",
+    "src/questions/_starter/README.md"
+  ],
+  "additionalStandardsSearch": {
+    "patterns": [
+      "*CODING_STANDARDS*",
+      "*CONTRIBUTING*"
+    ],
+    "matches": []
+  },
+  "reviewedAreas": [
+    "api/src/service.mjs: contentContext, verifyContent, statusAttempt/bulkView, selected reads, practical read/write separation; existing authenticate/ownedTeam and mutation fencing",
+    "api/src/http.mjs, api/olympiad/index.js, scripts/local-preview.mjs: same-origin cookie handling, binary Buffer/isRaw, no-store/nosniff",
+    "api/src/presentation: explicit 38-record registry, validators, fixed assets/SVG audit, title catalogue, typed data migrations and provenance",
+    "src/cloud/CloudQuestion.tsx, content-store.ts, useContentStore.ts, api.ts, question-state.ts; src/contracts/presentation.ts: memory cache, cleanup, stale responses, selected readiness, effective validators, pending frozen retries and completion",
+    "src/main.tsx, App.tsx, components/ProblemTesting.tsx, practicals/Practical.tsx and catalog.ts: route gates, titles, teacher preview, numeric-only post-close fields",
+    "src/questions all L5/L6/U5/U6 migration families: public neutral definitions, server payload consumption, assets, scientific IDs, bespoke graph/NMR/GC/diagram/rendering seams",
+    "src/components/dot-cross and public pilot shared-editor isolation; generic editor/resource limits assessed as non-scientific mechanics",
+    "scripts/check-protected-presentations.mjs, test-protected-boundary.mjs, check-protected-science.mjs, measure-protected-content.mjs, compare-protected-visuals.py and package.json",
+    "api/tests/protected-content.test.mjs, protected-practical.test.mjs and migration tests; tests/node/content-store.test.cjs; unit network-policy/effective-ID tests; browser protected-content/practical/parity and supplied evidence"
+  ],
+  "independentChecks": [
+    {
+      "command": "node --test api/tests/protected-content.test.mjs api/tests/protected-practical.test.mjs",
+      "result": "PASS",
+      "passed": 32,
+      "failed": 0,
+      "node": "24.13.1"
+    },
+    {
+      "command": "node scripts/check-protected-science.mjs",
+      "result": "PASS",
+      "records": 38,
+      "note": "Evidence-only Git comparison against accepted pre-J08 migration; required build/API scripts inspected and do not invoke it."
+    },
+    {
+      "command": "Read-only Node traversal comparing every fixedAsset URL path segment with exact readdir casing",
+      "result": "PASS",
+      "paths": 47,
+      "failures": []
+    },
+    {
+      "command": "Read-only transpilation/execution of actual useServerQuestions with isolated hook and transport harness",
+      "result": "REPRODUCED P2",
+      "sequence": [
+        "Start L6P3 selected question read; hold transport",
+        "Render LOCKED authority; increment security generation/epoch",
+        "Render recovered ACTIVE authority; increment security generation/epoch",
+        "Invoke recovered mount load while old read is pending",
+        "Resolve old response; await both calls; render"
+      ],
+      "observed": {
+        "questionRequests": 1,
+        "selectedLoaded": false,
+        "loadError": null,
+        "flightRemaining": false
+      },
+      "limitations": "Deterministic hook harness, not a new browser test. Existing network-policy stale-read test explicitly calls load only after obsolete settlement, masking this ordering."
+    },
+    {
+      "command": "git diff --check 3e8d8488fb15a64332405aa30ea5dc7361d1e2b4...HEAD",
+      "result": "NONZERO",
+      "note": "Retained baseline evidence logs and exact-copied source SVG whitespace; skipped as tooling-enforced formatting and preservation issue, not a substantive finding."
+    }
+  ],
+  "evidenceInspected": [
+    "../integration/.scratch/protected-question-content/review-basis.md",
+    ".scratch/protected-question-content/strict-identifiers.md",
+    ".scratch/protected-question-content/renderer-seam.md",
+    ".scratch/protected-question-content/evidence/j08.md",
+    ".scratch/protected-question-content/evidence/j08-validation.json",
+    ".scratch/protected-question-content/evidence/j08-boundary.json"
+  ],
+  "notRerun": [
+    "full API/unit/contracts/build/browser suites",
+    "loopback transfer/load cohorts",
+    "all 114 screenshot pairs"
+  ],
+  "limitations": [
+    "Review is read-only except the two owned report files.",
+    "No external preview profile, cloud configuration, live storage or personal records changed.",
+    "Exact asset casing inspection and Node24 focused checks do not prove Linux/managed Node22/Azure execution.",
+    "No deployment/publication/live acceptance claim.",
+    "No unsubstantiated heuristic style findings; possible question-specific resource limits were assessed and not reported as scientific clues."
+  ]
+}

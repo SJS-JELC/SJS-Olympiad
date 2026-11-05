@@ -1,3 +1,5 @@
+import {presentedDefinition} from '../contracts/presentation';
+import { useContentStore } from './useContentStore';
 import { useEffect, useLayoutEffect, useReducer, useRef, type SyntheticEvent } from 'react';
 import { emptyAttempt, type Answers, type Attempt, type AttemptAction, type QuestionDefinition } from '../questions/attempts';
 import type { QuestionEntry } from '../questions/catalog';
@@ -16,7 +18,9 @@ type RecordState = {
     attempt: Attempt;
     revision: number;
     data?: unknown;
-    loaded: boolean;
+    stateLoaded: boolean;
+    selectedLoaded?: boolean;
+    loadFlight?:{promise:Promise<void>};
     dirty: boolean;
     edits: number;
     status: string;
@@ -64,6 +68,7 @@ function localEdit(definition: QuestionDefinition, attempt: Attempt, action: Att
 /** Answers and presentation edits live only in this mounted router's memory. */
 export function useServerQuestions(eventId: string | undefined) {
     const security = useCompetitionSecurity();
+    const content = useContentStore(eventId);
     const identity = [security.server?.role, security.server?.team?.id, security.server?.team?.claimGeneration, security.server?.expiresAt].join('|');
     type Context = { records: Map<string, RecordState>; hydrated: boolean; flight?: Promise<boolean>; error?: string };
     const cache = useRef({ identity, contexts: new Map<string, Context>() });
@@ -74,11 +79,19 @@ export function useServerQuestions(eventId: string | undefined) {
     let context = owner.contexts.get(contextKey);
     if (!context) { context = { records: new Map(), hydrated: false }; owner.contexts.set(contextKey, context); }
     const current = context;
-    const stillAuthorized = () => cache.current === owner;
+    const activeContext=useRef(contextKey);activeContext.current=contextKey;
+    const selectedAuthority=[eventId,security.server?.competition?.epoch,security.session.status,security.phase,security.canAccessTheory()].join('|');
+    const selectedGeneration=useRef(selectedAuthority),selectedRevision=useRef(0);
+    if(selectedGeneration.current!==selectedAuthority){
+      selectedGeneration.current=selectedAuthority;selectedRevision.current++;
+      for(const saved of owner.contexts.values())for(const [id,record] of saved.records)if(['L6P3','U5P5'].includes(id)){record.loadFlight=undefined;record.loadError=undefined;record.selectedLoaded=false;record.data=undefined;if(record.attempt.interaction?.kind==='timed')record.attempt={...record.attempt,interaction:{...record.attempt.interaction,formula:null,revealed:null}};}
+    }
+    const selectedVersion=selectedRevision.current;
+    const stillAuthorized = () => cache.current === owner && activeContext.current===contextKey && selectedRevision.current===selectedVersion;
     const get = (id: string) => {
         let value = current.records.get(id);
         if (!value) {
-            value = { attempt: emptyAttempt(), revision: 0, loaded: security.server?.role === 'teacher' && id !== 'U5P5', dirty: false, edits: 0, status: security.server?.role === 'teacher' && id !== 'U5P5' ? 'Saved' : current.error ?? 'Loading saved results...' };
+            value = { attempt: emptyAttempt(), revision: 0, stateLoaded: security.server?.role === 'teacher' && id !== 'U5P5', dirty: false, edits: 0, status: security.server?.role === 'teacher' && id !== 'U5P5' ? 'Saved' : current.error ?? 'Loading saved results...' };
             current.records.set(id, value);
         }
         return value;
@@ -86,15 +99,15 @@ export function useServerQuestions(eventId: string | undefined) {
     const bodyFor = (id: string) => ({ questionId: id, ...(security.server?.role === 'teacher' ? { eventId } : {}) });
     function accept(id: string, value: QuestionState, edits: number, initial = false, pending?: Pending) {
         const record = get(id);
-        const next = reconcileQuestion(!initial && record.loaded ? record : undefined, value, Date.now(), pending?.body.action);
+        const next = reconcileQuestion(!initial && record.stateLoaded ? record : undefined, value, Date.now(), pending?.body.action);
         record.attempt = next.attempt;
         record.completion = next.completion;
         record.revision = value.revision;
         if (value.data !== undefined) record.data = value.data;
-        record.loaded = true;
+        record.stateLoaded = true;
         record.loadError = undefined;
         record.dirty = !record.completion && record.edits !== edits;
-        record.status = record.dirty ? 'Answer not submitted' : 'Saved';
+        record.status = record.pending ? 'The previous check was not confirmed. Retry to confirm.' : record.dirty ? 'Answer not submitted' : 'Saved';
         security.recordQuestion(id, value.attempt, value.score);
         render();
     }
@@ -105,45 +118,47 @@ export function useServerQuestions(eventId: string | undefined) {
         for (const [id, state] of Object.entries(value.questions))
             accept(id, { ...state, score: value.score, serverNow: value.serverNow, eventEndsAt: value.eventEndsAt }, get(id).edits, true);
     }
-    // GO/resume carries the whole active year, so opening a question makes no read.
+    // GO/resume carries status only. Selected custom state loads under theory gates.
     const initial = security.server?.hydration;
     if (initial && initial.eventId === eventId && !current.hydrated) {
         // Seeding must not call React setters while the router renders.
         current.hydrated = true;
         for (const [id, state] of Object.entries(initial.questions)) {
             const next = reconcileQuestion(undefined, { ...state, serverNow: initial.serverNow }, Date.now());
-            current.records.set(id, { ...next, revision: state.revision, data: state.data, loaded: true, dirty: false, edits: 0, status: 'Saved' });
+            current.records.set(id, { ...next, revision: state.revision, data: state.data, stateLoaded: true, dirty: false, edits: 0, status: 'Saved' });
         }
     }
-    async function load(_id: string) {
-        if (security.server?.role === 'teacher' && get(_id).loaded) return;
-        if (current.hydrated) return;
-        if (current.flight) { await current.flight; return; }
-        for(const record of current.records.values())if(!record.loaded){record.loadError=undefined;record.status='Loading saved results...';}
-        render();
-        current.flight = (async () => {
-            const hasAuthority = security.captureAuthority();
-            try {
-                if (!security.canAccessTheory()) return false;
-                if (security.server?.role === 'teacher') {
-                    const value = await request<QuestionState>('question', {eventId,questionId:_id});
-                    if (!stillAuthorized()) return false;
-                    accept(_id,value,get(_id).edits,true); return true;
-                }
-                const value = await request<QuestionHydration>('hydrate', {});
-                if (!stillAuthorized()) return false;
-                hydrate(value);
-                return current.hydrated;
-            } catch (error) {
-                if (!stillAuthorized()) return false;
-                if (hasAuthority()) security.handleMutationError(error as { status?: number; message?: string });
-                current.error = error instanceof Error ? error.message : 'Unable to load saved results.';
-                for (const record of current.records.values()) if(!record.loaded){record.status = current.error;record.loadError=current.error;}
-                render();
-                return false;
-            } finally { current.flight = undefined; }
+    async function load(id: string) {
+        const record=get(id);
+        const selected=['L6P3','U5P5'].includes(id);
+        if(record.stateLoaded && (!selected || record.selectedLoaded))return;
+        if(record.loadFlight)return record.loadFlight.promise;
+        const hasAuthority=security.captureAuthority();
+        record.loadError=undefined;record.status='Loading saved results...';render();
+        // The flight belongs to this authority/context generation. An obsolete
+        // finalizer must never clear a replacement read started after recovery.
+        const flight={promise:Promise.resolve()};
+        record.loadFlight=flight;
+        flight.promise=(async()=>{
+         try {
+          if(!security.canAccessTheory())return;
+          if(!record.stateLoaded && security.server?.role!=='teacher' && !current.hydrated){
+           if(!current.flight)current.flight=(async()=>{try{const value=await request<QuestionHydration>('hydrate',{});if(stillAuthorized() && hasAuthority() && security.canAccessTheory())hydrate(value);return current.hydrated;}finally{current.flight=undefined;}})();
+           await current.flight;
+          }
+          if((selected && !record.selectedLoaded) || (!record.stateLoaded && security.server?.role==='teacher')){
+           const value=await request<QuestionState>('question',bodyFor(id));
+           if(!stillAuthorized() || !hasAuthority() || !security.canAccessTheory())return;
+           accept(id,value,record.edits,!record.stateLoaded);record.selectedLoaded=true;
+          }
+         }catch(error){
+          if(!stillAuthorized() || !hasAuthority())return;
+          security.handleMutationError(error);
+          record.loadError=error instanceof Error?error.message:'Unable to load saved results.';
+          record.status=record.loadError;render();
+         }finally{if(record.loadFlight===flight)record.loadFlight=undefined;if(stillAuthorized())render();}
         })();
-        await current.flight;
+        await flight.promise;
     }
     async function send(id: string, pending: Pending): Promise<boolean> {
         const record = get(id);
@@ -156,6 +171,7 @@ export function useServerQuestions(eventId: string | undefined) {
             if (!security.canAccessTheory()) throw new Error('This question is not available.');
             const value = await request<QuestionState>(pending.endpoint, pending.body);
             if (!stillAuthorized()) return false;
+            if (!hasAuthority() || !security.canAccessTheory()) {record.status='The previous check was not confirmed. Retry to confirm.';render();return false;}
             record.pending = undefined;
             accept(id, value, pending.edits, false, pending);
             return true;
@@ -179,7 +195,7 @@ export function useServerQuestions(eventId: string | undefined) {
     function action(definition: QuestionDefinition, action: AttemptAction) {
         if (!security.canAccessTheory()) return;
         const record = get(definition.id);
-        if (!record.loaded || record.completion) return;
+        if (!record.stateLoaded || record.completion) return;
         const remote = action.type === 'submit' || action.type === 'start' || action.type === 'gc-run' || action.type === 'tick';
         if (!remote) {
             const next = localEdit(definition, record.attempt, action);
@@ -211,7 +227,7 @@ export function useServerQuestions(eventId: string | undefined) {
         const timer = window.setInterval(() => {
             if (!security.canAccessTheory()) return;
             for (const [id, record] of current.records) {
-                if (record.completion) continue;
+                if (record.completion || ['L6P3','U5P5'].includes(id) && !record.selectedLoaded) continue;
                 const interaction = record.attempt.interaction;
                 const due = interaction?.kind === 'timed' && interaction.active && Date.now() >= interaction.deadline
                     || interaction?.kind === 'gc' && interaction.activeRun && Date.now() >= interaction.activeRun.deadline;
@@ -220,7 +236,7 @@ export function useServerQuestions(eventId: string | undefined) {
         }, 250);
         return () => window.clearInterval(timer);
     });
-    return { get, load, action, flush };
+    return { get, load, action, flush, content };
 }
 export type ServerQuestions = ReturnType<typeof useServerQuestions>;
 export function CloudQuestion({ entry, questions }: {
@@ -228,6 +244,11 @@ export function CloudQuestion({ entry, questions }: {
     questions: ServerQuestions;
 }) {
     const { definition, View } = entry, record = questions.get(definition.id),security=useCompetitionSecurity();
+    const presentation=questions.content.get('question',definition.id);
+    const contentLoaded=!!presentation.value;
+    const selectedLoaded=!['L6P3','U5P5'].includes(definition.id) || !!record.selectedLoaded;
+    const ready=record.stateLoaded && selectedLoaded && contentLoaded && security.canAccessTheory();
+    const loadError=record.loadError ?? presentation?.error;
     const fields=useRef<HTMLFieldSetElement>(null),complete=!!record.completion;
     useLayoutEffect(()=>{
       const fieldset=fields.current;
@@ -239,18 +260,18 @@ export function CloudQuestion({ entry, questions }: {
       if(fieldset.contains(document.activeElement))(document.activeElement as HTMLElement)?.blur?.();
       for(const dialog of fieldset.querySelectorAll<HTMLDialogElement>('dialog[open]'))dialog.close();
       return()=>{for(const {element,index,disabled}of controls){if(index===null)element.removeAttribute('tabindex');else element.setAttribute('tabindex',index);if(disabled===null)element.removeAttribute('aria-disabled');else element.setAttribute('aria-disabled',disabled);}};
-    },[complete]);
+    },[complete,ready]);
     const blockCompleted=(event:SyntheticEvent)=>{if(complete){event.preventDefault();event.stopPropagation();}};
-    useEffect(() => { void questions.load(definition.id); }, [definition.id]);
+    useEffect(() => { void questions.load(definition.id);void questions.content.load('question',definition.id); }, [definition.id,questions.content,security.session.status,security.server?.competition?.epoch]);
     useEffect(()=>{
       if(record.pending)return;
       const target=record.focusTarget;
       if(target?.isConnected&&!target.matches(':disabled'))target.focus({preventScroll:true});
       record.focusTarget=null;
     },[record.revision,record.pending]);
-    return <div className="cloud-question cloud-question--joined">{!record.loaded && !record.loadError && <div className="cloud-load-progress" role="progressbar" aria-label="Loading question" />} {record.loaded && (security.server?.role!=='teacher' || !['Saved','Answer not submitted'].includes(record.status)) && <p className="type-caption cloud-status" role="status">{record.status}{record.pending && <button type="button" onClick={() => void questions.flush(definition.id)}>Retry save</button>}</p>}
-    {record.loaded ? <fieldset ref={fields} className={'cloud-fields'+(complete?' cloud-fields--complete':'')} disabled={complete || !!record.pending} onClickCapture={blockCompleted} onDoubleClickCapture={blockCompleted} onPointerDownCapture={blockCompleted} onPointerMoveCapture={blockCompleted} onPointerUpCapture={blockCompleted} onDragStartCapture={blockCompleted} onKeyDownCapture={event=>{if(event.key!=='Tab')blockCompleted(event);}} onWheelCapture={event=>{if(complete)event.stopPropagation();}} onFocusCapture={event=>{if(complete)(event.target as HTMLElement).blur?.();}}><View attempt={record.attempt} onAction={action => {if(!complete)questions.action(definition, action);}} data={record.data}/></fieldset> : <>{record.loadError && <div className="cloud-load-error type-caption" role="alert">{record.loadError}<button className="ui-button" type="button" onClick={() => void questions.load(definition.id)}>Retry</button></div>}</>}
-    {record.loaded && record.completion && security.canAccessTheory() && <CompletionStamp key={definition.id+'-'+record.completion.solvedAt} solvedAt={record.completion.solvedAt} animate={record.completion.animate} preview={security.server?.role==='teacher'} onShown={()=>{if(record.completion)record.completion.animate=false;}}/>}
+    return <div className="cloud-question cloud-question--joined">{!ready && !loadError && <div className="cloud-load-progress" role="progressbar" aria-label="Loading question" />} {ready && (security.server?.role!=='teacher' || !['Saved','Answer not submitted'].includes(record.status)) && <p className="type-caption cloud-status" role="status">{record.status}{record.pending && <button type="button" onClick={() => void questions.flush(definition.id)}>Retry save</button>}</p>}
+    {ready ? <fieldset ref={fields} className={'cloud-fields'+(complete?' cloud-fields--complete':'')} disabled={complete || !!record.pending} onClickCapture={blockCompleted} onDoubleClickCapture={blockCompleted} onPointerDownCapture={blockCompleted} onPointerMoveCapture={blockCompleted} onPointerUpCapture={blockCompleted} onDragStartCapture={blockCompleted} onKeyDownCapture={event=>{if(event.key!=='Tab')blockCompleted(event);}} onWheelCapture={event=>{if(complete)event.stopPropagation();}} onFocusCapture={event=>{if(complete)(event.target as HTMLElement).blur?.();}}><View attempt={record.attempt} onAction={action => {if(!complete && presentation.value)questions.action(presentedDefinition(definition,presentation.value.record.presentation), action);}} data={record.data} presentation={presentation?.value}/></fieldset> : <>{loadError && <div className="cloud-load-error type-caption" role="alert">{loadError}<button className="ui-button" type="button" onClick={() => {void questions.load(definition.id);void questions.content.load('question',definition.id);}}>Retry</button></div>}</>}
+    {ready && record.completion && security.canAccessTheory() && <CompletionStamp key={definition.id+'-'+record.completion.solvedAt} solvedAt={record.completion.solvedAt} animate={record.completion.animate} preview={security.server?.role==='teacher'} onShown={()=>{if(record.completion)record.completion.animate=false;}}/>}
   </div>;
 }
 export { request } from './api';

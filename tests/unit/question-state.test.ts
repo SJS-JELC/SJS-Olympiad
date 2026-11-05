@@ -1,3 +1,6 @@
+// @ts-expect-error Node-only authorized scientific fixture.
+import {u5p5Presentation} from '../../api/src/presentation/records/u5p5.mjs';
+import {presentedDefinition} from '../../src/contracts/presentation';
 import { describe, expect, it } from 'vitest';
 import { reconcileQuestion } from '../../src/cloud/question-state';
 import { emptyAttempt, type Attempt } from '../../src/questions/attempts';
@@ -38,7 +41,7 @@ describe('server outcome reconciliation', () => {
   });
 
   it('requires the matching server completion ID, deduplicates reports, and retains only eight', () => {
-    const lab = gcState(emptyAttempt());
+    const lab = gcState(emptyAttempt(),u5p5Presentation.presentation);
     const running: Attempt = { ...emptyAttempt(), interaction: { ...lab,
       activeRun: { id: 9, sample: 'citrus', concentration: 20, startedAt: 0, deadline: 4000 },
       results: Array.from({ length: 8 }, (_, i) => ({ id: i + 1, sample: 'mystery' as const, concentration: 100, interval: [0, 0] as const })) } };
@@ -54,7 +57,7 @@ describe('server outcome reconciliation', () => {
   });
 
   it('uses a frozen request capture when the server omits public GC capture details', () => {
-    const lab = gcState(emptyAttempt());
+    const lab = gcState(emptyAttempt(),u5p5Presentation.presentation);
     const wireRun = { id: 1, startedAt: 100, deadline: 4100 } as NonNullable<typeof lab.activeRun>;
     const next = reconcileQuestion({ attempt: { ...emptyAttempt(), interaction: lab } }, {
       attempt: { ...emptyAttempt(), interaction: { ...lab, activeRun: wireRun } }, serverNow: 100,

@@ -33,7 +33,9 @@ test('GO bulk-hydrates every registered question with one partition list and no 
     for(const entry of Object.values(hydration.questions))assert.equal(entry.revision,0);
     if(year==='U5') {
       assert.deepEqual(Object.keys(hydration.questions).sort(),upperFifthQuestionIds);
-      assert.ok(hydration.questions.U5P5.data.gcTraces.mystery.length>100);
+      assert.equal(hydration.questions.U5P5.data,undefined);
+      assert.equal(hydration.questions.U5P5.attempt.interaction,undefined);
+      assert.ok((await f.api.question(f.player,{questionId:'U5P5'})).data.gcTraces.mystery.length>100);
     }
   }
 });
@@ -80,7 +82,7 @@ test('in-tab interruption preserves role and staff recovery; combined GC Run own
   for(const [sample,concentration] of [['mystery',50],['citrus',12.3]])await assert.rejects(f.api.action(f.player,{questionId:'U5P5',requestId:'invalid-'+sample,action:{type:'gc-run',sample,concentration}}),{status:400});
   const run=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-run',action:{type:'gc-run',sample:'citrus',concentration:12.5,deadline:1,id:500}});
   assert.equal(run.attempt.interaction.activeRun.deadline,104000);assert.equal(run.attempt.interaction.activeRun.id,1);assert.equal(run.attempt.interaction.activeRun.concentration,12.5);
-  f.setTime(104000);const projected=await f.api.hydrate(f.player);assert.equal(projected.questions.U5P5.attempt.interaction.results.length,0);
+  f.setTime(104000);const projected=await f.api.hydrate(f.player);assert.equal(projected.questions.U5P5.attempt.interaction,undefined);
   const stored=await f.repo.get(f.eventId+'-'+f.teamId,'q-U5P5');assert.ok(stored.state.interaction.activeRun);
   const finished=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-finish',action:{type:'tick'}});assert.equal(finished.gcCompletedRunId,1);assert.deepEqual(finished.attempt.interaction.results,[]);
   assert.equal((await f.api.leaderboard(f.staff)).entries.length,0);
@@ -92,8 +94,27 @@ test('completed GC read/hydration freeze even an unfinished run without exposing
   const solved=await f.api.submit(f.player,{questionId:'U5P5',requestId:'completed-read-solve',answers:{composition:'[25,14,9,152]'}});
   f.setTime(120000);const before=JSON.stringify([...f.repo.rows]);
   const read=await f.api.question(f.player,{questionId:'U5P5'}),hydrated=await f.api.hydrate(f.player);
-  assert.deepEqual(read.attempt,solved.attempt);assert.deepEqual(hydrated.questions.U5P5.attempt,solved.attempt);
+  assert.deepEqual(read.attempt,solved.attempt);const {interaction,...status}=solved.attempt;assert.deepEqual(hydrated.questions.U5P5.attempt,status);
   assert.equal(JSON.stringify([...f.repo.rows]),before);assert.ok(!JSON.stringify(hydrated).includes('privateState'));
+});
+
+test('selected GC recovery read retains an elapsed capture until a committed completion tick',async()=>{
+  const f=await fixture('U5');await f.api.start(f.player);
+  const started=await f.api.action(f.player,{questionId:'U5P5',requestId:'recovery-gc-start',action:{type:'gc-run',sample:'mystery',concentration:100}});
+  const locked=await f.api.breach(f.player,{expectedEpoch:(await f.api.session(f.player)).competition.epoch});
+  f.setTime(started.attempt.interaction.activeRun.deadline+1000);
+  const recovery=await f.api.recovery(f.player,{code:'5678',expectedEpoch:locked.competition.epoch});
+  await f.api.resume(f.player,{grant:recovery.grant,expectedEpoch:locked.competition.epoch});
+  const before=JSON.stringify([...f.repo.rows]);
+  const selected=await f.api.question(f.player,{questionId:'U5P5'});
+  assert.equal(selected.attempt.interaction.activeRun.id,started.attempt.interaction.activeRun.id);
+  assert.equal(selected.gcCompletedRunId,undefined);
+  assert.equal(JSON.stringify([...f.repo.rows]),before);
+  const request={questionId:'U5P5',requestId:'recovery-gc-finish',action:{type:'tick'}};
+  const finished=await f.api.action(f.player,request);
+  assert.equal(finished.gcCompletedRunId,started.attempt.interaction.activeRun.id);
+  assert.equal(finished.attempt.interaction.activeRun,null);
+  assert.equal((await f.api.action(f.player,request)).gcCompletedRunId,finished.gcCompletedRunId);
 });
 
 test('ordinary stale 401 cannot expire a replacement cookie; explicit restore and logout still clear it',async()=>{

@@ -1,33 +1,36 @@
+export interface U6P4Presentation extends PresentationPayload { renderer:'U6P4';text:string[];diagramAspect:[number,number];answerCenters:number[]; }
+import { requirePresentation, presentedDefinition, type PresentationPayload } from '../../contracts/presentation';
 import { useLayoutEffect, useRef } from 'react';
 import type { QuestionViewProps } from '../catalog';
 import { AnswerInput } from '../AnswerInput';
 import { QuestionAnswerForm } from '../QuestionAnswerForm';
 import { u6p4 } from './definition';
-import resonance from './assets/resonance.svg';
 import './U6Problem4.css';
 
-export function U6Problem4({ attempt, onAction }: QuestionViewProps) {
+export function U6Problem4({ attempt, onAction, presentation }: QuestionViewProps) {
+  const {record:{presentation:content},assets}=requirePresentation<U6P4Presentation>(presentation,'U6P4');
+  const definition=presentedDefinition(u6p4,content);
   const questionRef = useRef<HTMLDivElement>(null);
   const figureRef = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     const figure = figureRef.current;
     if (!figure) return;
     // Align answers to the contained source image, including any side letterboxing.
-    const measure = () => questionRef.current?.style.setProperty('--u6p4-diagram-width', `${Math.min(figure.clientWidth, figure.clientHeight * 1934.58 / 992.12)}px`);
+    const measure = () => questionRef.current?.style.setProperty('--u6p4-diagram-width', `${Math.min(figure.clientWidth, figure.clientHeight * content.diagramAspect[0] / content.diagramAspect[1])}px`);
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(figure);
     return () => observer.disconnect();
-  }, []);
+  }, [content]);
   return <div ref={questionRef} className="question-content question-content--aligned u6p4-question">
-    <section className="question-brief" aria-label="Question">
-      <p className="type-body">Ion stability depends on charge delocalisation. In the example below, the negative charge is delocalised over four atoms, shown in each of the 4 resonance structures. For each of the three molecules below, state how many atoms the charge can be delocalised over.</p>
-      <figure ref={figureRef} className="u6p4-diagram"><img src={resonance} alt="Four resonance structures in the worked example, followed by molecules A, B and C." /></figure>
+    <section className="question-brief" aria-label={content.text[0]}>
+      <p className="type-body">{content.text[1]}</p>
+      <figure ref={figureRef} className="u6p4-diagram"><img src={assets.diagram0} alt={content.text[2]} /></figure>
     </section>
-    <QuestionAnswerForm layout="aligned" definition={u6p4} attempt={attempt} onAction={onAction}>
+    <QuestionAnswerForm layout="aligned" definition={definition} attempt={attempt} onAction={onAction}>
       {({ disabled, onEdit }) => <div className="u6p4-answers">
-        {(['a', 'b', 'c'] as const).map(id => <label className="u6p4-answer type-label" key={id} htmlFor={'u6p4-' + id}>
-          <AnswerInput aria-label={'Molecule ' + id.toUpperCase()} id={'u6p4-' + id} name={id} value={attempt.answers[id] ?? ''} inputMode="decimal" maxLength={3} disabled={disabled}
+        {(['a', 'b', 'c'] as const).map((id,index) => <label style={{left:content.answerCenters[index]+'%'}} className="u6p4-answer type-label" key={id} htmlFor={'u6p4-' + id}>
+          <AnswerInput aria-label={definition.parts[0].fields.find(field=>field.id===id)?.label} id={'u6p4-' + id} name={id} value={attempt.answers[id] ?? ''} inputMode="decimal" maxLength={3} disabled={disabled}
             onValueChange={value => onEdit(id, value)} />
         </label>)}
       </div>}

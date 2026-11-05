@@ -81,7 +81,7 @@ export const test = base.extend<Options & {
                     await route.abort('failed');
                     return;
                 }
-                await route.fulfill({ status: response.status, headers: response.headers, json: response.body });
+                await route.fulfill({ status: response.status, headers: response.headers, ...(response.isRaw ? {body:response.body} : {json: response.body}) });
             });
             await use(api);
         }, { auto: true }],

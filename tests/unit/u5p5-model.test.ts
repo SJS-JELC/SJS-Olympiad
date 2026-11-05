@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { getComposition, RETENTION_TIMES, RUN_MS, SAMPLE_LABELS, SAMPLES, snapInterval, TIME_MAX, validComposition } from '../../src/questions/u5p5/model';
+import { getComposition as parseComposition, RUN_MS, snapInterval as snapPublic, validComposition as validateComposition } from '../../src/questions/u5p5/model';
 import { integrate as integratePublic, getTrace as publicTrace } from '../../src/questions/u5p5/model';
 import { customData } from '../fixtures/custom-server';
 
 // @ts-expect-error Node-only private scientific reference for regression assertions.
 import { getTrace, integrate, isCorrectComposition } from '../../api/src/private-gc.mjs';
+// @ts-expect-error Node-only protected display parameters.
+import {u5p5Presentation} from '../../api/src/presentation/records/u5p5.mjs';
+const {guideValues:GUIDE_VALUES,timeMax:TIME_MAX,sampleLabels:SAMPLE_LABELS}=u5p5Presentation.presentation;
+const validComposition=(units:unknown)=>validateComposition(units,u5p5Presentation.presentation.initialComposition);
+const getComposition=(answers:Readonly<Record<string,string>>)=>parseComposition(answers,u5p5Presentation.presentation.initialComposition);
+const snapInterval=(interval:readonly [number,number])=>snapPublic(interval,GUIDE_VALUES,TIME_MAX);
+const SAMPLES=['citrus','floral','woody','mystery'] as const;
 const peakWindow = (time: number) => [time - 0.15, time + 0.15] as const;
 const closePeakWindow = (time: number) => [time - 0.099, time + 0.099] as const;
 

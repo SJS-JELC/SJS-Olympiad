@@ -24,9 +24,10 @@ describe('theory window presentation', () => {
         expect(theoryPhase(event,299)).toBe('open'); expect(theoryPhase(event,300)).toBe('closed');
         expect(eventTiming(event).endsAt).toBe(500);
     });
-    it('draft bypasses starts but preserves both configured end boundaries', () => {
+    it('draft enforces both configured start and end boundaries', () => {
         const draft={...event,status:'draft'} as EventRecord;
-        expect(theoryPhase(draft,0)).toBe('open');expect(practicalPhase(draft,0)).toBe('open');
+        expect(theoryPhase(draft,0)).toBe('waiting');expect(practicalPhase(draft,0)).toBe('waiting');
+        expect(theoryPhase(draft,100)).toBe('open');expect(practicalPhase(draft,200)).toBe('open');
         expect(theoryPhase(draft,300)).toBe('closed');expect(practicalPhase(draft,300)).toBe('open');
         expect(practicalPhase(draft,500)).toBe('closed');
         expect(practicalPhase({...draft,practicalStartsAt:null,practicalEndsAt:null},0)).toBe('closed');

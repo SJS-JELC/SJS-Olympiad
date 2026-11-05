@@ -1,3 +1,5 @@
+// @ts-expect-error Node-only authorized scientific fixture.
+import {u5p2Presentation} from '../../api/src/presentation/records/u5p2.mjs';
 // @vitest-environment jsdom
 import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -18,7 +20,7 @@ it('keeps diagram coordinates/history and saves unchanged through zoom, pan, res
   let state:DotCrossState={...emptyDiagram(),atoms:[{id:'a1',element:'N',x:200,y:200},{id:'a2',element:'O',x:300,y:200}]};
   const initial=structuredClone(state), onResponse=vi.fn((next:DotCrossState)=>{state=next;render(false);});
   const container=document.createElement('div');document.body.append(container);const root=createRoot(container);
-  const render=(readOnly:boolean)=>root.render(createElement(DotCrossEditor,{part:{kind:'dot-and-cross',initial,markingPolicyId:'igcse-dot-cross:n2o'},response:state,readOnly,onResponse}));
+  const render=(readOnly:boolean)=>root.render(createElement(DotCrossEditor,{configuration:u5p2Presentation.presentation.editor,part:{kind:'dot-and-cross',initial,markingPolicyId:'igcse-dot-cross:n2o'},response:state,readOnly,onResponse}));
   const click=async(label:string)=>act(async()=>container.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`)!.click());
   const key=async(key:string)=>act(async()=>container.querySelector('svg.dc-canvas')!.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true})));
   try {
