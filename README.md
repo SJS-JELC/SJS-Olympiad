@@ -37,7 +37,13 @@ All 35 theory and three practical presentations are server-owned versioned recor
 
 Azure Static Web Apps hosts the site at https://olympiad.masters-of-chemistry.app. `api/` contains Node 22 managed Functions with Azure Table Storage. See [Azure configuration and acceptance](docs/azure-backend-pilot.md) and the [API contract](docs/api-contract.md). Real Azure runtime/storage acceptance remains separate from local validation. Bootstrap migration preserves the existing three L6 test teams and their L6P8 results; rerunning migration never resets them.
 
-`.github/workflows/validation.yml` runs validation. The Azure workflow calls the reusable validation workflow and waits for its required checks before building/deploying the frontend and API from the same GitHub revision. Validation covers server, unit, contract and browser tests plus the production build. PR closure still only closes the preview. These workflow changes require a future GitHub run for hosted verification. Frontend tooling uses Node 24. Never place backend credentials in frontend variables or committed files.
+`.github/workflows/validation.yml` runs validation. The Azure workflow calls it and waits for its required checks before building/deploying the frontend and API from the same GitHub revision. Every run keeps all server, unit and contract tests plus the production build, which includes typechecking, typography and both public-content boundary audits. The build runs before browser tests to catch build failures early.
+
+Pushes to `main` use the smaller deployment browser suite in `playwright.smoke.config.ts`: complete suites for entry, event controls, diagnostics, security interruptions/recovery, protected content/assets, selected-load races, saving and pilot mode. Catalogue-wide scientific/visual parity, question-specific interaction/layout cases and editor viewport matrices remain in the full suite. This reduces coverage on direct pushes; run full validation for changes in those areas and before an event.
+
+Pull requests run the full browser suite. To run it without deploying, select **Actions → Olympiad validation → Run workflow** and leave **full_browser** checked (the default). Uncheck it to reproduce the deployment smoke suite. Locally use `node scripts/local-tooling.mjs test:browser:smoke` for the smaller suite, or `test:browser` for all browser cases. The smoke configuration inherits the standard browser, timeout, retry and server settings; it does not skip failing tests dynamically.
+
+PR closure still only closes the preview. These workflow changes require a future GitHub run for hosted verification; no speedup has been measured yet. Frontend tooling uses Node 24. Never place backend credentials in frontend variables or committed files.
 
 ## Development guides
 

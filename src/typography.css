@@ -17,6 +17,7 @@
   font-synthesis: none; letter-spacing: 0;
 }
 :where(button, input, select, textarea) { font: inherit; }
+.school-selector .team-tile__stamp.type-display { font-size:var(--text-size);line-height:1;letter-spacing:.035em; }
 
 /* 1 + 2. Display / Outlined display. Effects stay in the shared OlympiadHeading component. */
 .type-display, .type-outlined, .olympiad-heading { font-family: var(--font-display); font-size: 68px; font-weight: 400; font-synthesis: none; line-height: 1; letter-spacing: 0; text-transform: uppercase; }

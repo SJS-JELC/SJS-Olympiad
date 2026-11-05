@@ -1,9 +1,10 @@
 import { createHash, randomUUID } from 'node:crypto';
+import { schoolColours, validSchoolColours } from './school-colours.mjs';
 
 const digest=value=>createHash('sha256').update(value).digest('hex');
 export const schoolNameKey=value=>value.normalize('NFKC').trim().replace(/\s+/gu,' ').replace(/[’‘]/gu,"'").toLocaleLowerCase('en-GB');
 const HOST_ID='host-st-johns';
-const schoolView=({id,name,isHostSchool,revision})=>({id,name,isHostSchool,revision});
+const schoolView=school=>({id:school.id,name:school.name,isHostSchool:school.isHostSchool,revision:school.revision,colours:schoolColours(school)});
 const directoryKey={partitionKey:'system',rowKey:'schools'};
 const journalKey=(eventId,schoolId)=>({partitionKey:'system',rowKey:'school-roster-'+eventId+'-'+schoolId});
 const operationKey=(eventId,schoolId,requestId)=>({partitionKey:'system',rowKey:'school-operation-'+digest(JSON.stringify([eventId,schoolId,requestId]))});
@@ -102,6 +103,20 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
   };
   return {
     directory,display,hostId:HOST_ID,
+    colours:(schoolId,dir)=>schoolColours(dir.schools.find(s=>s.id===schoolId)),
+    async setColours(input){
+      requestId(input.requestId);
+      assert(validSchoolColours(input.colours),400,'Enter one or two colours as six-digit hex codes, for example #024633.');
+      const colours=input.colours.map(c=>c.toUpperCase()),fingerprint=digest(JSON.stringify([input.schoolId,colours,input.expectedRevision]));
+      return retry(async()=>{
+        const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-colours-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);
+        if(receipt){assert(receipt.fingerprint===fingerprint,409,'This colour request was already used.');return {school:schoolView(school)};}
+        assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Reload its colours before saving.');
+        school.colours=colours;school.revision++;dir.revision++;
+        await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-colours-receipt',fingerprint}}]);
+        return {school:schoolView(school)};
+      });
+    },
     async reserveLegacyName(eventId,teamId,value,generation){return retry(async()=>{
       const s=await settings(),event=eventById(s,eventId);assert(event.status!=='ended' && !event.rosterResetRequestId,409,'This event is not accepting roster changes.');
       const dir=await directory(),key=schoolNameKey(value),old=await repo.get('system',legacyNameKey(eventId,teamId).rowKey);

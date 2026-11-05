@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="76" viewBox="0 0 180 76" fill="none">
+<defs>
+ <linearGradient id="face" x1="40" y1="8" x2="120" y2="70" gradientUnits="userSpaceOnUse"><stop stop-color="#eef7ff"/><stop offset=".4" stop-color="#bad8fa"/><stop offset="1" stop-color="#83b9ee"/></linearGradient>
+ <linearGradient id="cap" x2="0" y2="1"><stop stop-color="#c7cdd4"/><stop offset=".35" stop-color="#858c98"/><stop offset="1" stop-color="#48515f"/></linearGradient>
+ <linearGradient id="rail" x2="0" y2="1"><stop stop-color="#b5d7f7"/><stop offset=".45" stop-color="#5487bd"/><stop offset="1" stop-color="#183b6a"/></linearGradient>
+ <filter id="glow" x="-200%" y="-100%" width="500%" height="300%"><feGaussianBlur stdDeviation="2.8"/></filter>
+ <filter id="halo" x="-50%" y="-100%" width="200%" height="300%"><feGaussianBlur stdDeviation="4"/></filter>
+ <clipPath id="panel"><path d="M29 12H151L160 21V55L151 64H29L20 55V21Z"/></clipPath>
+</defs>
+<path d="M16 2H164L178 16V60L164 74H16L2 60V16Z" fill="#080b27" stroke="#080b27" stroke-width="2" stroke-linejoin="round"/>
+<path d="M18 5H28V12L18 22V54L28 64V71H18L5 58V18Z" fill="url(#cap)"/>
+<path d="M162 5H152V12L162 22V54L152 64V71H162L175 58V18Z" fill="url(#cap)"/>
+<path d="M18 5H28V9H20L8 21L5 18Z M152 5H162L175 18L172 21L160 9H152Z" fill="#c7cdd4"/>
+<path d="M5 18L8 21V55L5 58Z M175 18L172 21V55L175 58Z" fill="#858c98"/>
+<path d="M31 5H149V10H31Z M31 66H149V71H31Z" fill="url(#rail)"/>
+<path d="M29 12H151L160 21V55L151 64H29L20 55V21Z" fill="url(#face)"/>
+<path d="M29 12H151L160 21H156L149 16H31L24 23H20V21Z" fill="#f6fbff" opacity=".85"/>
+<path d="M20 23L24 24V53L31 60H149L156 53V23L160 21V55L151 64H29L20 55Z" fill="#448aca" opacity=".8"/>
+<path d="M24 24V53L31 60H149L156 53" stroke="#cce9ff" stroke-width="1.3"/>
+<g clip-path="url(#panel)" fill="#539fe0" opacity=".25">
+<path d="M145 26L150 23L155 26V32L150 35L145 32Z M135 36L140 33L145 36V42L140 45L135 42Z M147 38L152 35L157 38V44L152 47L147 44Z M125 46L130 43L135 46V52L130 55L125 52Z M137 48L142 45L147 48V54L142 57L137 54Z M149 50L154 47L159 50V56L154 59L149 56Z"/>
+</g>
+</svg>

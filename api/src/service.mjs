@@ -131,7 +131,7 @@ export function createService(repo,config={},now=Date.now) {
       return true;
     });
   };
-  const publicTeam=async(team,directory)=>team ? {id:team.teamId,name:schools.display(team,directory ?? await schools.directory()),eventId:team.eventId,year:team.year,claimGeneration:team.claimGeneration,...(team.schoolId?{schoolId:team.schoolId,teamNumber:team.teamNumber}:{})}:null;
+  const publicTeam=async(team,directory)=>team ? {id:team.teamId,name:schools.display(team,directory ?? await schools.directory()),eventId:team.eventId,year:team.year,claimGeneration:team.claimGeneration,...(team.schoolId?{schoolId:team.schoolId,teamNumber:team.teamNumber,schoolColours:schools.colours(team.schoolId,directory ?? await schools.directory())}:{})}:null;
   const authenticate=async token=>{
     await bootstrap();
     assert(typeof token==='string' && /^[a-f0-9]{64}$/.test(token),401,'Sign in to continue.');
@@ -473,6 +473,7 @@ export function createService(repo,config={},now=Date.now) {
     async schools(token,input={}){const session=await authenticate(token);teacher(session);if(input.eventId)eventById(await settings(),input.eventId);return schools.list(input.eventId);},
     async schoolCreate(token,input){const session=await authenticate(token);teacher(session);return schools.create(input);},
     async schoolRename(token,input){const session=await authenticate(token);teacher(session);return schools.rename(input);},
+    async schoolColours(token,input){const session=await authenticate(token);teacher(session);return schools.setColours(input);},
     async schoolTeams(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.ensure(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
     async schoolLink(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.link(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},
     async schoolResume(token,input){const session=await authenticate(token);teacher(session);const progress=await schools.resume(input);return {...await api.teams(token,{eventId:input.eventId}),progress};},

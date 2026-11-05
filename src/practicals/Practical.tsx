@@ -105,11 +105,12 @@ function PracticalContent({ definition, contentStore, event, onTheory, saved, te
 /** Teacher results load labels under a teacher-only catalogue context, never via a static protocol import. */
 export function PracticalTeamResult({ result }: { result?: PracticalResult | null }) {
   const security=useCompetitionSecurity(),year=result?.year;
+  const hasResponses=Object.values(result?.responses ?? {}).some(response=>response != null && response.text.trim()!=='');
   const [presentation,setPresentation]=useState<PracticalPresentation>(),[retry,setRetry]=useState(0),[error,setError]=useState('');
-  useEffect(()=>{let current=true;setPresentation(undefined);setError('');if(security.server?.role!=='teacher' || !year)return;void request<{presentation:PracticalPresentation}>('practical-content',{contentId:year,eventId:'catalogue-'+year}).then(value=>{if(current)setPresentation(value.presentation);}).catch(()=>{if(current)setError('Unable to load response labels.');});return()=>{current=false;};},[security.server?.role,security.server?.expiresAt,year,retry]);
+  useEffect(()=>{let current=true;setPresentation(undefined);setError('');if(security.server?.role!=='teacher' || !year || !hasResponses)return;void request<{presentation:PracticalPresentation}>('practical-content',{contentId:year,eventId:'catalogue-'+year}).then(value=>{if(current)setPresentation(value.presentation);}).catch(()=>{if(current)setError('Unable to load response labels.');});return()=>{current=false;};},[security.server?.role,security.server?.expiresAt,year,hasResponses,retry]);
   const definition=findPractical(year),final=result?.responses.numPracticalResponse4;
-  if(!definition)return <>Final answer not submitted</>;
+  if(!definition || !hasResponses)return <>–</>;
   const fields=presentation?.fields ?? definition.fields.map((field,index)=>({...field,label:`Response ${index+1}`,unit:''}));
   const field=fields.find(item=>item.key==='numPracticalResponse4')!;
-  return <div className="practical-team-result"><strong>{final != null ? `${final.text}${field.unit ? ' '+field.unit : ''}` : 'Final answer not submitted'}</strong>{error && <p role="alert">{error}<button className="ui-button" onClick={()=>setRetry(value=>value+1)}>Retry labels</button></p>}<details><summary>Working responses</summary><dl>{fields.map(item => <div key={item.key}><dt>{item.label}{item.unit ? ` / ${item.unit}` : ''}</dt><dd>{result?.responses[item.key]?.text ?? 'Not submitted'}</dd></div>)}</dl></details></div>;
+  return <div className="practical-team-result"><strong>{final != null ? `${final.text}${field.unit ? ' '+field.unit : ''}` : '–'}</strong>{error && <p role="alert">{error}<button className="ui-button" onClick={()=>setRetry(value=>value+1)}>Retry labels</button></p>}<details><summary>Working responses</summary><dl>{fields.map(item => <div key={item.key}><dt>{item.label}{item.unit ? ` / ${item.unit}` : ''}</dt><dd>{result?.responses[item.key]?.text ?? '–'}</dd></div>)}</dl></details></div>;
 }

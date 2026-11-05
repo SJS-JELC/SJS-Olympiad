@@ -7,8 +7,8 @@ test('team grid handles a competing claim and opens a clean rules screen',async(
  await api.service.claim(other.token,{teamId:teams.find((team:any)=>team.name==='Taken team').id});
  const racer=await api.service.login({role:'competitor',code:'1234'});
  await page.goto('/');await page.getByLabel('Competitor code',{exact:true}).fill('1234');await page.locator('form').filter({has:page.getByLabel('Competitor code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
- await expect(page.getByRole('heading',{name:'Choose your team',exact:true})).toBeVisible();
- await expect(page.getByRole('radio',{name:'Taken team Claimed'})).toBeDisabled();
+ await expect(page.getByRole('group',{name:'Teams',exact:true})).toBeVisible();
+ await expect(page.getByRole('radio',{name:'Taken team \u2014 claimed'})).toBeDisabled();
  await expect(page.getByRole('button',{name:'LOCK IN'})).toBeDisabled();
  await expect(page.getByText('Competition rules',{exact:true})).toHaveCount(0);await expect(page.getByText(event.name,{exact:true})).toHaveCount(0);
  await page.getByRole('radio',{name:'Racing team',exact:true}).check();
@@ -16,7 +16,7 @@ test('team grid handles a competing claim and opens a clean rules screen',async(
  const reads=api.requests.filter(r=>r.action==='teams').length;await page.clock.install();await page.clock.fastForward(15000);expect(api.requests.filter(r=>r.action==='teams')).toHaveLength(reads);
  await api.service.claim(racer.token,{teamId:teams.find((team:any)=>team.name==='Racing team').id});
  await page.getByRole('button',{name:'LOCK IN'}).click();
- await expect(page.getByRole('alert')).toContainText('already claimed');await expect(page.getByRole('radio',{name:'Racing team Claimed'})).toBeDisabled();
+ await expect(page.getByRole('alert')).toContainText('already claimed');await expect(page.getByRole('radio',{name:'Racing team \u2014 claimed'})).toBeDisabled();
  await expect(page.getByRole('button',{name:'LOCK IN'})).toBeDisabled();
  await page.getByRole('radio',{name:'Test team 1',exact:true}).check();await page.getByRole('button',{name:'LOCK IN'}).click();
  await expect(page.getByRole('heading',{name:'Competition rules'})).toBeVisible();await expect(page.getByRole('alert')).toHaveCount(0);await expect(page.locator('.competitor-team-pill')).toHaveText('Test team 1');

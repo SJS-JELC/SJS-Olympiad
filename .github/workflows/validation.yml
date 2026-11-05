@@ -2,7 +2,17 @@ name: Olympiad validation
 
 on:
   workflow_call:
+    inputs:
+      full_browser:
+        description: Run the full browser suite instead of the deployment smoke suite
+        type: boolean
+        default: true
   workflow_dispatch:
+    inputs:
+      full_browser:
+        description: Run the full browser suite instead of the deployment smoke suite
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -23,12 +33,16 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npm run typecheck
+      - name: Build and audit production site
+        run: npm run build
       - run: node --test api/tests/*.test.mjs
       - run: npm test
       - run: npm run test:contracts
       - name: Install browser test runtime
         run: npx playwright install --with-deps chromium
-      - run: npm run test:browser
-      - name: Build production site
-        run: npm run build
+      - name: Full browser regression suite
+        if: inputs.full_browser
+        run: npm run test:browser
+      - name: Deployment browser smoke suite
+        if: ${{ !inputs.full_browser }}
+        run: npm run test:browser:smoke

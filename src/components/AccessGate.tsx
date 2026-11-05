@@ -8,6 +8,7 @@ import './LandingEntry.css';
 import {TeacherCodeCooldown} from './TeacherCodeCooldown';
 import {IllustratedActionButton} from './IllustratedActionButton';
 import { eventTiming } from '../events/timing';
+import {SchoolSelector,LockInButton} from './SchoolSelector';
 export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;onPilot?:()=>void;checking?:boolean}) {
     const security = useCompetitionSecurity();
     const [codes,setCodes]=useState({teacher:'',competitor:''}),[teacher,setTeacher]=useState(false),[busy,setBusy]=useState(false);
@@ -25,14 +26,14 @@ export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;
     },[teacherRetryAt]);
     useEffect(()=>{if(teacher && !teacherCooling)teacherInput.current?.focus();},[teacher,teacherCooling]);
     useEffect(()=>{
-        if(pilot){setCheckingEvent(false);return;}
+        if(checking || pilot){setCheckingEvent(false);return;}
         let live=true,generation=0;
         const check=()=>{const own=++generation;setCheckingEvent(true);setAvailable(false);
           void request<{competitorAvailable:boolean}>('availability').then(v=>{if(live && own===generation){setAvailable(v.competitorAvailable);setAvailabilityError('');}})
             .catch(()=>{if(live && own===generation)setAvailabilityError('Event availability could not be checked. Reload to retry.');})
             .finally(()=>{if(live && own===generation)setCheckingEvent(false);});};
         check();window.addEventListener('focus',check);return()=>{live=false;window.removeEventListener('focus',check);};
-    },[pilot]);
+    },[pilot,checking]);
     async function login(role:'teacher'|'competitor'){
       if(busy || codes[role].length!==4 || role==='teacher' && Date.now()<teacherRetryAt || role==='competitor' && !available)return;
       setBusy(true);const code=codes[role];setCodes({teacher:'',competitor:''});
@@ -49,8 +50,8 @@ export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;
         </section>}
       </div>
       <div className="landing-entry" aria-busy={busy || checking || checkingEvent}>
-        {pilot ? <><p className="pilot-welcome-copy type-body">Welcome to the Olympiad! By getting this far you have made sure the competition isn't blocked on your device. Well done. Hit go to get used to some of the controls and get some familiarity with a type of formulae you might not have seen much before...</p><IllustratedActionButton compact label="GO" icon="arrow" disabled={checking || busy} onClick={onPilot}/></> : <form autoComplete="off" onSubmit={event=>{event.preventDefault();void login('competitor');}}>{pin('competitor')}<IllustratedActionButton compact label="GO" icon="arrow" type="submit" disabled={busy || checking || checkingEvent || !available || codes.competitor.length!==4}/></form>}
-        <div className="landing-progress" role="status">{(busy || checking || checkingEvent) && <><span className="landing-progress__bar"/><span className="sr-only">{busy?'Signing in...':'Checking availability...'}</span></>}</div>
+        {!checking && (pilot ? <><p className="pilot-welcome-copy type-body">Welcome to the Olympiad! By getting this far you have made sure the competition isn't blocked on your device. Well done. Hit go to get used to some of the controls and get some familiarity with a type of formulae you might not have seen much before...</p><IllustratedActionButton compact label="GO" icon="arrow" disabled={checking || busy} onClick={onPilot}/></> : <form autoComplete="off" onSubmit={event=>{event.preventDefault();void login('competitor');}}>{pin('competitor')}<IllustratedActionButton compact label="GO" icon="arrow" type="submit" disabled={busy || checking || checkingEvent || !available || codes.competitor.length!==4}/></form>)}
+        <div className="landing-progress" role="status">{(busy || checking || checkingEvent) && <><span className="landing-progress__bar"/><span className="sr-only">{busy?'Signing in...':checking?'Loading...':'Checking availability...'}</span></>}</div>
         {!pilot && !checkingEvent && !checking && !available && !availabilityError && <p role="status">Waiting for an event.</p>}
         {availabilityError && !pilot && <p role="alert">{availabilityError}</p>}{security.error && <p role="alert">{security.error}</p>}
       </div>
@@ -100,21 +101,15 @@ export function CompetitorEntry() {
           <p className="competitor-rules__ready type-body">Get your team ready, then press GO. Good luck!</p>
           <button className="setup-action setup-go type-heading" disabled={security.phase!=='idle'} onClick={()=>void security.start()}>{security.phase==='entering'?'Entering...':'GO'}</button>
         </> : <>
-          <button type="button" className="team-refresh" aria-label="Refresh teams" title="Refresh teams" disabled={busy} onClick={()=>void load()}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.4 6.5M20 4v7h-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
-          <h1 className="type-heading">Choose your team</h1>
           <form onSubmit={event=>{event.preventDefault();void claim();}}>
-            <fieldset className="team-grid" aria-label="Teams" aria-busy={loading} disabled={busy}>
-              {teams.map(team=><label key={team.id} className={'team-tile'+(team.claimed?' team-tile--claimed':'')+(teamId===team.id?' team-tile--selected':'')}>
-                <input type="radio" name="team" value={team.id} checked={teamId===team.id} disabled={team.claimed} onChange={()=>setTeamId(team.id)}/>
-                <span className={"team-tile__name "+(teamId===team.id?"type-label":"type-body")}>{team.name}</span>{team.claimed && <><span className="team-tile__status type-caption">Claimed</span></>}
-              </label>)}
-            </fieldset>
+            <SchoolSelector items={teams.map(team=>({id:team.id,name:team.name,colours:team.schoolColours,unavailable:team.claimed}))} value={teamId} onChange={setTeamId} label="Teams" disabled={busy || loading} loading={loading}/>
             {loading && <p className="type-caption" role="status">Loading teams...</p>}
             {!loading && !teams.some(team=>!team.claimed) && <p role="status">No teams are available. Ask a teacher for help.</p>}
-            <button className="setup-action type-heading" disabled={!teamId || busy || loading}><svg className="setup-lock-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 10V7a5 5 0 0 1 10 0v3M6 10h12a1 1 0 0 1 1 1v9H5v-9a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{busy?'LOCKING IN...':'LOCK IN'}</span></button>
+            <LockInButton disabled={!teamId || loading} busy={busy}/>
+
           </form>
         </> : <><h1 className="type-heading">Waiting for an event</h1><p>Your teacher will set up the event shortly.</p></>}
-        {error && <p className="setup-error" role="alert">{error}</p>}
+        {error && <p className="setup-error" role="alert">{error}{selectingTeam && <button type="button" className="ui-button" disabled={busy || loading} onClick={()=>void load()}>Retry loading teams</button>}</p>}
       </section>
     </main>;
 }

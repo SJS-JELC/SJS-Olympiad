@@ -9,9 +9,10 @@ import {IllustratedActionButton} from '../components/IllustratedActionButton';
 import {QuestionShell} from '../questions/QuestionShell';
 import {SkeletalHelp} from './SkeletalHelp';
 import './pilot.css';
+import {SchoolSelector,LockInButton} from '../components/SchoolSelector';
 
 export const pilotLimits={maxHeavyAtoms:250,maxAtoms:650,maxBonds:750};
-type Snapshot={status:'off'|'open';revision:number;eventId:string|null;schools:{id:string;name:string}[];rankings:{schoolId:string;name:string;rank:number}[]};
+type Snapshot={status:'off'|'open';revision:number;eventId:string|null;schools:{id:string;name:string;colours?:string[]}[];rankings:{schoolId:string;name:string;rank:number}[]};
 type Attempt={id:string;schoolId:string;confirmedAt:number|null;best:number|null};
 type Result=Attempt & {accepted:boolean;score:number|null};
 type Submission={schoolId:string;credential:string;requestId:string;graph:string};
@@ -53,7 +54,8 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
     current.current=value;setSaved(value);return true;
   }
   async function enter(){
-    if(sending.current || conflict)return;
+    if(sending.current || conflict || !loaded)return;
+    if(!snapshot.schools.some(s=>s.id===(current.current?.schoolId ?? school))){if(current.current)setMessage('This school is not in the current event. Return to the landing page.');return;}
     const value=current.current ?? {version:1 as const,schoolId:school,credential:credential(),drawing:blankMolecule()};
     if(!save(value))return;
     sending.current=true;setBusy(true);setMessage('');
@@ -79,10 +81,11 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
   const recovery=storageMessage && <p role="alert">{storageMessage} {conflict && <button className="ui-button" onClick={()=>window.location.reload()}>Reload saved attempt</button>}</p>;
   if(!entered || !saved)return <main className="competitor-setup competitor-setup--selection type-body">
     <OlympiadLogo className="competitor-setup__logo"/><section className="pilot-school-picker">
-      <h1 className="type-heading">Select your school</h1>{recovery}
-      <form onSubmit={event=>{event.preventDefault();void enter();}}><fieldset className="team-grid" aria-label="Schools" disabled={busy || !!saved || conflict}>{snapshot.schools.map(s=><label key={s.id} className={'team-tile'+(school===s.id?' team-tile--selected':'')}><input type="radio" name="school" value={s.id} checked={school===s.id} onChange={()=>setSchool(s.id)}/><span className="team-tile__name">{s.name}</span></label>)}</fieldset>
+      {recovery}
+      <form onSubmit={event=>{event.preventDefault();void enter();}}><SchoolSelector items={snapshot.schools} value={school} onChange={setSchool} label="Schools" disabled={busy || !!saved || conflict}/>
+
         {!snapshot.schools.length && <p role="status">No schools are available for the current event. Please ask your teacher.</p>}
-        <IllustratedActionButton label="NEXT" icon="arrow" type="submit" disabled={!loaded || !snapshot.schools.some(s=>s.id===school) || busy || conflict}/>
+        <LockInButton disabled={!loaded || !snapshot.schools.some(s=>s.id===school) || conflict} busy={busy}/>
       </form><p role="status">{busy?'Opening your drawing…':message}</p>{refreshError && <p role="alert">{refreshError}</p>}
     </section></main>;
   return <QuestionShell definition={{title:'Funny Bones'}} score={saved.result?.best ?? 0} onBack={onBack} backLabel="Back to landing">

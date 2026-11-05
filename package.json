@@ -15,6 +15,7 @@
     "test": "vitest run",
     "test:contracts": "node --test --test-isolation=none --require ./tests/node/register-typescript.cjs tests/node/*.test.cjs",
     "test:browser": "playwright test",
+    "test:browser:smoke": "playwright test --config playwright.smoke.config.ts",
     "check:engines": "node scripts/sync-chemistry-engines.mjs --check",
     "sync:engines": "node scripts/sync-chemistry-engines.mjs --write",
     "check:typography": "node scripts/check-typography.mjs",

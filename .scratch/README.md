@@ -4,6 +4,10 @@ This is the application's versioned work tracker. Paths below are relative to th
 
 | Priority | Effort | Authority/status | Next step |
 | --- | --- | --- | --- |
+| Ready locally | [Push readiness](push-readiness/spec.md) | Build/audits and required local suites pass; 105 targeted browser cases verified | [Evidence and limitations](push-readiness/issues/01-validation.md) |
+| Complete locally | [School-coloured selectors](school-selector/spec.md) | Implemented; resumed validation passes | [Changes and verification limits](school-selector/issues/01-implementation.md) |
+| Complete locally | [Settings roster layout](roster-layout/spec.md) | Flat columns and optimistic draft deletion verified locally | [Verification](roster-layout/issues/01-implement.md) |
+| CI follow-up | [Faster deployment validation](deployment-validation/spec.md) | Smaller browser gate implemented locally; hosted verification pending | [Scope and checks](deployment-validation/issues/01-smoke-suite.md); full suite retained for PR/manual runs |
 | CI follow-up | [Protected question content](protected-question-content/final-delivery.md) | Integrated and pushed by user; full CI exposed browser regressions; local corrections await CI | [Browser corrections and limits](protected-question-content/issues/13-ci-browser-regressions.md); deployed acceptance remains separate |
 | Complete locally | [Readiness pilot](readiness-pilot/spec.md) | Redesigned and verified locally | [Verification](readiness-pilot/verification.md); build and focused browser checks passed; not deployed |
 | Complete | [Schools and numbered teams](school-teams/spec.md) | Implemented locally; validation limited | [Root review complete](school-teams/issues/02-review.md); [159 backend tests/static checks passed](school-teams/verification.md), full types/build/browser blocked; no deployment authorised |

@@ -24,7 +24,7 @@ const ignoredDirectories = new Set([
   'coverage', 'playwright-report', 'test-results',
 ]);
 const ignoredFiles = new Set(['.sjs-source-manifest.json', 'Thumbs.db', '.DS_Store']);
-const commands = new Set(['setup', 'migrate', 'dev', 'local-preview', 'typecheck', 'test', 'test:browser', 'build', 'preview', 'install-browser']);
+const commands = new Set(['setup', 'migrate', 'dev', 'local-preview', 'typecheck', 'test', 'test:browser', 'test:browser:smoke', 'build', 'preview', 'install-browser']);
 
 async function collectFiles(directory = sourceRoot, relative = '') {
   const files = [];

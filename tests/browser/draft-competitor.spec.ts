@@ -12,7 +12,7 @@ async function prepare(api:ApiHarness,year:string,past=false,count=3){
 async function signIn(page:Page,complete=false){
  await page.goto('/');await page.getByLabel('Competitor code',{exact:true}).fill('1234');
  await page.locator('form').filter({has:page.getByLabel('Competitor code',{exact:true})}).getByRole('button',{name:'GO',exact:true}).click();
- await expect(page.getByRole('heading',{name:complete?'Event complete':'Choose your team',exact:true})).toBeVisible();
+ await expect(complete?page.getByRole('heading',{name:'Event complete',exact:true}):page.getByRole('group',{name:'Teams',exact:true})).toBeVisible();
 }
 async function chooseAndStart(page:Page){
  await page.getByLabel('Draft team 01',{exact:true}).check();await page.getByRole('button',{name:'LOCK IN',exact:true}).click();
@@ -28,9 +28,11 @@ for(const [width,height] of [[1366,768],[1920,1080]])anonymous(`dense draft rost
   const area=grid.getBoundingClientRect(),tiles=[...grid.querySelectorAll<HTMLElement>('.team-tile')].map(tile=>tile.getBoundingClientRect());
   return {visible:tiles.filter(tile=>tile.top>=area.top&&tile.bottom<=area.bottom&&tile.left>=area.left&&tile.right<=area.right).length,width:tiles[0].width,height:tiles[0].height};
  });
- expect(metrics.visible).toBeGreaterThanOrEqual(24);expect(metrics.width).toBeLessThan(195);expect(metrics.height).toBeLessThan(82);
+ expect(metrics.visible).toBe(44);expect(metrics.width).toBeGreaterThan(100);expect(metrics.height).toBeGreaterThan(30);
+ // Glyphs may extend beyond the line box; the visible tile is the fit boundary.
+ const overflow=await page.locator('.team-tile__name').evaluateAll(names=>names.filter(name=>{const range=document.createRange();range.selectNodeContents(name);const text=range.getBoundingClientRect(),tile=name.closest('.team-tile')!.getBoundingClientRect();return text.top<tile.top || text.bottom>tile.bottom || text.left<tile.left || text.right>tile.right;}).map(name=>name.textContent));expect(overflow).toEqual([]);
  expect(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1&&document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
- await expect(page.getByRole('button',{name:'LOCK IN',exact:true})).toBeEnabled();await expect(page.locator('.setup-lock-icon')).toHaveAttribute('aria-hidden','true');
+ await expect(page.getByRole('button',{name:'LOCK IN',exact:true})).toBeEnabled();await expect(page.locator('.hazard-lock img')).toHaveAttribute('aria-hidden','true');
  await page.screenshot({path:testInfo.outputPath(`draft-team-grid-${width}x${height}.png`)});expect(await durable(api)).toEqual(before);
 });
 

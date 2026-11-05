@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import core from './private/molecule-core.mjs';
+import { schoolColours } from './school-colours.mjs';
 
 export const PILOT_LIMITS = Object.freeze({maxHeavyAtoms:250,maxAtoms:650,maxBonds:750});
 const pk='readiness-pilot-v1';
@@ -37,7 +38,7 @@ export function createPilot({repo,retry,assert,schools,currentEvent,now}) {
     return value;
   });
   const status=c=>c.status==='open'?'open':'off';
-  const names=async()=>(await schools.directory()).schools.map(({id,name})=>({id,name}));
+  const names=async()=>(await schools.directory()).schools.map(s=>({id:s.id,name:s.name,colours:schoolColours(s)}));
   const eligible=async()=>{
     const event=await currentEvent();
     if(!event)return {eventId:null,schools:[]};

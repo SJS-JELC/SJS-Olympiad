@@ -11,7 +11,7 @@ test.beforeEach(async({api})=>{
  await api.service.schoolTeams(staff,{eventId:'fixture-L6',schoolId:'host-st-johns',targetCount:4,requestId:'pilot-host-teams'});
  await api.service.pilotMode(staff,{status:'open',expectedRevision:1,requestId:'browser-open-pilot'});
 });
-async function enter(page:Page){await page.goto('/');await page.getByRole('button',{name:'GO',exact:true}).click();await page.getByRole('radio',{name:"St John's",exact:true}).check();await page.getByRole('button',{name:'NEXT',exact:true}).click();await expect(page.getByRole('heading',{name:'FUNNY BONES',exact:true})).toBeVisible();await expect(page.locator('.question-actions button')).toBeEnabled();}
+async function enter(page:Page){await page.goto('/');await page.getByRole('button',{name:'GO',exact:true}).click();await page.getByRole('radio',{name:"St John's",exact:true}).check();await page.getByRole('button',{name:'LOCK IN',exact:true}).click();await expect(page.getByRole('heading',{name:'FUNNY BONES',exact:true})).toBeVisible();await expect(page.locator('.question-actions button')).toBeEnabled();}
 test('access is recorded before submission, reload restores drawing and uncertain retries preserve best',async({page,api})=>{
  await enter(page);const staff=(await api.service.login({role:'teacher',code:'5678'})).token;
  let report=await api.service.pilotReport(staff);expect(report.readiness).toHaveLength(1);expect(report.readiness[0].best).toBeNull();const time=report.readiness[0].confirmedAt;

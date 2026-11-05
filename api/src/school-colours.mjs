@@ -1,0 +1,8 @@
+// Approved public branding choices; see docs/school-selector-assets.md for provenance.
+const key=name=>String(name ?? '').normalize('NFKC').toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/\bschool\b/g,'').replace(/\s+/g,' ').trim();
+const presets=new Map([["Alleyn’s School", ["#6495ED"]], ["Brighton College", ["#B48D00"]], ["Caterham School", ["#C5A253"]], ["City of London Freemen’s School", ["#B22527"]], ["City of London School", ["#A20D3B"]], ["Cranleigh School", ["#021E42"]], ["Emanuel School", ["#EFAA36"]], ["Epsom College", ["#214E85"]], ["Godolphin and Latymer", ["#B82132"]], ["James Allen’s Girls’ School", ["#D63327", "#001758"]], ["Reed’s School", ["#03172D"]], ["St John’s", ["#024633"]], ["St Paul’s School", ["#373737"]], ["The Sixth Form College Farnborough", ["#703C91"]], ["The Tiffin Girls’ School", ["#245A91"]], ["Tiffin School", ["#BA263A"]], ["Tonbridge School", ["#79243B"]], ["Westminster School", ["#E899B9"]], ["Whitgift School", ["#183B63"]], ["Wilson’s School", ["#D5AE40"]]].map(([name,colours])=>[key(name),colours]));
+presets.set(key('Farnborough Sixth Form'),presets.get(key('The Sixth Form College Farnborough')));
+presets.set(key('Tiffin Grammar School'),presets.get(key('Tiffin School')));
+presets.set(key('Tiffin School Sixth Form'),presets.get(key('Tiffin School')));
+export const validSchoolColours=value=>Array.isArray(value) && value.length>=1 && value.length<=2 && value.every(c=>typeof c==='string' && /^#[0-9a-f]{6}$/i.test(c));
+export function schoolColours(school){return validSchoolColours(school?.colours)?school.colours.map(c=>c.toUpperCase()):[...(presets.get(key(school?.name)) ?? ['#9224DB'])];}

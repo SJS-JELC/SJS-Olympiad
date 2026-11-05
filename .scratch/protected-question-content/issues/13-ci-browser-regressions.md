@@ -31,3 +31,7 @@ npx playwright test tests/browser/access-code-fields.spec.ts tests/browser/backe
 ```
 
 Run the complete CI workflow before accepting deployment. Local test fixes do not establish deployed acceptance.
+
+## Validation follow-up: 5 November 2026
+
+The earlier dependency blocker is resolved. [Push-readiness verification](../../push-readiness/issues/01-validation.md) records passing build/audits, unit, contract, API and targeted browser checks, including the affected cases here. Earlier unverified local checks are superseded by that evidence; hosted CI and deployment remain unverified.

@@ -3,29 +3,12 @@
 .competitor-setup__pane h1 { margin:0 32px 28px;--text-size:clamp(28px,4svh,44px); }
 .competitor-setup__pane form { display:grid;justify-items:center;gap:22px; }
 .competitor-setup__pane select { padding:12px;border:1px solid #73829b;border-radius:8px;max-width:100%; }
-.competitor-setup--selection{justify-content:flex-start;gap:1svh;padding:2svh 3vw}
-.competitor-setup__pane.competitor-team-selection{width:min(1440px,94vw);padding:12px 18px 14px}
-.competitor-team-selection h1{margin:0 48px 10px;--text-size:clamp(20px,2.8svh,30px)}
-.competitor-team-selection form{gap:10px}
-.team-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:clamp(6px,.7svh,10px);width:100%;max-height:min(45svh,480px);overflow:auto;border:0;padding:4px;margin:0; }
-.team-tile { position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:clamp(60px,7.8svh,72px);padding:6px 8px;border:1.5px solid #a2aab5;border-radius:8px;background:#fff;cursor:pointer;overflow-wrap:anywhere;--text-size:clamp(15px,1.9svh,20px); }
-.team-tile input { position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:inherit;margin:0; }
-.team-tile:not(.team-tile--claimed):hover { box-shadow:0 0 7px #ff14e270,0 0 14px #ff14e240; }
-.team-tile--selected { border-color:transparent;background:#ff14e2;color:#fff;box-shadow:0 0 7px #ff14e270,0 0 14px #ff14e240; }
-.team-tile:focus-within { outline:none;box-shadow:0 0 7px #ff14e290,0 0 14px #ff14e250; }
-.team-tile--claimed { color:#79818b;background:#e5e8ec;border-color:#ccd1d8;cursor:default; }
 
-.team-tile__status { --text-size:14px; }
-.team-refresh { position:absolute;top:8px;right:8px;display:grid;place-items:center;width:44px;height:44px;padding:10px;color:#45505e;border:1px solid #c6ced8;border-radius:9px;background:#f8fafc;cursor:pointer; }
-.team-refresh svg { width:100%;height:100%; }
-.team-refresh:hover { background:#dfe6ee; }
 .setup-action { display:grid;place-items:center;min-width:210px;min-height:64px;padding:12px 24px;border:1px solid #0c1119;border-radius:10px;background:#303742;color:#fff;box-shadow:0 4px 6px #0b21394d,inset 0 1px 0 #ffffff35;cursor:pointer;--text-size:26px; }
 .setup-action:hover:not(:disabled) {background:#414b59;}
 .setup-action:disabled {opacity:.5;cursor:default;}
 .setup-action:active:not(:disabled) {background:#252c36;box-shadow:inset 0 2px 4px #0005;}
 .setup-action:focus-visible,.team-refresh:focus-visible {outline:3px solid #b18b3a;outline-offset:4px;}
-.competitor-team-selection .setup-action{display:inline-flex;justify-content:center;gap:8px;min-width:190px;min-height:52px;padding:8px 18px;--text-size:22px}
-.setup-lock-icon{width:18px;height:18px;flex-shrink:0}
 .competitor-rules { width:min(1000px,90vw);padding:28px 40px;--text-size:clamp(21px,3svh,32px);--text-leading:1.5; }
 .competitor-rules p {margin:16px auto;max-width:32em;}
 .competitor-rules__lead {--text-size:clamp(25px,3.6svh,38px);}
@@ -36,10 +19,6 @@
 .competitor-team-pill__name {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .competitor-team-pill__practice {color:#ffe39b;--text-size:14px;}
 .competition-page--competitor .theory-navigation {top:max(64px,7svh);}
-@media (max-width:800px) {.team-grid {grid-template-columns:repeat(auto-fill,minmax(min(100%,135px),1fr));}.competitor-setup__pane,.competitor-rules {padding:24px;}}
+@media (max-width:800px) {.competitor-setup__pane,.competitor-rules {padding:24px;}}
 
 .competitor-setup > .competitor-setup__logo {width:min(42vw,42svh);height:26svh;flex-shrink:0;}
-.competitor-setup--selection > .competitor-setup__logo{width:min(36vw,32svh);height:18svh}
-
-.team-tile--claimed .team-tile__name { text-decoration:line-through; }
-

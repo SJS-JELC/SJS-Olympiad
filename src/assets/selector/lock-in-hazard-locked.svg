@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="230" viewBox="0 0 720 230" role="img" aria-labelledby="title">
+<title id="title">Locked</title>
+<defs>
+ <linearGradient id="steel" x2=".25" y2="1"><stop stop-color="#e1e8f7"/><stop offset=".3" stop-color="#9daac5"/><stop offset=".52" stop-color="#525e78"/><stop offset="1" stop-color="#263554"/></linearGradient>
+ <linearGradient id="frame" x2="0" y2="1"><stop stop-color="#8394b7"/><stop offset=".48" stop-color="#1d2943"/><stop offset="1" stop-color="#344d7a"/></linearGradient>
+ <linearGradient id="face" x2=".2" y2="1"><stop stop-color="#ffd177"/><stop offset=".5" stop-color="#ff9c2b"/><stop offset="1" stop-color="#dc650e"/></linearGradient>
+ <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff49b"/><stop offset=".35" stop-color="#ffd629"/><stop offset=".7" stop-color="#ffbd08"/><stop offset="1" stop-color="#dd8500"/></linearGradient>
+ <linearGradient id="bolt" x2=".7" y2="1"><stop stop-color="white"/><stop offset=".35" stop-color="#c7d2e5"/><stop offset="1" stop-color="#697793"/></linearGradient>
+ <linearGradient id="letters" x2="0" y2="1"><stop stop-color="#555b65"/><stop offset="1" stop-color="#343a44"/></linearGradient>
+ <pattern id="hazard" width="66" height="28" patternUnits="userSpaceOnUse" patternTransform="skewX(-38)"><rect width="66" height="28" fill="#242b3b"/><rect width="33" height="28" fill="url(#gold)"/></pattern>
+ <filter id="amber" x="-100%" y="-40%" width="300%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+ <g id="screw"><path d="M-9-4-4-9H4L9-4V4L4 9H-4L-9 4Z" fill="#10182c"/><path d="M-6-3-3-6H3L6-3V3L3 6H-3L-6 3Z" fill="url(#bolt)"/><path d="M-4-3 0-5 4-2" fill="none" stroke="#fff" stroke-width="1.5"/></g>
+ <g id="vents"><rect x="-12" y="-32" width="24" height="64" rx="4" fill="#ff9a00" filter="url(#amber)"/><g fill="url(#gold)" stroke="#f38200" stroke-width="1.4"><rect x="-12" y="-30" width="24" height="10" rx="1"/><rect x="-12" y="-15" width="24" height="10" rx="1"/><rect x="-12" y="0" width="24" height="10" rx="1"/><rect x="-12" y="15" width="24" height="10" rx="1"/></g><path d="M-9-27H9M-9-12H9M-9 3H9M-9 18H9" stroke="#fffbc2" stroke-width="3"/></g>
+</defs>
+<!-- Outer case and continuous hazard rails. -->
+<path d="M61 9H135L153 23H567L585 9H659L711 59V174L661 221H59L9 174V59Z" fill="#060f24" stroke="#060f24" stroke-width="7" stroke-linejoin="round"/>
+<path d="M64 16H132L151 30H569L588 16H656L703 62V170L656 214H64L17 170V62Z" fill="url(#frame)"/>
+<path d="M139 26H581V55H139Z M139 177H581V207H139Z" fill="url(#hazard)" stroke="#111a2c" stroke-width="5"/>
+<path d="M149 29H571M149 204H571" stroke="#f8eaa2" stroke-width="2" opacity=".65"/>
+<!-- Steel corner clamps, faceted rims and dark vent recesses. -->
+<path d="M65 15H129L162 49H121L89 78V153L121 181H162L129 215H65L16 169V62Z" fill="url(#steel)" stroke="#11192a" stroke-width="5"/>
+<path d="M655 15H591L558 49H599L631 78V153L599 181H558L591 215H655L704 169V62Z" fill="url(#steel)" stroke="#11192a" stroke-width="5"/>
+<path d="M65 19H127L143 36H75L38 65H20Z M655 19H593L577 36H645L682 65H700Z" fill="#dce7fa"/>
+<path d="M65 19 75 36 38 65 20 62Z M655 19 645 36 682 65 700 62Z" fill="#a8b9da"/>
+<path d="M20 170 44 157 80 192 130 211H65Z M700 170 676 157 640 192 590 211H655Z" fill="#667796"/>
+<path d="M22 72H57L76 91V142L56 164H22Z M698 72H663L644 91V142L664 164H698Z" fill="#1b2030" stroke="#a4aac0" stroke-width="3"/>
+<path d="M27 78H54L68 93V140L53 156H27Z M693 78H666L652 93V140L667 156H693Z" fill="#352e30"/>
+<use href="#vents" transform="translate(45 117)"/><use href="#vents" transform="translate(675 117)"/>
+<use href="#screw" transform="translate(88 47)"/><use href="#screw" transform="translate(632 47)"/>
+<use href="#screw" transform="translate(88 183)"/><use href="#screw" transform="translate(632 183)"/>
+<path d="m122 35 4-4 7 7-4 4Z m476 0-4-4-7 7 4 4Z" fill="#47556e"/>
+<!-- Warm illuminated face; frame geometry remains unchanged. -->
+<path d="M122 55H598L624 80V151L598 178H122L96 151V80Z" fill="none" stroke="#ffb52b" stroke-width="10" filter="url(#amber)"/>
+<path d="M122 55H598L624 80V151L598 178H122L96 151V80Z" fill="#111729" stroke="#0a1020" stroke-width="4"/>
+<path d="M126 62H594L616 84V148L594 170H126L104 148V84Z" fill="url(#face)" stroke="#ffc250" stroke-width="4"/>
+<path d="M126 65H594L612 83M108 86V146L128 166" fill="none" stroke="#fff0b8" stroke-width="2" opacity=".6"/>
+<path d="M130 169H594L615 148" fill="none" stroke="#131b2e" stroke-width="4"/>
+<!-- All lettering and the lock are vector paths, with no font dependency. -->
+<g transform="translate(190 81)" stroke="#30333c" stroke-width="7" stroke-linejoin="round" paint-order="stroke fill">
+ <path d="M4 27V17C4-9 40-9 40 17V27H30V17C30 4 14 4 14 17V27Z" fill="url(#letters)"/>
+ <path d="M0 25H44Q49 25 49 30V62Q49 67 44 67H0Q-5 67-5 62V30Q-5 25 0 25Z" fill="url(#letters)"/>
+ <path d="M16 40H28V51H16Z" fill="#ff9c2b" stroke="none"/>
+</g>
+<g transform="translate(280 89)" fill="url(#letters)" stroke="#30333c" stroke-width="6" stroke-linejoin="round" paint-order="stroke fill">
+ <path d="M0 0H12V42H37V54H0Z"/>
+ <path fill-rule="evenodd" d="M52 0H78L87 9V45L78 54H52L43 45V9ZM56 12V42H74V12Z"/>
+ <path d="M103 0H130L139 9V19H126V12H107V42H126V35H139V45L130 54H103L94 45V9Z"/>
+ <path d="M148 0H160V21H165L181 0H196L176 27L197 54H182L165 33H160V54H148Z"/>
+ <path d="M205 0H243V12H217V21H239V32H217V42H243V54H205Z"/>
+ <path fill-rule="evenodd" d="M252 0H279L294 14V40L279 54H252ZM264 12V42H275L282 35V19L275 12Z"/>
+</g>
+</svg>
