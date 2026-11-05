@@ -6,6 +6,8 @@ User authorised implementation with “ok go” on 2026-11-04. One foreman; init
 
 ## Decisions-so-far
 
+- [Full-CI browser regressions](issues/13-ci-browser-regressions.md): corrected stale teacher-entry and roster expectations; restored form autocomplete suppression. Direct roster check and six API tests passed; browser rerun blocked by unavailable dependencies/network. Full CI acceptance pending.
+
 - [Main integration](issues/12-main-integration.md): existing app work checkpointed; accepted source transferred into the original main history with an exact tree match. Fresh 269 API tests and static checks passed; fresh frontend build blocked by external tooling directory permissions. Not pushed or deployed.
 
 - [J01 baseline/inventory](issues/02-baseline-inventory.md): isolated snapshot baseline 3e8d8488fb15a64332405aa30ea5dc7361d1e2b4, source manifest retained, original worktree unchanged.

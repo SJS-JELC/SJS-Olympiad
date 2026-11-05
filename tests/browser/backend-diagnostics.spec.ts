@@ -1,7 +1,8 @@
 import {test,expect} from './fixtures';
+import {signInTeacher} from './teacher';
 const anonymous=test.extend({accessRole:null});
 async function teacher(page:import('@playwright/test').Page){
- await page.goto('/');await page.getByLabel('Teacher code',{exact:true}).fill('5678');await page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true}).click();await expect(page.locator('.teacher-settings')).toBeVisible();
+ await page.goto('/');await signInTeacher(page);
 }
 anonymous('backend pane loads lazily, refreshes explicitly and preserves unsaved event fields',async({page,api},testInfo)=>{
  await teacher(page);const toggle=page.getByRole('button',{name:'Backend settings',exact:true});

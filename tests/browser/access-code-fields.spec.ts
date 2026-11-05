@@ -7,18 +7,23 @@ async function checkHints(field:import('@playwright/test').Locator){
  await expect(field.locator('xpath=ancestor::form')).toHaveAttribute('autocomplete','off');
 }
 anonymous('entry codes retain masking, editing and invalid state with password-manager hints',async({page,context})=>{
- await page.goto('/');
+ await page.clock.install();await page.goto('/');
+ await expect(page.getByLabel('Teacher code',{exact:true})).toHaveCount(0);
+ await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();
  for(const label of ['Teacher code','Competitor code']){
   const field=page.getByLabel(label,{exact:true});await checkHints(field);await field.fill('2468');
   await field.press('Backspace');await expect(field).toHaveValue('246');await field.fill('');
  }
  const teacher=page.getByLabel('Teacher code',{exact:true});await teacher.fill('0000');
- await page.locator('form').filter({has:teacher}).getByRole('button',{name:'GO',exact:true}).click();
+ const submit=page.locator('form').filter({has:teacher}).getByRole('button',{name:'Submit teacher code',exact:true});
+ await submit.click();
  await expect(teacher).toHaveAttribute('aria-invalid','true');await expect(page.getByText('Code not recognised.')).toHaveCount(0);
+ await expect(teacher).toBeDisabled();await expect(submit).toBeDisabled();
+ await page.clock.fastForward(10100);await expect(teacher).toBeEnabled();
  await teacher.press('1');await expect(teacher).not.toHaveAttribute('aria-invalid','true');await teacher.fill('');
  await context.grantPermissions(['clipboard-read','clipboard-write']);await page.evaluate(()=>navigator.clipboard.writeText('5678'));
  await teacher.focus();await teacher.press('Control+V');await expect(teacher).toHaveValue('5678');
- await page.locator('form').filter({has:teacher}).getByRole('button',{name:'GO',exact:true}).click();await expect(page.locator('.teacher-settings')).toBeVisible();
+ await submit.click();await expect(page.locator('.teacher-settings')).toBeVisible();
 });
 const competitor=test.extend({accessRole:'competitor' as const});
 competitor('recovery code uses the same hints and masking without bypassing recovery',async({page,api})=>{
