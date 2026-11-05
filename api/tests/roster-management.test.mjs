@@ -29,7 +29,7 @@ test('school deletion refuses unfinished teams but retains completed results and
  await f.api.schoolDelete(f.staff,removal(f));
  assert.deepEqual((await f.api.teams(f.staff,{eventId:f.event.id})).teams,before);
  assert.equal((await f.api.schools(f.staff)).schools.find(s=>s.id===f.school.id).deleted,true);
- await assert.rejects(f.api.schoolCreate(f.staff,{name:f.school.name,requestId:'reuse-deleted-school'}),{status:409});
+ const restored=await f.api.schoolCreate(f.staff,{name:f.school.name,requestId:'reuse-deleted-school'});assert.equal(restored.school.id,f.school.id);assert.equal(restored.school.deleted,undefined);assert.deepEqual((await f.api.teams(f.staff,{eventId:f.event.id})).teams,before);
 });
 test('concurrent school allocation fences deletion and incomplete setup prevents deletion',async()=>{
  const f=await fixture();
@@ -56,4 +56,23 @@ test('release receipt and ownership change commit atomically; completed events r
  const f=await fixture(),team=(await f.api.teams(f.staff,{eventId:f.event.id})).teams[0],input={eventId:f.event.id,teamId:team.id,confirm:true,requestId:'atomic-release-test',expectedClaimGeneration:team.claimGeneration};
  const before=await f.repo.get(f.event.id+'-'+team.id,'team');f.repo.failBatch=true;await assert.rejects(f.api.teamRelease(f.staff,input),/Storage/);f.repo.failBatch=false;assert.deepEqual(await f.repo.get(before.partitionKey,'team'),before);assert.equal(await f.repo.get(before.partitionKey,'release-'+input.requestId),null);
  await f.api.eventEnd(f.staff,{eventId:f.event.id,expectedRevision:f.event.revision,confirm:true});await assert.rejects(f.api.teamRelease(f.staff,input),{status:409});
+});
+
+test('restoration retries keep identity and colours, preserve allocated numbers and cannot undo a later deletion',async()=>{
+ const f=await fixture();await f.api.schoolTeams(f.staff,target(f));
+ await f.api.schoolColours(f.staff,{schoolId:f.school.id,colours:['#123456','#654321'],expectedRevision:1,requestId:'restore-colours-test'});
+ const original=(await f.api.teams(f.staff,{eventId:f.event.id})).teams.filter(t=>t.schoolId===f.school.id);
+ for(const team of original)await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:team.id,teamName:team.name,requestId:'restore-delete-'+team.id,confirm:true});
+ await f.api.schoolDelete(f.staff,{...removal(f),expectedRevision:2});
+ const input={name:'synthetic school',requestId:'restore-school-request'};
+ const restored=(await f.api.schoolCreate(f.staff,input)).school;
+ assert.equal(restored.id,f.school.id);assert.deepEqual(restored.colours,['#123456','#654321']);
+ const before=await f.repo.get('system','schools');await f.api.schoolCreate(f.staff,input);assert.deepEqual(await f.repo.get('system','schools'),before);
+ await assert.rejects(f.api.schoolCreate(f.staff,{...input,name:'Different school'}),{status:409});
+ await f.api.schoolTeams(f.staff,{...target(f),requestId:'restored-create-teams'});
+ const teams=(await f.api.teams(f.staff,{eventId:f.event.id})).teams.filter(t=>t.schoolId===f.school.id);assert.deepEqual(teams.map(t=>t.teamNumber),[3,4]);
+ for(const team of teams)await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:team.id,teamName:team.name,requestId:'restore-delete-'+team.id,confirm:true});
+ await f.api.schoolDelete(f.staff,{...removal(f),expectedRevision:restored.revision,requestId:'restore-delete-again'});
+ assert.equal((await f.api.schoolCreate(f.staff,input)).school.deleted,true);
+ assert.equal((await f.api.schools(f.staff)).schools.filter(s=>s.id===f.school.id).length,1);
 });

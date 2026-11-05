@@ -4,6 +4,7 @@ This is the application's versioned work tracker. Paths below are relative to th
 
 | Priority | Effort | Authority/status | Next step |
 | --- | --- | --- | --- |
+| Complete locally | [Fresh event teams and batch API](team-entries/spec.md) | Implemented and verified locally | [Verification](team-entries/issues/01-implementation.md) |
 | Complete locally | [School deletion, bulk teams and Excel import](roster-management/spec.md) | Implemented and verified locally | [Changes, tests and limits](roster-management/issues/01-implementation.md) |
 | Ready locally | [Push readiness](push-readiness/spec.md) | Build/audits and required local suites pass; 105 targeted browser cases verified | [Evidence and limitations](push-readiness/issues/01-validation.md) |
 | Complete locally | [School-coloured selectors](school-selector/spec.md) | Implemented; resumed validation passes | [Changes and verification limits](school-selector/issues/01-implementation.md) |

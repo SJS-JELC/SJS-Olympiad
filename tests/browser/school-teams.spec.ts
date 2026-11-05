@@ -4,11 +4,11 @@ const teamRow=(page:Page,school:string,number:number)=>page.getByRole('row').fil
 
 for(const outcome of ['success','failure'] as const)test(`draft deletion hides immediately before ${outcome} and preserves retry identity`,async({page,api})=>{
  await openEvents(page);await page.getByLabel('Selected event').selectOption('fixture-L5');
- const button=page.getByRole('button',{name:'Delete team Test team 1',exact:true});
+ const button=page.getByRole('button',{name:'Remove team Test team 1',exact:true});
  await expect(button).toBeEnabled();
  let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});
  const bodies:unknown[]=[];
- await page.route('**/api/olympiad/team-delete',async route=>{
+ await page.route('**/api/olympiad/team-remove',async route=>{
   bodies.push(route.request().postDataJSON());
   if(bodies.length===1){await held;if(outcome==='failure'){await route.fulfill({status:503,json:{error:'Deletion unavailable.'}});return;}}
   await route.fallback();
@@ -20,7 +20,7 @@ for(const outcome of ['success','failure'] as const)test(`draft deletion hides i
  }finally{release();}
  if(outcome==='failure'){
   await expect(button).toBeVisible();await expect(page.locator('.settings-message')).toContainText('Deletion unavailable.');
-  const retry=page.getByRole('button',{name:'Retry delete team',exact:true});await expect(retry).toBeEnabled();await retry.click();
+  const retry=page.getByRole('button',{name:'Retry remove team',exact:true});await expect(retry).toBeEnabled();await retry.click();
   await expect.poll(()=>bodies.length).toBe(2);expect(bodies[1]).toEqual(bodies[0]);
  }
  await expect.poll(async()=>(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams.some((team:any)=>team.name==='Test team 1')).toBe(false);
@@ -67,7 +67,7 @@ test('legacy linking preserves its permanent ID and a school rename updates comp
  await page.getByRole('button',{name:'Link school for Test team 1',exact:true}).click();await page.getByLabel('Unused team number',{exact:true}).fill('7');await page.getByRole('button',{name:'Link team',exact:true}).click();await expect(teamRow(page,'Linked Academy',7)).toBeVisible();
  expect((await api.service.teams(api.token,{eventId:'fixture-L6'})).teams.find((t:any)=>t.id===old.id).teamNumber).toBe(7);
  await page.getByRole('combobox',{name:'Event status',exact:true}).selectOption('ended');await page.getByRole('button',{name:'Confirm',exact:true}).click();
- await page.getByRole('button',{name:'Rename selected school',exact:true}).click();await page.getByLabel('School name',{exact:true}).fill('Renamed Academy');await page.getByRole('button',{name:'Save school name',exact:true}).click();await expect(teamRow(page,'Renamed Academy',7)).toBeVisible();await expect(page.getByRole('button',{name:'Set team count',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Delete team Renamed Academy 7',exact:true})).toBeDisabled();
+ await page.getByRole('button',{name:'Rename selected school',exact:true}).click();await page.getByLabel('School name',{exact:true}).fill('Renamed Academy');await page.getByRole('button',{name:'Save school name',exact:true}).click();await expect(teamRow(page,'Renamed Academy',7)).toBeVisible();await expect(page.getByRole('button',{name:'Set team count',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Remove team Renamed Academy 7',exact:true})).toBeDisabled();
 });
 
 test('partial setup shows progress and resumes its reserved plan',async({page,api})=>{

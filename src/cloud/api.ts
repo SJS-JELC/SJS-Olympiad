@@ -15,8 +15,9 @@ export type EventRecord = {
     rosterResetInput?: {eventId:string;requestId:string;year:string;expectedRevision:number;confirm?:boolean;confirmed?:boolean;name?:string;theoryStartsAt?:number|null;theoryEndsAt?:number;practicalStartsAt?:number|null;practicalEndsAt?:number|null;endsAt?:number};
 };
 export type SchoolRecord={id:string;name:string;isHostSchool:boolean;deleted?:boolean;revision:number;colours?:string[]};
-export type SchoolProgress={requestId:string;schoolId:string;eventId:string;targetCount:number|null;kind:'generate'|'link';total:number;completed:number;status:'pending'|'complete'};
+export type SchoolProgress={requestId:string;schoolId:string;eventId:string;targetCount:number|null;kind:'generate'|'link'|'restore';total:number;completed:number;status:'pending'|'complete'};
 export type TeamRecord = {
+    entryRevision?: number;
     id: string;
     name: string;
     eventId: string;
@@ -95,3 +96,5 @@ export async function requestAsset(body:unknown,signal?:AbortSignal):Promise<Blo
  if(!response.ok){const error=await response.json().catch(()=>({}));throw new HttpError(response.status,error.error || 'Unable to load question diagram.',error.code);}
  return response.blob();
 }
+
+export type AdminBatchResult={requestId:string;total:number;completed:number;complete:boolean;results:{index:number;ok:boolean;status?:number;error?:string}[]};

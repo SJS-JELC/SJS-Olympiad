@@ -50,16 +50,21 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
   const reserve=async(input,kind)=>retry(async()=>{
     const currentSettings=await settings(),event=eventById(currentSettings,input.eventId);assert(event.status!=='ended',409,'Completed event rosters are read-only.');assert(!event.rosterResetRequestId,409,'Finish the pending year reset before changing this roster.');requestId(input.requestId);
     const dir=await directory();assert(!getSchool(dir,input.schoolId).deleted,409,'This school has been deleted.');
-    const row=await journal(input.eventId,input.schoolId),fingerprint=digest(JSON.stringify([kind,input.eventId,input.schoolId,input.targetCount ?? null,input.teamId ?? null,input.teamNumber ?? null]));
+    const row=await journal(input.eventId,input.schoolId),fingerprint=digest(JSON.stringify([kind,input.eventId,input.schoolId,input.targetCount ?? null,input.teamId ?? null,input.teamNumber ?? null,...(kind==='restore'?[input.expectedEntryRevision]:[])]));
     const previous=await operation(input.eventId,input.schoolId,input.requestId);
-    if(previous){assert(previous.fingerprint===fingerprint,409,'This request identifier was used for different roster changes.');assert(!previous.failed,409,'This team changed before linking. Choose an unlinked team and a new request.');return previous;}
+    if(previous){assert(previous.fingerprint===fingerprint,409,'This request identifier was used for different roster changes.');assert(!previous.failed,409,'This roster change could not finish. Refresh and start a new request.');return previous;}
     assert(!row.pendingRequestId,409,'Resume this school’s unfinished team setup before making another roster change.');
     const teams=await repo.list({kind:'team',eventId:input.eventId}),legacyNames=await repo.list({kind:'legacy-team-name',eventId:input.eventId});
     // Include historical allocations even when their team was permanently deleted.
     for(const team of teams.filter(t=>t.schoolId===input.schoolId))row.allocations[team.teamNumber] ??= team.teamId;
     for(const number of Object.keys(row.allocations))row.nextNumber=Math.max(row.nextNumber,Number(number)+1);
     let items;
-    if(kind==='link'){
+    if(kind==='restore'){
+      const team=teams.find(t=>t.teamId===input.teamId && t.schoolId===input.schoolId);
+      assert(team?.withdrawn && (team.entryRevision ?? 0)===input.expectedEntryRevision,409,'This removed team changed. Refresh before restoring it.');
+      assert(teams.filter(t=>!t.removed && t.schoolId===input.schoolId).length<50,409,'A school can have at most 50 current teams.');
+      items=[{id:team.teamId,number:team.teamNumber,restoreRevision:input.expectedEntryRevision}];
+    }else if(kind==='link'){
       assert(validId(input.teamId) && Number.isSafeInteger(input.teamNumber) && input.teamNumber>=1 && input.teamNumber<=1000000000,400,'Choose an unused positive team number.');
       const team=teams.find(t=>t.teamId===input.teamId && !t.removed);assert(team && !team.schoolId,409,'Choose an existing unlinked team.');
       assert(teams.filter(t=>!t.removed && t.schoolId===input.schoolId).length<50,409,'A school can have at most 50 current teams.');
@@ -69,7 +74,7 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
     }else{
       assert(Number.isInteger(input.targetCount) && input.targetCount>=1 && input.targetCount<=50,400,'Choose a target count from 1 to 50.');
       const count=teams.filter(t=>!t.removed && t.schoolId===input.schoolId).length;
-      assert(input.targetCount>=count,409,'Use the existing Delete actions to reduce a school’s team count.');
+      assert(input.targetCount>=count,409,'Remove teams from this event to reduce the count.');
       items=Array.from({length:input.targetCount-count},(_,i)=>({id:randomUUID(),number:row.nextNumber+i}));
       for(const item of items)collision(dir,input.schoolId,item.number,undefined,teams,legacyNames);
     }
@@ -90,6 +95,10 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
         if(!team || team.removed || team.schoolId){await finish(op,true);assert(false,409,'The team changed before linking. Its reserved number will not be reused.');}
         const {name,...retained}=team;
         await write({...retained,schoolId:op.schoolId,teamNumber:item.number,schoolLinkRequestId:op.requestId});
+      }else if(op.operation==='restore'){
+        if(team?.schoolLinkRequestId===op.requestId)return;
+        if(!team?.withdrawn || (team.entryRevision ?? 0)!==item.restoreRevision){await finish(op,true);assert(false,409,'This removed team changed. Refresh before restoring it.');}
+        await write({...team,removed:false,withdrawn:false,entryRevision:item.restoreRevision+1,schoolLinkRequestId:op.requestId});
       }else{
         // A deleted generated team must never be resurrected by a lost-response retry.
         if(fence?.schoolRequestId===op.requestId)return;
@@ -145,13 +154,30 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
     });},
     async releaseLegacyName(eventId,teamId,generation){return retry(async()=>{const old=await repo.get('system',legacyNameKey(eventId,teamId).rowKey);if(old && old.generation===generation)await repo.batch([{entity:old,etag:old.etag,remove:true}]);});},
     async list(eventId){const dir=await directory();const progress=[];if(eventId)for(const op of await repo.list({kind:'school-operation',eventId}))if(!op.complete)progress.push(await summary(op));return {schools:dir.schools.map(schoolView),progress};},
-    async create(input){requestId(input.requestId);const value=schoolName(input.name);return retry(async()=>{const dir=await directory(),old=dir.schools.find(s=>s.createRequestId===input.requestId);if(old){assert(old.createName===value,409,'This school request was already used.');return {school:schoolView(old)};}assert(!dir.schools.some(s=>schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');const school={id:randomUUID(),name:value,isHostSchool:false,revision:1,createRequestId:input.requestId,createName:value};dir.schools.push(school);dir.revision++;await write(dir);return {school:schoolView(school)};});},
+    async create(input){
+      requestId(input.requestId);const value=schoolName(input.name);
+      return retry(async()=>{
+        const dir=await directory(),receiptKey='school-create-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);
+        if(receipt){assert(receipt.name===value,409,'This school request was already used.');return {school:schoolView(getSchool(dir,receipt.schoolId))};}
+        const old=dir.schools.find(s=>s.createRequestId===input.requestId);
+        if(old){assert(old.createName===value,409,'This school request was already used.');return {school:schoolView(old)};}
+        const existing=dir.schools.find(s=>schoolNameKey(s.name)===schoolNameKey(value));
+        assert(!existing || existing.deleted,409,'That school already exists.');
+        const school=existing ?? {id:randomUUID(),name:value,isHostSchool:false,revision:1,createRequestId:input.requestId,createName:value};
+        if(existing){delete school.deleted;school.revision++;}else dir.schools.push(school);
+        dir.revision++;
+        // Restore the same identity; replay must not undo a later deletion.
+        await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-create-receipt',name:value,schoolId:school.id}}]);
+        return {school:schoolView(school)};
+      });
+    },
     async rename(input){requestId(input.requestId);const value=schoolName(input.name),fingerprint=digest(JSON.stringify([input.schoolId,value,input.expectedRevision]));return retry(async()=>{const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-rename-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);if(receipt){assert(receipt.fingerprint===fingerprint,409,'This school rename request was already used.');return {school:schoolView(school)};}assert(!school.deleted,409,'This school has been deleted.');
         assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Refresh before renaming it.');assert(!dir.schools.some(s=>s.id!==school.id && schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');school.name=value;school.revision++;dir.revision++;const teams=[...await repo.list({kind:'team'}),...(await repo.list({kind:'legacy-team-name'})).map(row=>({...row,teamId:'reservation-'+row.teamId}))],rosters=await repo.list({kind:'school-roster'});for(const row of rosters.filter(r=>r.schoolId===school.id))for(const [number,id] of Object.entries(row.allocations)){assert((school.name+' '+number).length<=80,400,'The school name and team number must fit within 80 characters.');assert(!teams.some(t=>t.eventId===row.eventId && t.teamId!==id && schoolNameKey(display(t,dir))===schoolNameKey(school.name+' '+number)),409,'That school name conflicts with an existing team name.');}await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-rename-receipt',fingerprint}}]);return {school:schoolView(school)};});},
     async nameReserved(eventId,value){const dir=await directory(),key=schoolNameKey(value);return (await repo.list({kind:'school-roster',eventId})).some(row=>Object.keys(row.allocations).some(number=>schoolNameKey(getSchool(dir,row.schoolId).name+' '+number)===key));},
     async ensure(input){return materialize(await reserve(input,'generate'));},
+    async restore(input){return materialize(await reserve(input,'restore'));},
     async link(input){return materialize(await reserve(input,'link'));},
-    async resume(input){requestId(input.requestId);const op=await operation(input.eventId,input.schoolId,input.requestId);assert(op,404,'Team setup request not found.');assert(!op.failed,409,'This team changed before linking. Choose an unlinked team and a new request.');return materialize(op);},
+    async resume(input){requestId(input.requestId);const op=await operation(input.eventId,input.schoolId,input.requestId);assert(op,404,'Team setup request not found.');assert(!op.failed,409,'This roster change could not finish. Refresh and start a new request.');return materialize(op);},
     async pending(eventId){return (await repo.list({kind:'school-operation',eventId})).some(op=>!op.complete);},
     async copyAllocations(oldEventId,newEventId){for(const old of await repo.list({kind:'school-roster',eventId:oldEventId})){const key=journalKey(newEventId,old.schoolId);if(!await repo.get(key.partitionKey,key.rowKey))await repo.write({...key,kind:'school-roster',eventId:newEventId,schoolId:old.schoolId,nextNumber:old.nextNumber,allocations:old.allocations,pendingRequestId:null});}},
   };

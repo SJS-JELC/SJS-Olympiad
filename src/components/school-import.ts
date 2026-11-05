@@ -15,7 +15,6 @@ export function parseSchoolImport(text:string,schools:SchoolRecord[],teams:TeamR
   const targetCount=Number(count);if(!/^\d+$/.test(count) || !Number.isInteger(targetCount) || targetCount<1 || targetCount>50)throw Error('Row '+(index+1)+': team count must be 1 to 50.');
   const colours=[first,...(second?[second]:[])];if(colours.some(value=>!/^#[0-9a-f]{6}$/i.test(value)))throw Error('Row '+(index+1)+': use six-digit hex colours such as #024633.');
   const school=schools.find(s=>schoolImportName(s.name)===key);
-  if(school?.deleted)throw Error('Row '+(index+1)+': this name belongs to a deleted school. Use a different name.');
   const current=teams.filter(team=>team.schoolId===school?.id && !!team.schoolId).length;
   return {name:school?.name ?? name,targetCount,colours:colours.map(c=>c.toUpperCase()),school,addCount:Math.max(0,targetCount-current)};
  });

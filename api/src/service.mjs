@@ -7,6 +7,8 @@ import { practicalFields, emptyPractical, practicalChanges } from './practical.m
 import { retainedAttempt, retainedQuestion, retainedResponse } from './theory-retention.mjs';
 import { diagnosticSnapshot } from './diagnostics.mjs';
 import { schoolDirectory, schoolNameKey } from './schools.mjs';
+import { validSchoolColours } from './school-colours.mjs';
+import { adminBatches } from './admin-batches.mjs';
 import { createPilot } from './pilot.mjs';
 export class ApiError extends Error { constructor(status,message,code) { super(message); this.status=status; this.code=code; } }
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -56,6 +58,7 @@ export function createService(repo,config={},now=Date.now) {
   let bootPromise;
   const partition=(eventId,teamId)=>eventId+'-'+teamId;
   const retry=async operation=>{ for(let n=0;n<8;n++) { try{return await operation();} catch(error){if(!conflict(error))throw error;} } throw new ApiError(409,'The event changed while saving. Retry the same request.'); };
+  const runAdminBatch=adminBatches({repo,retry,assert,validId});
   const write=entity=>repo.write(entity,entity.etag);
   const batch=operations=>repo.batch(operations.map(entity=>({entity,etag:entity.etag})));
   const lifecycleFence=(pk,old,values={})=>({...old,partitionKey:pk,rowKey:'deleted-team',kind:'team-fence',complete:true,revision:(old?.revision ?? 0)+1,...values});
@@ -131,7 +134,7 @@ export function createService(repo,config={},now=Date.now) {
       return true;
     });
   };
-  const publicTeam=async(team,directory)=>team ? {id:team.teamId,name:schools.display(team,directory ?? await schools.directory()),eventId:team.eventId,year:team.year,claimGeneration:team.claimGeneration,...(team.schoolId?{schoolId:team.schoolId,teamNumber:team.teamNumber,schoolColours:schools.colours(team.schoolId,directory ?? await schools.directory())}:{})}:null;
+  const publicTeam=async(team,directory)=>team ? {id:team.teamId,name:schools.display(team,directory ?? await schools.directory()),eventId:team.eventId,year:team.year,claimGeneration:team.claimGeneration,entryRevision:team.entryRevision ?? 0,...(team.schoolId?{schoolId:team.schoolId,teamNumber:team.teamNumber,schoolColours:schools.colours(team.schoolId,directory ?? await schools.directory())}:{})}:null;
   const authenticate=async token=>{
     await bootstrap();
     assert(typeof token==='string' && /^[a-f0-9]{64}$/.test(token),401,'Sign in to continue.');
@@ -498,7 +501,79 @@ export function createService(repo,config={},now=Date.now) {
       });
       return api.teams(token,{eventId:event.id});
     },
-    async teamRelease(token,input) {
+    async removedTeams(token,input){
+      const session=await authenticate(token);teacher(session);eventById(await settings(),input.eventId);
+      const directory=await schools.directory(),rows=await repo.list({kind:'team',eventId:input.eventId});
+      return {teams:await Promise.all(rows.filter(team=>team.withdrawn).map(async team=>({...await publicTeam(team,directory),score:team.score,claimed:false})))};
+    },
+    async teamRemove(token,input,includeRoster=true){
+      const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm removing this team from the event.');
+      assert(validId(input.teamId) && validId(input.requestId) && input.requestId.length>=8 && Number.isSafeInteger(input.expectedEntryRevision) && input.expectedEntryRevision>=0,400,'A team, request identifier and current entry revision are required.');
+      const pk=partition(input.eventId,input.teamId),receiptKey='entry-remove-'+input.requestId;
+      await retry(async()=>{
+        const receipt=await repo.get(pk,receiptKey);
+        if(receipt){assert(receipt.expectedEntryRevision===input.expectedEntryRevision,409,'This removal request was already used.');return;}
+        const event=eventById(await settings(),input.eventId);assert(event.status!=='ended',409,'Completed event rosters are read-only.');noRosterReset(event);
+        const team=await teamById(event.id,input.teamId);assert(team && !team.removed,404,'Team not found.');
+        assert((team.entryRevision ?? 0)===input.expectedEntryRevision,409,'This team changed. Refresh before removing it.');
+        const removed={...team,removed:true,withdrawn:true,entryRevision:input.expectedEntryRevision+1,owner:null,legacySessionHash:null,legacyExpires:0,claimGeneration:team.claimGeneration+1,securityEpoch:team.securityEpoch+1,securityStatus:'NOT_STARTED',recovery:null};
+        await batch([removed,{partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',expectedEntryRevision:input.expectedEntryRevision}]);
+      });
+      return includeRoster?api.teams(token,{eventId:input.eventId}):{teamId:input.teamId};
+    },
+    async teamRestore(token,input,includeRoster=true){
+      const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm restoring this team.');
+      assert(validId(input.teamId) && validId(input.requestId) && input.requestId.length>=8 && Number.isSafeInteger(input.expectedEntryRevision) && input.expectedEntryRevision>=1,400,'A team, request identifier and current entry revision are required.');
+      const event=eventById(await settings(),input.eventId);assert(event.status!=='ended',409,'Completed event rosters are read-only.');noRosterReset(event);
+      const team=await teamById(event.id,input.teamId);assert(team,404,'Team not found.');
+      if(team.schoolId)await schools.restore({...input,schoolId:team.schoolId});
+      else await retry(async()=>{
+        const pk=partition(event.id,input.teamId),receiptKey='entry-restore-'+input.requestId,receipt=await repo.get(pk,receiptKey);
+        if(receipt){assert(receipt.expectedEntryRevision===input.expectedEntryRevision,409,'This restoration request was already used.');return;}
+        const currentEvent=eventById(await settings(),event.id);assert(currentEvent.status!=='ended',409,'Completed event rosters are read-only.');noRosterReset(currentEvent);
+        const current=await teamById(event.id,input.teamId);assert(current?.withdrawn && (current.entryRevision ?? 0)===input.expectedEntryRevision,409,'This removed team changed. Refresh before restoring it.');
+        await batch([{...current,removed:false,withdrawn:false,entryRevision:input.expectedEntryRevision+1},{partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',expectedEntryRevision:input.expectedEntryRevision}]);
+      });
+      return includeRoster?api.teams(token,{eventId:input.eventId}):{teamId:input.teamId};
+    },
+    async teamsBatch(token,input){
+      const session=await authenticate(token);teacher(session);eventById(await settings(),input.eventId);
+      assert(['team-delete','team-release','team-remove','team-restore'].includes(input.action),400,'Choose a supported team action.');
+      assert(input.confirm===true,400,'Confirm the selected team action.');
+      assert(Array.isArray(input.items) && input.items.every(item=>item && validId(item.teamId)) && new Set(input.items.map(item=>item.teamId)).size===input.items.length,400,'Choose distinct teams.');
+      return runAdminBatch({requestId:input.requestId,eventId:input.eventId,kind:input.action,items:input.items,concurrency:input.action==='team-restore'?1:3},async(item,{childId})=>{
+        const body={...item,eventId:input.eventId,requestId:childId('action'),confirm:true};
+        const method={'team-delete':'teamDelete','team-release':'teamRelease','team-remove':'teamRemove','team-restore':'teamRestore'}[input.action];
+        await api[method](token,body,false);
+      });
+    },
+    async schoolsImport(token,input){
+      const session=await authenticate(token);teacher(session);const event=eventById(await settings(),input.eventId);assert(event.status!=='ended',409,'Completed event rosters are read-only.');noRosterReset(event);
+      assert(Array.isArray(input.rows),400,'Provide school rows.');
+      const seen=new Set();
+      const rows=input.rows.map(row=>{
+        assert(row && typeof row==='object',400,'Provide school rows.');const value=name(row.name),key=schoolNameKey(value);assert(value.length<=70 && !seen.has(key),400,'Use distinct school names of at most 70 characters.');seen.add(key);
+        assert(Number.isInteger(row.targetCount) && row.targetCount>=1 && row.targetCount<=50 && validSchoolColours(row.colours),400,'Use a team count from 1 to 50 and one or two six-digit hex colours.');
+        assert(row.schoolId===undefined || validId(row.schoolId) && Number.isInteger(row.expectedRevision),400,'Refresh the school preview.');
+        return {name:value,targetCount:row.targetCount,colours:row.colours,...(row.schoolId?{schoolId:row.schoolId,expectedRevision:row.expectedRevision,restore:row.restore===true}:{})};
+      });
+      return runAdminBatch({requestId:input.requestId,eventId:input.eventId,kind:'schools-import',items:rows},async(row,{state,checkpoint,childId})=>{
+        if(state.stage===0){
+          let school;
+          if(!row.schoolId || row.restore)school=(await api.schoolCreate(token,{name:row.name,requestId:childId('school')})).school;
+          else school={id:row.schoolId,revision:row.expectedRevision};
+          state=await checkpoint({stage:1,schoolId:school.id,revision:school.revision});
+        }
+        if(state.stage===1){await api.schoolColours(token,{schoolId:state.schoolId,colours:row.colours,expectedRevision:state.revision,requestId:childId('colours')});state=await checkpoint({...state,stage:2});}
+        if(state.stage===2){
+          const teams=await repo.list({kind:'team',eventId:input.eventId}),count=teams.filter(team=>team.schoolId===state.schoolId && !team.removed).length;
+          // Freeze the decision before setup so a lost partial setup resumes its plan.
+          state=await checkpoint({...state,stage:3,setup:count<row.targetCount});
+        }
+        if(state.stage===3 && state.setup){const current=await authenticate(token);teacher(current);await schools.ensure({eventId:input.eventId,schoolId:state.schoolId,targetCount:row.targetCount,requestId:childId('teams')});}
+      });
+    },
+    async teamRelease(token,input,includeRoster=true) {
       const session=await authenticate(token);teacher(session);assert(confirmed(input),400,'Confirm releasing this team.');
       const s=await settings(),event=eventById(s,input.eventId || getCurrentEvent(s)?.id),pk=partition(event.id,input.teamId);
       const receipted=input.requestId!==undefined;
@@ -513,9 +588,9 @@ export function createService(repo,config={},now=Date.now) {
         if(receipted)await batch([released,{partitionKey:pk,rowKey:receiptKey,kind:'admin-receipt',eventId:event.id,expectedClaimGeneration:input.expectedClaimGeneration}]);
         else await write(released);
       });
-      return api.teams(token,{eventId:event.id});
+      return includeRoster?api.teams(token,{eventId:event.id}):{teamId:input.teamId};
     },
-    async teamDelete(token,input) {
+    async teamDelete(token,input,includeRoster=true) {
       const session=await authenticate(token);teacher(session);
       assert(confirmed(input),400,'Confirm deleting this team.');
       assert(validId(input.teamId) && validId(input.requestId) && input.requestId.length>=8,400,'A team and deletion request identifier are required.');
@@ -537,7 +612,7 @@ export function createService(repo,config={},now=Date.now) {
       });
       if(!outcome.complete)await finishDeletion(pk,receiptKey);
       if(outcome.outcome==='deleted')await schools.releaseLegacyName(event.id,input.teamId,outcome.claimGeneration-1);
-      return {...await api.teams(token,{eventId:event.id}),outcome:outcome.outcome};
+      return {...(includeRoster?await api.teams(token,{eventId:event.id}):{teamId:input.teamId}),outcome:outcome.outcome};
     },
     async claim(token,input) {
       const session=await authenticate(token);assert(session.role==='competitor',403,'Only competitors claim teams.');const s=await settings(),event=getCurrentEvent(s);assert(event,409,'There is no unfinished event.');activeForWrite(event);assert(validId(input.teamId),400,'Choose a team.');
