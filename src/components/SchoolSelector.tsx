@@ -14,9 +14,14 @@ export function SchoolSelector({items,value,onChange,label,disabled=false,loadin
  const names=items.map(i=>i.id+i.name).join('|');
  useLayoutEffect(()=>{
   const grid=ref.current;if(!grid)return;
-  let frame=0,live=true;
+  delete grid.dataset.layoutReady;
+  const name=grid.querySelector<HTMLElement>('.team-tile__name');
+  const style=name?getComputedStyle(name):null;
+  const font=style?`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`:'';
+  const text=items.map(item=>selectorName(item.name)).join(' ');
+  let frame=0,live=true,fontsReady=!font || !document.fonts || document.fonts.check(font,text);
   function fit(){
-   if(!grid || !live || !grid.children.length || grid.clientHeight<=0)return;
+   if(!grid || !live || !fontsReady || !grid.children.length || grid.clientHeight<=0)return;
    const tiles=Array.from(grid.children) as HTMLElement[];
    function place(columns:number){
     const rows=Math.ceil(tiles.length/columns);
@@ -45,19 +50,32 @@ export function SchoolSelector({items,value,onChange,label,disabled=false,loadin
     if(!best || score>best.score)best={columns,size,score};
    }
    place(best?.columns ?? 1);grid.style.setProperty('--selector-name-size',(best?.size ?? 10)+'px');
+   grid.dataset.layoutReady='true';
   }
   const schedule=()=>{if(live){cancelAnimationFrame(frame);frame=requestAnimationFrame(fit);}};
   const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(schedule);observer?.observe(grid);
-  document.fonts?.ready.then(schedule);window.addEventListener('resize',schedule);schedule();
+  // Measure cached fonts before paint; otherwise reveal only after the real font
+  // (or its failed-load fallback) has settled. Hidden tiles still have geometry.
+  if(fontsReady)fit();
+  else {
+   const reveal=()=>{if(live){fontsReady=true;fit();}};
+   void document.fonts.load(font,text).then(reveal,reveal);
+  }
+  window.addEventListener('resize',schedule);
   return()=>{live=false;cancelAnimationFrame(frame);observer?.disconnect();window.removeEventListener('resize',schedule);};
  },[names]);
  return <fieldset ref={ref} className="team-grid school-selector" aria-label={label} aria-busy={loading} disabled={disabled}>
-  {items.map(item=>{const art=selectorArtwork(item.colours);return <label key={item.id} className={'team-tile'+(item.unavailable?' team-tile--claimed':'')+(value===item.id?' team-tile--selected':'')} style={{'--tile-default':art.plain,'--tile-selected':art.selected,'--tile-unavailable':`url("${unavailableArtwork}")`} as CSSProperties}>
+  {items.map(item=>{const art=selectorArtwork(item.colours);return <label key={item.id} className={'team-tile school-tile'+(item.unavailable?' team-tile--claimed':'')+(value===item.id?' team-tile--selected':'')} style={{'--tile-default':art.plain,'--tile-selected':art.selected,'--tile-unavailable':`url("${unavailableArtwork}")`} as CSSProperties}>
    <input type="radio" name={label==='Teams'?'team':'school'} value={item.id} checked={value===item.id} disabled={item.unavailable} onChange={()=>onChange(item.id)} aria-label={item.name+(item.unavailable?' — claimed':'')}/>
    <span className="team-tile__name type-label" aria-hidden="true">{selectorName(item.name)}</span>
    {item.unavailable && <span className="team-tile__stamp type-display" aria-hidden="true">CLAIMED</span>}
   </label>;})}
  </fieldset>;
+}
+export function SchoolIdentity({school}:{school:SelectorItem}){
+ return <div className="school-tile school-identity" role="img" aria-label={'School: '+school.name} style={{'--tile-default':selectorArtwork(school.colours).selected} as CSSProperties}>
+  <span className="team-tile__name type-label" aria-hidden="true">{selectorName(school.name)}</span>
+ </div>;
 }
 export function LockInButton({disabled=false,busy=false,confirmed=false}:{disabled?:boolean;busy?:boolean;confirmed?:boolean}){
  return <button type="submit" className="hazard-lock" disabled={disabled || busy || confirmed} aria-label={confirmed?'LOCKED':busy?'LOCKING IN...':'LOCK IN'} aria-busy={busy}>

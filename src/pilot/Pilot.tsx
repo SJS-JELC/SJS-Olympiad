@@ -10,7 +10,7 @@ import {QuestionShell} from '../questions/QuestionShell';
 import {SkeletalHelp} from './SkeletalHelp';
 import './pilot.css';
 import {LoadingIndicator} from '../components/LoadingIndicator';
-import {SchoolSelector,LockInButton} from '../components/SchoolSelector';
+import {SchoolSelector,SchoolIdentity,LockInButton} from '../components/SchoolSelector';
 
 export const pilotLimits={maxHeavyAtoms:250,maxAtoms:650,maxBonds:750};
 type Snapshot={status:'off'|'open';revision:number;eventId:string|null;schools:{id:string;name:string;colours?:string[]}[];rankings:{schoolId:string;name:string;rank:number}[]};
@@ -60,7 +60,18 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
   const [message,setMessage]=useState(''),[storageMessage,setStorageMessage]=useState(''),[conflict,setConflict]=useState(false),[busy,setBusy]=useState(false);
   const raw=useRef<string|null>(null),current=useRef<Saved|null>(null),sending=useRef(false),resumed=useRef(false);
   useEffect(()=>{
-    try{raw.current=localStorage.getItem(storageKey);const value=restore(raw.current);current.current=value;setSaved(value);if(value)setSchool(value.schoolId);}catch(e){setStorageMessage('Local recovery is unavailable. '+(e as Error).message);}
+    try{
+      raw.current=localStorage.getItem(storageKey);const value=restore(raw.current);current.current=value;setSaved(value);
+      if(value){
+        setSchool(value.schoolId);
+        const result=value.result;
+        if(result && typeof result.id==='string' && result.schoolId===value.schoolId && typeof result.confirmedAt==='number' && Number.isFinite(result.confirmedAt)){
+          resumed.current=true;
+          if(snapshot.schools.some(item=>item.id===value.schoolId))setEntered(true);
+          else setMessage('This school is not in the current event. Return to the landing page.');
+        }
+      }
+    }catch(e){setStorageMessage('Local recovery is unavailable. '+(e as Error).message);}
     setLoaded(true);
     const changed=(e:StorageEvent)=>{if(e.key===storageKey || e.key===null){setConflict(true);setStorageMessage('This attempt changed in another tab. Reload to continue from its saved drawing.');}};
     window.addEventListener('storage',changed);return ()=>window.removeEventListener('storage',changed);
@@ -80,7 +91,7 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
     const value=current.current ?? {version:1 as const,schoolId:school,credential:credential(),drawing:blankMolecule()};
     if(!save(value))return;
     sending.current=true;setBusy(true);setMessage('');
-    try{const result=await request<Attempt>('pilot-enter',{schoolId:value.schoolId,credential:value.credential,requestId:crypto.randomUUID()});save({...value,result});setEntered(true);await refresh();}
+    try{const result=await request<Attempt>('pilot-enter',{schoolId:value.schoolId,credential:value.credential,requestId:crypto.randomUUID()});if(save({...value,result}))setEntered(true);await refresh();}
     catch(e){setMessage((e as Error).message);await refresh();}
     finally{sending.current=false;setBusy(false);}
   }
@@ -100,6 +111,18 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
     }finally{sending.current=false;setBusy(false);}
   }
   const recovery=storageMessage && <p role="alert">{storageMessage} {conflict && <button className="ui-button" onClick={()=>window.location.reload()}>Reload saved attempt</button>}</p>;
+  const selectedSchool=snapshot.schools.find(item=>item.id===saved?.schoolId);
+  if(!loaded)return <LoadingIndicator full label="Opening your drawing…"/>;
+  if(saved && !entered)return <main className="competitor-setup type-body">
+    <OlympiadLogo className="competitor-setup__logo"/>
+    {recovery}
+    {busy || (!message && !conflict)?<LoadingIndicator label="Opening your drawing…"/>:<>
+      {message && <p role="alert">{message}</p>}
+      <button className="ui-button" disabled={conflict || !selectedSchool} onClick={()=>void enter()}>Retry opening drawing</button>
+      <button className="ui-button" onClick={onBack}>Back to landing</button>
+    </>}
+    {refreshError && <p role="alert">{refreshError}</p>}
+  </main>;
   if(!entered || !saved)return <main className="competitor-setup competitor-setup--selection type-body">
     <OlympiadLogo className="competitor-setup__logo"/><section className="pilot-school-picker">
       {recovery}
@@ -121,7 +144,7 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
     </div><div className="question-actions pilot-bottom-actions"><section className="pilot-leaderboard" aria-labelledby="pilot-leaderboard-title"><h2 id="pilot-leaderboard-title" className="type-heading">Leaderboard</h2><ol className="pilot-board">{Array.from({length:3},(_,i)=><li key={i} className={'pilot-place pilot-place--'+i}>
       <svg className="pilot-medal" viewBox="0 0 32 40" aria-hidden="true"><path d="M6 21h8v18l-4-4-4 4Zm12 0h8v18l-4-4-4 4Z" fill="currentColor" stroke="#2d2832" strokeWidth="1.5"/><path d="M9 2h14l7 7v14l-7 7H9l-7-7V9Z" fill="currentColor" stroke="#2d2832" strokeWidth="2"/><text className="type-label" x="16" y="22" textAnchor="middle" fill="#202733">{i+1}</text></svg>
       <span className="pilot-school-name type-body">{snapshot.rankings[i]?.name ?? '–'}</span>
-    </li>)}</ol></section><IllustratedActionButton label="SUBMIT" accessibleLabel={saved.pending?'Retry submission':'Submit'} disabled={busy || conflict} onClick={()=>void submit()}/></div></div>
+    </li>)}</ol></section><IllustratedActionButton label="SUBMIT" accessibleLabel={saved.pending?'Retry submission':'Submit'} disabled={busy || conflict} onClick={()=>void submit()}/>{selectedSchool && <SchoolIdentity school={selectedSchool}/>}</div></div>
   </QuestionShell>;
 }
 

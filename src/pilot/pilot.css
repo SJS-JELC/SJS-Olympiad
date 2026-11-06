@@ -14,8 +14,9 @@
 .pilot-workspace { display:grid; grid-template-columns:minmax(0,1fr); gap:2svh; flex:1; min-height:30svh; }
 .pilot-drawing { min-width:0; min-height:30svh; }
 .pilot-drawing .molecule-editor { height:100%; }
- .pilot-bottom-actions { gap:3svh; }
-.pilot-leaderboard { color:#202733; width:min(57svh,55vw); }
+ .pilot-bottom-actions { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:2svh; }
+.pilot-leaderboard { color:#202733; width:min(57svh,100%); }
+.pilot-bottom-actions .school-identity { grid-column:auto; justify-self:end; width:min(32svh,100%); --selector-height:8svh; --selector-cap:calc(8svh * 32 / 76); --selector-name-size:1.8svh; cursor:default; }
 .pilot-leaderboard h2 { margin:0 0 .4svh; text-align:center; --text-size:2.2svh; --text-leading:1.1; }
 .pilot-board { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8svh; padding:0; margin:0; list-style:none; }
 .pilot-place { display:flex; align-items:center; gap:.6svh; min-width:0; height:5.5svh; padding:.4svh .7svh; border:.18svh solid #2d2832; background:#fffdf3; box-shadow:.25svh .25svh 0 #2d2832; }

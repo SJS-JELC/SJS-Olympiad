@@ -12,6 +12,25 @@ test.beforeEach(async({api})=>{
  await api.service.pilotMode(staff,{status:'open',expectedRevision:1,requestId:'browser-open-pilot'});
 });
 async function enter(page:Page){await page.goto('/');await page.getByRole('button',{name:'GO',exact:true}).click();await page.getByRole('radio',{name:"St John's",exact:true}).check();await page.getByRole('button',{name:'LOCK IN',exact:true}).click();await expect(page.getByRole('heading',{name:'FUNNY BONES',exact:true})).toBeVisible();await expect(page.locator('.question-actions button')).toBeEnabled();}
+test('confirmed local recovery skips school selection and server re-entry',async({page,api})=>{
+ await enter(page);
+ const entryCount=api.requests.filter(request=>request.action==='pilot-enter').length;
+ let reentries=0;
+ await page.route('**/api/olympiad/pilot-enter',async route=>{reentries++;await route.fulfill({status:503,json:{error:'Resume must not need the server.'}});});
+ await page.reload();
+ await page.evaluate(()=>{
+  const track=()=>{if(document.querySelector('.pilot-school-picker'))document.body.dataset.selectorFlashed='true';};
+  new MutationObserver(track).observe(document.body,{childList:true,subtree:true});track();
+ });
+ await resume(page);
+ await expect(page.locator('.school-identity')).toHaveText("St John's");
+ await expect(page.locator('.school-identity')).toHaveAccessibleName("School: St John's");
+ await expect(page.locator('.pilot-school-picker')).toHaveCount(0);
+ expect(await page.locator('body').getAttribute('data-selector-flashed')).toBeNull();
+ expect(reentries).toBe(0);
+ expect(api.requests.filter(request=>request.action==='pilot-enter')).toHaveLength(entryCount);
+});
+
 test('access is recorded before submission, reload restores drawing and uncertain retries preserve best',async({page,api})=>{
  await enter(page);const staff=(await api.service.login({role:'teacher',code:'5678'})).token;
  let report=await api.service.pilotReport(staff);expect(report.readiness).toHaveLength(1);expect(report.readiness[0].best).toBeNull();const time=report.readiness[0].confirmedAt;
