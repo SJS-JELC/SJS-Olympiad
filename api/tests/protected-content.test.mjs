@@ -30,14 +30,15 @@ test('all theory scientific paragraphs remain exact baseline text after runtime 
   for(const paragraph of record.presentation.paragraphs??[])assert.ok(capture.text.includes(paragraph),id+' scientific paragraph changed');
  }
 });
-for(const status of ['draft','active'])test(`${status} content and binary assets enforce exact start-inclusive/end-exclusive theory boundaries`,async()=>{
+for(const status of ['draft','active'])test(`${status} content preloads before start while gameplay retains theory boundaries`,async()=>{
  const f=await fixture(status);
- for(const read of [()=>f.api.questionContent(f.player,question),()=>f.api.contentAsset(f.player,asset)])await assert.rejects(read(),{status:423});
+ for(const read of [()=>f.api.questionContent(f.player,question),()=>f.api.contentAsset(f.player,asset)])await read();
  const started=await f.api.start(f.player);
  assert.ok(Object.values(started.hydration.questions).every(value=>!value.data && !value.attempt.interaction));
  for(const time of [100000,199999,300000,300001]){
   f.setTime(time);
-  for(const read of [()=>f.api.questionContent(f.player,question),()=>f.api.contentAsset(f.player,asset),()=>f.api.question(f.player,question),()=>f.api.action(f.player,{questionId:'L6P3',requestId:'before-timed-start',action:{type:'start'}})])await assert.rejects(read(),{status:403});
+  for(const read of [()=>f.api.questionContent(f.player,question),()=>f.api.contentAsset(f.player,asset)]){if(time<300000)await read();else await assert.rejects(read(),{status:403});}
+  for(const read of [()=>f.api.question(f.player,question),()=>f.api.action(f.player,{questionId:'L6P3',requestId:'before-timed-start',action:{type:'start'}})])await assert.rejects(read(),{status:403});
  }
  for(const time of [200000,299999]){
   f.setTime(time);const before=JSON.stringify([...f.repo.rows]);
@@ -123,7 +124,8 @@ test('historical scientific feedback keys never escape bulk status before or aft
 
 test('practical content infrastructure enforces its independent window; closed result reads contain numeric results only',async()=>{
  const f=await fixture('draft');await f.api.start(f.player);
- await assert.rejects(f.api.practicalContent(f.player,{contentId:'L6'}),{status:403});
+ assert.equal((await f.api.practicalContent(f.player,{contentId:'L6'})).id,'L6');
+ await assert.rejects(f.api.practicalSave(f.player,{requestId:'too-early-save',expectedRevision:0,changes:{numPracticalResponse3:'1'}}),{status:403});
  f.setTime(350000);
  assert.equal((await f.api.practicalContent(f.player,{contentId:'L6'})).id,'L6');
  await f.api.practicalSave(f.player,{requestId:'content-practical-save',expectedRevision:0,changes:{numPracticalResponse3:'12.34'}});

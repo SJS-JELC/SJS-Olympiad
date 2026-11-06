@@ -22,12 +22,13 @@ test('competitor GO follows availability and teacher opens the current draft',as
 });
 
 test('availability failures leave competitor GO disabled while teacher sign-in remains available',async({page,api})=>{
-  api.fail.add('availability');
   await page.goto('/');
+  await expect(page.getByLabel('Competitor code',{exact:true})).toBeVisible();
+  api.fail.add('entry');await page.evaluate(()=>window.dispatchEvent(new Event('focus')));
   await page.getByLabel('Competitor code',{exact:true}).fill('1234');
   await page.getByRole('button',{name:'Teacher sign in',exact:true}).click();
   await page.getByLabel('Teacher code',{exact:true}).fill('5678');
   await expect(page.locator('form').filter({has:page.getByLabel('Competitor code',{exact:true})}).getByRole('button',{name:'GO',exact:true})).toBeDisabled();
   await expect(page.locator('form').filter({has:page.getByLabel('Teacher code',{exact:true})}).getByRole('button',{name:'Submit teacher code',exact:true})).toBeEnabled();
-  await expect(page.getByRole('alert')).toContainText('Event availability could not be checked');
+  await expect(page.getByRole('alert')).toContainText('unavailable');
 });

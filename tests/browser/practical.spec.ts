@@ -145,7 +145,7 @@ test('teacher team result distinguishes intermediate work, zero final and comple
   await api.service.start(login.token,{epoch:state.competition.epoch,requestId:crypto.randomUUID()});
   let value=await api.service.practical(login.token,{}); value=await api.service.practicalSave(login.token,{requestId:crypto.randomUUID(),expectedRevision:value.revision,changes:{numPracticalResponse3:'20.00'}});
   await openEvents(page, '/?settings'); const row=page.getByRole('row').filter({has:page.getByText(team.name,{exact:true})});
-  await expect(row.getByText('Final answer not submitted',{exact:true})).toBeVisible(); await row.getByText('Working responses',{exact:true}).click(); await expect(row.getByText('20.00',{exact:true})).toBeVisible();
+  await expect(row.locator('.practical-team-result > strong')).toHaveText('\u2013'); await row.getByText('Working responses',{exact:true}).click(); await expect(row.getByText('20.00',{exact:true})).toBeVisible();
   await api.service.practicalSave(login.token,{requestId:crypto.randomUUID(),expectedRevision:value.revision,changes:{numPracticalResponse4:'0.000'}});
   const staff=await api.service.login({role:'teacher',code:'5678'}); state=await api.service.session(staff.token); await api.service.eventEnd(staff.token,{eventId:state.activeEvent.id,expectedRevision:state.activeEvent.revision,confirm:true});
   await reloadTeacher(page,'/?settings&eventId=fixture-L6'); await openEvents(page,'/?settings&eventId=fixture-L6'); await expect(row.getByText('0.000 g',{exact:true})).toBeVisible(); await expect(page.getByText('This event is complete. Results are read-only.')).toBeVisible(); await expect(row.getByRole('button',{name:/Allow reselection/})).toBeDisabled();

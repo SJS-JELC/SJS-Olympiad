@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCompetitionSecurity } from './security';
-import { request, HttpError, type EventRecord, type SessionState, type TeamRecord } from './cloud/api';
+import { request, HttpError, type EventRecord, type SessionState } from './cloud/api';
 import { OlympiadHeading } from './components/OlympiadHeading';
 import { eventTiming, londonDateValue, parseLondonDate } from './events/timing';
 import { theoryYears } from './questions/years';
@@ -11,7 +11,7 @@ import './settings.css';
 import {BackendDiagnostics} from './components/BackendDiagnostics';
 import {PilotSettings} from './pilot/Pilot';
 
-type Confirmation = { title: string; description: string; run: () => Promise<void>; success?: string };
+type Confirmation = { title: string; description: string; run: () => Promise<void>; success?: string; closeOnConfirm?:boolean };
 type EventForm = { name: string; year: string; theoryStart: string; theoryEnd: string; practicalStart: string; practicalEnd: string };
 const blankEvent = (): EventForm => ({ name: '', year: 'L6', theoryStart: '', theoryEnd: '', practicalStart: '', practicalEnd: '' });
 function eventForm(event: EventRecord): EventForm {
@@ -27,14 +27,17 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
 }) {
     const security = useCompetitionSecurity();
     const [events, setEvents] = useState<EventRecord[]>(security.server?.events ?? []);
-    const [teams, setTeams] = useState<TeamRecord[]>([]), [teamsEvent, setTeamsEvent] = useState<string>();
-    const [busy, setBusy] = useState(false), busyRef = useRef(false);
+    const [eventBusy, setBusy] = useState(false), busyRef = useRef(false);
+    const [rosterBusy,setRosterBusy]=useState(false),rosterBusyRef=useRef(false);
+    const busy=eventBusy || rosterBusy;
+    function rosterWorking(value:boolean){rosterBusyRef.current=value;setRosterBusy(value);}
     const [message, setMessage] = useState(''), [confirm, setConfirm] = useState<Confirmation | null>(null);
     const [creating, setCreating] = useState(false), [draft, setDraft] = useState<EventForm>(blankEvent), [baseline, setBaseline] = useState<EventForm>(blankEvent);
     const {questions:questionsOpen,events:eventsOpen}=panels;
     const [formRevision, setFormRevision] = useState(0);
     const eventCreateRequest = useRef<{fingerprint:string;requestId:string}|null>(null);
-    const teamsRequest = useRef(0), selectedId = useRef(eventId);
+    const eventsReadGeneration=useRef(0),settingsMounted=useRef(true);
+    const selectedId = useRef(eventId);
     selectedId.current = eventId;
     const selected = events.find(event => event.id === eventId);
     const currentEvent = events.find(event=>event.status==='active') ?? events.slice().reverse().find(event=>event.status==='draft');
@@ -49,37 +52,37 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
         const value = event ? eventForm(event) : blankEvent();
         setDraft(value); setBaseline(value); setFormRevision(event?.revision ?? 0);
     }
-    async function refreshTeams(id = eventId) {
-        const generation = ++teamsRequest.current;
-        if (!id) { setTeams([]); setTeamsEvent(undefined); return; }
-        const result = await request<{ teams: TeamRecord[] }>('teams?eventId=' + encodeURIComponent(id));
-        if (generation === teamsRequest.current && selectedId.current === id) { setTeams(result.teams); setTeamsEvent(id); }
-    }
     async function refresh() {
-        const result = await request<{ events: EventRecord[]; activeEvent: EventRecord | null; configRevision: number }>('events');
+        const generation=++eventsReadGeneration.current;
+        let result:{events:EventRecord[];activeEvent:EventRecord|null;configRevision:number};
+        try{result=await request('events');}
+        catch(error){if(settingsMounted.current && generation===eventsReadGeneration.current)setMessage(error instanceof Error?error.message:'Unable to load events.');return;}
+        if(!settingsMounted.current || generation!==eventsReadGeneration.current)return;
         if (security.server) security.update({ ...security.server, ...result });
         const event = result.events.find(item => item.id === selectedId.current) ?? result.activeEvent ?? result.events.slice().reverse().find(event=>event.status==='draft') ?? result.events[0];
         if (event && event.id !== selectedId.current) onEventChange(event.id);
-        if (!creating) resetForm(event);
-        await refreshTeams(event?.id);
     }
     async function run(work: () => Promise<void>, success = '') {
-        if (busyRef.current) return;
+        if (busyRef.current || rosterBusyRef.current) return;
         busyRef.current = true; setBusy(true); setMessage('');
         try { await work(); setMessage(success); }
         catch (error) { setMessage(error instanceof Error ? error.message : 'The request could not be completed.'); }
         finally { busyRef.current = false; setBusy(false); }
     }
     async function eventCommand(action: string, body: unknown) {
+        eventsReadGeneration.current++;
         const value = await request<SessionState & {createdEventId?: string}>(action, body);
-        security.update(value); setEvents(value.events ?? []);
+        acceptEventState(value);
         return value;
     }
-    useEffect(() => { void run(refresh, ''); }, []);
+    function acceptEventState(value:SessionState){
+        eventsReadGeneration.current++;
+        if(!settingsMounted.current)return;
+        security.update(value);setEvents(value.events ?? []);
+    }
+    useEffect(() => {settingsMounted.current=true;void refresh();return()=>{settingsMounted.current=false;eventsReadGeneration.current++;};}, []);
     useEffect(() => {
-        setCreating(false); resetForm(selected); setTeams([]); setTeamsEvent(undefined);
-        void refreshTeams(eventId).catch(error => { if (selectedId.current === eventId) setMessage(error.message); });
-        return () => { teamsRequest.current++; };
+        setCreating(false); resetForm(selected);
     }, [eventId]);
     // Explicit server responses refresh clean forms. Keep typed changes
     // and their original revision when another teacher edits the same settings.
@@ -88,10 +91,10 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
         if(!state?.events || busyRef.current)return;
         setEvents(state.events);
         if(!dirty && !creating)resetForm(state.events.find(event=>event.id===eventId));
-        if(!creating)void refreshTeams(eventId).catch(error=>setMessage(error.message));
     }, [security.server]);
 
     function changeMode(create: boolean, id?: string) {
+        if(busyRef.current || rosterBusyRef.current)return;
         const change = async () => {
             setCreating(create); setMessage('');
             if (create) resetForm();
@@ -144,12 +147,11 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
         else if(target.status!=='ended' && status==='ended')setConfirm({title:'End this event?',description:`End ${target.name}? Saved results will remain available. This event cannot restart.`,run:async()=>{const value=await eventCommand('event-end',{eventId:target.id,expectedRevision:target.revision,confirm:true});resetForm(value.events?.find(event=>event.id===target.id));}});
     }
     if (security.server?.role !== 'teacher') return <p role="alert">Teacher access required.</p>;
-    const shownTeams = teamsEvent === selected?.id ? teams : [];
     const prefix = creating ? 'new-event' : 'event';
     return <main className="settings-page teacher-settings type-body">
         <header className="settings-header"><div className="settings-title"><OlympiadHeading lines={['Settings']} level={1} /></div></header>
         {message && !confirm && <p className="settings-message type-caption" role="alert">{message.replaceAll('Refresh settings before saving again.','Reload this page before saving again; your unsaved values are still shown.')}</p>}
-        <section className="settings-panel settings-questions" aria-labelledby="settings-questions-heading"><h2 id="settings-questions-heading" className="type-heading"><PanelToggle label="Preview Questions" expanded={questionsOpen} controls="settings-question-catalogue" onClick={()=>onPanelsChange({...panels,questions:!questionsOpen})}/></h2><div id="settings-question-catalogue" hidden={!questionsOpen}><ProblemTesting enabled={questionsOpen} onOpen={(year,number)=>{const open=async()=>onQuestionPreview(year,number);if(dirty)setConfirm({title:'Discard unsaved changes?',description:'Saved settings will stay unchanged.',run:open});else void open();}}/><PracticalCatalogue onOpen={year=>{const open=async()=>onPracticalPreview(year);if(dirty)setConfirm({title:'Discard unsaved changes?',description:'Saved settings will stay unchanged.',run:open});else void open();}}/></div></section>
+        <section className="settings-panel settings-questions" aria-labelledby="settings-questions-heading"><h2 id="settings-questions-heading" className="type-heading"><PanelToggle label="Preview Questions" expanded={questionsOpen} controls="settings-question-catalogue" onClick={()=>onPanelsChange({...panels,questions:!questionsOpen})}/></h2><div id="settings-question-catalogue" hidden={!questionsOpen}><ProblemTesting enabled={questionsOpen} onOpen={(year,number)=>{if(busyRef.current || rosterBusyRef.current)return;const open=async()=>onQuestionPreview(year,number);if(dirty)setConfirm({title:'Discard unsaved changes?',description:'Saved settings will stay unchanged.',run:open});else void open();}}/><PracticalCatalogue onOpen={year=>{if(busyRef.current || rosterBusyRef.current)return;const open=async()=>onPracticalPreview(year);if(dirty)setConfirm({title:'Discard unsaved changes?',description:'Saved settings will stay unchanged.',run:open});else void open();}}/></div></section>
         <section className="settings-panel settings-events" aria-labelledby="settings-events-heading">
             <div className="settings-section-heading"><h2 id="settings-events-heading" className="type-heading"><PanelToggle label="Events" expanded={eventsOpen} controls="settings-event-content" onClick={()=>onPanelsChange({...panels,events:!eventsOpen})}/></h2>{eventsOpen && <div className="settings-toolbar" role="toolbar" aria-label="Event actions">
                 <button className="ui-button" disabled={busy || creating || !!currentEvent} title={currentEvent?'Complete the current event before creating another.':undefined} onClick={()=>changeMode(true)}>Create new event</button>
@@ -170,14 +172,14 @@ export default function App({ eventId, onEventChange, onLeaderboard, onQuestionP
                 {!creating && selected && <>
                     {resetPending && <div className="settings-setup-progress"><p role="status">The confirmed year reset is incomplete. Resume it before changing this event or its roster.</p><button className="ui-button" disabled={busy} onClick={()=>void run(resumeYearReset)}>Resume year reset</button></div>}
                     {ended && <p className="type-caption">This event is complete. Results are read-only.</p>}
-                    <SchoolRoster key={selected.id} event={selected} teams={shownTeams} busy={busy} run={run} refresh={()=>refreshTeams(selected.id)} confirm={setConfirm} onError={setMessage} resumeEvent={async()=>{await eventCommand('event-setup',{eventId:selected.id});}}/>
+                    <SchoolRoster key={selected.id} event={selected} busy={eventBusy} onBusy={rosterWorking} confirm={value=>setConfirm({...value,closeOnConfirm:true})} onEventSaved={acceptEventState}/>
                 </>}
             </>}
             </div>
         </section>
         <PilotSettings/>
         <section className="settings-panel settings-diagnostics" aria-labelledby="settings-diagnostics-heading"><h2 id="settings-diagnostics-heading" className="type-heading"><PanelToggle label="Backend settings" expanded={panels.diagnostics} controls="settings-diagnostics-content" onClick={()=>onPanelsChange({...panels,diagnostics:!panels.diagnostics})}/></h2><BackendDiagnostics expanded={panels.diagnostics}/></section>
-        {confirm && <SettingsConfirmation confirmation={confirm} error={message} busy={busy} onCancel={() => setConfirm(null)} onConfirm={() => void run(async () => { await confirm.run(); setConfirm(null); }, confirm.success)} />}
+        {confirm && <SettingsConfirmation confirmation={confirm} error={message} busy={busy} onCancel={() => setConfirm(null)} onConfirm={() => {const consent=confirm;if(consent.closeOnConfirm)setConfirm(null);void run(async () => {await consent.run();if(!consent.closeOnConfirm)setConfirm(null);},consent.success);}} />}
     </main>;
 }
 

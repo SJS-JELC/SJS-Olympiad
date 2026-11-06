@@ -131,3 +131,11 @@ test('off fences in-flight entry and repeated on/off requests cannot replay a st
  await assert.rejects(f.api.pilotEnter(null,a),/Lost entry response/);await f.api.pilotEnter(null,a);
  assert.equal((await f.api.pilotReport(f.staff)).readiness.length,1);
 });
+
+test('entry returns mode and availability without roster or attempt scans',async()=>{
+ const f=await fixture();
+ f.repo.list=async()=>{throw new Error('Entry must not list storage rows');};
+ assert.deepEqual(await f.api.entry(),{mode:'pilot',competitorAvailable:true});
+ await f.api.pilotMode(f.staff,{status:'off',expectedRevision:2,requestId:'entry-switch-off'});
+ assert.deepEqual(await f.api.entry(),{mode:'competition',competitorAvailable:true});
+});

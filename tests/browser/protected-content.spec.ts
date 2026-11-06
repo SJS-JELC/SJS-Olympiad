@@ -3,7 +3,7 @@ import {test,expect,openCompetitorQuestion,resumeCompetition} from './fixtures';
 import {openTeacher} from './teacher';
 import {interrupt} from './fullscreen';
 const competitor=test.extend({accessRole:'competitor' as const});
-const contentRequests=(requests:{action:string}[])=>requests.filter(item=>['question-content','content-asset'].includes(item.action));
+const contentRequests=(requests:{action:string;body?:any}[])=>requests.filter(item=>['question-content','content-asset'].includes(item.action) && item.body?.questionId==='L6P5');
 
 competitor('L6P5 first opening fetches one record and two binary diagrams; revisit is memory-only; lock revokes blobs and recovery reloads',async({page,api})=>{
  await page.addInitScript(()=>{
@@ -19,7 +19,7 @@ competitor('L6P5 first opening fetches one record and two binary diagrams; revis
  await expect(page.locator('.angle-input input').first()).toHaveValue('300');
  expect(contentRequests(api.requests)).toHaveLength(3);
  await interrupt(page,'blur');await expect(page.locator('.question-content')).toHaveCount(0);
- expect(await page.evaluate(()=>{const b=(window as any).contentBlobs;return b.created.length===2 && b.revoked.length===2;})).toBe(true);
+ expect(await page.evaluate(()=>{const b=(window as any).contentBlobs;return b.created.length>=2 && b.created.every((url:string)=>b.revoked.includes(url));})).toBe(true);
  await resumeCompetition(page);await expect(page.locator('.angle-input input').first()).toHaveValue('300');
  expect(contentRequests(api.requests)).toHaveLength(6);
  expect(await page.evaluate(()=>Object.keys(localStorage).filter(key=>/content|question/i.test(key)))).toEqual([]);

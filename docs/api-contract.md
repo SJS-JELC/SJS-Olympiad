@@ -20,7 +20,7 @@ Ending/switching requires explicit teacher confirmation. Event edits/transitions
 
 GO/start returns `hydration: {eventId,year,serverNow,eventEndsAt,score,questions}` with every registered question in the active year, including blank answer state, confirmed outcomes and revision only, with no custom interaction or data. Teacher POST `hydrate` accepts `{eventId?}` and returns the same shape once per event/catalogue context. Reads use one question-partition listing and create no question/tick receipts. Only the selected `question` read may project elapsed timed/GC deadlines; completed state remains frozen. Private marking state and future timed prompts are never serialized.
 
-First opening of every registered question/practical loads protected presentation/assets; subsequent valid-context visits use memory. Selected timed/GC state uses one authorized `question` read. Ordinary edits and internal navigation make no state requests. CHECK sends one direct `submit`; retries retain its frozen ID/payload. Timed start/name checks/deadline and GC Run/completion retain necessary server actions. Practical autosave remains separate. No operation adds a session preflight, and there is no recurring session poll.
+Competitor team lock-in preloads registered question/practical presentation and assets; teachers load selected previews. Subsequent valid-context visits use memory. Selected timed/GC state uses one authorized `question` read. Ordinary edits and internal navigation make no state requests. CHECK sends one direct `submit`; retries retain its frozen ID/payload. Timed start/name checks/deadline and GC Run/completion retain necessary server actions. Practical autosave remains separate. No operation adds a session preflight, and there is no recurring session poll.
 
 ## Questions
 
@@ -111,3 +111,7 @@ Both return `{requestId,total,completed,complete,results:[{index,ok,status?,erro
 Teacher POST `team-remove` and `team-restore` accept `{eventId,teamId,requestId,expectedEntryRevision,confirm:true}`. Team projections include `entryRevision` (existing rows start at zero). Removal increments it, retains withdrawal state, clears ownership/recovery and advances claim/security generations atomically with its receipt. Restoration increments it again; saved results stay in the same team partition. Linked restoration uses a request-bound school allocation plan to protect the 50-team limit and block concurrent school deletion. Deleted schools must be restored first. New events generate fresh team IDs linked to shared schools.
 
 Teacher GET `removed-teams?eventId=...` returns `{teams}` for restorable withdrawals, including retained scores and entry revisions. Competitors cannot access this list. Removed teams are excluded from claims and leaderboards. Legacy destructive tombstones are excluded from restoration. New changes reject ended events, pending year resets and stale entry revisions. Exact retries do not undo subsequent lifecycle changes. The legacy `team-delete` contract remains unchanged.
+
+## Entry and preloading
+
+See [loading behavior](loading.md). Presentation-only reads now permit claimed competitors before fullscreen GO and challenge opening; gameplay state/actions/writes retain their existing gates.

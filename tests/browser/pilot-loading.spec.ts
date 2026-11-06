@@ -10,14 +10,14 @@ for(const mode of ['open','off'] as const)test(`pending pilot lookup shows neith
  }
  let release!:()=>void;
  const held=new Promise<void>(resolve=>{release=resolve;});
- await page.route('**/api/olympiad/pilot',async route=>{await held;await route.fallback();});
+ await page.route('**/api/olympiad/entry',async route=>{await held;await route.fallback();});
  try{
   await page.goto('/');
-  await expect(page.getByRole('status').filter({hasText:'Loading...'})).toBeVisible();
+  await expect(page.locator('.loading-indicator--full')).toBeVisible();
   await expect(page.getByLabel('Competitor code',{exact:true})).toHaveCount(0);
   await expect(page.locator('.pilot-welcome-copy')).toHaveCount(0);
   await expect(page.getByRole('button',{name:'GO',exact:true})).toHaveCount(0);
-  await expect(page.getByRole('button',{name:'Teacher sign in',exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Teacher sign in',exact:true})).toHaveCount(0);
   expect(api.requests.filter(row=>row.action==='availability')).toHaveLength(0);
  }finally{release();}
  if(mode==='open'){
@@ -33,16 +33,17 @@ for(const mode of ['open','off'] as const)test(`pending pilot lookup shows neith
 });
 
 test('failed pilot lookup keeps pupil entry hidden and Retry resolves the mode',async({page,api})=>{
- api.fail.add('pilot');await page.goto('/');
+ api.fail.add('entry');await page.goto('/');
  await expect(page.locator('.pilot-entry-error')).toContainText('unavailable');
  await expect(page.getByLabel('Competitor code',{exact:true})).toHaveCount(0);
  await expect(page.getByRole('button',{name:'GO',exact:true})).toHaveCount(0);
- api.fail.delete('pilot');await page.getByRole('button',{name:'Retry',exact:true}).click();
+ api.fail.delete('entry');await page.getByRole('button',{name:'Retry',exact:true}).click();
  await expect(page.getByLabel('Competitor code',{exact:true})).toBeVisible();
 });
 
-test('teacher sign-in remains usable when pilot lookup fails',async({page,api})=>{
- api.fail.add('pilot');await page.goto('/');
+test('teacher sign-in is available after entry lookup recovers',async({page,api})=>{
+ api.fail.add('entry');await page.goto('/');
  await expect(page.locator('.pilot-entry-error')).toBeVisible();
+ api.fail.delete('entry');await page.getByRole('button',{name:'Retry',exact:true}).click();
  await signInTeacher(page);
 });

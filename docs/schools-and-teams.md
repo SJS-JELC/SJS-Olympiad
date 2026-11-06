@@ -6,7 +6,7 @@ Teachers manage schools and teams under Settings → Events. Select the event be
 
 Select a school under Settings > Events to edit **Number of colours** (1 or 2), **Colour 1 hex** and, for two colours, **Colour 2 hex**. Use six-digit values including `#`, then **Save school colours**. Two colours control the left and right ends; the selected top light blends between them. These shared settings apply to competition teams and pilot schools across events, including when editing from a completed event.
 
-Saves validate on the server, check the school revision, and commit the colour change and retry receipt atomically. An uncertain save offers **Retry saving colours** with the same request. A concurrent edit requires **Reload colours** before saving again. Saved colours survive renaming. Existing records without colours use the approved preview palette on read; unknown schools and unlinked teams use purple. Reading never writes defaults or creates schools. See [asset provenance](school-selector-assets.md).
+Saves validate on the server, check the school revision, and commit the colour change and retry receipt atomically. An uncertain save offers **Retry save** with the same request. A concurrent edit retains typed colours and requires **Use latest school revision** before saving again. Saved colours survive renaming. Existing records without colours use the approved preview palette on read; unknown schools and unlinked teams use purple. Reading never writes defaults or creates schools. See [asset provenance](school-selector-assets.md).
 
 Both selectors use the same SVG tiles with tactile hover, bold wrapped names, adaptive columns and a centred incomplete last row. Selection lights the sides and top bar. Claimed competition teams have grey ends, a struck name and a CLAIMED stamp. The bright hazard **LOCK IN** button does nothing until a valid selection exists. Competition retains server claims followed by the fullscreen rules and GO; pilot retains its private attempt/recovery flow. The available LOCKED vector is for confirmed success, never a pending request.
 
@@ -18,7 +18,7 @@ Create a school once, or select an existing school. Schools and colours are shar
 
 Team display names use the current school name followed by their number, including team 1. The settings results table separates School and Team into columns. New numbers are higher than all numbers previously allocated to that school in the event. Deletion and removal never release a number. Use individual or selected-team Remove actions to reduce the current count; setting a smaller target does not delete anything.
 
-Draft **Remove from event** starts immediately and hides the row while saving. Failure restores the row; uncertain responses retry the same request. Active-event removal requires confirmation. Removal always retains results, attempts, cooldowns and ranking times, and revokes current device access. Expand **Removed teams**, select teams, and **Restore selected teams** to recover them in this same event. Restoration requires confirmation and a new device claim. Restore a deleted school first. Completed events cannot remove or restore teams. Legacy destructive API deletions are not recoverable through this list.
+Draft **Remove from event** starts immediately while the row remains visible until a refreshed server snapshot confirms the change. Uncertain responses retry the same request. Active-event removal requires confirmation. Removal always retains results, attempts, cooldowns and ranking times, and revokes current device access. Expand **Removed teams**, select teams, and **Restore selected teams** to recover them in this same event. Restoration requires confirmation and a new device claim. Restore a deleted school first. Completed events cannot remove or restore teams. Legacy destructive API deletions are not recoverable through this list.
 
 Every new event starts with four host teams. Existing events remain unchanged until staff explicitly manage their roster. If storage or the network interrupts setup, saved progress is shown with **Resume team setup** or **Resume host setup**. Retry controls preserve the original request. Finish pending setup before activating or changing the year. A failure can leave some teams saved; no automatic rollback deletes them.
 
@@ -30,7 +30,7 @@ Select the school, then **Delete selected school** and confirm. First remove its
 
 Use each row's checkbox or **Select all teams**, then **Remove selected teams** or **Allow reselection for selected**. Reselection applies only to claimed selected teams and always asks for confirmation. Draft removal starts immediately; active removal confirms selected names. Completed events have no selection controls.
 
-Each action sends one batch request (up to 100 teams), then refreshes the roster once. The server records completed items durably and returns partial failures. **Retry remaining teams** reuses the exact batch and skips completed items. **Stop retrying** keeps changes already made; it cannot cancel server work already sent. Reselection receipts protect a newly claimed device from delayed retries. Selections clear when changing events. Retry controls are page-local; after reload inspect the refreshed roster before starting another operation. Storage changes commit per team, not as one cross-team transaction.
+Each action sends one batch request (up to 100 teams), then refreshes the roster once. The server records completed items durably and returns partial failures. **Retry failed items** reuses the exact batch and skips completed items. **Stop retrying** keeps changes already made; it cannot cancel server work already sent. Reselection receipts protect a newly claimed device from delayed retries. Selections clear when changing events. Retry controls are page-local; after reload inspect the refreshed roster before starting another operation. Storage changes commit per team, not as one cross-team transaction.
 
 ## Paste from Excel
 
@@ -38,7 +38,7 @@ Expand **Bulk load schools, teams and colours**. Paste tab-separated columns **S
 
 **Preview import** validates every row without writes and lists new/existing schools, teams to add and colour values. Matching uses the same normalized school names as the server. Deleted matches show **Restore** in the preview and restore that school when applied. **Apply import** creates new schools, saves shared colours, then adds missing teams. A lower target never deletes existing teams. Existing results and claims remain intact. Colours are shared across events.
 
-One **schools-import** batch request validates the full table before writes, then creates/restores schools, saves colours and adds missing teams with durable checkpoints. Failures retain completed work and offer **Retry remaining import** with the same batch request. **Stop retrying import** keeps completed changes; if team setup was partially saved, the usual Resume team setup control remains available. Preview again after resolving a stale school revision. Import controls are unavailable for completed events.
+One **schools-import** batch request validates the full table before writes, then creates/restores schools, saves colours and adds missing teams with durable checkpoints. Failures retain completed work and offer **Retry failed items** with the same batch request. **Stop retrying** keeps completed changes; if team setup was partially saved, the usual Resume team setup control remains available. Preview again after resolving a stale school revision. Import controls are unavailable for completed events.
 
 ## Existing and historical teams
 
@@ -57,3 +57,10 @@ Completed rosters remain read-only. Global school renaming remains available. A 
 Request IDs bind setup input, and school/event creation retries recover committed work. New teams use IDs independent of names. Existing `team-add` remains available for compatibility and retains the guarded legacy lifecycle; the teacher UI uses schools instead.
 
 Local fault-injection and concurrency tests use only isolated synthetic data. Neither those tests nor static checks prove live Azure runtime acceptance.
+
+
+## Save and refresh recovery
+
+One roster controller owns all school/team changes, including colours and imports. Saving and readback disable conflicting edits and event switching. Rows and selection remain visible until all schools, teams, removed teams and progress reads succeed together. A saved mutation followed by failed readback offers **Retry refresh**, which sends no mutation. Partial batches offer **Retry failed items** with the original complete envelope; uncertain responses offer **Retry save** with the original request ID. A validation/revision rejection preserves typed values and refreshes before another write. Recovery controls stay outside lists and confirmation dialogs, including when the last removed team is restored.
+
+Once requests settle, navigation is available. Stale roster data cannot authorize further UI edits; refresh first. **Stop retrying** preserves completed work and requires readback. Leaving an event discards page-local retry state; returning reads the authoritative roster. Late responses from an old view are ignored. Event schedules and lifecycle controls remain separate, and roster reads do not reset their typed values.

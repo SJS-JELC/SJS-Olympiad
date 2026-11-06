@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react';
 import {request} from '../cloud/api';
+import {LoadingIndicator} from './LoadingIndicator';
 import { questionCatalog } from '../questions/catalog';
 import { theoryYears, type TheoryYear } from '../questions/years';
 
@@ -8,6 +9,7 @@ export function ProblemTesting({ onOpen, enabled=true }: { enabled?:boolean; onO
   useEffect(()=>{if(!enabled)return;let current=true;setError('');void request<{schemaVersion:number;questions:{id:string;title:string}[]}>('content-catalogue',{}).then(value=>{if(current)setTitles(Object.fromEntries(value.questions.map(item=>[item.id,item.title])));}).catch(()=>{if(current)setError('Unable to load question titles.');});return()=>{current=false;};},[enabled,retry]);
   return <section className="problem-testing" aria-labelledby="problem-testing-title">
     <h3 id="problem-testing-title" className="type-heading">Theory</h3>
+    {enabled && !error && !Object.keys(titles).length && <LoadingIndicator/>}
     {error && <p role="alert" className="type-caption">{error}<button type="button" className="ui-button" onClick={()=>setRetry(value=>value+1)}>Retry</button></p>}
     <div className="problem-testing-years">
       {theoryYears.map(year => <section key={year} aria-labelledby={`testing-${year}`}>

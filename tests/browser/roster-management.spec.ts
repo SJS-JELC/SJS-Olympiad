@@ -6,8 +6,8 @@ test('school deletion confirms, protects host, refuses unfinished teams and reta
  await openEvents(page);await page.getByLabel('School',{exact:true}).selectOption('host-st-johns');await expect(page.getByRole('button',{name:'Delete selected school',exact:true})).toBeDisabled();
  await page.getByLabel('School',{exact:true}).selectOption(school.id);await page.getByRole('button',{name:'Delete selected school',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Historical results');
  await page.getByRole('button',{name:'Cancel',exact:true}).click();expect((await api.service.schools(api.token)).schools.find((s:any)=>s.id===school.id).deleted).toBeUndefined();
- api.lostResponses.add('school-delete');await page.getByRole('button',{name:'Delete selected school',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();
- await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByLabel('School',{exact:true}).locator('option',{hasText:'Delete Academy'})).toHaveCount(0);
+ api.lostResponses.add('school-delete');await page.getByRole('button',{name:'Delete selected school',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeEnabled();
+ await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByLabel('School',{exact:true}).locator('option',{hasText:'Delete Academy'})).toHaveCount(0);
  const calls=api.requests.filter(r=>r.action==='school-delete');expect(calls).toHaveLength(2);expect(calls[1].body).toEqual(calls[0].body);
 });
 
@@ -18,8 +18,8 @@ test('draft bulk removal retains partial progress and retries only the uncertain
  const failing=(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams[1];const original=api.repo.batch;let fail=true;
  api.repo.batch=async(ops:any[])=>{if(fail && ops.some(op=>op.entity.partitionKey==='fixture-L5-'+failing.id && op.entity.removed))throw Error('Second deletion unavailable.');return original(ops);};
  await page.getByRole('button',{name:'Remove selected teams',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('status')).toContainText('2 of 3');
- await expect(page.getByRole('button',{name:'Retry remaining teams',exact:true})).toBeEnabled();fail=false;await page.getByRole('button',{name:'Retry remaining teams',exact:true}).click();
- await expect.poll(async()=>(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams.length).toBe(0);await expect(page.getByRole('button',{name:'Retry remaining teams',exact:true})).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Retry failed items',exact:true})).toBeEnabled();fail=false;await page.getByRole('button',{name:'Retry failed items',exact:true}).click();
+ await expect.poll(async()=>(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams.length).toBe(0);await expect(page.getByRole('button',{name:'Retry failed items',exact:true})).toHaveCount(0);
  const batches=api.requests.filter(r=>r.action==='teams-batch');expect(batches).toHaveLength(2);expect(batches[1].body).toEqual(batches[0].body);expect(api.requests.filter(r=>r.action==='team-delete')).toHaveLength(0);
 
 });
@@ -28,8 +28,8 @@ test('bulk reselection confirms and lost response retry preserves a newly claime
  await api.service.teamAdd(api.token,{eventId:'fixture-L6',name:'Second claimed team'});
  const players=[];for(let i=0;i<2;i++){const p=await api.service.login({role:'competitor',code:'1234'}),team=(await api.service.teams(p.token)).teams[i];await api.service.claim(p.token,{teamId:team.id});players.push({p,team});}
  await openEvents(page);for(const {team} of players)await page.getByRole('checkbox',{name:'Select team '+team.name,exact:true}).check();
- await page.getByRole('button',{name:'Allow reselection for selected',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('2 teams');api.lostResponses.add('teams-batch');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();
- const fresh=await api.service.login({role:'competitor',code:'1234'});await api.service.claim(fresh.token,{teamId:players[0].team.id});await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
+ await page.getByRole('button',{name:'Allow reselection for selected',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('2 teams');api.lostResponses.add('teams-batch');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeEnabled();
+ const fresh=await api.service.login({role:'competitor',code:'1234'});await api.service.claim(fresh.token,{teamId:players[0].team.id});await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
  expect((await api.service.session(fresh.token)).team.id).toBe(players[0].team.id);await expect(api.service.session(players[1].p.token)).rejects.toMatchObject({status:401});
  const requests=api.requests.filter(r=>r.action==='teams-batch');expect(requests).toHaveLength(2);expect(requests[0].body).toEqual(requests[1].body);
 });
@@ -37,7 +37,7 @@ test('bulk reselection confirms and lost response retry preserves a newly claime
 test('Excel import previews additions and colours, retries without duplicates, and lower targets retain teams',async({page,api})=>{
  await openEvents(page);await page.getByText('Bulk load schools, teams and colours',{exact:true}).click();
  await page.getByLabel('Paste school table').fill('School\tTeam count\tColour 1\tColour 2\nImport Academy\t3\t#123456\t#ABCDEF\nSecond Academy\t2\t#024633');await page.getByRole('button',{name:'Preview import',exact:true}).click();await expect(page.getByRole('table',{name:'Import preview'})).toContainText('Import Academy');
- expect(api.requests.filter(r=>r.action==='schools-import')).toHaveLength(0);api.lostResponses.add('schools-import');await page.getByRole('button',{name:'Apply import',exact:true}).click();await expect(page.getByRole('button',{name:'Retry remaining import',exact:true})).toBeEnabled();await page.getByRole('button',{name:'Retry remaining import',exact:true}).click();await expect(page.getByLabel('Paste school table')).toHaveValue('');
+ expect(api.requests.filter(r=>r.action==='schools-import')).toHaveLength(0);api.lostResponses.add('schools-import');await page.getByRole('button',{name:'Apply import',exact:true}).click();await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeEnabled();await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByLabel('Paste school table')).toHaveValue('');
  const schools=(await api.service.schools(api.token)).schools,school=schools.find((s:any)=>s.name==='Import Academy');expect(schools.filter((s:any)=>s.name==='Import Academy')).toHaveLength(1);expect(school.colours).toEqual(['#123456','#ABCDEF']);
  expect((await api.service.teams(api.token,{eventId:'fixture-L6'})).teams.filter((t:any)=>t.schoolId===school.id)).toHaveLength(3);
  const requests=api.requests.filter(r=>r.action==='schools-import');expect(requests[0].body).toEqual(requests[1].body);
@@ -67,7 +67,7 @@ test('Excel import restores a deleted school with the same name and identity aft
  const school=(await api.service.schoolCreate(api.token,{name:'Restore Academy',requestId:'restore-browser-create'})).school;
  await api.service.schoolDelete(api.token,{schoolId:school.id,expectedRevision:school.revision,requestId:'restore-browser-delete',confirm:true});
  await openEvents(page);await page.getByText('Bulk load schools, teams and colours',{exact:true}).click();await page.getByLabel('Paste school table').fill('Restore Academy\t2\t#123456');await page.getByRole('button',{name:'Preview import',exact:true}).click();await expect(page.getByRole('table',{name:'Import preview'}).getByRole('cell',{name:'Restore',exact:true})).toBeVisible();
- api.lostResponses.add('schools-import');await page.getByRole('button',{name:'Apply import',exact:true}).click();await expect(page.getByRole('button',{name:'Retry remaining import',exact:true})).toBeEnabled();await page.getByRole('button',{name:'Retry remaining import',exact:true}).click();await expect(page.getByLabel('Paste school table')).toHaveValue('');
+ api.lostResponses.add('schools-import');await page.getByRole('button',{name:'Apply import',exact:true}).click();await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeEnabled();await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByLabel('Paste school table')).toHaveValue('');
  const restored=(await api.service.schools(api.token)).schools.filter((s:any)=>s.name==='Restore Academy');expect(restored).toHaveLength(1);expect(restored[0]).toMatchObject({id:school.id,colours:['#123456']});expect(restored[0].deleted).toBeUndefined();expect((await api.service.teams(api.token,{eventId:'fixture-L6'})).teams.filter((t:any)=>t.schoolId===school.id)).toHaveLength(2);
  const requests=api.requests.filter(r=>r.action==='schools-import');expect(requests).toHaveLength(2);expect(requests[1].body).toEqual(requests[0].body);
 });
@@ -80,8 +80,8 @@ test('removed teams restore in one batch with retained results and new device cl
  await openEvents(page);for(const team of teams)await page.getByRole('checkbox',{name:'Select team '+team.name,exact:true}).check();
  await page.getByRole('button',{name:'Remove selected teams',exact:true}).click();await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
  await page.getByText('Removed teams (2)',{exact:true}).click();await page.getByRole('checkbox',{name:'Select all removed teams',exact:true}).check();
- await page.getByRole('button',{name:'Restore selected teams',exact:true}).click();api.lostResponses.add('teams-batch');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toBeVisible();
- await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
+ await page.getByRole('button',{name:'Restore selected teams',exact:true}).click();api.lostResponses.add('teams-batch');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeEnabled();
+ await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
  for(const team of teams)await expect(page.getByRole('checkbox',{name:'Select team '+team.name,exact:true})).toBeVisible();
  await expect(page.getByText('Removed teams (2)',{exact:true})).toHaveCount(0);
  const calls=api.requests.filter(r=>r.action==='teams-batch' && r.body.action==='team-restore');expect(calls).toHaveLength(2);expect(calls[1].body).toEqual(calls[0].body);

@@ -6,7 +6,7 @@ import baseline1920 from '../../.scratch/protected-question-content/evidence/bas
 import baseline2560 from '../../.scratch/protected-question-content/evidence/baseline-render-2560.json' with {type:'json'};
 import fs from 'node:fs/promises';
 const competitor=test.extend({accessRole:'competitor' as const});
-const requests=(api:ApiHarness)=>api.requests.filter(item=>['practical-content','content-asset'].includes(item.action));
+const requests=(api:ApiHarness)=>api.requests.filter(item=>item.action==='practical-content' || item.action==='content-asset' && item.body.kind==='practical');
 async function schedule(api:ApiHarness,endsIn=3600000){const staff=await api.service.login({role:'teacher',code:'5678'}),state=await api.service.session(staff.token),event=state.activeEvent;await api.service.eventUpdate(staff.token,{eventId:event.id,expectedRevision:event.revision,name:event.name,year:event.year,theoryStartsAt:Date.now()-60000,theoryEndsAt:Date.now()+7200000,practicalStartsAt:Date.now()-60000,practicalEndsAt:Date.now()+endsIn});}
 
 test('teacher content failure has neutral title and no protocol/fields; Retry reveals protected text without reads or saves',async({page,api})=>{
@@ -26,19 +26,19 @@ test('asset failure stays closed and can retry; a teacher catalogue title failur
 
 competitor('first open deduplicates record and PNG; same-event revisit reuses them; lock/recovery reloads and keeps saved precision',async({page,api})=>{
  await page.addInitScript(()=>{const create=URL.createObjectURL,revoke=URL.revokeObjectURL,created:string[]=[],revoked:string[]=[];URL.createObjectURL=blob=>{const url=create(blob);created.push(url);return url;};URL.revokeObjectURL=url=>{revoked.push(url);revoke(url);};Object.assign(window,{practicalBlobs:{created,revoked}});});
- await schedule(api);await mockFullscreen(page);await page.goto('/');await claimAndStart(page);expect(requests(api)).toHaveLength(0);await page.getByRole('button',{name:'Practical challenge',exact:true}).click();await expect(page.locator('.practical-protocol')).toBeVisible();expect(requests(api).map(item=>item.action)).toEqual(['practical-content','content-asset']);
+ await schedule(api);await mockFullscreen(page);await page.goto('/');await claimAndStart(page);await page.getByRole('button',{name:'Practical challenge',exact:true}).click();await expect(page.locator('.practical-protocol')).toBeVisible();expect(requests(api).map(item=>item.action)).toEqual(['practical-content','content-asset']);
  await page.locator('#practical-numPracticalResponse4').fill('1.2300');await page.locator('#practical-numPracticalResponse4').blur();await expect(page.getByText('Saved',{exact:true})).toBeVisible();await page.getByRole('button',{name:'Theory challenge',exact:true}).click();await page.getByRole('button',{name:'Back to landing',exact:true}).click();await page.getByRole('button',{name:'Practical challenge',exact:true}).click();await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('1.2300');expect(requests(api)).toHaveLength(2);
- await interrupt(page,'blur');await expect(page.getByRole('dialog')).toBeVisible();await expect(page.locator('.practical-protocol')).toHaveCount(0);expect(await page.evaluate(()=>{const value=(window as any).practicalBlobs;return value.created.length===1 && value.revoked.length===1;})).toBe(true);
+ await interrupt(page,'blur');await expect(page.getByRole('dialog')).toBeVisible();await expect(page.locator('.practical-protocol')).toHaveCount(0);expect(await page.evaluate(()=>{const value=(window as any).practicalBlobs;return value.created.length>=1 && value.created.every((url:string)=>value.revoked.includes(url));})).toBe(true);
  await resumeCompetition(page);await expect(page.locator('.practical-protocol')).toBeVisible();await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('1.2300');expect(requests(api)).toHaveLength(4);
  expect(await page.evaluate(()=>Object.keys(localStorage).filter(key=>/content|practical/i.test(key)))).toEqual([]);
 });
 
 competitor('late content crossing the practical deadline cannot display protocol or fetch its asset',async({page,api})=>{
- await page.clock.install();await schedule(api,20000);await mockFullscreen(page);await page.goto('/');await claimAndStart(page);
+ await page.clock.install();await schedule(api,20000);await mockFullscreen(page);
  let release:()=>void=()=>{},captured=false,delivered=false;
  await page.route('**/api/olympiad/practical-content',async route=>{const record=await api.service.practicalContent(api.token,route.request().postDataJSON());captured=true;await new Promise<void>(resolve=>{release=resolve;});await route.fulfill({json:record}).catch(()=>{});delivered=true;});
- await page.getByRole('button',{name:'Practical challenge',exact:true}).click();await expect.poll(()=>captured).toBe(true);await expect(page.getByText('Loading practical content...',{exact:true})).toBeVisible();await expect(page.locator('.practical-status')).toBeVisible();await expect(page.locator('.practical-responses input')).toHaveCount(0);
- await page.clock.fastForward(20001);api.setTime(await page.evaluate(()=>Date.now()));release();await expect.poll(()=>delivered).toBe(true);await expect(page.locator('.practical-protocol')).toHaveCount(0);await expect(page.locator('.practical-title')).toHaveCount(0);expect(api.requests.filter(item=>item.action==='content-asset')).toHaveLength(0);
+ await page.goto('/');await claimAndStart(page);await expect.poll(()=>captured).toBe(true);await expect(page.getByRole('button',{name:'Practical challenge',exact:true})).toBeDisabled();await expect(page.locator('.practical-responses input')).toHaveCount(0);
+ await page.clock.fastForward(20001);api.setTime(await page.evaluate(()=>Date.now()));release();await expect.poll(()=>delivered).toBe(true);await expect(page.locator('.practical-protocol')).toHaveCount(0);await expect(page.locator('.practical-title')).toHaveCount(0);expect(api.requests.filter(item=>item.action==='content-asset' && item.body.kind==='practical')).toHaveLength(0);
  expect((await api.service.practical(api.token)).readOnly).toBe(true);
 });
 

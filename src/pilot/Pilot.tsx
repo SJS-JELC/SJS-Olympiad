@@ -9,6 +9,7 @@ import {IllustratedActionButton} from '../components/IllustratedActionButton';
 import {QuestionShell} from '../questions/QuestionShell';
 import {SkeletalHelp} from './SkeletalHelp';
 import './pilot.css';
+import {LoadingIndicator} from '../components/LoadingIndicator';
 import {SchoolSelector,LockInButton} from '../components/SchoolSelector';
 
 export const pilotLimits={maxHeavyAtoms:250,maxAtoms:650,maxBonds:750};
@@ -27,12 +28,32 @@ function restore(raw:string|null):Saved|null {
   if(v.pending && (v.pending.credential!==v.credential || v.pending.schoolId!==v.schoolId || typeof v.pending.graph!=='string' || typeof v.pending.requestId!=='string'))throw Error('The pending submission cannot be read.');
   return v;
 }
+type EntryState={mode:'pilot'|'competition';competitorAvailable:boolean};
 export function PilotEntry() {
-  const [snapshot,setSnapshot]=useState<Snapshot|null>(null),[error,setError]=useState(''),[started,setStarted]=useState(false);
-  async function refresh(){try{const next=await request<Snapshot>('pilot');setSnapshot(next);setError('');if(next.status!=='open')setStarted(false);}catch(e){setError((e as Error).message);}}
-  useEffect(()=>{void refresh();},[]);
-  if(snapshot?.status==='open' && started)return <Pilot snapshot={snapshot} refresh={refresh} onBack={()=>{setStarted(false);void refresh();}} refreshError={error}/>;
-  return <><AccessGate pilot={snapshot?.status==='open'} checking={!snapshot} onPilot={()=>setStarted(true)}/>{error && <div className="pilot-entry-error type-body" role="alert">{error}<button className="ui-button" onClick={()=>void refresh()}>Retry</button></div>}</>;
+ const [entry,setEntry]=useState<EntryState|null>(null),[snapshot,setSnapshot]=useState<Snapshot|null>(null);
+ const [error,setError]=useState(''),[started,setStarted]=useState(false);
+ const generation=useRef(0),flight=useRef<Promise<void>|null>(null);
+ async function refresh(){
+  if(flight.current)return flight.current;
+  const own=generation.current;
+  const task=(async()=>{try{const next=await request<Snapshot>('pilot');if(own!==generation.current)return;
+   if(next.status!=='open'){setSnapshot(null);setStarted(false);void detect();return;}
+   setSnapshot(next);setError('');
+  }catch(e){if(own===generation.current)setError((e as Error).message);}})();
+  flight.current=task;try{await task;}finally{if(flight.current===task)flight.current=null;}
+ }
+ async function detect(){const own=++generation.current;flight.current=null;try{
+  const value=await request<EntryState>('entry');if(own!==generation.current)return;
+  setEntry(value);setError('');
+  if(value.mode==='pilot')void refresh();else{setSnapshot(null);setStarted(false);}
+ }catch(e){if(own===generation.current){setError((e as Error).message);setEntry(previous=>previous?{...previous,competitorAvailable:false}:null);}}}
+ useEffect(()=>{void detect();const focus=()=>void detect();window.addEventListener('focus',focus);return()=>{generation.current++;window.removeEventListener('focus',focus);};},[]);
+ if(!entry)return <>{error ? <div className="pilot-entry-error" role="alert">{error}<button onClick={()=>void detect()}>Retry</button></div>:<LoadingIndicator full/>}</>;
+ if(entry.mode==='pilot' && started){
+  if(snapshot)return <Pilot snapshot={snapshot} refresh={refresh} onBack={()=>setStarted(false)} refreshError={error}/>;
+  return <>{error?<div role="alert">{error}<button onClick={()=>void refresh()}>Retry</button></div>:<p role="status">Loading schools…</p>}</>;
+ }
+ return <><AccessGate pilot={entry.mode==='pilot'} availability={entry.competitorAvailable} onPilot={()=>{setStarted(true);if(!snapshot)void refresh();}}/>{entry.mode==='competition' && error && <div className="pilot-entry-error type-body" role="alert">{error}<button onClick={()=>void detect()}>Retry</button></div>}</>;
 }
 function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh:()=>Promise<void>;onBack:()=>void;refreshError:string}) {
   const [saved,setSaved]=useState<Saved|null>(null),[school,setSchool]=useState(''),[loaded,setLoaded]=useState(false),[entered,setEntered]=useState(false);

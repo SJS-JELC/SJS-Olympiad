@@ -257,7 +257,19 @@ export function createService(repo,config={},now=Date.now) {
   const contentContext=async(token,input,kind)=>{
     assert(input && typeof input==='object',400,'Invalid content request.');
     assert(kind==='question' || kind==='practical',400,'Invalid content kind.');
-    const ctx=kind==='question'?await questionContext(token,input):await practicalContext(token,input,true);
+    const session=await authenticate(token);
+    let ctx;
+    if(session.role==='teacher')ctx=kind==='question'?await questionContext(token,input):await practicalContext(token,input,true);
+    else {
+      const team=await ownedTeam(session),s=await settings(),event=eventById(s,team.eventId);
+      assert(event && team.year===event.year,403,'Your team belongs to a different year.');
+      assert(!input.eventId || input.eventId===event.id,403,'Your team belongs to a different event.');
+      assert(['NOT_STARTED','ACTIVE'].includes(team.securityStatus),423,'Competition mode is locked.');
+      activeForWrite(event);
+      assert(now()<(kind==='question'?event.theoryEndsAt:event.practicalEndsAt),403,'This challenge has ended.');
+      if(kind==='practical')assert(practicalFields(event.year) && event.practicalStartsAt!=null,404,'This practical is unavailable.');
+      ctx={session,team,event,s,pk:team.partitionKey};
+    }
     const id=kind==='question'?(input.questionId ?? input.contentId):input.contentId ?? ctx.event.year;
     if(kind==='question'){assert(!input.contentId || !input.questionId || input.contentId===input.questionId,404,'Content not found.');validateQuestion(id,ctx.event);}
     else assert(id===ctx.event.year,404,'This practical is unavailable for this event.');
@@ -270,7 +282,7 @@ export function createService(repo,config={},now=Date.now) {
   const verifyContent=async(token,input,kind,accepted)=>{
     const latest=await contentContext(token,input,kind);
     assert(latest.ctx.session.rowKey===accepted.ctx.session.rowKey,401,'Your session changed.');
-    if(accepted.ctx.team)assert(latest.ctx.team.securityEpoch===accepted.ctx.team.securityEpoch && latest.ctx.team.claimGeneration===accepted.ctx.team.claimGeneration,423,'Competition mode changed.');
+    if(accepted.ctx.team)assert((latest.ctx.team.securityEpoch===accepted.ctx.team.securityEpoch || accepted.ctx.team.securityStatus==='NOT_STARTED' && latest.ctx.team.securityStatus==='ACTIVE' && latest.ctx.team.securityEpoch===accepted.ctx.team.securityEpoch+1) && latest.ctx.team.claimGeneration===accepted.ctx.team.claimGeneration,423,'Competition mode changed.');
     return latest;
   };
   const mutateQuestion=async(token,input,operation)=>{
@@ -335,6 +347,7 @@ export function createService(repo,config={},now=Date.now) {
   };
   const api={
     async pilot(){return pilot.bootstrap();},
+    async entry(){const [p,s]=await Promise.all([pilot.entryState(),settings()]);return {mode:p.status==='open'?'pilot':'competition',competitorAvailable:s.events.some(event=>event.status==='active' || event.status==='draft')};},
     async pilotEnter(_token,input){return pilot.enter(input);},
     async pilotSubmit(_token,input){return pilot.submit(input);},
     async pilotReport(token){teacher(await authenticate(token));return pilot.report();},

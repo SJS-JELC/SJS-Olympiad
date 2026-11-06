@@ -4,15 +4,11 @@ import { test as base, expect, type Page } from '@playwright/test';
 import { createService } from '../../api/src/service.mjs';
 // @ts-expect-error JavaScript API modules intentionally use Node ESM.
 import { handle } from '../../api/src/http.mjs';
+// @ts-expect-error JavaScript API modules intentionally use Node ESM.
+import { memoryRepository } from '../../api/src/memory-storage.mjs';
 import { mockFullscreen } from './fullscreen';
 export { expect };
 export type { Page };
-type Row = {
-    partitionKey: string;
-    rowKey: string;
-    etag?: string;
-    [key: string]: unknown;
-};
 export type ApiHarness = {
     service: any;
     repo: any;
@@ -34,21 +30,8 @@ export const test = base.extend<Options & {
 }>({
     accessRole: ['teacher', { option: true }],
     api: [async ({ page, accessRole }, use) => {
-            const rows = new Map<string, Row>();
-            let version = 0, time = Date.now();
-            const key = (p: string, r: string) => p + '/' + r;
-            const clone = <T,>(value: T): T => structuredClone(value);
-            const conflict = () => { throw Object.assign(new Error('Conflict'), { statusCode: 412 }); };
-            const check = (entity: Row, etag?: string) => { const old = rows.get(key(entity.partitionKey, entity.rowKey)); if (etag ? old?.etag !== etag : !!old)
-                conflict(); };
-            const save = (entity: Row) => rows.set(key(entity.partitionKey, entity.rowKey), clone({ ...entity, etag: String(++version) }));
-            const repo = { get: async (p: string, r: string) => clone(rows.get(key(p, r)) ?? null), write: async (entity: Row, etag?: string) => { check(entity, etag); save(entity); }, batch: async (operations: {
-                    entity: Row;
-                    etag?: string;
-                    remove?: boolean;
-                }[]) => { for (const op of operations)
-                    check(op.entity, op.etag); for (const op of operations)
-                    op.remove ? rows.delete(key(op.entity.partitionKey,op.entity.rowKey)) : save(op.entity); }, list: async (filters: Record<string, unknown> = {}) => clone([...rows.values()].filter(row => Object.entries(filters).every(([key, value]) => row[key] === value))) };
+            const repo = memoryRepository();
+            let time = Date.now();
             const service = createService(repo, {}, () => time), teacher = await service.login({ role: 'teacher', code: '5678' });
             for (const year of ['L6', 'L5', 'U5', 'U6']) {
                 const created=await service.eventCreate(teacher.token, { name: year + ' fixture event', year, theoryStartsAt: time - 3600000, theoryEndsAt: time + 6 * 3600000 });

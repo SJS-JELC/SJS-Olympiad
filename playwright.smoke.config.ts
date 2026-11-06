@@ -18,6 +18,7 @@ export default defineConfig({
     '**/selected-load-races.spec.ts',
     '**/pilot-entry.spec.ts',
     '**/pilot-loading.spec.ts',
+    '**/loading-entry.spec.ts',
     '**/pilot.spec.ts',
   ],
 });

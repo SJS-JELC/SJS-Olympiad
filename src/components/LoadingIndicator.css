@@ -1,0 +1,8 @@
+.loading-indicator { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5svh; color:#116268; padding:2svh; }
+.loading-indicator--full { min-height:100svh; gap:3svh; }
+.loading-indicator > img { width:30svh; height:auto; }
+.loading-indicator > svg { width:9svh; height:9svh; fill:none; stroke:currentColor; stroke-width:7; stroke-linecap:round; stroke-linejoin:round; animation:benzene-loading 4s linear infinite; }
+.loading-indicator > svg circle { stroke-width:6; }
+.loading-indicator > span { padding-left:.27em; -webkit-text-stroke:.18svh currentColor; }
+@keyframes benzene-loading { to { transform:rotate(360deg); } }
+@media(prefers-reduced-motion:reduce) { .loading-indicator > svg { animation:none; } }

@@ -15,10 +15,10 @@ competitor('GO hydrates status once; first-open content loads once, editing/revi
     await page.getByRole('button', { name: 'Back to theory', exact: true }).click();
     await page.getByRole('button', { name: /^Problem 8,/ }).click();
     await expect(page.getByRole('textbox', { name: 'Equilibrium concentration of B', exact: true })).toHaveValue('0.437');
-    expect(api.requests.slice(before)).toEqual([{action:'question-content',body:{questionId:'L6P6'}}]);
+    expect(api.requests.slice(before)).toEqual([]);
     await page.getByRole('button', { name: 'Check answers' }).click();
     await expect(page.locator('.completion-stamp')).toBeVisible();
-    expect(api.requests.slice(before).map(item => item.action)).toEqual(['question-content','submit']);
+    expect(api.requests.slice(before).map(item => item.action)).toEqual(['submit']);
 });
 
 competitor('failed CHECK is honest, does not block navigation and retries its frozen receipt', async ({ page, api }) => {
@@ -48,15 +48,16 @@ competitor('practical keeps its one read and one autosave without a session pref
     await api.service.eventUpdate(staff.token, { eventId: event.id, expectedRevision: event.revision, name: event.name, year: event.year, theoryStartsAt: Date.now() - 60000, theoryEndsAt: Date.now() + 7200000, practicalStartsAt: Date.now() - 60000, practicalEndsAt: Date.now() + 3600000 });
     await page.clock.install(); await openCompetitorQuestion(page, api, 'L6');
     await page.getByRole('button', { name: 'Back to landing', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Practical challenge', exact: true })).toBeEnabled();
     const before = api.requests.length;
     await page.getByRole('button', { name: 'Practical challenge', exact: true }).click();
     await expect(page.locator('#practical-numPracticalResponse3')).toBeVisible();
-    expect(api.requests.slice(before).map(item => item.action).sort()).toEqual(['content-asset','practical','practical-content']);
+    expect(api.requests.slice(before).map(item => item.action).sort()).toEqual(['practical']);
     await page.locator('#practical-numPracticalResponse3').fill('25.000');
     await page.clock.fastForward(500);
     await expect(page.locator('.practical-status')).toContainText('Saved');
     expect(api.requests.slice(before).filter(item=>!['practical-content','content-asset'].includes(item.action)).map(item=>item.action)).toEqual(['practical','practical-save']);
-    expect(api.requests.slice(before).filter(item=>['practical-content','content-asset'].includes(item.action))).toHaveLength(2);
+    expect(api.requests.slice(before).filter(item=>['practical-content','content-asset'].includes(item.action))).toHaveLength(0);
 });
 
 test('unavailable restore fails closed without exposing any question', async ({ page, api }) => {

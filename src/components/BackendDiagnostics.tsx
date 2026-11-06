@@ -1,3 +1,4 @@
+import {LoadingIndicator} from './LoadingIndicator';
 import {useEffect,useRef,useState} from 'react';
 import {request,type DiagnosticSnapshot} from '../cloud/api';
 import {useCompetitionSecurity} from '../security';
@@ -22,7 +23,7 @@ export function BackendDiagnostics({expanded}:{expanded:boolean}){
  useEffect(()=>{if(expanded&&!requested.current)void load();},[expanded]);
  return <div id="settings-diagnostics-content" className="settings-diagnostics-content" hidden={!expanded}>
   <div className="settings-diagnostics-toolbar"><p className="type-caption">Read-only backend snapshot. Secrets and personal/team data are omitted; sensitive configuration shows status only.</p><button type="button" className="ui-button" disabled={pending} onClick={()=>void load()}>{pending?'Refreshing…':'Refresh backend settings'}</button></div>
-  {pending&&<p className="type-caption" role="status">Loading backend settings…</p>}
+  {pending&&<LoadingIndicator/>}
   {error&&<p className="type-caption" role="alert">{error}{snapshot?' Showing the previous snapshot.':''} <button type="button" className="ui-button" disabled={pending} onClick={()=>void load()}>Retry diagnostics</button></p>}
   {snapshot&&<>
    <p className="type-caption settings-diagnostics-snapshot">Snapshot: <Instant value={snapshot.snapshotAt}/></p>

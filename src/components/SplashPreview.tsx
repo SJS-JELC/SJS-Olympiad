@@ -7,7 +7,7 @@ import '../background.css';
 import '../splash.css';
 
 /** Landing template with internal navigation; no gameplay writes. */
-export function SplashPreview({ onTheory, onPractical, practicalStartsAt, practicalEndsAt, teacher = true, allowEarlyAccess = false, theoryStartsAt, theoryEndsAt, serverNow = Date.now }: { onTheory: () => void; onPractical?: () => void; practicalStartsAt?: number|null; practicalEndsAt?: number|null; teacher?: boolean; allowEarlyAccess?: boolean; theoryStartsAt?: number|null; theoryEndsAt?: number; serverNow?:()=>number }) {
+export function SplashPreview({ theoryReady=true, practicalReady=true, onTheory, onPractical, practicalStartsAt, practicalEndsAt, teacher = true, allowEarlyAccess = false, theoryStartsAt, theoryEndsAt, serverNow = Date.now }: { theoryReady?:boolean; practicalReady?:boolean; onTheory: () => void; onPractical?: () => void; practicalStartsAt?: number|null; practicalEndsAt?: number|null; teacher?: boolean; allowEarlyAccess?: boolean; theoryStartsAt?: number|null; theoryEndsAt?: number; serverNow?:()=>number }) {
   const [now,setNow] = useState(serverNow);
   useEffect(()=>{const timer=window.setInterval(()=>setNow(serverNow()),1000);return()=>window.clearInterval(timer);},[serverNow]);
   const banner = (start: number|null|undefined, end: number|null|undefined, available=true) => {
@@ -25,8 +25,8 @@ export function SplashPreview({ onTheory, onPractical, practicalStartsAt, practi
       <h1 className="sr-only">St John's Chemistry Olympiad</h1>
       <OlympiadLogo className="splash-logo" bubbling />
       <div className="splash-challenges">
-        <ChallengeButton subject="Practical" onClick={onPractical} banner={banner(practicalStartsAt,practicalEndsAt,!!onPractical && (teacher || practicalStartsAt!=null))} />
-        <ChallengeButton subject="Theoretical" onClick={onTheory} banner={banner(theoryStartsAt,theoryEndsAt)} />
+        <ChallengeButton subject="Practical" onClick={onPractical} banner={banner(practicalStartsAt,practicalEndsAt,!!onPractical && (teacher || practicalStartsAt!=null)) ?? (!practicalReady?'LOADING':undefined)} />
+        <ChallengeButton subject="Theoretical" onClick={onTheory} banner={banner(theoryStartsAt,theoryEndsAt) ?? (!theoryReady?'LOADING':undefined)} />
       </div>
       <img className="splash-equipment" src={equipment} alt="" width="225" height="162" />
     </main>

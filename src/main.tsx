@@ -19,6 +19,7 @@ import { eventTiming } from './events/timing';
 import { Practical, PracticalShell } from './practicals/Practical';
 import { findPractical } from './practicals/catalog';
 import './styles.css';
+import {useChallengePreload} from './cloud/useChallengePreload';
 import './background.css';
 import './settings.css';
 export function AppRouter() {
@@ -39,6 +40,7 @@ export function AppRouter() {
     useEffect(() => { if (teacher && selectedRealEvent)
         setSelectedId(selectedRealEvent.id); }, [teacher, selectedRealEvent?.id]);
     const questions = useServerQuestions(selectedEvent?.id);
+    const preload=useChallengePreload(questions.content);
     const practicalFlush = useRef<(() => Promise<boolean>) | null>(null);
     useEffect(() => {
         if (server?.role === 'competitor' && security.session.status === 'NOT_STARTED' && search) {
@@ -89,12 +91,12 @@ export function AppRouter() {
             return <App panels={settingsPanels} onPanelsChange={setSettingsPanels} eventId={selectedRealEvent?.id} onEventChange={id => { setSelectedId(id); void navigate('?settings&eventId=' + encodeURIComponent(id)); }} onLeaderboard={() => void navigate('?leaderboard')} onPracticalPreview={year => void navigate(year ? `?practical&catalogue&year=${year}` : '?practical')} onQuestionPreview={(year,number)=>void navigate(`?theory&catalogue&year=${year}&question=${number}`)}/>;
         if (options.has('leaderboard'))
             return teacher ? <Leaderboard activeEvent={server.activeEvent} onBack={() => void navigate('?settings')} onSettings={() => void navigate('?settings')}/> : <CompetitorEntry />;
-        if (options.has('practical')) {
+        if (options.has('practical') && (teacher || preload.practicalReady)) {
             const definition = findPractical(selectedEvent?.year);
             if (!selectedEvent || !definition) return <main className="question-access type-body"><h1 className="type-heading">No practical available for this year</h1><ArtworkBackButton onClick={() => void navigate(teacher ? '?settings' : '')} label="Back"/></main>;
             return <PracticalShell definition={definition} contentStore={questions.content} onBack={() => void navigate(teacher ? '?settings' : '')} backLabel={teacher ? 'Back to settings' : 'Back to landing'}><QuestionGate practical theory={false}><Practical key={selectedEvent.id} contentStore={questions.content} definition={definition} event={selectedEvent} flushRef={practicalFlush} onNavigationReady={() => setNavigationError('')} onTheory={!teacher ? () => void navigate('?theory') : undefined}/></QuestionGate></PracticalShell>;
         }
-        if (options.has('theory')) {
+        if (options.has('theory') && (teacher || preload.theoryReady)) {
             if (!selectedEvent)
                 return <main className="question-access type-body"><h1 className="type-heading">No event selected</h1><p>Choose an event in Settings to preview its questions.</p>{teacher && <button onClick={() => void navigate('?settings')}>Open Settings</button>}</main>;
             const year = selectedEvent.year, number = Number(options.get('question'));
@@ -109,7 +111,7 @@ export function AppRouter() {
             const timing = eventTiming(selectedEvent);
             return <QuestionGate theory={false}><TheoryLanding year={year} score={score} solvedProblems={solved} preview={teacher} eventStartsAt={timing.theoryStartsAt} eventEndsAt={timing.theoryEndsAt} serverNow={security.serverNow} available={security.canAccessTheory()} onQuestion={number => void navigate(`?theory&question=${number}`)} onBack={() => void navigate('')}/></QuestionGate>;
         }
-        return <SplashPreview teacher={teacher} allowEarlyAccess={false} theoryStartsAt={selectedEvent ? eventTiming(selectedEvent).theoryStartsAt : null} theoryEndsAt={selectedEvent ? eventTiming(selectedEvent).theoryEndsAt : undefined} serverNow={security.serverNow} onTheory={() => void navigate('?theory')} onPractical={findPractical(selectedEvent?.year) ? () => void navigate('?practical') : undefined} practicalStartsAt={selectedEvent ? eventTiming(selectedEvent).practicalStartsAt : null} practicalEndsAt={selectedEvent ? eventTiming(selectedEvent).practicalEndsAt : null}/>;
+        return <><SplashPreview theoryReady={teacher || preload.theoryReady} practicalReady={teacher || preload.practicalReady} teacher={teacher} allowEarlyAccess={false} theoryStartsAt={selectedEvent ? eventTiming(selectedEvent).theoryStartsAt : null} theoryEndsAt={selectedEvent ? eventTiming(selectedEvent).theoryEndsAt : undefined} serverNow={security.serverNow} onTheory={() => void navigate('?theory')} onPractical={findPractical(selectedEvent?.year) ? () => void navigate('?practical') : undefined} practicalStartsAt={selectedEvent ? eventTiming(selectedEvent).practicalStartsAt : null} practicalEndsAt={selectedEvent ? eventTiming(selectedEvent).practicalEndsAt : null}/>{preload.error && <div className="pilot-entry-error type-body" role="alert">{preload.error}<button onClick={preload.retry}>Retry loading challenges</button></div>}</>;
     }
     const locked = server?.role === 'competitor' && security.session.status === 'LOCKED';
     const requestedQuestion=Number(options.get('question'));

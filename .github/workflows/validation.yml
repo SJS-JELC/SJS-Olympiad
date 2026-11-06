@@ -7,6 +7,10 @@ on:
         description: Run the full browser suite instead of the deployment smoke suite
         type: boolean
         default: true
+    outputs:
+      frontend_artifact_id:
+        description: Validated frontend artifact ID from this run attempt
+        value: ${{ jobs.build.outputs.frontend_artifact_id }}
   workflow_dispatch:
     inputs:
       full_browser:
@@ -24,6 +28,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      frontend_artifact_id: ${{ steps.upload_frontend.outputs.artifact-id }}
     permissions:
       contents: read
     steps:
@@ -46,3 +52,11 @@ jobs:
       - name: Deployment browser smoke suite
         if: ${{ !inputs.full_browser }}
         run: npm run test:browser:smoke
+      - name: Upload validated frontend
+        id: upload_frontend
+        uses: actions/upload-artifact@v7
+        with:
+          name: validated-frontend-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error

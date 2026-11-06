@@ -26,9 +26,29 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - uses: actions/setup-node@v4
+      - name: Require validated frontend artifact ID
+        env:
+          FRONTEND_ARTIFACT_ID: ${{ needs.validate.outputs.frontend_artifact_id }}
+        run: |
+          [[ "$FRONTEND_ARTIFACT_ID" =~ ^[0-9]+$ ]] || { echo "Validation did not return a frontend artifact ID." >&2; exit 1; }
+      - name: Download validated frontend
+        uses: actions/download-artifact@v8
         with:
-          node-version: '24'
+          artifact-ids: ${{ needs.validate.outputs.frontend_artifact_id }}
+          path: dist
+          merge-multiple: true
+      - name: Verify validated frontend files
+        run: |
+          test -f dist/index.html
+          test -d dist/assets
+          test -n "$(find dist/assets -type f -print -quit)"
+          test -f dist/staticwebapp.config.json
+      - name: Select managed API Node version
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install production API dependencies
+        run: npm ci --omit=dev --prefix api
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -36,12 +56,12 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LIVELY_COAST_06A373F0F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "api" # Managed Functions for the Azure Table Storage pilot
-          output_location: "dist" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          # Upload prepared files; do not invoke Oryx SDK discovery/builds.
+          app_location: "dist"
+          api_location: "api"
+          output_location: ""
+          skip_app_build: true
+          skip_api_build: true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

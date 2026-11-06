@@ -18,10 +18,12 @@ async function fixture(year='L6',status='active') {
 }
 for(const year of ['L5','L6','U6'])for(const status of ['draft','active'])test(`${year} ${status} protocol exact independent opening and closing; results remain numeric read-only`,async()=>{
  const f=await fixture(year,status),input={contentId:year};
- await assert.rejects(f.api.practicalContent(f.player,input),{status:423});await f.api.start(f.player);
+ assert.equal((await f.api.practicalContent(f.player,input)).id,year);await f.api.start(f.player);
  for(const time of [100000,200000,300000,349999,400000,400001]){
-  f.setTime(time);await assert.rejects(f.api.practicalContent(f.player,input),{status:403});
-  if(year==='L6')await assert.rejects(f.api.contentAsset(f.player,{kind:'practical',...input,version:'1',assetId:'protocol-image'}),{status:403});
+  f.setTime(time);
+  const reads=[()=>f.api.practicalContent(f.player,input),...(year==='L6'?[()=>f.api.contentAsset(f.player,{kind:'practical',...input,version:'1',assetId:'protocol-image'})]:[])];
+  for(const read of reads){if(time<400000)await read();else await assert.rejects(read(),{status:403});}
+  await assert.rejects(f.api.practicalSave(f.player,{requestId:'outside-window-'+time,expectedRevision:0,changes:{numPracticalResponse4:'1'}}),{status:403});
  }
  for(const time of [350000,399999]){
   f.setTime(time);const before=JSON.stringify([...f.repo.rows]);const value=await f.api.practicalContent(f.player,input);

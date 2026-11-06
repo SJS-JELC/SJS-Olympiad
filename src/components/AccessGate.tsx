@@ -9,7 +9,7 @@ import {TeacherCodeCooldown} from './TeacherCodeCooldown';
 import {IllustratedActionButton} from './IllustratedActionButton';
 import { eventTiming } from '../events/timing';
 import {SchoolSelector,LockInButton} from './SchoolSelector';
-export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;onPilot?:()=>void;checking?:boolean}) {
+export function AccessGate({pilot=false,onPilot,checking=false,availability}:{pilot?:boolean;onPilot?:()=>void;checking?:boolean;availability?:boolean}) {
     const security = useCompetitionSecurity();
     const [codes,setCodes]=useState({teacher:'',competitor:''}),[teacher,setTeacher]=useState(false),[busy,setBusy]=useState(false);
     const [available,setAvailable]=useState(false),[checkingEvent,setCheckingEvent]=useState(true),[availabilityError,setAvailabilityError]=useState('');
@@ -26,6 +26,7 @@ export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;
     },[teacherRetryAt]);
     useEffect(()=>{if(teacher && !teacherCooling)teacherInput.current?.focus();},[teacher,teacherCooling]);
     useEffect(()=>{
+        if(availability!==undefined){setAvailable(availability);setCheckingEvent(false);return;}
         if(checking || pilot){setCheckingEvent(false);return;}
         let live=true,generation=0;
         const check=()=>{const own=++generation;setCheckingEvent(true);setAvailable(false);
@@ -33,7 +34,7 @@ export function AccessGate({pilot=false,onPilot,checking=false}:{pilot?:boolean;
             .catch(()=>{if(live && own===generation)setAvailabilityError('Event availability could not be checked. Reload to retry.');})
             .finally(()=>{if(live && own===generation)setCheckingEvent(false);});};
         check();window.addEventListener('focus',check);return()=>{live=false;window.removeEventListener('focus',check);};
-    },[pilot,checking]);
+    },[pilot,checking,availability]);
     async function login(role:'teacher'|'competitor'){
       if(busy || codes[role].length!==4 || role==='teacher' && Date.now()<teacherRetryAt || role==='competitor' && !available)return;
       setBusy(true);const code=codes[role];setCodes({teacher:'',competitor:''});

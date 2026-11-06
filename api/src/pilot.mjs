@@ -63,6 +63,7 @@ export function createPilot({repo,retry,assert,schools,currentEvent,now}) {
   };
   const requireSchool=async input=>assert((await eligible()).schools.some(s=>s.id===input.schoolId),409,'This school is not in the current event. Return to the landing page.');
   return {
+    entryState:state,
     async bootstrap(){const s=await state();return {...s,...await eligible(),rankings:s.status==='open'?await rankings():[],snapshotAt:now()};},
     async report(){
       const directory=await names();

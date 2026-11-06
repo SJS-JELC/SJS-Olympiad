@@ -1,8 +1,41 @@
 import { test, expect } from './fixtures';
 import { openTeacher, openEvents, reloadTeacher } from './teacher';
 
-test('lost deletion response keeps an actionable dialog and retries the same confirmed operation',async({page,api})=>{
- await openEvents(page, '/?settings');await page.getByRole('button',{name:'Remove team Test team 1',exact:true}).click();api.lostResponses.add('team-remove');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog').getByRole('alert')).toContainText(/fetch|network|connection/i);const first=api.requests.find(request=>request.action==='team-remove')!.body;await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toHaveCount(0);const requests=api.requests.filter(request=>request.action==='team-remove');expect(requests).toHaveLength(2);expect(requests[1].body).toEqual(first);
+test('delayed initial events read preserves typed event fields',async({page})=>{
+ let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});let started=false;
+ await page.route('**/api/olympiad/events',async route=>{started=true;await held;await route.fallback();});
+ await openEvents(page);await expect.poll(()=>started).toBe(true);
+ const name=page.getByLabel('Event name',{exact:true});
+ const response=page.waitForResponse(value=>new URL(value.url()).pathname.endsWith('/events'));
+ try{await name.fill('Typed while initial events read waits');}finally{release();}
+ await response;await expect(name).toHaveValue('Typed while initial events read waits');
+ await expect(page.getByRole('button',{name:'Save event',exact:true})).toBeEnabled();
+});
+
+test('captured old initial events read cannot replace a confirmed save or its revision',async({page,api})=>{
+ let release!:()=>void;const held=new Promise<void>(resolve=>{release=resolve;});let captured=false;
+ await page.route('**/api/olympiad/events',async route=>{
+  const value=await api.service.events(api.token);captured=true;await held;await route.fulfill({json:value});
+ });
+ await openEvents(page);await expect.poll(()=>captured).toBe(true);
+ const name=page.getByLabel('Event name',{exact:true}),save=page.getByRole('button',{name:'Save event',exact:true});
+ const response=page.waitForResponse(value=>new URL(value.url()).pathname.endsWith('/events'));
+ try{
+  await name.fill('Confirmed newer event name');await save.click();
+  await expect.poll(()=>api.requests.filter(r=>r.action==='event-update').length).toBe(1);
+  await expect(name).toBeEnabled();await expect(name).toHaveValue('Confirmed newer event name');
+ }finally{release();}
+ await (await response).finished();
+ await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
+ await expect(name).toHaveValue('Confirmed newer event name');
+ // A second save also proves the old response did not restore the old revision.
+ await name.fill('Second confirmed event name');await save.click();await expect(name).toBeEnabled();
+ await expect.poll(async()=>(await api.service.events(api.token)).events.find((event:any)=>event.id==='fixture-L6').name).toBe('Second confirmed event name');
+ const writes=api.requests.filter(r=>r.action==='event-update');expect(writes).toHaveLength(2);expect(writes[1].body.expectedRevision).toBe(writes[0].body.expectedRevision+1);
+});
+
+test('lost deletion response closes consent and retries the same operation from roster status',async({page,api})=>{
+ await openEvents(page, '/?settings');await page.getByRole('button',{name:'Remove team Test team 1',exact:true}).click();api.lostResponses.add('team-remove');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByLabel('Roster save status')).toContainText(/fetch|network|connection/i);const first=api.requests.find(request=>request.action==='team-remove')!.body;await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toHaveCount(0);const requests=api.requests.filter(request=>request.action==='team-remove');expect(requests).toHaveLength(2);expect(requests[1].body).toEqual(first);
 });
 
 test('panel toggles are independent and preserve event edits while collapsed',async({page})=>{
@@ -55,7 +88,7 @@ test('Preview Questions is collapsed, ordered, keyboard accessible and isolated 
  await page.getByRole('button',{name:'Back to settings',exact:true}).click();await expect(page.getByRole('button',{name:'Preview Questions',exact:true})).toHaveAttribute('aria-expanded','true');await expect(page.getByRole('button',{name:'Events',exact:true})).toHaveAttribute('aria-expanded','false');await expect(page.getByRole('button',{name:'Backend settings',exact:true})).toHaveAttribute('aria-expanded','true');await expect(page.getByLabel('Selected event')).toHaveValue('fixture-U6');expect((await api.service.session(api.token)).events).toEqual(before.events);expect((await api.service.leaderboard(api.token)).entries).toEqual([]);
 });
 
-test('team table immediately deletes draft teams and retains active wrong-attempt records on removal',async({page,api})=>{
+test('team table removes draft teams after server confirmation and retains active wrong-attempt records on removal',async({page,api})=>{
  await openEvents(page, '/?settings');const player=await api.service.login({role:'competitor',code:'1234'}),team=(await api.service.teams(player.token)).teams[0];await api.service.claim(player.token,{teamId:team.id});await api.service.start(player.token);await api.service.submit(player.token,{questionId:'L6P8',requestId:'settings-wrong-001',answers:{answer:'0'}});
  await reloadTeacher(page);await openEvents(page);const row=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Test team 1',exact:true})});
  await expect(row).toBeVisible();expect(await page.locator('.settings-teams thead th').allTextContents()).toEqual(['','School','Team','Practical answer','Theory score','Status','Actions']);await expect(row.getByRole('cell').nth(3)).toHaveText('\u2013');await expect(row.getByRole('cell',{name:'Taken',exact:true})).toBeVisible();
@@ -136,7 +169,7 @@ test('event schedules use London time, reject DST ambiguity and keep optional pr
 test('late team responses cannot populate a different selected event',async({page})=>{
  let release!:()=>void;const delayed=new Promise<void>(resolve=>{release=resolve;});
  await page.route('**/api/olympiad/teams?eventId=fixture-L5',async route=>{await delayed;await route.fulfill({json:{teams:[{id:'late-team',name:'Late L5 team',eventId:'fixture-L5',year:'L5',claimGeneration:0}]}});});
- await openEvents(page, '/?settings');await page.getByLabel('Selected event').selectOption('fixture-L5');await page.getByLabel('Selected event').selectOption('fixture-U5');await expect(page.getByRole('heading',{name:'Teams · U5 fixture event'})).toBeVisible();release();
+ await openEvents(page, '/?settings');await page.getByLabel('Selected event').selectOption('fixture-L5');await expect(page.getByLabel('Selected event')).toBeDisabled();await page.evaluate(()=>{history.pushState(null,'','/?settings&eventId=fixture-U5');window.dispatchEvent(new PopStateEvent('popstate'));});await expect(page.getByRole('heading',{name:'Teams · U5 fixture event'})).toBeVisible();release();
  await expect(page.getByRole('cell',{name:'Late L5 team',exact:true})).toHaveCount(0);await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toBeVisible();
 });
 test('question previews and leaderboard return directly to Settings',async({page,api})=>{

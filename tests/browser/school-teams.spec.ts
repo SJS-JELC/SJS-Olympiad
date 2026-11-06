@@ -2,7 +2,7 @@ import {test,expect,type Page} from './fixtures';
 import {openEvents} from './teacher';
 const teamRow=(page:Page,school:string,number:number)=>page.getByRole('row').filter({has:page.getByRole('cell',{name:school,exact:true})}).filter({has:page.getByRole('cell',{name:String(number),exact:true})});
 
-for(const outcome of ['success','failure'] as const)test(`draft deletion hides immediately before ${outcome} and preserves retry identity`,async({page,api})=>{
+for(const outcome of ['success','failure'] as const)test(`draft deletion remains visible until confirmation before ${outcome} and preserves retry identity`,async({page,api})=>{
  await openEvents(page);await page.getByLabel('Selected event').selectOption('fixture-L5');
  const button=page.getByRole('button',{name:'Remove team Test team 1',exact:true});
  await expect(button).toBeEnabled();
@@ -15,12 +15,12 @@ for(const outcome of ['success','failure'] as const)test(`draft deletion hides i
  });
  try{
   await button.click();await expect.poll(()=>bodies.length).toBe(1);
-  await expect(button).toHaveCount(0);await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(button).toBeVisible();await expect(button).toBeDisabled();await expect(page.getByLabel('Selected event')).toBeDisabled();await expect(page.getByRole('dialog')).toHaveCount(0);
   expect((await api.service.teams(api.token,{eventId:'fixture-L5'})).teams.some((team:any)=>team.name==='Test team 1')).toBe(true);
  }finally{release();}
  if(outcome==='failure'){
-  await expect(button).toBeVisible();await expect(page.locator('.settings-message')).toContainText('Deletion unavailable.');
-  const retry=page.getByRole('button',{name:'Retry remove team',exact:true});await expect(retry).toBeEnabled();await retry.click();
+  await expect(button).toBeVisible();await expect(page.getByLabel('Roster save status')).toContainText('Deletion unavailable.');
+  const retry=page.getByRole('button',{name:'Retry save',exact:true});await expect(retry).toBeEnabled();await retry.click();
   await expect.poll(()=>bodies.length).toBe(2);expect(bodies[1]).toEqual(bodies[0]);
  }
  await expect.poll(async()=>(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams.some((team:any)=>team.name==='Test team 1')).toBe(false);
@@ -55,9 +55,9 @@ test('teacher creates a school once, defaults to two, lists school and team in s
 
 test('uncertain school and team setup retry their frozen request without duplicates',async({page,api})=>{
  await openEvents(page);await page.getByLabel('New school name',{exact:true}).fill('Retry Academy');api.lostResponses.add('school-create');await page.getByRole('button',{name:'Create school',exact:true}).click();
- await expect(page.getByRole('button',{name:'Retry create school',exact:true})).toBeVisible();await page.getByRole('button',{name:'Retry create school',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeVisible();await page.getByRole('button',{name:'Retry save',exact:true}).click();
  const create=api.requests.filter(r=>r.action==='school-create');expect(create).toHaveLength(2);expect(create[1].body).toEqual(create[0].body);
- api.lostResponses.add('school-teams');await page.getByRole('button',{name:'Set team count',exact:true}).click();await expect(page.getByRole('button',{name:'Retry set team count',exact:true})).toBeVisible();await page.getByRole('button',{name:'Retry set team count',exact:true}).click();
+ api.lostResponses.add('school-teams');await page.getByRole('button',{name:'Set team count',exact:true}).click();await expect(page.getByRole('button',{name:'Retry save',exact:true})).toBeVisible();await page.getByRole('button',{name:'Retry save',exact:true}).click();
  const requests=api.requests.filter(r=>r.action==='school-teams');expect(requests).toHaveLength(2);expect(requests[1].body).toEqual(requests[0].body);await expect(teamRow(page,'Retry Academy',1)).toBeVisible();await expect(teamRow(page,'Retry Academy',2)).toBeVisible();
 });
 
