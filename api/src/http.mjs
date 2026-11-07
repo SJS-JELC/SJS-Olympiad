@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { createService, ApiError } from './service.mjs';
+import { measurePhase, startPhase, withRequestTelemetry } from './telemetry.mjs';
 const origins = new Set(['https://olympiad.masters-of-chemistry.app','https://lively-coast-06a373f0f.2.azurestaticapps.net']);
-const gets = new Set(['removed-teams','pilot','pilot-report','availability','session','events','teams','schools','leaderboard','diagnostics']);
+const gets = new Set(['roster','removed-teams','pilot','pilot-report','availability','session','events','teams','schools','leaderboard','diagnostics']);
 const posts = new Set(['team-remove','team-restore','teams-batch','schools-import','login','logout','event-create','event-setup','school-create','school-delete','school-colours','school-rename','school-teams','school-link','school-resume','event-update','event-year-change','event-activate','event-draft','event-end','codes-update','practice-start','team-add','team-release','team-delete','claim','start','breach','recovery','resume','hydrate','question','draft','submit','action','practical','practical-save']);
 const methods = {'removed-teams':'removedTeams','team-remove':'teamRemove','team-restore':'teamRestore','teams-batch':'teamsBatch','schools-import':'schoolsImport','school-delete':'schoolDelete','event-setup':'eventSetup','school-colours':'schoolColours','school-create':'schoolCreate','school-rename':'schoolRename','school-teams':'schoolTeams','school-link':'schoolLink','school-resume':'schoolResume','event-year-change':'eventChangeYear','event-draft':'eventDraft','event-create':'eventCreate','event-update':'eventUpdate','event-activate':'eventActivate','event-end':'eventEnd','codes-update':'codesUpdate','team-add':'teamAdd','team-release':'teamRelease','team-delete':'teamDelete','practical-save':'practicalSave'};
 const COOKIE='__Host-olympiad-session';
@@ -37,35 +38,46 @@ async function service() {
   return servicePromise;
 }
 const cookie=(raw,name)=>new RegExp('(?:^|;\\s*)'+name+'=([a-zA-Z0-9._-]+)').exec(raw || '')?.[1];
-export async function handle(req,getService=service) {
+export async function handle(req,getService=service,context) {
+  return withRequestTelemetry(req.params?.action,typeof req.method==='string'?req.method.toUpperCase():'OTHER',
+    ()=>handleRequest(req,getService),context?.log ? record=>context.log(record) : undefined);
+}
+async function handleRequest(req,getService) {
   const headers={'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
   try {
     const action=req.params?.action,method=(req.method || '').toUpperCase();
+    const stopValidation=startPhase('validation');
+    let requestHeaders;
+    try {
     if (!(method==='GET'&&gets.has(action)) && !(method==='POST'&&posts.has(action)))throw new ApiError(404,'Not found.');
-    const requestHeaders=Object.fromEntries(Object.entries(req.headers || {}).map(([key,value])=>[key.toLowerCase(),value]));
+    requestHeaders=Object.fromEntries(Object.entries(req.headers || {}).map(([key,value])=>[key.toLowerCase(),value]));
     if(method==='POST') {
       if(!origins.has(requestHeaders.origin) || requestHeaders['content-type']?.split(';')[0].trim()!=='application/json')throw new ApiError(403,'Use the Olympiad website to submit.');
       validateBody(req.body);
       if(Buffer.byteLength(req.rawBody ?? JSON.stringify(req.body))>(action==='pilot-submit'?128000:64000))throw new ApiError(400,'Invalid request.');
     }
-    const api=await getService(),token=cookie(requestHeaders.cookie,COOKIE);
+    } finally {stopValidation();}
+    const api=await measurePhase('getService',getService),token=cookie(requestHeaders.cookie,COOKIE);
+    const dispatch=async()=>{
+    const stopOperation=startPhase('operation');
+    try {
     let body;
     if(action==='practice-start') {
       await api.session(token);
       throw new ApiError(410,'Isolated practice is retired. Sign in to the current event.');
     } else if(action==='login') {
       const address=String(requestHeaders['x-forwarded-for'] || req.ip || 'unknown').split(',')[0];
-      await api.throttle('login-global',120);
-      await api.throttle('login-'+createHash('sha256').update(address).digest('hex'),10);
+      await measurePhase('throttle',()=>api.throttle('login-global',120));
+      await measurePhase('throttle',()=>api.throttle('login-'+createHash('sha256').update(address).digest('hex'),10));
       const result=await api.login({...req.body,legacyToken:cookie(requestHeaders.cookie,'__Host-olympiad')});
       body=result.state;
       headers['Set-Cookie']=`${COOKIE}=${result.token}; Secure; HttpOnly; SameSite=Strict; Path=/`;
     } else {
       if(action==='pilot-submit' || action==='pilot-enter') {
         const address=String(requestHeaders['x-forwarded-for'] || req.ip || 'unknown').split(',')[0];
-        await api.throttle('pilot-ip-'+createHash('sha256').update(address).digest('hex'),180);
-        await api.throttle('pilot-attempt-'+createHash('sha256').update(String(req.body.credential ?? '')).digest('hex'),20);
-      } else if(method==='POST')await api.throttle((['recovery','resume'].includes(action)?'recovery-':'mutate-')+(token || 'anonymous'),['recovery','resume'].includes(action)?10:180);
+        await measurePhase('throttle',()=>api.throttle('pilot-ip-'+createHash('sha256').update(address).digest('hex'),180));
+        await measurePhase('throttle',()=>api.throttle('pilot-attempt-'+createHash('sha256').update(String(req.body.credential ?? '')).digest('hex'),20));
+      } else if(method==='POST')await measurePhase('throttle',()=>api.throttle((['recovery','resume'].includes(action)?'recovery-':'mutate-')+(token || 'anonymous'),['recovery','resume'].includes(action)?10:180));
       if(action==='session')body=await api.session(token,{restore:req.query?.restore==='1' || req.query?.restore===1,interrupt:req.query?.interrupt==='1' || req.query?.interrupt===1});
       else if(action==='logout') {
         body=await api.logout(token);
@@ -74,6 +86,9 @@ export async function handle(req,getService=service) {
     }
     if(action==='content-asset' && body?.binary===true){headers['Content-Type']=body.mimeType;return {status:200,headers,body:body.body,isRaw:true};}
     return {status:200,headers,body};
+    } finally {stopOperation();}
+    };
+    return await (api.withRequest?api.withRequest(dispatch):dispatch());
   } catch(error) {
     const explicitClear=req.params?.action==='logout' || req.params?.action==='session' && (req.query?.restore==='1' || req.query?.restore===1);
     if(error instanceof ApiError && error.status===401 && explicitClear)headers['Set-Cookie']=`${COOKIE}=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;

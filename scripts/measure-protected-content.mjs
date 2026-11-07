@@ -13,7 +13,7 @@ const sizes=body=>({raw:body.length,gzip:gzipSync(body,{level:9}).length,brotli:
 const sum=rows=>Object.fromEntries(['raw','gzip','brotli'].map(k=>[k,rows.reduce((n,v)=>n+v[k],0)]));
 const contexts=new Map(),byToken=new Map();
 for(const year of ['L5','U5','L6','U6']){
- const repo=memoryRepository(),service=createService(repo,{},()=>now),teacher=(await service.login({role:'teacher',code:'5678'})).token;
+ const repo=memoryRepository([],{allowBootstrap:true}),service=createService(repo,{},()=>now),teacher=(await service.login({role:'teacher',code:'5678'})).token;
  const event=(await service.eventCreate(teacher,{name:'Synthetic local '+year,year,theoryStartsAt:now-60000,theoryEndsAt:now+3600000,...(year!=='U5'?{practicalStartsAt:now-60000,practicalEndsAt:now+3600000}:{})})).events[0];
  await service.eventActivate(teacher,{eventId:event.id,expectedRevision:1});
  const player=(await service.login({role:'competitor',code:'1234'})).token;

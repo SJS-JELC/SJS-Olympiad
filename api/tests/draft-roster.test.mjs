@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
@@ -21,7 +22,7 @@ for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${pas
  assert.deepEqual(roster.map(team=>team.name).sort(),['Alpha','Beta',"St John's 1","St John's 2","St John's 3","St John's 4"]);assert.ok(roster.every(team=>team.year===year&&!team.claimed));
  if(past){
   await assert.rejects(f.api.claim(player.token,{teamId:f.first.id}),{status:403});
-  assert.equal((await f.repo.get(f.event.id+'-'+f.first.id,'team')).owner,null);return;
+  assert.equal((await f.repo.get(teamScope(f.event.id,f.first.id),'team')).owner,null);return;
  }
  await f.api.claim(player.token,{teamId:f.first.id});const started=await f.api.start(player.token);
  assert.equal(started.team.name,'Alpha');assert.equal(started.team.year,year);assert.equal(started.score,0);
@@ -35,7 +36,7 @@ for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${pas
  const wrong=await f.api.submit(player.token,{questionId:id,requestId:'draft-wrong-0001',answers:{answer:'1'}});assert.equal(wrong.attempt.retryAt,year==='U5'?520000:515000);
  const blocked=await f.api.submit(player.token,{questionId:id,requestId:'early-correct-001',answers:{answer}});assert.equal(blocked.score,0);assert.equal(blocked.attempt.retryAt,wrong.attempt.retryAt);assert.equal(blocked.attempt.solvedAt,null);
  f.setTime(521000);const marked=await f.api.submit(player.token,{questionId:id,requestId:'draft-correct-001',answers:{answer}});assert.equal(marked.score,year==='U5'?2:3);
- const persisted=await f.repo.get(f.event.id+'-'+f.first.id,'q-'+id);assert.equal(persisted.state.solvedAt,521000);assert.deepEqual(persisted.state.answers,{});
+ const persisted=await f.repo.get(teamScope(f.event.id,f.first.id),'q-'+id);assert.equal(persisted.state.solvedAt,521000);assert.deepEqual(persisted.state.answers,{});
  assert.equal((await f.api.leaderboard(f.staff)).rows[0].score,marked.score);
  if(year==='U5')await assert.rejects(f.api.practical(player.token),{status:404});
  else{
@@ -58,7 +59,7 @@ for(const year of ['U5','L6'])for(const past of [false,true])test(`${year} ${pas
 });
 
 test('removed roster rows stay absent and an empty draft has no invented teams',async()=>{
- const f=await fixture('U5');for(const row of await f.repo.list({kind:'team',eventId:f.event.id}))await f.repo.write({...row,removed:true},row.etag);
+ const f=await fixture('U5');for(const row of await f.repo.list(summaryRange(f.event.id)))await f.repo.write({...row,removed:true},row.etag);
  const player=await f.api.login({role:'competitor',code:'1234'});assert.deepEqual((await f.api.teams(player.token)).teams,[]);
 });
 
@@ -68,7 +69,7 @@ for(const activity of ['wrong','correct','timed','none'])test(`draft deletion pr
  else if(activity!=='none')await f.api.submit(player.token,{questionId:'L6P8',requestId:'draft-mark-0001',answers:{answer:activity==='correct'?'0.437':'1'}});
  const result=await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:f.first.id,teamName:'Alpha',requestId:'draft-delete-001',confirm:true});
  assert.equal(result.outcome,activity==='none'?'deleted':'removed');await assert.rejects(f.api.session(player.token),{status:401});
- const rows=await f.repo.list({partitionKey:f.event.id+'-'+f.first.id});assert.equal(rows.some(row=>row.kind==='question'),activity!=='none');
+ const rows=await f.repo.list({partitionKey:teamScope(f.event.id,f.first.id)});assert.equal(rows.some(row=>row.kind==='question'),activity!=='none');
 });
 
 test('legacy latest draft is selected only without an active event; active schedules stay authoritative',async()=>{

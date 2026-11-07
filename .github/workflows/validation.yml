@@ -39,9 +39,11 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
+      - run: npm ci --prefix api
       - name: Build and audit production site
         run: npm run build
       - run: node --test api/tests/*.test.mjs
+      - run: node --test scripts/storage-reset.test.mjs scripts/azure-budget.test.mjs
       - run: npm test
       - run: npm run test:contracts
       - name: Install browser test runtime

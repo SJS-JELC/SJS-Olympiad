@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
@@ -19,12 +20,12 @@ test('colour reads use defaults without rewriting records; saved pairs propagate
  assert.deepEqual(await f.repo.get('system','schools'),before);
  const player=await f.api.login({role:'competitor',code:'1234'}),team=(await f.api.teams(player.token)).teams.find(t=>t.schoolId===f.school.id);
  await f.api.claim(player.token,{teamId:team.id});
- const claimed=await f.repo.get(f.event.id+'-'+team.id,'team');
+ const claimed=await f.repo.get(teamScope(f.event.id,team.id),'team');
  const saved=await f.api.schoolColours(f.staff,change(f));assert.equal(saved.school.revision,2);
  assert.deepEqual(saved.school.colours,['#D63327','#001758']);
  assert.deepEqual((await f.api.teams(player.token)).teams.find(t=>t.id===team.id).schoolColours,saved.school.colours);
  assert.deepEqual((await f.api.pilot()).schools.find(s=>s.id===f.school.id).colours,saved.school.colours);
- assert.deepEqual(await f.repo.get(claimed.partitionKey,'team'),claimed);
+ assert.deepEqual(await f.repo.get(claimed.partitionKey,claimed.rowKey),claimed);
  await f.api.schoolRename(f.staff,{schoolId:f.school.id,name:'Renamed Academy',expectedRevision:2,requestId:'colour-rename-test'});
  assert.deepEqual((await f.api.schools(f.staff)).schools.find(s=>s.id===f.school.id).colours,saved.school.colours);
 });

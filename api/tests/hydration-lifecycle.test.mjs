@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
@@ -67,7 +68,7 @@ test('fresh competitor boot revokes the role cookie, retains claimed team/result
   await assert.rejects(f.api.submit(f.player,{questionId:'L6P8',requestId:'stale-after-boot',answers:{answer:'0.437'}}),{status:401});
   const next=await f.api.login({role:'competitor',code:'1234'});assert.equal((await f.api.teams(next.token)).teams.find(team=>team.id===f.teamId).claimed,true);
   await assert.rejects(f.api.claim(next.token,{teamId:f.teamId}),{status:409});
-  const stored=await f.repo.get(f.eventId+'-'+f.teamId,'q-L6P8');assert.equal(stored.state.solvedAt,solved.attempt.solvedAt);
+  const stored=await f.repo.get(teamScope(f.eventId,f.teamId),'q-L6P8');assert.equal(stored.state.solvedAt,solved.attempt.solvedAt);
   await f.api.teamRelease(f.staff,{eventId:f.eventId,teamId:f.teamId,confirm:true});await f.api.claim(next.token,{teamId:f.teamId});
   const resumed=await f.api.start(next.token);assert.equal(resumed.score,3);assert.equal(resumed.hydration.questions.L6P8.attempt.solvedAt,solved.attempt.solvedAt);
   const unclaimed=await f.api.login({role:'competitor',code:'1234'});await assert.rejects(f.api.session(unclaimed.token,{restore:true}),{status:401});
@@ -83,7 +84,7 @@ test('in-tab interruption preserves role and staff recovery; combined GC Run own
   const run=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-run',action:{type:'gc-run',sample:'citrus',concentration:12.5,deadline:1,id:500}});
   assert.equal(run.attempt.interaction.activeRun.deadline,104000);assert.equal(run.attempt.interaction.activeRun.id,1);assert.equal(run.attempt.interaction.activeRun.concentration,12.5);
   f.setTime(104000);const projected=await f.api.hydrate(f.player);assert.equal(projected.questions.U5P5.attempt.interaction,undefined);
-  const stored=await f.repo.get(f.eventId+'-'+f.teamId,'q-U5P5');assert.ok(stored.state.interaction.activeRun);
+  const stored=await f.repo.get(teamScope(f.eventId,f.teamId),'q-U5P5');assert.ok(stored.state.interaction.activeRun);
   const finished=await f.api.action(f.player,{questionId:'U5P5',requestId:'combined-gc-finish',action:{type:'tick'}});assert.equal(finished.gcCompletedRunId,1);assert.deepEqual(finished.attempt.interaction.results,[]);
   assert.equal((await f.api.leaderboard(f.staff)).entries.length,0);
 });

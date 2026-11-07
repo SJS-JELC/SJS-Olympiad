@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
 import core from './private/molecule-core.mjs';
 import { schoolColours } from './school-colours.mjs';
+import { PILOT_PARTITION, summaryRange, prefixRange } from './layout.mjs';
 
 export const PILOT_LIMITS = Object.freeze({maxHeavyAtoms:250,maxAtoms:650,maxBonds:750});
-const pk='readiness-pilot-v1';
+const pk=PILOT_PARTITION;
 const digest=value=>createHash('sha256').update(value).digest('hex');
 const rejected={accepted:false,score:null};
 
@@ -38,16 +39,18 @@ export function createPilot({repo,retry,assert,schools,currentEvent,now}) {
     return value;
   });
   const status=c=>c.status==='open'?'open':'off';
+  const epochFields=c=>c.resetEpoch===undefined?{}:{resetEpoch:c.resetEpoch};
+  const checkEpoch=(c,input)=>assert(c.resetEpoch===undefined || typeof c.resetEpoch==='string' && input.resetEpoch===c.resetEpoch,409,'The pilot was reset. Return to the landing page and enter again.');
   const names=async()=>(await schools.directory()).schools.map(s=>({id:s.id,name:s.name,deleted:!!s.deleted,colours:schoolColours(s)}));
   const eligible=async()=>{
     const event=await currentEvent();
     if(!event)return {eventId:null,schools:[]};
-    const teams=await repo.list({kind:'team',eventId:event.id});
+    const teams=await repo.list(summaryRange(event.id));
     const ids=new Set(teams.filter(t=>!t.removed && t.schoolId).map(t=>t.schoolId));
     return {eventId:event.id,schools:(await names()).filter(s=>!s.deleted && ids.has(s.id)).map(({deleted,...school})=>school)};
   };
-  const state=async()=>{const c=await config();return {status:status(c),revision:c.revision};};
-  const attempts=()=>repo.list({partitionKey:pk,kind:'pilot-attempt'});
+  const state=async()=>{const c=await config();return {status:status(c),revision:c.revision,...epochFields(c)};};
+  const attempts=()=>repo.list({...prefixRange(pk,'attempt-'),kind:'pilot-attempt'});
   const best=a=>a.hasAccepted || a.best>0 ? a.best : null;
   const view=a=>({id:a.publicId,schoolId:a.schoolId,confirmedAt:a.confirmedAt ?? null,best:best(a)});
   const rankings=async()=>{
@@ -83,12 +86,14 @@ export function createPilot({repo,retry,assert,schools,currentEvent,now}) {
     },
     async enter(input){
       validate(input);
+      checkEpoch(await config(),input);
       return retry(async()=>{
-        const c=await config();assert(status(c)==='open',409,'The pilot is off. Return to the landing page.');
+        const c=await config();checkEpoch(c,input);assert(status(c)==='open',409,'The pilot is off. Return to the landing page.');
         await requireSchool(input);
         const id=digest(input.credential), old=await repo.get(pk,'attempt-'+id);
+        if(old)checkEpoch(c,old);
         assert(!old || old.schoolId===input.schoolId,409,'This attempt belongs to another school.');
-        const attempt=old ?? row('attempt-'+id,{kind:'pilot-attempt',publicId:digest('public:'+id),schoolId:input.schoolId,confirmedAt:now(),best:0,hasAccepted:false});
+        const attempt=old ?? row('attempt-'+id,{kind:'pilot-attempt',...epochFields(c),publicId:digest('public:'+id),schoolId:input.schoolId,confirmedAt:now(),best:0,hasAccepted:false});
         // Even resume checks the mode fence; retries return the original identity/time.
         await repo.batch([{entity:c,etag:c.etag},{entity:attempt,etag:attempt.etag}]);
         return view(attempt);
@@ -96,20 +101,22 @@ export function createPilot({repo,retry,assert,schools,currentEvent,now}) {
     },
     async submit(input){
       validate(input);
+      checkEpoch(await config(),input);
       assert(typeof input.graph==='string' && Buffer.byteLength(input.graph)<=120000,400,'Drawing exceeds pilot capacity.');
       const id=digest(input.credential), fingerprint=digest(JSON.stringify([input.schoolId,input.graph]));
       const result=markPilot(input.graph);
       return retry(async()=>{
-        const c=await config();assert(status(c)==='open',409,'The pilot is off. Return to the landing page.');
+        const c=await config();checkEpoch(c,input);assert(status(c)==='open',409,'The pilot is off. Return to the landing page.');
         await requireSchool(input);
         const receipt=await repo.get(pk,'receipt-'+id+'-'+input.requestId);
-        if(receipt){assert(receipt.fingerprint===fingerprint,409,'Request identifier already used for another drawing.');return receipt.response;}
+        if(receipt){checkEpoch(c,receipt);assert(receipt.fingerprint===fingerprint,409,'Request identifier already used for another drawing.');const current=await config();checkEpoch(current,input);assert(status(current)==='open',409,'The pilot is off. Return to the landing page.');return receipt.response;}
         const attempt=await repo.get(pk,'attempt-'+id);
         assert(attempt && attempt.schoolId===input.schoolId,409,'Enter the pilot with your school before submitting.');
+        checkEpoch(c,attempt);
         if(result.accepted){attempt.best=Math.max(attempt.best,result.score);attempt.hasAccepted=true;}
         attempt.lastContact=now();
         const response={...result,...view(attempt)};
-        await repo.batch([c,attempt,row('receipt-'+id+'-'+input.requestId,{kind:'pilot-receipt',fingerprint,response})].map(entity=>({entity,etag:entity.etag})));
+        await repo.batch([c,attempt,row('receipt-'+id+'-'+input.requestId,{kind:'pilot-receipt',...epochFields(c),fingerprint,response})].map(entity=>({entity,etag:entity.etag})));
         return response;
       });
     },

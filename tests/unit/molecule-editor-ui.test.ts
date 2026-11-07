@@ -3,11 +3,30 @@ import { act, createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { MoleculeEditor } from '../../src/components/molecule/MoleculeEditor';
+import { Structure } from '../../src/components/molecule/Structure';
 import { blankMolecule } from '../../src/chemistry/molecule/engine';
 import type { MoleculeState } from '../../src/contracts/molecule';
 
 let root:Root, container:HTMLDivElement, state:MoleculeState, readOnly:boolean;
 const updates=vi.fn();
+it('marks only the central cumulene carbon with a dot in skeletal view', async()=>{
+  let graph:MoleculeState['graph'] = {
+    atoms:[1,2,3].map(id=>({id,element:'C',x:id*74,y:0})),
+    bonds:[{a:1,b:2,order:2},{a:2,b:3,order:2}],
+  };
+  const show = async(view:'skeletal'|'displayed') => act(async()=>{
+    root.render(createElement('svg',{},createElement(Structure,{graph,view,interactive:true,expandHydrogens:false})));
+  });
+  await show('skeletal');
+  expect(container.querySelectorAll('.carbon-dot')).toHaveLength(1);
+  expect(container.querySelector('.carbon-dot')?.parentElement?.getAttribute('data-atom')).toBe('2');
+  await show('displayed');
+  expect(container.querySelector('.carbon-dot')).toBeNull();
+  expect(container.querySelectorAll('.atom-label')).toHaveLength(3);
+  graph={...graph,bonds:graph.bonds.map((bond,index)=>index===1?{...bond,order:1}:bond)};
+  await show('skeletal');
+  expect(container.querySelector('.carbon-dot')).toBeNull();
+});
 function render() {
   root.render(createElement(MoleculeEditor,{value:state,readOnly,label:'Test molecular canvas',elements:['C','H','F','Cl'],representations:['displayed'],explicitHydrogensOnly:true,onChange:next=>{state=next;updates(next);render();}}));
 }

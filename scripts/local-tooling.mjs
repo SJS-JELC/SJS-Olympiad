@@ -25,6 +25,8 @@ const ignoredDirectories = new Set([
 ]);
 const ignoredFiles = new Set(['.sjs-source-manifest.json', 'Thumbs.db', '.DS_Store']);
 const commands = new Set(['setup', 'migrate', 'dev', 'local-preview', 'typecheck', 'test', 'test:browser', 'test:browser:smoke', 'build', 'preview', 'install-browser']);
+const operatorCommands=new Map([['storage-admin','storage-admin.mjs'],['api-benchmark','api-benchmark.mjs'],['azure-performance-probe','azure-performance-probe.mjs']]);
+for(const name of operatorCommands.keys())commands.add(name);
 
 async function collectFiles(directory = sourceRoot, relative = '') {
   const files = [];
@@ -118,6 +120,16 @@ async function installIfNeeded() {
   await fs.writeFile(installMarker, fingerprint);
 }
 
+async function installApiIfNeeded(){
+  const fingerprint=createHash('sha256').update(await fs.readFile(path.join(worktree,'api','package.json'))).update(await fs.readFile(path.join(worktree,'api','package-lock.json'))).digest('hex');
+  const marker=path.join(localRoot,profile?`installed-api-${profile}.sha256`:'installed-api.sha256');
+  const installed=await fs.readFile(marker,'utf8').catch(()=> '');
+  const available=await fs.access(path.join(worktree,'api','node_modules','@azure','data-tables','package.json')).then(()=>true,()=>false);
+  if(installed===fingerprint&&available)return;
+  await npm(['ci','--prefix','api']);
+  await fs.writeFile(marker,fingerprint);
+}
+
 async function migrateGeneratedFiles() {
   const names = ['node_modules', '.npm-cache', '.verification', '.vite', 'dist', 'test-results', 'playwright-report', 'coverage', 'tsconfig.tsbuildinfo'];
   const backup = path.join(localRoot, 'previous-project-artifacts', new Date().toISOString().replaceAll(':', '-'));
@@ -136,13 +148,21 @@ async function migrateGeneratedFiles() {
 
 async function main() {
   const command = process.argv[2] || 'setup';
-  if (!commands.has(command) || process.argv.length > 3) {
+  if (!commands.has(command) || !operatorCommands.has(command)&&process.argv.length > 3) {
     throw new Error(`Use: node scripts/local-tooling.mjs ${[...commands].join('|')}`);
   }
   if (Number(process.versions.node.split('.')[0]) < 24) throw new Error('Node 24 or newer is required.');
   await fs.mkdir(localRoot, { recursive: true });
   await syncSource();
   await installIfNeeded();
+  await installApiIfNeeded();
+  if(operatorCommands.has(command)){
+    await new Promise((resolve,reject)=>{
+      const child=spawn(process.execPath,[path.join('scripts',operatorCommands.get(command)),...process.argv.slice(3)],{cwd:worktree,stdio:'inherit',windowsHide:true});
+      child.once('error',reject);child.once('exit',code=>code===0?resolve():reject(new Error('Operator command did not complete.')));
+    });
+    return;
+  }
   if (command === 'setup') {
     console.log(`Local setup is ready at ${worktree}`);
     return;

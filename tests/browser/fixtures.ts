@@ -6,9 +6,15 @@ import { createService } from '../../api/src/service.mjs';
 import { handle } from '../../api/src/http.mjs';
 // @ts-expect-error JavaScript API modules intentionally use Node ESM.
 import { memoryRepository } from '../../api/src/memory-storage.mjs';
+// @ts-expect-error JavaScript storage layout helpers intentionally use Node ESM.
+import {teamKey} from '../../api/src/layout.mjs';
+export {teamKey};
 import { mockFullscreen } from './fullscreen';
 export { expect };
 export type { Page };
+/** Explicit fixture inspection, not a production repository query or compatibility layer. */
+export function fixtureRows(api:ApiHarness,filter:Record<string,unknown>={}){return [...api.repo.rows.values()].filter((row:any)=>Object.entries(filter).every(([key,value])=>row[key]===value)).map(row=>structuredClone(row)) as any[];}
+export function fixtureTeamRow(api:ApiHarness,eventId:string,teamId:string,row='team'){const key=teamKey(eventId,teamId,row);return api.repo.get(key.partitionKey,key.rowKey);}
 export type ApiHarness = {
     service: any;
     repo: any;
@@ -30,7 +36,7 @@ export const test = base.extend<Options & {
 }>({
     accessRole: ['teacher', { option: true }],
     api: [async ({ page, accessRole }, use) => {
-            const repo = memoryRepository();
+            const repo = memoryRepository([],{allowBootstrap:true});
             let time = Date.now();
             const service = createService(repo, {}, () => time), teacher = await service.login({ role: 'teacher', code: '5678' });
             for (const year of ['L6', 'L5', 'U5', 'U6']) {
@@ -57,6 +63,9 @@ export const test = base.extend<Options & {
                 }
                 catch { /* retain test clock during navigation */ }
                 const response = await handle({ method: route.request().method(), params: { action }, query: Object.fromEntries(url.searchParams), headers: { ...route.request().headers(), origin: 'https://olympiad.masters-of-chemistry.app', ...(api.token ? { cookie: '__Host-olympiad-session=' + api.token } : {}) }, body, rawBody: route.request().postData() ?? undefined }, () => service);
+                // Model a committed mutation whose bundled readback failed independently.
+                if(api.fail.has('roster-snapshot')&&response.status===200&&response.body?.roster)
+                    response.body.roster={status:'failed',error:'Test roster refresh unavailable.'};
                 const cookie = response.headers['Set-Cookie'];
                 if (cookie)
                     api.token = /__Host-olympiad-session=([a-zA-Z0-9._-]+)/.exec(cookie)?.[1] ?? null;

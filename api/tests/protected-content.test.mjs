@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, mkdtempSync, writeFileSync, unlinkSync, rmdirSync } from 'node:fs';
@@ -17,7 +18,7 @@ async function fixture(status='active',year='L6') {
  if(status==='active')await api.eventActivate(teacher,{eventId:event.id,expectedRevision:1});
  const player=(await api.login({role:'competitor',code:'1234'})).token;
  const team=(await api.teams(player)).teams[0];await api.claim(player,{teamId:team.id});
- return {api,repo,teacher,player,event,team,setTime:value=>time=value,pk:event.id+'-'+team.id};
+ return {api,repo,teacher,player,event,team,setTime:value=>time=value,pk:teamScope(event.id,team.id)};
 }
 const question={questionId:'L6P5'};
 const asset={kind:'question',...question,version:presentationRecord('question','L6P5').version,assetId:'example'};
@@ -87,7 +88,7 @@ for(const change of ['locked','deadline'])test(`a ${change} race during content 
  const f=await fixture();await f.api.start(f.player);f.setTime(200000);
  const get=f.repo.get.bind(f.repo);let count=0;
  f.repo.get=async(p,r)=>{
-  if(p===f.pk && r==='team' && ++count===2){if(change==='locked')await f.api.breach(f.player,{epoch:2});else f.setTime(300000);}
+  if(p===scopedKey(f.pk,'team').partitionKey && r===scopedKey(f.pk,'team').rowKey && ++count===2){if(change==='locked')await f.api.breach(f.player,{epoch:2});else f.setTime(300000);}
   return get(p,r);
  };
  await assert.rejects(f.api.questionContent(f.player,question),error=>[403,423].includes(error.status));

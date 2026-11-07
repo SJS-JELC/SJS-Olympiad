@@ -3,6 +3,12 @@ import type { MoleculeAtom, MoleculeGraph, Point } from '../../contracts/molecul
 import core from './core.js';
 export type Representation = 'skeletal' | 'structural' | 'displayed';
 export type Measure = (text: string, size: number) => number;
+/** A dot makes an otherwise unlabelled cumulated-double-bond carbon visible. */
+export function carbonDot(atom: MoleculeAtom, graph: MoleculeGraph, view: Representation) {
+  const bonds = core.neighbours(graph, atom.id);
+  return view === 'skeletal' && atom.element === 'C' && !atom.charge
+    && bonds.length === 2 && bonds.every(bond => bond.order === 2);
+}
 /** Depiction-only hydrogens have negative IDs and never enter saved state or marking. */
 export function displayedGraph(graph: MoleculeGraph): MoleculeGraph {
   const atoms = [...graph.atoms], bonds = [...graph.bonds];

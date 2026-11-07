@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createService } from '../src/service.mjs';
@@ -69,15 +70,15 @@ test('theory closing preserves score, claims, cooldowns and recovery throughout 
   await f.api.claim(f.player,{teamId:'test-1'}); await f.api.start(f.player);
   await f.api.submit(f.player,{questionId:'L6P8',requestId:'window-solved-0001',answers:{answer:'0.437'}});
   await f.api.submit(f.player,{questionId:'L6P6',requestId:'window-wrong-0001',answers:{answer:'0'}});
-  const teamBefore = await f.repo.get('pilot-test-1','team'), questionBefore = await f.repo.get('pilot-test-1','q-L6P6');
+  const teamBefore = await f.repo.get(teamScope('pilot','test-1'),'team'), questionBefore = await f.repo.get(teamScope('pilot','test-1'),'q-L6P6');
   f.setTime(200000);
   const state = await f.api.session(f.player);
   assert.equal(state.competition.status,'ACTIVE'); assert.equal(state.score,3); assert.deepEqual(state.attempts,{});
   await assert.rejects(f.api.question(f.player,{questionId:'L6P8'}),{status:403});
   await assert.rejects(f.api.submit(f.player,{questionId:'L6P8',requestId:'after-close-answer',answers:{answer:'0.437'}}),{status:403});
   await assert.rejects(f.api.action(f.player,{questionId:'L6P3',requestId:'after-close-run',action:{type:'start'}}),{status:403});
-  assert.deepEqual(await f.repo.get('pilot-test-1','team'),teamBefore);
-  assert.deepEqual(await f.repo.get('pilot-test-1','q-L6P6'),questionBefore);
+  assert.deepEqual(await f.repo.get(teamScope('pilot','test-1'),'team'),teamBefore);
+  assert.deepEqual(await f.repo.get(teamScope('pilot','test-1'),'q-L6P6'),questionBefore);
   const locked = await f.api.breach(f.player,{epoch:state.competition.epoch,reason:'WINDOW_BLUR'});
   const permission = await f.api.recovery(f.player,{code:'5678',expectedEpoch:locked.competition.epoch});
   assert.equal((await f.api.resume(f.player,{grant:permission.grant,expectedEpoch:locked.competition.epoch})).competition.status,'ACTIVE');
@@ -93,5 +94,5 @@ test('schedule edits preserve accepted-operation snapshots and subsequent reques
   const result = await f.api.submit(f.player,{questionId:'L6P8',requestId:'accepted-schedule-change',answers:{answer:'0.437'}});
   assert.equal(result.score,3);
   await assert.rejects(f.api.submit(f.player,{questionId:'L6P8',requestId:'after-schedule-change',answers:{answer:'0.437'}}),{status:403});
-  assert.equal((await f.repo.get('pilot-test-1','team')).score,3);
+  assert.equal((await f.repo.get(teamScope('pilot','test-1'),'team')).score,3);
 });

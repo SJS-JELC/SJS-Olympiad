@@ -6,6 +6,8 @@ Implementation authorised in conversation. No deployment or live-data changes.
 
 ## Decisions-so-far
 
+- [Pilot palette](issues/06-pilot-palette.md): removed pilot chain tool/shortcut and added bond-cycle instructions. Typography and whitespace checks passed; build/browser verification remains blocked.
+
 - [Local resume and school tile](issues/05-resume-school-tile.md): confirmed local attempts bypass school selection and server re-entry after GO; question shows the selector-style school tile bottom right. Static checks pass; browser regression added but tooling remains blocked.
 
 - [Entry mode loading](issues/04-entry-mode-loading.md): pupil entry stays hidden until the server confirms the mode, avoiding the competition PIN flash. Teacher access remains available; browser verification awaits CI.

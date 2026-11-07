@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
@@ -9,7 +10,7 @@ test('confirmed active-to-draft preserves records and permits durable play; reac
  const player=await api.login({role:'competitor',code:'1234'}),team=(await api.teams(player.token)).teams.find(team=>team.name==='Team');
  await api.claim(player.token,{teamId:team.id});await api.start(player.token);
  await api.submit(player.token,{questionId:'L6P8',answers:{answer:'0.437'},requestId:'solve-before-draft'});
- const rows=()=>JSON.stringify([...repo.rows].filter(([key])=>key.startsWith(id+'-'))),before=rows();
+ const rows=()=>JSON.stringify([...repo.rows].filter(([key])=>key.startsWith('event!'+id+'/'))),before=rows();
  await assert.rejects(api.eventDraft(player.token,{eventId:id,expectedRevision:2,confirm:true}),{status:403});
  await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:2}),{status:400});
  await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:1,confirm:true}),{status:409});
@@ -20,7 +21,7 @@ test('confirmed active-to-draft preserves records and permits durable play; reac
  await api.eventActivate(staff.token,{eventId:id,expectedRevision:3});assert.equal((await api.session(player.token)).score,3);
  await api.eventDraft(staff.token,{eventId:id,expectedRevision:4,confirm:true});
  const deleted=await api.teamDelete(staff.token,{eventId:id,teamId:team.id,teamName:'Team',requestId:'retention-after-draft',confirm:true});assert.equal(deleted.outcome,'removed');
- assert.ok(await repo.get(id+'-'+team.id,'q-L6P8'));
+ assert.ok(await repo.get(teamScope(id,team.id),'q-L6P8'));
  await api.eventActivate(staff.token,{eventId:id,expectedRevision:5});await api.eventEnd(staff.token,{eventId:id,expectedRevision:6,confirm:true});
  await assert.rejects(api.eventDraft(staff.token,{eventId:id,expectedRevision:7,confirm:true}),{status:409});
 });

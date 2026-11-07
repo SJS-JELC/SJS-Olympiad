@@ -7,6 +7,18 @@ import { displayedGraph, labelFor } from '../../src/chemistry/molecule/depiction
 import { cameraViewBox, drawingScaleForHeight, fitMoleculeCamera, panMoleculeCamera, zoomMoleculeCamera } from '../../src/components/molecule/camera';
 
 describe('reusable molecular drawing semantics', () => {
+  it.each(['C', 'O'] as const)('cleans double bonds to %s at a shared carbon to 180 degrees without changing chemistry', element => {
+    let graph = core.addAtom(core.empty(), element, 0, 0);
+    graph = core.addAtom(graph, 'C', 20, 20, 1, 2);
+    graph = core.addAtom(graph, element, 40, 0, 2, 2);
+    const initial = {...blankMolecule(), graph};
+    const cleaned = moleculeEngine.apply(initial, {kind:'clean'});
+    const [a, b, c] = cleaned.graph.atoms;
+    const u = {x:a.x-b.x,y:a.y-b.y}, v = {x:c.x-b.x,y:c.y-b.y};
+    expect((u.x*v.x+u.y*v.y)/(Math.hypot(u.x,u.y)*Math.hypot(v.x,v.y))).toBeCloseTo(-1, 8);
+    expect(core.equivalent(graph, cleaned.graph)).toBe(true);
+    expect(moleculeEngine.apply(cleaned, {kind:'undo'})).toEqual(initial);
+  });
   it('commits a whole chain gesture once, preserves the input, and undoes it', () => {
     const initial = blankMolecule();
     const graph = gestureGraph(initial.graph, {target:null,start:{x:0,y:0}}, {x:220,y:0}, 'C', 1, true);

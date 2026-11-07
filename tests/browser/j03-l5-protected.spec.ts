@@ -35,7 +35,8 @@ competitor('L5 grouping protected identities retain local selection and reset th
  await page.getByRole('button',{name:'Back to theory',exact:true}).click();
  await page.getByRole('button',{name:/^Problem 9,/}).click();
  await expect(page.getByRole('button',{name:'ZnO\u2082, group 1',exact:true})).toHaveAttribute('aria-pressed','true');
- expect(api.requests.filter(request=>request.action==='question-content')).toHaveLength(1);
+ // Challenge entry preloads the year; revisiting this question must reuse its content.
+ expect(api.requests.filter(request=>request.action==='question-content'&&request.body?.questionId==='L5P9')).toHaveLength(1);
  await page.getByRole('button',{name:'Reset / clear groups',exact:true}).click();await expect(tile).toHaveAttribute('aria-pressed','false');
  expect(api.requests.filter(request=>['submit','question-action'].includes(request.action))).toHaveLength(0);
 });

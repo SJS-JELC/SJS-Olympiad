@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
@@ -29,9 +30,9 @@ test('target counts preserve existing gameplay and permanently reserve deleted n
  assert.deepEqual(teams.map(t=>t.name),['Example School 1','Example School 2']);assert.notEqual(teams[0].id,teams[1].id);
  const player=await f.api.login({role:'competitor',code:'1234'});await f.api.claim(player.token,{teamId:teams[0].id});await f.api.start(player.token);
  await f.api.submit(player.token,{questionId:'L6P8',requestId:'school-correct-answer',answers:{answer:'0.437'}});
- const before=await f.repo.get(f.event.id+'-'+teams[0].id,'team');
+ const before=await f.repo.get(teamScope(f.event.id,teams[0].id),'team');
  await ensure(f,3,'increase-count-request');
- assert.deepEqual(await f.repo.get(before.partitionKey,'team'),before);
+ assert.deepEqual(await f.repo.get(before.partitionKey,before.rowKey),before);
  await assert.rejects(ensure(f,1,'reduce-count-request'),{status:409});
  await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:teams[1].id,teamName:teams[1].name,requestId:'delete-unused-team',confirm:true});
  const increased=(await ensure(f,3,'replace-count-request')).teams.filter(t=>t.schoolId===f.school.id);
@@ -43,14 +44,14 @@ test('target counts preserve existing gameplay and permanently reserve deleted n
 
 test('partial storage failure exposes durable progress; concurrent and lost-response retries create no duplicate or resurrected teams',async()=>{
  const f=await fixture(),original=f.repo.batch;let failed=false;
- f.repo.batch=async ops=>{if(!failed && ops.some(op=>op.entity.kind==='team' && op.entity.schoolId===f.school.id && op.entity.teamNumber===2)){failed=true;throw Error('Injected storage failure');}return original(ops);};
+ f.repo.batch=async (ops,options)=>{if(!failed && ops.some(op=>op.entity.kind==='team' && op.entity.schoolId===f.school.id && op.entity.teamNumber===2)){failed=true;throw Error('Injected storage failure');}return original(ops,options);};
  await assert.rejects(ensure(f,2),/Injected/);
  const status=await f.api.schools(f.staff,{eventId:f.event.id});assert.equal(status.progress[0].completed,1);assert.equal(status.progress[0].total,2);
  const first=(await f.api.teams(f.staff,{eventId:f.event.id})).teams.find(t=>t.schoolId===f.school.id);
  await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:first.id,teamName:first.name,requestId:'delete-partial-team',confirm:true});
  await Promise.all([ensure(f,2),ensure(f,2)]);
  const teams=(await f.api.teams(f.staff,{eventId:f.event.id})).teams.filter(t=>t.schoolId===f.school.id);
- assert.deepEqual(teams.map(t=>t.teamNumber),[2]);assert.equal(await f.repo.get(f.event.id+'-'+first.id,'team'),null);
+ assert.deepEqual(teams.map(t=>t.teamNumber),[2]);assert.equal(await f.repo.get(teamScope(f.event.id,first.id),'team'),null);
  assert.deepEqual((await f.api.schools(f.staff,{eventId:f.event.id})).progress,[]);
  await assert.rejects(ensure(f,3),{status:409});
  const attempts=await Promise.allSettled([ensure(f,3,'concurrent-plan-one'),ensure(f,3,'concurrent-plan-two')]);assert.ok(attempts.some(a=>a.status==='fulfilled'));
@@ -59,7 +60,7 @@ test('partial storage failure exposes durable progress; concurrent and lost-resp
 
 test('failed host creation remains visible, blocks activation, and resumes without a second event',async()=>{
  const repo=memoryRepository(),api=createService(repo,{},()=>100000),staff=(await api.login({role:'teacher',code:'5678'})).token,original=repo.batch;let fail=true;
- repo.batch=async ops=>{if(fail && ops.some(op=>op.entity.kind==='team'))throw Error('Injected host failure');return original(ops);};
+ repo.batch=async (ops,options)=>{if(fail && ops.some(op=>op.entity.kind==='team'))throw Error('Injected host failure');return original(ops,options);};
  const input={name:'Host failure event',year:'L5',theoryStartsAt:0,theoryEndsAt:900000,requestId:'host-failure-request'},created=await api.eventCreate(staff,input),event=created.events[0];
  assert.equal(event.hostSetup.status,'pending');assert.equal((await api.schools(staff,{eventId:event.id})).progress[0].completed,0);
  await assert.rejects(api.eventActivate(staff,{eventId:event.id,expectedRevision:1}),{status:409});
@@ -69,10 +70,10 @@ test('failed host creation remains visible, blocks activation, and resumes witho
 test('linking and rename derive current names in claimed sessions, leaderboard and completed results without changing IDs or gameplay',async()=>{
  const f=await fixture(),added=await f.api.teamAdd(f.staff,{eventId:f.event.id,name:'Legacy synthetic team'}),team=added.teams.find(t=>t.name==='Legacy synthetic team');
  const player=await f.api.login({role:'competitor',code:'1234'});await f.api.claim(player.token,{teamId:team.id});await f.api.start(player.token);await f.api.submit(player.token,{questionId:'L6P8',requestId:'legacy-correct-answer',answers:{answer:'0.437'}});
- const before=await f.repo.get(f.event.id+'-'+team.id,'team');
+ const before=await f.repo.get(teamScope(f.event.id,team.id),'team');
  const input={eventId:f.event.id,schoolId:f.school.id,teamId:team.id,teamNumber:7,requestId:'link-legacy-request'};
  await Promise.all([f.api.schoolLink(f.staff,input),f.api.schoolLink(f.staff,input)]);
- const linked=await f.repo.get(before.partitionKey,'team');for(const field of ['teamId','score','claimGeneration','securityEpoch','owner','lastScoringAt'])assert.equal(linked[field],before[field]);assert.equal(Object.hasOwn(linked,'name'),false);
+ const linked=await f.repo.get(before.partitionKey,before.rowKey);for(const field of ['teamId','score','claimGeneration','securityEpoch','owner','lastScoringAt'])assert.equal(linked[field],before[field]);assert.equal(Object.hasOwn(linked,'name'),false);
  const rename={schoolId:f.school.id,name:'Renamed School',expectedRevision:1,requestId:'rename-school-request'};
  await f.api.schoolRename(f.staff,rename);await f.api.schoolRename(f.staff,rename);
  assert.equal((await f.api.session(player.token)).team.name,'Renamed School 7');assert.equal((await f.api.leaderboard(f.staff)).entries[0].name,'Renamed School 7');
@@ -136,7 +137,7 @@ test('host identity survives rename and still creates four teams in the next eve
 test('legacy name reservations fence a concurrent school rename and are released after permanent deletion',async()=>{
  const f=await fixture();await ensure(f,2);
  const original=f.repo.batch;let checked=false;
- f.repo.batch=async ops=>{if(!checked && ops.some(op=>op.entity.kind==='team' && op.entity.name==='Collision 1')){checked=true;await assert.rejects(f.api.schoolRename(f.staff,{schoolId:f.school.id,name:'Collision',expectedRevision:1,requestId:'collision-rename-request'}),{status:409});}return original(ops);};
+ f.repo.batch=async (ops,options)=>{if(!checked && ops.some(op=>op.entity.kind==='team' && op.entity.name==='Collision 1')){checked=true;await assert.rejects(f.api.schoolRename(f.staff,{schoolId:f.school.id,name:'Collision',expectedRevision:1,requestId:'collision-rename-request'}),{status:409});}return original(ops,options);};
  const added=await f.api.teamAdd(f.staff,{eventId:f.event.id,name:'Collision 1'}),team=added.teams.find(t=>t.name==='Collision 1');assert.equal(checked,true);
  await f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:team.id,teamName:team.name,requestId:'delete-collision-team',confirm:true});
  const renamed=await f.api.schoolRename(f.staff,{schoolId:f.school.id,name:'Collision',expectedRevision:1,requestId:'after-collision-rename'});assert.equal(renamed.school.name,'Collision');
@@ -146,7 +147,7 @@ test('legacy name reservations fence a concurrent school rename and are released
 test('a deletion holding an old ETag cannot resurrect its team through concurrent year-reset staging',async()=>{
  const f=await fixture(),team=(await ensure(f,2)).teams.find(t=>t.schoolId===f.school.id),input={eventId:f.event.id,teamId:team.id,teamName:team.name,requestId:'delete-during-reset',confirm:true};
  const original=f.repo.batch;let changed,intercepted=false;
- f.repo.batch=async ops=>{if(!intercepted && ops.some(op=>op.entity.kind==='team' && op.entity.teamId===team.id && op.entity.removed)){intercepted=true;changed=await f.api.eventChangeYear(f.staff,{eventId:f.event.id,year:'U6',expectedRevision:1,requestId:'reset-during-delete',confirm:true});}return original(ops);};
+ f.repo.batch=async (ops,options)=>{if(!intercepted && ops.some(op=>op.entity.kind==='team' && op.entity.teamId===team.id && op.entity.removed)){intercepted=true;changed=await f.api.eventChangeYear(f.staff,{eventId:f.event.id,year:'U6',expectedRevision:1,requestId:'reset-during-delete',confirm:true});}return original(ops,options);};
  await assert.rejects(f.api.teamDelete(f.staff,input),{status:404});assert.equal(intercepted,true);
  // Reset won the fence; no deletion was accepted. The fresh team remains available
  // for an explicitly confirmed deletion in the newly selected event.
@@ -158,7 +159,7 @@ test('a deletion holding an old ETag cannot resurrect its team through concurren
 test('a deletion winning before the old-row staging fence is omitted from the replacement roster',async()=>{
  const f=await fixture(),team=(await ensure(f,2)).teams.find(t=>t.schoolId===f.school.id),batch=f.repo.batch,write=f.repo.write;
  let ready,release,deletion;const reached=new Promise(resolve=>ready=resolve),gate=new Promise(resolve=>release=resolve);let intercepted=false;
- f.repo.batch=async ops=>{if(!intercepted && ops.some(op=>op.entity.kind==='team' && op.entity.teamId===team.id && op.entity.removed)){intercepted=true;ready();await gate;}return batch(ops);};
+ f.repo.batch=async (ops,options)=>{if(!intercepted && ops.some(op=>op.entity.kind==='team' && op.entity.teamId===team.id && op.entity.removed)){intercepted=true;ready();await gate;}return batch(ops,options);};
  f.repo.write=async(entity,etag)=>{if(entity.kind==='team' && entity.teamId===team.id && entity.rosterResetFingerprint){release();await deletion;}return write(entity,etag);};
  deletion=f.api.teamDelete(f.staff,{eventId:f.event.id,teamId:team.id,teamName:team.name,requestId:'delete-winning-reset',confirm:true});await reached;
  const changed=await f.api.eventChangeYear(f.staff,{eventId:f.event.id,year:'U6',expectedRevision:1,requestId:'reset-after-deletion',confirm:true});assert.equal((await deletion).outcome,'deleted');

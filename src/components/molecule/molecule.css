@@ -27,6 +27,7 @@
 .molecule-workspace .atom-subscript,.molecule-structure .atom-subscript { --text-size:14px; baseline-shift:sub; }
 .molecule-workspace .atom-charge,.molecule-structure .atom-charge { --text-size:14px; baseline-shift:super; }
 .molecule-workspace .atom-hit,.molecule-structure .atom-hit { fill:transparent; }
+.molecule-structure .carbon-dot { fill:var(--ink,#171c22); pointer-events:none; }
 .molecule-workspace .bond-hit,.molecule-structure .bond-hit { stroke:transparent; stroke-width:24; fill:none; }
 .molecule-workspace .atom-node,.molecule-workspace .bond-node { outline:none; cursor:crosshair; }
 .molecule-workspace .implicit-hydrogen { pointer-events:none; }

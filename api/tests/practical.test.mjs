@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createService } from '../src/service.mjs';
@@ -18,7 +19,7 @@ async function fixture(year='L6') {
   const start=()=>api.start(player);
   const save=(changes,expectedRevision=0,requestId='practical-request-0001',token=player)=>api.practicalSave(token,{eventId,changes,expectedRevision,requestId});
   const edit=async changes=>{const event=(await api.events(teacher)).events.find(e=>e.id===eventId);return api.eventUpdate(teacher,{eventId,expectedRevision:event.revision,...changes});};
-  return {api,repo,teacher,player,eventId,teamId,pk:eventId+'-'+teamId,start,save,edit,setTime:value=>{time=value;}};
+  return {api,repo,teacher,player,eventId,teamId,pk:teamScope(eventId,teamId),start,save,edit,setTime:value=>{time=value;}};
 }
 
 for(const [year,fields] of [['L5',[1,2,3,4]],['L6',[3,4]],['U6',[1,2,3,4]]])test(year+' retains original practical identifiers and precise numeric/scientific text',async()=>{

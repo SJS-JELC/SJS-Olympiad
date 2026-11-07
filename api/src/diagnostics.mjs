@@ -1,4 +1,5 @@
 import {eventTiming} from './event-timing.mjs';
+import {performanceSnapshot} from './telemetry.mjs';
 
 const validId=value=>typeof value==='string' && /^[a-zA-Z0-9_-]{1,80}$/.test(value);
 const instant=value=>Number.isSafeInteger(value) && Math.abs(value)<=8640000000000000 ? value : null;
@@ -19,7 +20,7 @@ export function diagnosticSnapshot(settings,config,now,sessionDurationMs){
     theoryEndsAt:raw.theoryEndsAt==null?'legacy endsAt':'saved settings',practical:raw.practicalStartsAt==null?'not configured':'saved settings',endsAt:'derived latest challenge end'}};
  });
  const active=events.find(event=>event.status==='active'),draft=events.findLast(event=>event.status==='draft');
- return {snapshotAt:now,nodeVersion:process.version,repository,
+ return {snapshotAt:now,nodeVersion:process.version,repository,performance:performanceSnapshot(),
   storageConfigured:typeof runtime.storageConfigured==='boolean'?runtime.storageConfigured:null,
   tableName:repository==='azure-table'?'OlympiadPilot':null,
   configurationSource:runtime.source==='environment'?'production environment':runtime.source==='local-preview'?'isolated local preview':'injected service configuration',

@@ -16,7 +16,7 @@ test('draft bulk removal retains partial progress and retries only the uncertain
  await openEvents(page);await page.getByLabel('Selected event').selectOption('fixture-L5');await page.getByRole('checkbox',{name:'Select all teams',exact:true}).check();
  await expect(page.getByRole('checkbox',{name:'Select team Test team 1',exact:true})).toBeChecked();
  const failing=(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams[1];const original=api.repo.batch;let fail=true;
- api.repo.batch=async(ops:any[])=>{if(fail && ops.some(op=>op.entity.partitionKey==='fixture-L5-'+failing.id && op.entity.removed))throw Error('Second deletion unavailable.');return original(ops);};
+ api.repo.batch=async(ops:any[])=>{if(fail && ops.some(op=>op.entity.kind==='team' && op.entity.teamId===failing.id && op.entity.removed))throw Error('Second deletion unavailable.');return original(ops);};
  await page.getByRole('button',{name:'Remove selected teams',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('status')).toContainText('2 of 3');
  await expect(page.getByRole('button',{name:'Retry failed items',exact:true})).toBeEnabled();fail=false;await page.getByRole('button',{name:'Retry failed items',exact:true}).click();
  await expect.poll(async()=>(await api.service.teams(api.token,{eventId:'fixture-L5'})).teams.length).toBe(0);await expect(page.getByRole('button',{name:'Retry failed items',exact:true})).toHaveCount(0);

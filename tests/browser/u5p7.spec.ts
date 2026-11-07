@@ -1,5 +1,5 @@
 import { openTeacher } from './teacher';
-import { test, expect, openCompetitorQuestion, resumeCompetition } from './fixtures';
+import { test, expect, openCompetitorQuestion, resumeCompetition,fixtureRows,fixtureTeamRow,teamKey } from './fixtures';
 import { interrupt } from './fullscreen';
 import { moleculeDrawing, solutions } from '../fixtures/u5p7';
 
@@ -81,26 +81,26 @@ test('Skeletal product artwork and shared canvas fit supported landscape viewpor
 
 competitor('historical unfinished drawings stay stored but cannot restore a canvas or trigger a migration write',async({page,api})=>{
   const original=JSON.stringify({graphs:Array.from({length:5},()=>structuredClone(solutions[0])),selected:4});
-  const team=(await api.repo.list({kind:'team',eventId:'fixture-U5'}))[0];
-  await api.repo.write({partitionKey:team.partitionKey,rowKey:'q-U5P9',kind:'question',questionId:'U5P9',revision:3,
+  const team=fixtureRows(api,{kind:'team',eventId:'fixture-U5'})[0];
+  await api.repo.write({...teamKey(team.eventId,team.teamId,'q-U5P9'),kind:'question',questionId:'U5P9',revision:3,
     state:{answers:{drawings:original},feedback:{},retryAt:0,solvedAt:null},privateState:{}});
   await openCompetitorQuestion(page,api,'U5',9);
   await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(0);
   await expect(page.locator('.u5p9-legacy')).toHaveCount(0);
   expect(api.requests.filter(request=>request.action==='draft')).toHaveLength(0);
-  expect((await api.repo.get(team.partitionKey,'q-U5P9')).state.answers.drawings).toBe(original);
+  expect((await fixtureTeamRow(api,team.eventId,team.teamId,'q-U5P9')).state.answers.drawings).toBe(original);
 });
 
 competitor('historical completed explicit drawings show the confirmed stamp with a blank frozen canvas',async({page,api},testInfo)=>{
   const original=JSON.stringify(moleculeDrawing(true));
-  const team=(await api.repo.list({kind:'team',eventId:'fixture-U5'}))[0],solvedAt=Date.now()-1000;
-  await api.repo.write({partitionKey:team.partitionKey,rowKey:'q-U5P9',kind:'question',questionId:'U5P9',revision:4,
+  const team=fixtureRows(api,{kind:'team',eventId:'fixture-U5'})[0],solvedAt=Date.now()-1000;
+  await api.repo.write({...teamKey(team.eventId,team.teamId,'q-U5P9'),kind:'question',questionId:'U5P9',revision:4,
     state:{answers:{drawings:original},feedback:{answer:true},retryAt:0,solvedAt},privateState:{}});
   await openCompetitorQuestion(page,api,'U5',9);
   await expect(page.locator('.molecule-workspace [data-atom]')).toHaveCount(0);
   await expect(page.locator('.completion-stamp')).toHaveAttribute('data-solved-at',String(solvedAt));
   await expect(page.locator('[data-element="C"]')).toBeDisabled();
-  expect((await api.repo.get(team.partitionKey,'q-U5P9')).state.answers.drawings).toBe(original);
+  expect((await fixtureTeamRow(api,team.eventId,team.teamId,'q-U5P9')).state.answers.drawings).toBe(original);
   await page.screenshot({path:testInfo.outputPath('u5p7-confirmed-result-blank-canvas.png')});
 });
 

@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { schoolColours, validSchoolColours } from './school-colours.mjs';
+import { teamScope, scopedKey, summaryRange, systemRange, eventTeamRows } from './layout.mjs';
 
 const digest=value=>createHash('sha256').update(value).digest('hex');
 export const schoolNameKey=value=>value.normalize('NFKC').trim().replace(/\s+/gu,' ').replace(/[’‘]/gu,"'").toLocaleLowerCase('en-GB');
@@ -13,6 +14,7 @@ const legacyNameKey=(eventId,teamId)=>({partitionKey:'system',rowKey:'legacy-tea
 /** Shared names and durable allocation plans. No score, claim or security authority lives here. */
 export function schoolDirectory({repo,retry,assert,validId,settings,eventById,lifecycleFence}) {
   const write=entity=>repo.write(entity,entity.etag);
+  const get=(scope,row)=>{const key=scopedKey(scope,row);return repo.get(key.partitionKey,key.rowKey);};
   // A roster fence changes only the revision. Never persist normalized legacy
   // timing fields merely because a roster operation read the event catalogue.
   const settingsGuard=async observed=>{const raw=await repo.get('system','settings');return {entity:{...raw,revision:raw.revision+1},etag:observed.etag};};
@@ -40,11 +42,11 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
     if(current.complete)return;
     if(row.pendingRequestId===op.requestId)row.pendingRequestId=null;
     const legacy=op.operation==='link' && !failed?await repo.get('system',legacyNameKey(op.eventId,op.items[0].id).rowKey):null;
-    await repo.batch([{entity:row,etag:row.etag},{entity:{...current,complete:true,failed},etag:current.etag},...(legacy?[{entity:legacy,etag:legacy.etag,remove:true}]:[])]);
+    await repo.batch([{entity:row,etag:row.etag},{entity:{...current,complete:true,failed},etag:current.etag},...(legacy?[{entity:legacy,etag:legacy.etag,remove:true}]:[])],{deleteGuard:{rowKey:row.rowKey,etag:row.etag}});
   });
   const summary=async op=>{
     const complete=[];
-    for(const item of op.items){const fence=await repo.get(op.eventId+'-'+item.id,'deleted-team');const team=await repo.get(op.eventId+'-'+item.id,'team');if(fence?.schoolRequestId===op.requestId || team?.schoolLinkRequestId===op.requestId)complete.push(item.id);}
+    for(const item of op.items){const fence=await get(teamScope(op.eventId,item.id),'deleted-team');const team=await get(teamScope(op.eventId,item.id),'team');if(fence?.schoolRequestId===op.requestId || team?.schoolLinkRequestId===op.requestId)complete.push(item.id);}
     return {requestId:op.requestId,schoolId:op.schoolId,eventId:op.eventId,targetCount:op.targetCount,kind:op.operation,total:op.items.length,completed:complete.length,status:op.complete?'complete':'pending'};
   };
   const reserve=async(input,kind)=>retry(async()=>{
@@ -54,7 +56,7 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
     const previous=await operation(input.eventId,input.schoolId,input.requestId);
     if(previous){assert(previous.fingerprint===fingerprint,409,'This request identifier was used for different roster changes.');assert(!previous.failed,409,'This roster change could not finish. Refresh and start a new request.');return previous;}
     assert(!row.pendingRequestId,409,'Resume this school’s unfinished team setup before making another roster change.');
-    const teams=await repo.list({kind:'team',eventId:input.eventId}),legacyNames=await repo.list({kind:'legacy-team-name',eventId:input.eventId});
+    const teams=await repo.list(summaryRange(input.eventId)),legacyNames=await repo.list({...systemRange('legacy-team-name-'),kind:'legacy-team-name',eventId:input.eventId});
     // Include historical allocations even when their team was permanently deleted.
     for(const team of teams.filter(t=>t.schoolId===input.schoolId))row.allocations[team.teamNumber] ??= team.teamId;
     for(const number of Object.keys(row.allocations))row.nextNumber=Math.max(row.nextNumber,Number(number)+1);
@@ -88,8 +90,8 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
   const materialize=async op=>{
     if(op.complete)return summary(op);
     for(const item of op.items)await retry(async()=>{
-      const event=await editable(op.eventId),pk=op.eventId+'-'+item.id;
-      const team=await repo.get(pk,'team'),fence=await repo.get(pk,'deleted-team');
+      const event=await editable(op.eventId),pk=teamScope(op.eventId,item.id);
+      const team=await get(pk,'team'),fence=await get(pk,'deleted-team');
       if(op.operation==='link'){
         if(team?.schoolLinkRequestId===op.requestId)return;
         if(!team || team.removed || team.schoolId){await finish(op,true);assert(false,409,'The team changed before linking. Its reserved number will not be reused.');}
@@ -103,7 +105,7 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
         // A deleted generated team must never be resurrected by a lost-response retry.
         if(fence?.schoolRequestId===op.requestId)return;
         assert(!team && !fence,409,'The allocated team already exists.');
-        const fresh={partitionKey:pk,rowKey:'team',kind:'team',schemaVersion:2,eventId:event.id,teamId:item.id,schoolId:op.schoolId,teamNumber:item.number,year:event.year,score:0,lastScoringAt:null,hasSubmittedActivity:false,claimGeneration:0,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,recovery:null};
+        const fresh={...scopedKey(pk,'team'),kind:'team',schemaVersion:2,eventId:event.id,teamId:item.id,schoolId:op.schoolId,teamNumber:item.number,year:event.year,score:0,lastScoringAt:null,hasSubmittedActivity:false,claimGeneration:0,securityEpoch:0,securityStatus:'NOT_STARTED',owner:null,legacySessionHash:null,recovery:null};
         await repo.batch([{entity:lifecycleFence(pk,null,{claimGeneration:0,schoolRequestId:op.requestId})},{entity:fresh}]);
       }
     });
@@ -136,8 +138,8 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
         assert(!school.isHostSchool,409,'The host school is required for new events and cannot be deleted.');
         assert(!school.deleted && school.revision===input.expectedRevision,409,'This school changed. Refresh before deleting it.');
         const current=await settings(),unfinished=new Set(current.events.filter(e=>e.status!=='ended').map(e=>e.id));
-        assert(!(await repo.list({kind:'team'})).some(team=>team.schoolId===school.id && !team.removed && unfinished.has(team.eventId)),409,'Delete this school?s teams from unfinished events first.');
-        assert(!(await repo.list({kind:'school-operation'})).some(op=>op.schoolId===school.id && !op.complete),409,'Finish this school?s pending team setup before deleting it.');
+        assert(!(await eventTeamRows(repo,current.events.filter(e=>unfinished.has(e.id)))).some(team=>team.schoolId===school.id && !team.removed && unfinished.has(team.eventId)),409,'Delete this school?s teams from unfinished events first.');
+        assert(!(await repo.list({...systemRange('school-operation-'),kind:'school-operation'})).some(op=>op.schoolId===school.id && !op.complete),409,'Finish this school?s pending team setup before deleting it.');
         school.deleted=true;school.revision++;dir.revision++;
         // Fence reservations and lifecycle/reset changes in the same system transaction.
         await repo.batch([await settingsGuard(current),{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-delete-receipt',fingerprint}}]);
@@ -147,13 +149,13 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
     async reserveLegacyName(eventId,teamId,value,generation){return retry(async()=>{
       const s=await settings(),event=eventById(s,eventId);assert(event.status!=='ended' && !event.rosterResetRequestId,409,'This event is not accepting roster changes.');
       const dir=await directory(),key=schoolNameKey(value),old=await repo.get('system',legacyNameKey(eventId,teamId).rowKey);
-      assert(!await repo.get(eventId+'-'+teamId,'team') && (!old || old.generation<=generation),409,'That team name already exists in this event.');
-      const names=await repo.list({kind:'legacy-team-name',eventId});assert(!names.some(row=>row.teamId!==teamId && schoolNameKey(row.name)===key),409,'That team name already exists in this event.');
-      const rosters=await repo.list({kind:'school-roster',eventId});assert(!rosters.some(row=>Object.keys(row.allocations).some(number=>schoolNameKey(getSchool(dir,row.schoolId).name+' '+number)===key)),409,'That team name already exists in this event.');
+      assert(!await get(teamScope(eventId,teamId),'team') && (!old || old.generation<=generation),409,'That team name already exists in this event.');
+      const names=await repo.list({...systemRange('legacy-team-name-'),kind:'legacy-team-name',eventId});assert(!names.some(row=>row.teamId!==teamId && schoolNameKey(row.name)===key),409,'That team name already exists in this event.');
+      const rosters=await repo.list({...systemRange('school-roster-'),kind:'school-roster',eventId});assert(!rosters.some(row=>Object.keys(row.allocations).some(number=>schoolNameKey(getSchool(dir,row.schoolId).name+' '+number)===key)),409,'That team name already exists in this event.');
       await repo.batch([await settingsGuard(s),{entity:{...dir,revision:dir.revision+1},etag:dir.etag},{entity:{...legacyNameKey(eventId,teamId),kind:'legacy-team-name',eventId,teamId,name:value,generation},etag:old?.etag}]);
     });},
-    async releaseLegacyName(eventId,teamId,generation){return retry(async()=>{const old=await repo.get('system',legacyNameKey(eventId,teamId).rowKey);if(old && old.generation===generation)await repo.batch([{entity:old,etag:old.etag,remove:true}]);});},
-    async list(eventId){const dir=await directory();const progress=[];if(eventId)for(const op of await repo.list({kind:'school-operation',eventId}))if(!op.complete)progress.push(await summary(op));return {schools:dir.schools.map(schoolView),progress};},
+    async releaseLegacyName(eventId,teamId,generation){return retry(async()=>{const old=await repo.get('system',legacyNameKey(eventId,teamId).rowKey);if(old && old.generation===generation)await repo.remove(old.partitionKey,old.rowKey,old.etag);});},
+    async list(eventId,knownDirectory){const dir=knownDirectory ?? await directory();const progress=[];if(eventId)for(const op of await repo.list({...systemRange('school-operation-'),kind:'school-operation',eventId}))if(!op.complete)progress.push(await summary(op));return {schools:dir.schools.map(schoolView),progress};},
     async create(input){
       requestId(input.requestId);const value=schoolName(input.name);
       return retry(async()=>{
@@ -172,13 +174,13 @@ export function schoolDirectory({repo,retry,assert,validId,settings,eventById,li
       });
     },
     async rename(input){requestId(input.requestId);const value=schoolName(input.name),fingerprint=digest(JSON.stringify([input.schoolId,value,input.expectedRevision]));return retry(async()=>{const dir=await directory(),school=getSchool(dir,input.schoolId),receiptKey='school-rename-'+digest(input.requestId),receipt=await repo.get('system',receiptKey);if(receipt){assert(receipt.fingerprint===fingerprint,409,'This school rename request was already used.');return {school:schoolView(school)};}assert(!school.deleted,409,'This school has been deleted.');
-        assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Refresh before renaming it.');assert(!dir.schools.some(s=>s.id!==school.id && schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');school.name=value;school.revision++;dir.revision++;const teams=[...await repo.list({kind:'team'}),...(await repo.list({kind:'legacy-team-name'})).map(row=>({...row,teamId:'reservation-'+row.teamId}))],rosters=await repo.list({kind:'school-roster'});for(const row of rosters.filter(r=>r.schoolId===school.id))for(const [number,id] of Object.entries(row.allocations)){assert((school.name+' '+number).length<=80,400,'The school name and team number must fit within 80 characters.');assert(!teams.some(t=>t.eventId===row.eventId && t.teamId!==id && schoolNameKey(display(t,dir))===schoolNameKey(school.name+' '+number)),409,'That school name conflicts with an existing team name.');}await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-rename-receipt',fingerprint}}]);return {school:schoolView(school)};});},
-    async nameReserved(eventId,value){const dir=await directory(),key=schoolNameKey(value);return (await repo.list({kind:'school-roster',eventId})).some(row=>Object.keys(row.allocations).some(number=>schoolNameKey(getSchool(dir,row.schoolId).name+' '+number)===key));},
+        assert(Number.isInteger(input.expectedRevision) && input.expectedRevision===school.revision,409,'This school changed. Refresh before renaming it.');assert(!dir.schools.some(s=>s.id!==school.id && schoolNameKey(s.name)===schoolNameKey(value)),409,'That school already exists.');school.name=value;school.revision++;dir.revision++;const teams=[...await eventTeamRows(repo,(await settings()).events),...(await repo.list({...systemRange('legacy-team-name-'),kind:'legacy-team-name'})).map(row=>({...row,teamId:'reservation-'+row.teamId}))],rosters=await repo.list({...systemRange('school-roster-'),kind:'school-roster'});for(const row of rosters.filter(r=>r.schoolId===school.id))for(const [number,id] of Object.entries(row.allocations)){assert((school.name+' '+number).length<=80,400,'The school name and team number must fit within 80 characters.');assert(!teams.some(t=>t.eventId===row.eventId && t.teamId!==id && schoolNameKey(display(t,dir))===schoolNameKey(school.name+' '+number)),409,'That school name conflicts with an existing team name.');}await repo.batch([{entity:dir,etag:dir.etag},{entity:{partitionKey:'system',rowKey:receiptKey,kind:'school-rename-receipt',fingerprint}}]);return {school:schoolView(school)};});},
+    async nameReserved(eventId,value){const dir=await directory(),key=schoolNameKey(value);return (await repo.list({...systemRange('school-roster-'),kind:'school-roster',eventId})).some(row=>Object.keys(row.allocations).some(number=>schoolNameKey(getSchool(dir,row.schoolId).name+' '+number)===key));},
     async ensure(input){return materialize(await reserve(input,'generate'));},
     async restore(input){return materialize(await reserve(input,'restore'));},
     async link(input){return materialize(await reserve(input,'link'));},
     async resume(input){requestId(input.requestId);const op=await operation(input.eventId,input.schoolId,input.requestId);assert(op,404,'Team setup request not found.');assert(!op.failed,409,'This roster change could not finish. Refresh and start a new request.');return materialize(op);},
-    async pending(eventId){return (await repo.list({kind:'school-operation',eventId})).some(op=>!op.complete);},
-    async copyAllocations(oldEventId,newEventId){for(const old of await repo.list({kind:'school-roster',eventId:oldEventId})){const key=journalKey(newEventId,old.schoolId);if(!await repo.get(key.partitionKey,key.rowKey))await repo.write({...key,kind:'school-roster',eventId:newEventId,schoolId:old.schoolId,nextNumber:old.nextNumber,allocations:old.allocations,pendingRequestId:null});}},
+    async pending(eventId){return (await repo.list({...systemRange('school-operation-'),kind:'school-operation',eventId})).some(op=>!op.complete);},
+    async copyAllocations(oldEventId,newEventId){for(const old of await repo.list({...systemRange('school-roster-'),kind:'school-roster',eventId:oldEventId})){const key=journalKey(newEventId,old.schoolId);if(!await repo.get(key.partitionKey,key.rowKey))await repo.write({...key,kind:'school-roster',eventId:newEventId,schoolId:old.schoolId,nextNumber:old.nextNumber,allocations:old.allocations,pendingRequestId:null});}},
   };
 }

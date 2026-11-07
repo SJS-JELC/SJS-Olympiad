@@ -13,7 +13,7 @@ const ring=molecule([[0,1,2],[1,2],[2,3],[3,4],[4,0]]);
 const diene=molecule([[0,1,2],[1,2],[2,3,2],[3,4]]);
 function combine(...graphs){return {atoms:graphs.flatMap((g,i)=>g.atoms.map(a=>({...a,id:a.id+i*100,x:a.x+i*300}))),bonds:graphs.flatMap((g,i)=>g.bonds.map(b=>({...b,a:b.a+i*100,b:b.b+i*100})))};}
 const mark=g=>markPilot(JSON.stringify(g));
-async function fixture(){const repo=memoryRepository(),api=createService(repo,{},()=>100000),staff=(await api.login({role:'teacher',code:'5678'})).token;await api.eventCreate(staff,{name:'Test pilot event',year:'U6',theoryStartsAt:200000,theoryEndsAt:300000});await api.pilotMode(staff,{status:'open',expectedRevision:1,requestId:'open-request'});const schoolId=(await api.pilot()).schools[0].id;return {repo,api,staff,schoolId};}
+async function fixture(){const repo=memoryRepository([],{allowBootstrap:true}),api=createService(repo,{},()=>100000),staff=(await api.login({role:'teacher',code:'5678'})).token;await api.eventCreate(staff,{name:'Test pilot event',year:'U6',theoryStartsAt:200000,theoryEndsAt:300000});await api.pilotMode(staff,{status:'open',expectedRevision:1,requestId:'open-request'});const schoolId=(await api.pilot()).schools[0].id;return {repo,api,staff,schoolId};}
 const input=(f,graph=alkyne)=>({schoolId:f.schoolId,credential:randomBytes(32).toString('hex'),requestId:'submit-request',graph:JSON.stringify(graph)});
 
 test('marks chains, cycles, duplicates and explicit hydrogens by connectivity',()=>{
@@ -35,13 +35,13 @@ test('50 structures fit, default competition limits remain unchanged',()=>{
  assert.deepEqual(core.DEFAULT_LIMITS,{maxHeavyAtoms:20,maxAtoms:100,maxBonds:150});
 });
 test('entry registers once before marking; no numbering, scores or credentials leak publicly',async()=>{
- const f=await fixture(),a=input(f),teams=await f.repo.list({kind:'team'});
+ const f=await fixture(),a=input(f),teams=[...f.repo.rows.values()].filter(row=>row.kind==='team');
  const [one,two]=await Promise.all([f.api.pilotEnter(null,a),f.api.pilotEnter(null,a)]);
  assert.deepEqual(one,two);assert.equal(one.confirmedAt,100000);assert.equal(one.best,null);
  assert.equal((await f.api.pilotReport(f.staff)).readiness.length,1);
  for(let n=0;n<51;n++)await f.api.pilotEnter(null,input(f));
  assert.equal((await f.api.pilotReport(f.staff)).readiness.length,52);
- assert.deepEqual(await f.repo.list({kind:'team'}),teams);
+ assert.deepEqual([...f.repo.rows.values()].filter(row=>row.kind==='team'),teams);
  await f.api.pilotSubmit(null,a);
  const publicState=await f.api.pilot();assert.deepEqual(publicState.rankings,[{schoolId:f.schoolId,name:"St John's",rank:1}]);
  assert.ok(!JSON.stringify(publicState).includes('score'));assert.ok(!JSON.stringify(publicState).includes(one.id));
@@ -51,7 +51,7 @@ test('current event roster filters schools; directory-only and removed teams are
  const f=await fixture(),other=(await f.api.schoolCreate(f.staff,{name:'Other school',requestId:'other-school'})).school;
  assert.deepEqual((await f.api.pilot()).schools.map(s=>s.id),[f.schoolId]);
  await assert.rejects(f.api.pilotEnter(null,{...input(f),schoolId:other.id}),{status:409});
- for(const team of await f.repo.list({kind:'team'}))await f.repo.write({...team,removed:true},team.etag);
+ for(const team of [...f.repo.rows.values()].filter(row=>row.kind==='team'))await f.repo.write({...team,removed:true},team.etag);
  assert.deepEqual((await f.api.pilot()).schools,[]);
  await assert.rejects(f.api.pilotEnter(null,input(f)),{status:409});
 });
@@ -72,7 +72,7 @@ test('mode is teacher-only, revision guarded and reversible; off fences submissi
  await assert.rejects(f.api.pilotReport(null),{status:401});await assert.rejects(f.api.pilotMode(null,{}),{status:401});
  await assert.rejects(f.api.pilotMode(f.staff,{status:'off',expectedRevision:1,requestId:'off-stale'}),{status:409});
  const original=f.repo.batch;let switched=false;
- f.repo.batch=async ops=>{if(!switched && ops.some(o=>o.entity.kind==='pilot-receipt')){switched=true;await f.api.pilotMode(f.staff,{status:'off',expectedRevision:2,requestId:'off-racing'});}return original(ops);};
+ f.repo.batch=async (ops,options)=>{if(!switched && ops.some(o=>o.entity.kind==='pilot-receipt')){switched=true;await f.api.pilotMode(f.staff,{status:'off',expectedRevision:2,requestId:'off-racing'});}return original(ops,options);};
  await assert.rejects(f.api.pilotSubmit(null,a),{status:409});
  await assert.rejects(f.api.pilotEnter(null,input(f)),{status:409});
  assert.equal((await f.api.pilotReport(f.staff)).readiness[0].best,null);
@@ -82,10 +82,10 @@ test('mode is teacher-only, revision guarded and reversible; off fences submissi
 });
 test('lost entry/submission responses retry without duplicate records; persistence failures stay atomic',async()=>{
  const f=await fixture(),a=input(f),original=f.repo.batch;let fail=true;
- f.repo.batch=async ops=>{if(fail && ops.some(o=>o.entity.kind==='pilot-attempt')){fail=false;throw Error('Storage unavailable');}return original(ops);};
+ f.repo.batch=async (ops,options)=>{if(fail && ops.some(o=>o.entity.kind==='pilot-attempt')){fail=false;throw Error('Storage unavailable');}return original(ops,options);};
  await assert.rejects(f.api.pilotEnter(null,a),/Storage unavailable/);assert.equal((await f.api.pilotReport(f.staff)).readiness.length,0);
  await f.api.pilotEnter(null,a);
- let lost=true;f.repo.batch=async ops=>{await original(ops);if(lost && ops.some(o=>o.entity.kind==='pilot-receipt')){lost=false;throw Error('Lost response');}};
+ let lost=true;f.repo.batch=async (ops,options)=>{await original(ops,options);if(lost && ops.some(o=>o.entity.kind==='pilot-receipt')){lost=false;throw Error('Lost response');}};
  await assert.rejects(f.api.pilotSubmit(null,a),/Lost response/);
  const restarted=createService(f.repo,{},()=>100001);assert.equal((await restarted.pilotSubmit(null,a)).best,1);
  assert.equal((await restarted.pilotEnter(null,a)).confirmedAt,100000);
@@ -105,7 +105,7 @@ test('HTTP origin/body/rate guards apply and report remains teacher-only',async(
 test('legacy closed pilot can resume without rewriting scores or inventing access times',async()=>{
  const f=await fixture(),a=input(f);await f.api.pilotEnter(null,a);await f.api.pilotSubmit(null,a);
  const c=await f.repo.get('readiness-pilot-v1','config');await f.repo.write({...c,status:'closed'},c.etag);
- const old=(await f.repo.list({kind:'pilot-attempt'}))[0];delete old.confirmedAt;await f.repo.write(old,old.etag);
+ const old=([...f.repo.rows.values()].filter(row=>row.kind==='pilot-attempt'))[0];delete old.confirmedAt;await f.repo.write(old,old.etag);
  await f.api.pilotMode(f.staff,{status:'open',expectedRevision:2,requestId:'legacy-reopen'});
  assert.equal((await f.api.pilotEnter(null,a)).confirmedAt,null);assert.equal((await f.api.pilotEnter(null,a)).best,1);
 });
@@ -122,12 +122,12 @@ test('school rankings use best attempt, deterministic ties, and omit all public 
 test('off fences in-flight entry and repeated on/off requests cannot replay a stale transition',async()=>{
  const f=await fixture(),a=input(f),original=f.repo.batch;let switched=false;
  const off={status:'off',expectedRevision:2,requestId:'entry-racing-off'};
- f.repo.batch=async ops=>{if(!switched && ops.some(o=>o.entity.kind==='pilot-attempt')){switched=true;await f.api.pilotMode(f.staff,off);}return original(ops);};
+ f.repo.batch=async (ops,options)=>{if(!switched && ops.some(o=>o.entity.kind==='pilot-attempt')){switched=true;await f.api.pilotMode(f.staff,off);}return original(ops,options);};
  await assert.rejects(f.api.pilotEnter(null,a),{status:409});assert.equal((await f.api.pilotReport(f.staff)).readiness.length,0);
  await f.api.pilotMode(f.staff,{status:'open',expectedRevision:3,requestId:'entry-reopen'});
  assert.equal((await f.api.pilotMode(f.staff,off)).status,'open');
  await assert.rejects(f.api.pilotMode(f.staff,{...off,status:'open'}),{status:409});
- let lost=true;f.repo.batch=async ops=>{await original(ops);if(lost && ops.some(o=>o.entity.kind==='pilot-attempt')){lost=false;throw Error('Lost entry response');}};
+ let lost=true;f.repo.batch=async (ops,options)=>{await original(ops,options);if(lost && ops.some(o=>o.entity.kind==='pilot-attempt')){lost=false;throw Error('Lost entry response');}};
  await assert.rejects(f.api.pilotEnter(null,a),/Lost entry response/);await f.api.pilotEnter(null,a);
  assert.equal((await f.api.pilotReport(f.staff)).readiness.length,1);
 });

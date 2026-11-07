@@ -1,12 +1,14 @@
 # Application API contract
 
-This contract describes the current implementation boundary. Server state and marking are authoritative. Browser presentation files contain no answer keys.
+This contract describes the current implementation boundary. Server state and marking are authoritative. Browser presentation files contain no answer keys. See [API performance and maintenance](api-performance.md) for timing diagnostics, the consolidated roster response and the separately authorised storage cutover.
 
 ## HTTP and sessions
 
 All endpoints use `/api/olympiad/{action}`. GET: `availability`, `session`, `events`, `teams`, `schools`, `leaderboard`, `diagnostics`. POST: `login`, `logout`, `event-create`, `event-setup`, `event-update`, `event-year-change`, `event-activate`, `event-draft`, `event-end`, `school-create`, `school-delete`, `school-colours`, `school-rename`, `school-teams`, `school-link`, `school-resume`, `codes-update`, `team-add`, `team-release`, `team-delete`, `claim`, `start`, `breach`, `recovery`, `resume`, `hydrate`, `question`, `draft`, `submit`, `action`, `practical`, `practical-save`, `question-content`, `practical-content`, `content-asset`, `content-catalogue`.
 
-Opaque HttpOnly role cookie; server derives role/team/event/year. Teachers select an event with `eventId` on question/preview requests; competitors cannot override their bound event. Teacher sessions last eight hours. Codes initially 1234 competitor and 5678 teacher, hashed server-side; changes preserve issued sessions. Login returns a session snapshot. Logout never releases a claim.
+Opaque HttpOnly role cookie; server derives role/team/event/year. Teachers select an event with `eventId` on question/preview requests; competitors cannot override their bound event. Teacher sessions last eight hours. Codes are hashed server-side; changes preserve issued sessions. Production requires explicitly initialised compatible storage and configured codes; only isolated local fixtures use initial 1234/5678 defaults. Login returns a session snapshot. Logout never releases a claim.
+
+Teacher `GET roster?eventId=...` returns `{schools,progress,teams,removedTeams}`. Roster mutation requests include `rosterEventId` and return their existing outcome plus `roster:{status:'complete',snapshot}` or `roster:{status:'failed',error}`. Successful writes with failed readback remain confirmed; only the consolidated GET is retried. Safe `Server-Timing` and generated `X-Request-Id` headers are available on API responses, including errors and binary assets. Detailed bounded timing aggregates remain teacher-only under `diagnostics.performance`.
 
 Teacher catalogue previews use `eventId: catalogue-L5|catalogue-U5|catalogue-L6|catalogue-U6`. These validated year contexts do not create/edit events, bypass event timing and remain isolated and unscored. Competitors cannot use them to override their bound event or year.
 

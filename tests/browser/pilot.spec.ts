@@ -31,6 +31,19 @@ test('confirmed local recovery skips school selection and server re-entry',async
  expect(api.requests.filter(request=>request.action==='pilot-enter')).toHaveLength(entryCount);
 });
 
+test('developer reset epoch rotates local identity and drops uncertain submissions',async({page,api})=>{
+ await enter(page);await drawFixture(page);
+ const previous=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),key);
+ await page.evaluate(key=>{const saved=JSON.parse(localStorage.getItem(key)!);saved.pending={schoolId:saved.schoolId,credential:saved.credential,requestId:'old-pending-request',graph:JSON.stringify(saved.drawing.graph)};localStorage.setItem(key,JSON.stringify(saved));},key);
+ const config=await api.repo.get('readiness-pilot-v1','config');
+ await api.repo.write({...config,resetEpoch:'synthetic-reset-epoch',revision:config.revision+1},config.etag);
+ await page.reload();await resume(page);
+ const next=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),key);
+ expect(next.credential).not.toBe(previous.credential);expect(next.pending).toBeUndefined();expect(next.resetEpoch).toBe('synthetic-reset-epoch');expect(next.drawing.graph).toEqual(previous.drawing.graph);
+ const entry=api.requests.filter(r=>r.action==='pilot-enter').at(-1)!;expect(entry.body.resetEpoch).toBe('synthetic-reset-epoch');
+ expect(api.requests.filter(r=>r.action==='pilot-submit')).toHaveLength(0);
+});
+
 test('access is recorded before submission, reload restores drawing and uncertain retries preserve best',async({page,api})=>{
  await enter(page);const staff=(await api.service.login({role:'teacher',code:'5678'})).token;
  let report=await api.service.pilotReport(staff);expect(report.readiness).toHaveLength(1);expect(report.readiness[0].best).toBeNull();const time=report.readiness[0].confirmedAt;

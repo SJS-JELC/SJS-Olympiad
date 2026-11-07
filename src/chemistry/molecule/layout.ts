@@ -9,6 +9,10 @@ import type { MoleculeGraph } from "../../contracts/molecule";
     next.bonds.forEach(b => { edges.get(b.a).push(b.b); edges.get(b.b).push(b.a); });
     const linear = new Set(next.bonds.filter(b => b.order === 3).flatMap(b => [b.a, b.b])
       .filter(id => atoms.get(id).element === 'C' && edges.get(id).length === 2));
+    next.atoms.forEach(a => {
+      const bonds = next.bonds.filter(b => b.a === a.id || b.b === a.id);
+      if (a.element === 'C' && !a.charge && bonds.length === 2 && bonds.every(b => b.order === 2)) linear.add(a.id);
+    });
     edges.forEach(ids => ids.sort((a, b) => a - b));
     const pending = new Set([...atoms.keys()].sort((a, b) => a - b));
     let offset = 0;

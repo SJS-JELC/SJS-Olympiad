@@ -64,6 +64,7 @@ export interface MoleculeEditorProps {
   readonly explicitHydrogensOnly?: boolean;
   readonly limits?: MoleculeLimits;
   readonly initialZoomOutSteps?: number;
+  readonly allowChains?: boolean;
 }
 interface Drag {
   pointerId: number;
@@ -84,9 +85,10 @@ export function MoleculeEditor({
   explicitHydrogensOnly = false,
   limits = core.DEFAULT_LIMITS,
   initialZoomOutSteps = 0,
+  allowChains = true,
 }: MoleculeEditorProps) {
   const [element, setElement] = useState<MoleculeElement>('C'),
-    [chain, setChain] = useState(false),
+    [chainSelected, setChain] = useState(false),
     [erasing, setErasing] = useState(false),
     [preferredView, setView] = useState<Representation>(representations[0] ?? 'displayed'),
     [panning, setPanning] = useState(false),
@@ -109,6 +111,7 @@ export function MoleculeEditor({
   state.current = value;
   locked.current = readOnly;
   const order = 1;
+  const chain = allowChains && chainSelected;
   const graph = value.graph,
     valid = core.validate(graph, false, limits),
     drawingScale = drawingScaleForHeight(window.innerHeight);
@@ -193,6 +196,7 @@ export function MoleculeEditor({
       setErasing(false);
     },
     toggleChain = () => {
+      if (!allowChains) return;
       cancel();
       setPanning(false);
       setChain(!chain || erasing);
@@ -470,7 +474,7 @@ export function MoleculeEditor({
               ))}
             </div>
             <span className="divider" aria-hidden="true" />
-            <button
+            {allowChains && <button
               type="button"
               className="ui-button tool"
               aria-label="Carbon chain"
@@ -482,7 +486,7 @@ export function MoleculeEditor({
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m2 16 5-8 5 8 5-8 5 8" />
               </svg>
-            </button>
+            </button>}
             <button
               type="button"
               className="ui-button tool"

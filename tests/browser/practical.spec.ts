@@ -120,22 +120,23 @@ competitor('invalid input stays local and failed saves block navigation until an
   await page.getByRole('button',{name:'Back to landing'}).click(); await expect(page.locator('.splash-stage')).toBeVisible();
 });
 
-competitor('practical closes read-only without a breach and retains its final result',async({page,api})=>{
+competitor('practical closes to the landing without a breach and retains its final result',async({page,api})=>{
   await page.clock.install(); await schedule(api,-60000,20000); await mockFullscreen(page); await page.goto('/'); await claimAndStart(page); await page.getByRole('button',{name:'Practical challenge',exact:true}).click();
   await page.locator('#practical-numPracticalResponse4').fill('1.50'); await page.locator('#practical-numPracticalResponse4').blur();
   await expect(page.getByText('Saved',{exact:true})).toBeVisible();
   await page.locator('#practical-numPracticalResponse3').fill('1e-'); await page.locator('#practical-numPracticalResponse3').blur();
   await page.clock.fastForward(20001);
   await expect(page.locator('.practical-protocol')).toHaveCount(0,{timeout:20000});
-  await expect(page.locator('.practical-title')).not.toContainText('MOHR CRISPS');
+  await expect(page.locator('.practical-title')).toHaveCount(0);
   await expect(page.getByText('Average titre',{exact:false})).toHaveCount(0);
-  await expect(page.locator('#practical-numPracticalResponse4')).toBeDisabled();
-  await expect(page.locator('#practical-numPracticalResponse4')).toHaveValue('1.50'); await expect(page.getByRole('dialog')).toHaveCount(0);
-  await page.getByRole('button',{name:'Discard unsaved changes and reload',exact:true}).click();
+  await expect(page.locator('#practical-numPracticalResponse4')).toHaveCount(0);
+  await expect(page.getByRole('button',{name:'Practical challenge',exact:true})).toBeDisabled();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect.poll(async()=> (await api.service.practical(api.token)).responses.numPracticalResponse4?.text).toBe('1.50');
   await expect(page.locator('.practical-protocol')).toHaveCount(0);
-  await expect(page.locator('#practical-numPracticalResponse3')).toHaveValue('');await expect(page.locator('.navigation-error')).toHaveCount(0);
-  await page.getByRole('button',{name:'Theory challenge',exact:true}).click(); await expect(page.locator('.theory-stage')).toBeVisible();
+  expect((await api.service.practical(api.token)).responses.numPracticalResponse3).toBeNull();
+  await expect(page.locator('.navigation-error')).toHaveCount(0);
+  await page.getByRole('button',{name:'Theoretical challenge',exact:true}).click(); await expect(page.locator('.theory-stage')).toBeVisible();
 });
 
 test('teacher team result distinguishes intermediate work, zero final and complete-event read-only',async({page,api})=>{

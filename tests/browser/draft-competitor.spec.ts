@@ -1,4 +1,4 @@
-import {test,expect,type ApiHarness,type Page} from './fixtures';
+import {test,expect,fixtureRows,type ApiHarness,type Page} from './fixtures';
 import {mockFullscreen} from './fullscreen';
 const anonymous=test.extend({accessRole:null});
 async function prepare(api:ApiHarness,year:string,past=false,count=3){
@@ -19,7 +19,7 @@ async function chooseAndStart(page:Page){
  await expect(page.getByLabel('Team: Draft team 01',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'GO',exact:true}).click();
 }
-async function durable(api:ApiHarness){return (await api.repo.list({})).filter((row:any)=>!['session','limit'].includes(row.kind));}
+async function durable(api:ApiHarness){return fixtureRows(api).filter((row:any)=>!['session','limit'].includes(row.kind));}
 
 for(const [width,height] of [[1366,768],[1920,1080]])anonymous(`dense draft roster shows many real team names at ${width}x${height}`,async({page,api},testInfo)=>{
  await page.setViewportSize({width,height});await prepare(api,'U5',false,40);await api.service.pilot();const before=await durable(api);
@@ -38,7 +38,7 @@ for(const [width,height] of [[1366,768],[1920,1080]])anonymous(`dense draft rost
 
 for(const [year,past] of [['U5',false],['U5',true],['L6',false],['L6',true]] as const)anonymous(`${year} ${past?'past':'future'} draft respects its starts before opening its own questions with durable claims and results`,async({page,api})=>{
  const {event,staff}=await prepare(api,year,past);await mockFullscreen(page);await signIn(page,past);
- if(past){await expect(page.getByRole('button',{name:'LOCK IN',exact:true})).toHaveCount(0);expect((await api.repo.list({kind:'team',eventId:event.id})).every((team:any)=>!team.owner&&team.score===0)).toBe(true);return;}
+ if(past){await expect(page.getByRole('button',{name:'LOCK IN',exact:true})).toHaveCount(0);expect(fixtureRows(api,{kind:'team',eventId:event.id}).every((team:any)=>!team.owner&&team.score===0)).toBe(true);return;}
  await chooseAndStart(page);await expect(page.locator('.competitor-team-pill__practice')).toHaveCount(0);
  const theory=page.getByRole('button',{name:/^Theoretical Challenge$/i}),practical=page.getByRole('button',{name:/^Practical Challenge$/i});
  await expect(theory).toBeDisabled();await expect(practical).toBeDisabled();
@@ -59,7 +59,7 @@ for(const [year,past] of [['U5',false],['U5',true],['L6',false],['L6',true]] as 
  const answer=page.getByRole('textbox',{name:year==='U5'?'Greatest hydrogen separation in pm':'Equilibrium concentration of B',exact:true});await expect(answer).toBeEditable();
  await answer.fill(year==='U5'?'485':'0.437');await page.getByRole('button',{name:'Check answers',exact:true}).click();await expect(page.locator('.completion-stamp')).toBeVisible();
  const state=await api.service.session(api.token);expect(state.activeEvent.year).toBe(year);expect(state.score).toBe(year==='U5'?2:3);
- const team=(await api.repo.list({kind:'team',eventId:event.id})).find((row:any)=>row.teamId===state.team.id);expect(team.owner).toBeTruthy();expect(team.hasSubmittedActivity).toBe(true);
+ const team=fixtureRows(api,{kind:'team',eventId:event.id}).find((row:any)=>row.teamId===state.team.id);expect(team.owner).toBeTruthy();expect(team.hasSubmittedActivity).toBe(true);
  expect((await api.service.leaderboard(staff)).rows[0].score).toBe(state.score);
  await page.reload();await signIn(page);await expect(page.locator('input[name=team][value="'+state.team.id+'"]')).toBeDisabled();
 });

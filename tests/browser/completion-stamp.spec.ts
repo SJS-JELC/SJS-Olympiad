@@ -1,13 +1,13 @@
 import { openTeacher } from './teacher';
-import {test,expect,openCompetitorQuestion,resumeCompetition} from './fixtures';
+import {test,expect,openCompetitorQuestion,resumeCompetition,fixtureRows,teamKey} from './fixtures';
 import {interrupt} from './fullscreen';
 import {oxyanions} from '../fixtures/custom-server';
 const competitor=test.extend({accessRole:'competitor' as const});
 const questions=[...['L5','L6','U6'].flatMap(year=>Array.from({length:9},(_,index)=>({id:year+'P'+(index+1),year,number:index+1}))),...[2,3,4,5,6,7,8,9].map(number=>({id:'U5P'+number,year:'U5',number}))];
 
 for(const year of ['L5','L6','U6','U5'])competitor(`${year} restored server completions retain their original London time without replaying the stamp`,async({page,api})=>{
- test.setTimeout(60000);await page.setViewportSize({width:1200,height:800});const solvedAt=Date.parse('2026-07-15T12:03:04Z'),team=(await api.repo.list({kind:'team',eventId:'fixture-'+year}))[0];
- for(const definition of questions.filter(question=>question.year===year))await api.repo.write({partitionKey:team.partitionKey,rowKey:'q-'+definition.id,kind:'question',questionId:definition.id,revision:1,state:{answers:{},feedback:{},retryAt:0,solvedAt},privateState:{}});
+ test.setTimeout(60000);await page.setViewportSize({width:1200,height:800});const solvedAt=Date.parse('2026-07-15T12:03:04Z'),team=fixtureRows(api,{kind:'team',eventId:'fixture-'+year})[0];
+ for(const definition of questions.filter(question=>question.year===year))await api.repo.write({...teamKey(team.eventId,team.teamId,'q-'+definition.id),kind:'question',questionId:definition.id,revision:1,state:{answers:{},feedback:{},retryAt:0,solvedAt},privateState:{}});
  await openCompetitorQuestion(page,api,year);
  for(const definition of questions.filter(question=>question.year===year)){
   await page.getByRole('button',{name:new RegExp(`^Problem ${definition.number},`)}).click();const stamp=page.locator('.completion-stamp');await expect(stamp).toHaveAttribute('data-solved-at',String(solvedAt));await expect(stamp).toHaveAttribute('data-animated','false');await expect(page.locator('.cloud-fields')).toHaveAttribute('disabled','');await expect(page.locator('.cloud-fields')).toHaveCSS('pointer-events','none');expect(await page.locator('.cloud-fields').evaluate(element=>[...element.querySelectorAll('button,input,select,textarea')].every(control=>control.matches(':disabled')))).toBe(true);await expect(stamp).toHaveAttribute('aria-label','Complete at 13:03:04 Europe/London');await expect(stamp.locator('.completion-stamp__time')).toHaveText('13:03:04');await page.getByRole('button',{name:'Back to theory',exact:true}).click();

@@ -13,11 +13,11 @@ import {LoadingIndicator} from '../components/LoadingIndicator';
 import {SchoolSelector,SchoolIdentity,LockInButton} from '../components/SchoolSelector';
 
 export const pilotLimits={maxHeavyAtoms:250,maxAtoms:650,maxBonds:750};
-type Snapshot={status:'off'|'open';revision:number;eventId:string|null;schools:{id:string;name:string;colours?:string[]}[];rankings:{schoolId:string;name:string;rank:number}[]};
+type Snapshot={status:'off'|'open';revision:number;resetEpoch?:string;eventId:string|null;schools:{id:string;name:string;colours?:string[]}[];rankings:{schoolId:string;name:string;rank:number}[]};
 type Attempt={id:string;schoolId:string;confirmedAt:number|null;best:number|null};
 type Result=Attempt & {accepted:boolean;score:number|null};
-type Submission={schoolId:string;credential:string;requestId:string;graph:string};
-type Saved={version:1;schoolId:string;credential:string;drawing:MoleculeState;result?:Attempt;pending?:Submission};
+type Submission={schoolId:string;credential:string;requestId:string;graph:string;resetEpoch?:string};
+type Saved={version:1;schoolId:string;credential:string;drawing:MoleculeState;result?:Attempt;pending?:Submission;resetEpoch?:string};
 const storageKey='olympiad-readiness-pilot-v1';
 const credential=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 function restore(raw:string|null):Saved|null {
@@ -50,7 +50,7 @@ export function PilotEntry() {
  useEffect(()=>{void detect();const focus=()=>void detect();window.addEventListener('focus',focus);return()=>{generation.current++;window.removeEventListener('focus',focus);};},[]);
  if(!entry)return <>{error ? <div className="pilot-entry-error" role="alert">{error}<button onClick={()=>void detect()}>Retry</button></div>:<LoadingIndicator full/>}</>;
  if(entry.mode==='pilot' && started){
-  if(snapshot)return <Pilot snapshot={snapshot} refresh={refresh} onBack={()=>setStarted(false)} refreshError={error}/>;
+  if(snapshot)return <Pilot key={snapshot.resetEpoch??'legacy'} snapshot={snapshot} refresh={refresh} onBack={()=>setStarted(false)} refreshError={error}/>;
   return <>{error?<div role="alert">{error}<button onClick={()=>void refresh()}>Retry</button></div>:<p role="status">Loading schools…</p>}</>;
  }
  return <><AccessGate pilot={entry.mode==='pilot'} availability={entry.competitorAvailable} onPilot={()=>{setStarted(true);if(!snapshot)void refresh();}}/>{entry.mode==='competition' && error && <div className="pilot-entry-error type-body" role="alert">{error}<button onClick={()=>void detect()}>Retry</button></div>}</>;
@@ -61,7 +61,13 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
   const raw=useRef<string|null>(null),current=useRef<Saved|null>(null),sending=useRef(false),resumed=useRef(false);
   useEffect(()=>{
     try{
-      raw.current=localStorage.getItem(storageKey);const value=restore(raw.current);current.current=value;setSaved(value);
+      raw.current=localStorage.getItem(storageKey);let value=restore(raw.current);
+      if(value&&snapshot.resetEpoch&&value.resetEpoch!==snapshot.resetEpoch){
+        // A developer reset invalidates identity/results/pending writes, not the pupil's local drawing.
+        value={version:1,schoolId:value.schoolId,credential:credential(),drawing:value.drawing,resetEpoch:snapshot.resetEpoch};
+        const next=JSON.stringify(value);localStorage.setItem(storageKey,next);raw.current=next;
+      }
+      current.current=value;setSaved(value);
       if(value){
         setSchool(value.schoolId);
         const result=value.result;
@@ -88,17 +94,17 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
   async function enter(){
     if(sending.current || conflict || !loaded)return;
     if(!snapshot.schools.some(s=>s.id===(current.current?.schoolId ?? school))){if(current.current)setMessage('This school is not in the current event. Return to the landing page.');return;}
-    const value=current.current ?? {version:1 as const,schoolId:school,credential:credential(),drawing:blankMolecule()};
+    const value=current.current ?? {version:1 as const,schoolId:school,credential:credential(),drawing:blankMolecule(),resetEpoch:snapshot.resetEpoch};
     if(!save(value))return;
     sending.current=true;setBusy(true);setMessage('');
-    try{const result=await request<Attempt>('pilot-enter',{schoolId:value.schoolId,credential:value.credential,requestId:crypto.randomUUID()});if(save({...value,result}))setEntered(true);await refresh();}
+    try{const result=await request<Attempt>('pilot-enter',{schoolId:value.schoolId,credential:value.credential,resetEpoch:value.resetEpoch,requestId:crypto.randomUUID()});if(save({...value,result}))setEntered(true);await refresh();}
     catch(e){setMessage((e as Error).message);await refresh();}
     finally{sending.current=false;setBusy(false);}
   }
   useEffect(()=>{if(loaded && current.current && !resumed.current){resumed.current=true;void enter();}},[loaded]);
   async function submit(){
     const value=current.current;if(!value || sending.current || conflict)return;
-    const pending=value.pending ?? {schoolId:value.schoolId,credential:value.credential,requestId:crypto.randomUUID(),graph:JSON.stringify(value.drawing.graph)};
+    const pending=value.pending ?? {schoolId:value.schoolId,credential:value.credential,resetEpoch:value.resetEpoch,requestId:crypto.randomUUID(),graph:JSON.stringify(value.drawing.graph)};
     if(!save({...value,pending}))return;
     sending.current=true;setBusy(true);setMessage('');
     try {
@@ -128,15 +134,15 @@ function Pilot({snapshot,refresh,onBack,refreshError}:{snapshot:Snapshot;refresh
       {recovery}
       <form onSubmit={event=>{event.preventDefault();void enter();}}><SchoolSelector items={snapshot.schools} value={school} onChange={setSchool} label="Schools" disabled={busy || !!saved || conflict}/>
 
-        {!snapshot.schools.length && <p role="status">No schools are available for the current event. Please ask your teacher.</p>}
+        {!snapshot.schools.length && <p role="status">Waiting for an event with schools. Please ask your teacher.</p>}
         <LockInButton disabled={!loaded || !snapshot.schools.some(s=>s.id===school) || conflict} busy={busy}/>
       </form><p role="status">{busy?'Opening your drawing…':message}</p>{refreshError && <p role="alert">{refreshError}</p>}
     </section></main>;
   return <QuestionShell definition={{title:'Funny Bones'}} score={saved.result?.best ?? 0} onBack={onBack} backLabel="Back to landing">
     <div className="question-content pilot-question type-body"><div className="question-brief pilot-brief">
-      {recovery}<p>Draw the skeletal formula for as many different molecules with the molecular formula C₅H₈ as you can.</p>
+      {recovery}<p>Draw the skeletal formula for as many different molecules with the molecular formula C₅H₈ as you can. Click a bond to cycle through single, double and triple bonds.</p>
       <SkeletalHelp/>
-      <div className="pilot-workspace"><section className="pilot-drawing" aria-label="Warm-up drawing workspace"><MoleculeEditor value={saved.drawing} onChange={drawing=>save({...saved,drawing})} limits={pilotLimits} elements={['C','H']} representations={['skeletal']} initialZoomOutSteps={2} readOnly={busy || conflict || !!saved.pending}/></section>
+      <div className="pilot-workspace"><section className="pilot-drawing" aria-label="Warm-up drawing workspace"><MoleculeEditor value={saved.drawing} onChange={drawing=>save({...saved,drawing})} limits={pilotLimits} elements={['C','H']} representations={['skeletal']} initialZoomOutSteps={2} allowChains={false} readOnly={busy || conflict || !!saved.pending}/></section>
       </div>
       {saved.drawing.graph.atoms.filter(a=>a.element!=='H').length>=250 && <p role="status">Canvas carbon capacity reached. Remove a structure before adding another.</p>}
       <p className="pilot-feedback" role="status">{busy?'Submitting…':message}</p>

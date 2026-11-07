@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createService} from '../src/service.mjs';
@@ -14,7 +15,7 @@ const input=(f,team,requestId,expectedEntryRevision=0)=>({eventId:f.event.id,tea
 test('remove/restore retains attempts, cooldowns and identity, revokes devices and fences stale requests',async()=>{
  const f=await fixture(),team=f.teams[0],player=await f.api.login({role:'competitor',code:'1234'});
  await f.api.claim(player.token,{teamId:team.id});await f.api.start(player.token);await f.api.submit(player.token,{questionId:'L6P8',requestId:'entry-wrong-answer',answers:{answer:'0'}});
- const pk=f.event.id+'-'+team.id,before=await f.repo.get(pk,'q-L6P8'),remove=input(f,team,'entry-remove-first');
+ const pk=teamScope(f.event.id,team.id),before=await f.repo.get(pk,'q-L6P8'),remove=input(f,team,'entry-remove-first');
  await assert.rejects(f.api.teamRemove(player.token,remove),{status:403});
  await assert.rejects(f.api.teamRemove(f.staff,{...remove,confirm:false}),{status:400});
  f.repo.failBatch=true;await assert.rejects(f.api.teamRemove(f.staff,remove));f.repo.failBatch=false;assert.equal((await f.api.session(player.token)).team.id,team.id);

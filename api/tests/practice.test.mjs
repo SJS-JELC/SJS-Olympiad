@@ -7,7 +7,7 @@ test('legacy isolated practice tokens cannot authenticate or migrate into real c
  const repo=memoryRepository(),api=createService(repo,{},()=>100000);
  await assert.rejects(api.session('practice-'+ 'a'.repeat(64)),{status:401});
  await assert.rejects(api.claim('practice-'+ 'a'.repeat(64),{teamId:'practice'}),{status:401});
- assert.equal((await repo.list({kind:'team'})).length,0);
+ assert.equal(([...repo.rows.values()].filter(row=>row.kind==='team')).length,0);
 });
 test('obsolete practice-start authenticates before returning retired and never sets a new cookie',async()=>{
  const api=createService(memoryRepository(),{},()=>100000),signed=await api.login({role:'competitor',code:'1234'});

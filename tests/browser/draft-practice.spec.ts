@@ -1,4 +1,4 @@
-import {test,expect,claimAndStart,type ApiHarness} from './fixtures';
+import {test,expect,claimAndStart,fixtureRows,type ApiHarness} from './fixtures';
 import {mockFullscreen} from './fullscreen';
 async function draftYear(api:ApiHarness,year:string){
  const staff=(await api.service.login({role:'teacher',code:'5678'})).token,state=await api.service.events(staff);
@@ -61,8 +61,8 @@ for(const year of ['L5','L6','U6'])test(`competitor opens theory and practical i
  const input=responses.locator('input').first();await expect(input).toBeEditable();await input.fill('1.23');await input.blur();
  await page.getByRole('button',{name:'Back to landing',exact:true}).click();await expect(page.getByRole('button',{name:'Theoretical challenge',exact:true})).toBeEnabled();
  expect(api.requests.some(r=>r.action==='practical')).toBe(true);
- const records=await api.repo.list({kind:'team',eventId:'fixture-'+year});expect(records.some((team:any)=>!!team.owner&&team.hasSubmittedActivity)).toBe(true);
- const saved=await api.repo.list({kind:'practical'});expect(saved.some((row:any)=>row.responses&&Object.keys(row.responses).length>0)).toBe(true);
+ const records=fixtureRows(api,{kind:'team',eventId:'fixture-'+year});expect(records.some((team:any)=>!!team.owner&&team.hasSubmittedActivity)).toBe(true);
+ const saved=fixtureRows(api,{kind:'practical'});expect(saved.some((row:any)=>row.responses&&Object.keys(row.responses).length>0)).toBe(true);
 });
 
 test('teacher can change an active event year with explicit reset confirmation',async({page})=>{

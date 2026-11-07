@@ -1,7 +1,8 @@
 import {useEffect,useRef,useState} from 'react';
-import {HttpError,request,type AdminBatchResult,type SchoolRecord,type SchoolProgress,type TeamRecord} from '../cloud/api';
+import {HttpError,request,type AdminBatchResult,type RosterSnapshot,type RosterReadback} from '../cloud/api';
+import {beginActionTiming} from '../cloud/performance';
 
-export type RosterSnapshot={schools:SchoolRecord[];progress:SchoolProgress[];teams:TeamRecord[];removedTeams:TeamRecord[]};
+export type {RosterSnapshot} from '../cloud/api';
 export type RosterCommand={action:string;body:Record<string,unknown>;label:string;items?:{id:string;name:string}[];onConfirmed?:(result:any)=>void};
 type Operation=RosterCommand&{eventId:string;outcome:'saving'|'saved'|'partial'|'uncertain'|'rejected';result?:any;error?:string};
 const empty: RosterSnapshot={schools:[],progress:[],teams:[],removedTeams:[]};
@@ -14,18 +15,17 @@ export function useRosterController(eventId:string,revision:number,onBusy:(busy:
  const busyCallback=useRef(onBusy);busyCallback.current=onBusy;
  function busy(value:boolean){lock.current=value;setWorking(value);busyCallback.current(value);}
  function publish(value:Operation|null){current.current=value;setOperation(value);}
+ function accept(value:RosterSnapshot,token:number,op:Operation|null){
+  if(!active.current || token!==generation.current)return;
+  setSnapshot(value);freshRef.current=true;setFresh(true);setReadError('');
+  if(op?.outcome==='saved'){publish(null);op.onConfirmed?.(op.result);}
+  else if(op?.outcome==='partial')op.onConfirmed?.(op.result);
+ }
  async function read(token:number,op:Operation|null){
   try{
    const query='?eventId='+encodeURIComponent(eventId);
-   const [schools,teams,removed]=await Promise.all([
-    request<{schools:SchoolRecord[];progress:SchoolProgress[]}>('schools'+query),
-    request<{teams:TeamRecord[]}>('teams'+query),request<{teams:TeamRecord[]}>('removed-teams'+query)
-   ]);
-   if(!active.current || token!==generation.current)return;
-   setSnapshot({schools:schools.schools,progress:schools.progress,teams:teams.teams,removedTeams:removed.teams});
-   freshRef.current=true;setFresh(true);setReadError('');
-   if(op?.outcome==='saved'){publish(null);op.onConfirmed?.(op.result);}
-   else if(op?.outcome==='partial')op.onConfirmed?.(op.result);
+   const value=await request<RosterSnapshot>('roster'+query);
+   accept(value,token,op);
   }catch(error){
    if(!active.current || token!==generation.current)return;
    freshRef.current=false;setFresh(false);setReadError(error instanceof Error?error.message:'Unable to refresh the roster.');
@@ -38,17 +38,27 @@ export function useRosterController(eventId:string,revision:number,onBusy:(busy:
  }
  async function send(op:Operation){
   if(lock.current)return;
+  const finish=beginActionTiming(op.action);
   busy(true);const token=++generation.current;
   freshRef.current=false;setFresh(false);setReadError('');publish({...op,outcome:'saving',error:undefined});
   let settled:Operation;
   try{
-   const result=await request<any>(op.action,op.body);
+   const result=await request<any>(op.action,{...op.body,rosterEventId:op.eventId});
    const batch=result as AdminBatchResult;
    settled={...op,result,outcome:batch.complete===false?'partial':'saved',error:undefined};
   }catch(error){settled={...op,outcome:error instanceof HttpError && error.status<500?'rejected':'uncertain',error:error instanceof Error?error.message:'The save response was not confirmed.'};}
   if(!active.current || token!==generation.current)return;
   publish(settled);
-  try{await read(token,settled);}finally{if(active.current && token===generation.current)busy(false);}
+  try{
+   if(settled.outcome==='saved'||settled.outcome==='partial'){
+    const roster=settled.result?.roster as RosterReadback|undefined;
+    if(roster?.status==='complete'){
+     accept(roster.snapshot,token,settled);finish('confirmed');
+    }else{
+     setReadError(roster?.status==='failed'?roster.error:'The change was saved, but its roster could not be loaded.');finish('refresh-failed');
+    }
+   }else{await read(token,settled);finish(settled.outcome==='rejected'?'rejected':'uncertain');}
+  }finally{if(active.current && token===generation.current)busy(false);}
  }
  function start(command:RosterCommand){
   if(lock.current || !freshRef.current || (current.current && current.current.outcome!=='rejected'))return;

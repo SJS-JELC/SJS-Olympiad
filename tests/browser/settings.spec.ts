@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures';
+import { test, expect,fixtureTeamRow } from './fixtures';
 import { openTeacher, openEvents, reloadTeacher } from './teacher';
 
 test('delayed initial events read preserves typed event fields',async({page})=>{
@@ -93,7 +93,7 @@ test('team table removes draft teams after server confirmation and retains activ
  await reloadTeacher(page);await openEvents(page);const row=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Test team 1',exact:true})});
  await expect(row).toBeVisible();expect(await page.locator('.settings-teams thead th').allTextContents()).toEqual(['','School','Team','Practical answer','Theory score','Status','Actions']);await expect(row.getByRole('cell').nth(3)).toHaveText('\u2013');await expect(row.getByRole('cell',{name:'Taken',exact:true})).toBeVisible();
  await row.getByRole('button',{name:/Allow reselection/}).click();await expect(page.getByRole('dialog')).toContainText('Test team 1');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(row.getByRole('cell',{name:'Available',exact:true})).toBeVisible();await expect(row.getByRole('button',{name:/Allow reselection/})).toBeDisabled();
- await row.getByRole('button',{name:/Remove team/}).click();await expect(page.getByRole('dialog')).toContainText('retained');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(row).toHaveCount(0);await expect(page.getByRole('dialog')).toHaveCount(0);const stored=await api.repo.get('fixture-L6-'+team.id,'team');expect(stored.removed).toBe(true);expect(stored.score).toBe(0);expect((await api.repo.get('fixture-L6-'+team.id,'q-L6P8')).state.retryAt).toBeGreaterThan(0);await expect(page.locator('.settings-message')).toHaveCount(0);
+ await row.getByRole('button',{name:/Remove team/}).click();await expect(page.getByRole('dialog')).toContainText('retained');await page.getByRole('button',{name:'Confirm',exact:true}).click();await expect(row).toHaveCount(0);await expect(page.getByRole('dialog')).toHaveCount(0);const stored=await fixtureTeamRow(api,'fixture-L6',team.id);expect(stored.removed).toBe(true);expect(stored.score).toBe(0);expect((await fixtureTeamRow(api,'fixture-L6',team.id,'q-L6P8')).state.retryAt).toBeGreaterThan(0);await expect(page.locator('.settings-message')).toHaveCount(0);
  await page.getByLabel('Selected event').selectOption('fixture-L5');await page.getByRole('button',{name:'Remove team Test team 1',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toHaveCount(0);
 });
 test('teacher home and legacy hub routes remain rooted in Settings',async({page})=>{
@@ -168,7 +168,7 @@ test('event schedules use London time, reject DST ambiguity and keep optional pr
 });
 test('late team responses cannot populate a different selected event',async({page})=>{
  let release!:()=>void;const delayed=new Promise<void>(resolve=>{release=resolve;});
- await page.route('**/api/olympiad/teams?eventId=fixture-L5',async route=>{await delayed;await route.fulfill({json:{teams:[{id:'late-team',name:'Late L5 team',eventId:'fixture-L5',year:'L5',claimGeneration:0}]}});});
+ await page.route('**/api/olympiad/roster?eventId=fixture-L5',async route=>{await delayed;await route.fulfill({json:{schools:[],progress:[],removedTeams:[],teams:[{id:'late-team',name:'Late L5 team',eventId:'fixture-L5',year:'L5',claimGeneration:0}]}});});
  await openEvents(page, '/?settings');await page.getByLabel('Selected event').selectOption('fixture-L5');await expect(page.getByLabel('Selected event')).toBeDisabled();await page.evaluate(()=>{history.pushState(null,'','/?settings&eventId=fixture-U5');window.dispatchEvent(new PopStateEvent('popstate'));});await expect(page.getByRole('heading',{name:'Teams · U5 fixture event'})).toBeVisible();release();
  await expect(page.getByRole('cell',{name:'Late L5 team',exact:true})).toHaveCount(0);await expect(page.getByRole('cell',{name:'Test team 1',exact:true})).toBeVisible();
 });

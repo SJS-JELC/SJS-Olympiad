@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { MoleculeGraph } from '../../contracts/molecule';
 import { core } from '../../chemistry/molecule/engine';
-import { bondLines, displayedGraph, endpoint, labelFor } from '../../chemistry/molecule/depiction';
+import { bondLines, carbonDot, displayedGraph, endpoint, labelFor } from '../../chemistry/molecule/depiction';
 import type { Representation } from '../../chemistry/molecule/depiction';
 export function Structure({
   graph,
@@ -92,6 +92,9 @@ export function Structure({
               onFocus={() => onSelect?.(a.id)}
             >
               <circle className="atom-hit" cx={a.x} cy={a.y} r={24} />
+              {carbonDot(a, drawing, view) && (
+                <circle className="carbon-dot" cx={a.x} cy={a.y} r={5} />
+              )}
               {label && (
                 <text className={`atom-label type-body element-${a.element}`} x={label.x} y={a.y}>
                   {label.chunks

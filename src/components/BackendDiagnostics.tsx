@@ -2,6 +2,7 @@ import {LoadingIndicator} from './LoadingIndicator';
 import {useEffect,useRef,useState} from 'react';
 import {request,type DiagnosticSnapshot} from '../cloud/api';
 import {useCompetitionSecurity} from '../security';
+import {ApiPerformance} from './ApiPerformance';
 
 const london=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',dateStyle:'medium',timeStyle:'medium'});
 function Instant({value}:{value:number|null|undefined}){
@@ -24,9 +25,23 @@ export function BackendDiagnostics({expanded}:{expanded:boolean}){
  return <div id="settings-diagnostics-content" className="settings-diagnostics-content" hidden={!expanded}>
   <div className="settings-diagnostics-toolbar"><p className="type-caption">Read-only backend snapshot. Secrets and personal/team data are omitted; sensitive configuration shows status only.</p><button type="button" className="ui-button" disabled={pending} onClick={()=>void load()}>{pending?'Refreshing…':'Refresh backend settings'}</button></div>
   {pending&&<LoadingIndicator/>}
+  {expanded&&security.server?.role==='teacher'&&<ApiPerformance/>}
   {error&&<p className="type-caption" role="alert">{error}{snapshot?' Showing the previous snapshot.':''} <button type="button" className="ui-button" disabled={pending} onClick={()=>void load()}>Retry diagnostics</button></p>}
   {snapshot&&<>
    <p className="type-caption settings-diagnostics-snapshot">Snapshot: <Instant value={snapshot.snapshotAt}/></p>
+   {snapshot.performance&&<section aria-label="Server performance">
+    <h3 className="type-heading">Server performance</h3>
+    <p className="type-caption">This server instance only · latest {snapshot.performance.window.count} of {snapshot.performance.window.capacity} retained requests. Not a deployment-wide sample. Storage durations may overlap.</p>
+    <table><thead><tr><th>Action</th><th>Requests / errors</th><th>Median / p95 / max ms</th><th>Storage operations / pages</th><th>Range / unpartitioned queries</th><th>HTTP attempts / conflicts</th></tr></thead><tbody>
+     {snapshot.performance.routes.map(route=><tr key={route.method+route.action}>
+      <td>{route.method} {route.action}</td><td>{route.requests} / {route.errors}</td>
+      <td>{route.durationMs.p50.toFixed(1)} / {route.durationMs.p95.toFixed(1)} / {route.durationMs.max.toFixed(1)}</td>
+      <td>{Object.values(route.storage).reduce((n,op)=>n+op.count,0)} / {route.storage.list.pages}</td>
+      <td>{route.storage.list.queryClasses?.range??0} / {route.storage.list.queryClasses?.unpartitioned??0}</td>
+      <td>{route.transport.attempts} / {route.conflictRetries}</td>
+     </tr>)}
+    </tbody></table>
+   </section>}
    <table><caption className="type-heading">Effective backend</caption><tbody>
     <tr><th scope="row">Settings source</th><td>{snapshot.settingsSource} · revision {snapshot.settingsRevision}</td></tr>
     <tr><th scope="row">Current event</th><td>{snapshot.currentEventId??'None'} · {snapshot.currentEventSource}</td></tr>

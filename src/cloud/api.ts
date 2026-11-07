@@ -1,4 +1,5 @@
 import type { Attempt } from '../questions/attempts';
+import {beginApiTiming} from './performance';
 export type EventRecord = {
     id: string;
     name: string;
@@ -16,6 +17,8 @@ export type EventRecord = {
 };
 export type SchoolRecord={id:string;name:string;isHostSchool:boolean;deleted?:boolean;revision:number;colours?:string[]};
 export type SchoolProgress={requestId:string;schoolId:string;eventId:string;targetCount:number|null;kind:'generate'|'link'|'restore';total:number;completed:number;status:'pending'|'complete'};
+export type RosterSnapshot={schools:SchoolRecord[];progress:SchoolProgress[];teams:TeamRecord[];removedTeams:TeamRecord[]};
+export type RosterReadback={status:'complete';snapshot:RosterSnapshot}|{status:'failed';error:string};
 export type TeamRecord = {
     entryRevision?: number;
     id: string;
@@ -32,6 +35,7 @@ export type TeamRecord = {
     practical?: PracticalResult | null;
 };
 export type DiagnosticSnapshot={
+ performance?:PerformanceSnapshot;
  snapshotAt:number;nodeVersion:string;repository:'azure-table'|'memory'|'injected';storageConfigured:boolean|null;tableName:string|null;
  configurationSource:string;sessionDurationMs:number;clockSource:string;settingsSource:string;settingsRevision:number;
  accessCodes:{competitorConfigured:boolean;teacherConfigured:boolean};
@@ -39,6 +43,8 @@ export type DiagnosticSnapshot={
  legacyTestingEventId:string|null;currentEventId:string|null;currentEventSource:string;
  events:(EventRecord&{previousEventId:string|null;timingSource:{theoryStartsAt:string;theoryEndsAt:string;practical:string;endsAt:string}})[];
 };
+export type StorageTiming={count:number;errors:number;durationMs:number;pages:number;rows:number;transactionEntities:number;maxTransactionEntities:number;queryClasses?:{point:number;partition:number;range:number;unpartitioned:number}};
+export type PerformanceSnapshot={schemaVersion:1;scope:'instance';window:{capacity:number;count:number;startedAt:number|null;endedAt:number|null};totalRequests:number;routes:{action:string;method:string;requests:number;errors:number;durationMs:{mean:number;p50:number;p95:number;max:number};phases:{name:string;count:number;totalMs:number}[];storage:Record<'get'|'list'|'write'|'remove'|'batch',StorageTiming>;conflictRetries:number;transport:{attempts:number;failures:number;durationMs:number}}[]};
 export type PracticalYear = 'L5' | 'L6' | 'U6';
 export type PracticalField = 'numPracticalResponse1' | 'numPracticalResponse2' | 'numPracticalResponse3' | 'numPracticalResponse4';
 export type PracticalResponse = { text: string; value: number };
@@ -83,18 +89,26 @@ export class HttpError extends Error {
     constructor(public status: number, message: string, public code?: string) { super(message); }
 }
 export async function request<T>(action: string, body?: unknown, signal?:AbortSignal): Promise<T> {
+    const timing=beginApiTiming(action);
+    try {
     const response = await fetch('/api/olympiad/' + action, { credentials: 'same-origin', cache: 'no-store', signal, ...(body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }) });
+    timing.response(response);
     const value = await response.json().catch(() => { throw new Error('The competition service is unavailable.'); });
     if (!response.ok)
         throw new HttpError(response.status, value.error || 'The request could not be completed.', value.code);
-    return value;
+    timing.finish();return value;
+    } catch(error){timing.finish(error);throw error;}
 }
 
 /** Protected assets are bytes, never public URLs or base64 JSON. */
 export async function requestAsset(body:unknown,signal?:AbortSignal):Promise<Blob> {
+ const timing=beginApiTiming('content-asset');
+ try {
  const response=await fetch('/api/olympiad/content-asset',{method:'POST',credentials:'same-origin',cache:'no-store',signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ timing.response(response);
  if(!response.ok){const error=await response.json().catch(()=>({}));throw new HttpError(response.status,error.error || 'Unable to load question diagram.',error.code);}
- return response.blob();
+ const blob=await response.blob();timing.finish();return blob;
+ }catch(error){timing.finish(error);throw error;}
 }
 
 export type AdminBatchResult={requestId:string;total:number;completed:number;complete:boolean;results:{index:number;ok:boolean;status?:number;error?:string}[]};

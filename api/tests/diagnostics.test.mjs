@@ -19,7 +19,8 @@ test('diagnostics is teacher-only through the no-store HTTP route',async()=>{
  for(const [token,status] of [[null,401],[f.competitor,403],[f.staff,200]]){
   const response=await handle({method:'GET',params:{action:'diagnostics'},headers:token?{cookie:'__Host-olympiad-session='+token}:{}},()=>f.api);
   assert.equal(response.status,status);assert.equal(response.headers['Cache-Control'],'no-store');
-  if(status!==200)assert.equal(response.body.settingsRevision,undefined);
+  if(status!==200){assert.equal(response.body.settingsRevision,undefined);assert.equal(response.body.performance,undefined);}
+  else {assert.equal(response.body.performance.schemaVersion,1);assert.equal(response.body.performance.scope,'instance');assert.equal(response.body.performance.window.capacity,256);}
  }
 });
 test('allowlisted snapshot distinguishes bootstrap from effective saved settings without secrets or writes',async()=>{

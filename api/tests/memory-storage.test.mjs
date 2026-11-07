@@ -4,12 +4,12 @@ import { memoryRepository } from '../src/memory-storage.mjs';
 
 test('memory transactions reject cross-partition writes before changing rows', async () => {
   const repo = memoryRepository([{ partitionKey: 'team-a', rowKey: 'summary', score: 1 }]);
-  const before = await repo.list();
+  const before = structuredClone([...repo.rows.values()]);
   await assert.rejects(repo.batch([
     { entity: { ...before[0], score: 2 }, etag: before[0].etag },
     { entity: { partitionKey: 'team-b', rowKey: 'receipt', accepted: true } },
   ]), /Cross partition/);
-  assert.deepEqual(await repo.list(), before);
+  assert.deepEqual(structuredClone([...repo.rows.values()]), before);
 });
 
 test('memory transactions with a failed ETag preserve every update, deletion and insert', async () => {
@@ -17,13 +17,13 @@ test('memory transactions with a failed ETag preserve every update, deletion and
     { partitionKey: 'team', rowKey: 'summary', score: 1 },
     { partitionKey: 'team', rowKey: 'question', solved: false },
   ]);
-  const before = await repo.list();
+  const before = structuredClone([...repo.rows.values()]);
   await assert.rejects(repo.batch([
-    { entity: { ...before[0], score: 2 }, etag: before[0].etag },
+    { entity: { ...before[0], score: 2 }, etag: 'stale-etag' },
     { entity: { partitionKey: 'team', rowKey: 'receipt', accepted: true } },
-    { entity: before[1], etag: 'stale-etag', remove: true },
-  ]), { statusCode: 412 });
-  assert.deepEqual(await repo.list(), before);
+    { entity: before[1], etag: before[1].etag, remove: true },
+  ],{deleteGuard:{rowKey:'summary',etag:'stale-etag'}}), { statusCode: 412 });
+  assert.deepEqual(structuredClone([...repo.rows.values()]), before);
 });
 
 test('memory repository isolates nested values on seed, write, batch, get and list', async () => {

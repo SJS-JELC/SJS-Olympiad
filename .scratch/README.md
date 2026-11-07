@@ -4,6 +4,8 @@ This is the application's versioned work tracker. Paths below are relative to th
 
 | Priority | Effort | Authority/status | Next step |
 | --- | --- | --- | --- |
+| Complete locally | [API performance and storage redesign](api-performance/spec.md) | Implemented, verified and independently reviewed; deployment/reset separate | [Acceptance and measurements](api-performance/verification.md) |
+| Complete locally | [Cumulene depiction](cumulene-depiction/spec.md) | Central-carbon dot and simple linear cleanup implemented; validation limited | [Checks and crowding limitation](cumulene-depiction/issues/01-implementation.md) |
 | Complete locally | [Roster and delivery cleanup](roster-cleanup/spec.md) | Implemented, verified and independently reviewed | [Acceptance](roster-cleanup/issues/03-implementation.md) |
 | Complete locally | [Fresh event teams and batch API](team-entries/spec.md) | Implemented and verified locally | [Verification](team-entries/issues/01-implementation.md) |
 | Complete locally | [School deletion, bulk teams and Excel import](roster-management/spec.md) | Implemented and verified locally | [Changes, tests and limits](roster-management/issues/01-implementation.md) |
@@ -33,3 +35,5 @@ Current guides describe implemented behaviour; specs describe intended work. Lin
 
 
 Loading work: [Entry and challenge preload](loading-preload/spec.md).
+
+Handoff ready: [Fast confirmed question checking](question-check-speed/spec.md) — selected CHECK protection removals, five-read/one-transaction pipeline, diagram and [implementation ticket](question-check-speed/issues/01-implementation.md). Implementation remains pending.

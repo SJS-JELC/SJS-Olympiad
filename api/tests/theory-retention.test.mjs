@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -13,7 +14,7 @@ async function fixture(year='L6',role='competitor') {
   await api.eventActivate(staff,{eventId:event.id,expectedRevision:1});
   const token=role==='teacher'?staff:(await api.login({role:'competitor',code:'1234'})).token;
   if(role==='competitor'){await api.claim(token,{teamId:team.id});await api.start(token);}
-  const pk=role==='teacher'?'preview-'+createHash('sha256').update(token).digest('hex')+'-'+event.id:event.id+'-'+team.id;
+  const pk=role==='teacher'?'preview-'+createHash('sha256').update(token).digest('hex')+'-'+event.id:teamScope(event.id,team.id);
   return {repo,api,token,staff,event,team,pk,setTime:value=>time=value};
 }
 for(const role of ['competitor','teacher'])test(`${role} keeps outcomes and bound receipts, never raw wrong/successful work`,async()=>{

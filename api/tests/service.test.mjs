@@ -1,3 +1,4 @@
+import { teamScope, scopedKey, summaryRange } from '../src/layout.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -128,7 +129,7 @@ test('breach, refresh and recovery use fenced epochs and single-use short grants
 test('breach and release ETags invalidate in-flight scoring; failed transactions make no partial writes',async()=>{
   const f=await fixture();const active=await playing(f);
   f.repo.failBatch=true;await assert.rejects(f.api.submit(f.player,submission()),/Storage transaction failed/);f.repo.failBatch=false;
-  assert.equal((await f.api.session(f.player)).score,0);assert.equal(await f.repo.get('pilot-test-1','receipt-submission-0000001'),null);
+  assert.equal((await f.api.session(f.player)).score,0);assert.equal(await f.repo.get(teamScope('pilot','test-1'),'receipt-submission-0000001'),null);
   f.repo.beforeBatch=async()=>{await f.api.breach(f.player,{epoch:active.competition.epoch});};
   await assert.rejects(f.api.submit(f.player,submission()),{status:423});assert.equal((await f.api.session(f.player)).score,0);
   const locked=await f.api.session(f.player),grant=await f.api.recovery(f.player,{code:teacherCode,epoch:locked.competition.epoch});await f.api.resume(f.player,{grant:grant.grant,epoch:locked.competition.epoch});
@@ -158,14 +159,14 @@ test('ranking uses nonzero summaries, score then latest scoring time then stable
 });
 test('legacy bootstrap preserves exact L6P8 state and receipts once; old cookie requires role authentication',async()=>{
   const secret='a'.repeat(64),sessionHash=createHash('sha256').update(secret).digest('hex');
-  const initial=[{partitionKey:'pilot-test-1',rowKey:'team',teamId:'test-1',name:'Test team 1',sessionHash,expires:200000,score:3,solvedAt:90000,retryAt:0},{partitionKey:'pilot-test-1',rowKey:'attempt-legacy-request-001',answer:'0.437',correct:true}];
+  const initial=[{partitionKey:teamScope('pilot','test-1'),rowKey:'team',teamId:'test-1',name:'Test team 1',sessionHash,expires:200000,score:3,solvedAt:90000,retryAt:0},{partitionKey:teamScope('pilot','test-1'),rowKey:'attempt-legacy-request-001',answer:'0.437',correct:true}];
   const f=await fixture(initial);
   await assert.rejects(f.api.session('test-1.'+secret),{status:401});
   const login=await f.api.login({role:'competitor',code,legacyToken:'test-1.'+secret});assert.equal(login.state.score,3);assert.equal(login.state.competition.status,'LOCKED');
   const grant=await f.api.recovery(login.token,{code:teacherCode,epoch:login.state.competition.epoch});await f.api.resume(login.token,{grant:grant.grant,epoch:login.state.competition.epoch});
   assert.equal((await f.api.submit(login.token,submission('legacy-request-001'))).score,3);
   const restarted=createService(f.repo,{eventId:'pilot',endsAt:300000},()=>100000);assert.equal((await restarted.session(login.token)).attempts.L6P8.solvedAt,90000);
-  assert.equal((await f.repo.get('pilot-test-1','attempt-legacy-request-001')).answer,'0.437');
+  assert.equal((await f.repo.get(teamScope('pilot','test-1'),'attempt-legacy-request-001')).answer,'0.437');
 });
 test('HTTP validates origin, hides secrets, issues opaque HttpOnly cookie, restores, expires and rate-limits',async()=>{
   const f=await fixture();
@@ -244,7 +245,7 @@ test('code edits require the displayed config revision and a CAS retry cannot ov
 test('hostile deeply nested draft revisions and interactions return 400 without storage effects',async()=>{
   const f=await fixture();await playing(f);
   const q=await f.api.question(f.player,{questionId:'L6P8'});
-  const baseline=await f.repo.get('pilot-test-1','q-L6P8');
+  const baseline=await f.repo.get(teamScope('pilot','test-1'),'q-L6P8');
   let nested=0;for(let depth=0;depth<6000;depth++)nested=[nested];
   const base={questionId:'L6P8',requestId:'hostile-draft-001',expectedRevision:q.revision,answers:{answer:'0.4'}};
   await assert.rejects(f.rawApi.draft(f.player,{...base,expectedRevision:nested}),{status:410});
@@ -257,6 +258,6 @@ test('hostile deeply nested draft revisions and interactions return 400 without 
   assert.equal((await handle({...request,rawBody:undefined},getService)).status,400);
   assert.equal((await handle({...request,body:{...base,interaction:{kind:'timed',nested}}},getService)).status,400);
   assert.equal(serviceCalls,0);
-  assert.deepEqual(await f.repo.get('pilot-test-1','q-L6P8'),baseline);
-  assert.equal(await f.repo.get('pilot-test-1','receipt-hostile-draft-001'),null);
+  assert.deepEqual(await f.repo.get(teamScope('pilot','test-1'),'q-L6P8'),baseline);
+  assert.equal(await f.repo.get(teamScope('pilot','test-1'),'receipt-hostile-draft-001'),null);
 });

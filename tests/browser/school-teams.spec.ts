@@ -1,4 +1,4 @@
-import {test,expect,type Page} from './fixtures';
+import {test,expect,fixtureTeamRow,type Page} from './fixtures';
 import {openEvents} from './teacher';
 const teamRow=(page:Page,school:string,number:number)=>page.getByRole('row').filter({has:page.getByRole('cell',{name:school,exact:true})}).filter({has:page.getByRole('cell',{name:String(number),exact:true})});
 
@@ -29,13 +29,13 @@ for(const outcome of ['success','failure'] as const)test(`draft deletion remains
 
 test('blank practical records show only a dash while a submitted zero remains visible',async({page,api})=>{
  const team=(await api.service.teams(api.token,{eventId:'fixture-L6'})).teams.find((team:any)=>team.name==='Test team 1');
- const row=await api.repo.get('fixture-L6-'+team.id,'team');
+ const row=await fixtureTeamRow(api,'fixture-L6',team.id);
  row.practical={year:'L6',revision:1,responses:{numPracticalResponse3:null,numPracticalResponse4:null},finalField:'numPracticalResponse4',updatedAt:null};
  await api.repo.write(row,row.etag);await openEvents(page);
  const result=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Test team 1',exact:true})}).getByRole('cell').nth(3);
  await expect(result).toHaveText('–');await expect(result.locator('details')).toHaveCount(0);
  expect(api.requests.filter(request=>request.action==='practical-content')).toHaveLength(0);
- const saved=await api.repo.get('fixture-L6-'+team.id,'team');saved.practical.responses.numPracticalResponse4={text:'0.00',value:0};
+ const saved=await fixtureTeamRow(api,'fixture-L6',team.id);saved.practical.responses.numPracticalResponse4={text:'0.00',value:0};
  await api.repo.write(saved,saved.etag);
  await page.getByLabel('Selected event').selectOption('fixture-L5');await page.getByLabel('Selected event').selectOption('fixture-L6');
  await expect(result.locator('strong')).toHaveText(/^0\.00/);await expect(result.locator('summary')).toHaveText('Working responses');
