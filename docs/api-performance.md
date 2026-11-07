@@ -2,6 +2,8 @@
 
 ## Timing
 
+After reproducing a slow action, expand Backend settings, choose Refresh backend settings, then Copy performance report. This copies formatted JSON containing current browser request/action history (including correlation IDs) and the latest loaded instance performance snapshot, with its timestamp, route percentiles, phases, storage/page/row counts, transport attempts and conflicts. Copy makes no network request. It excludes settings, event/team/school records, credentials and request/response bodies. If clipboard permission fails, a selectable text box provides the same report for manual copying. Paste the report when requesting performance analysis.
+
 Backend settings includes a teacher-only timing view. Browser history holds the latest 100 API requests and roster actions in page memory. Refresh timing view makes no network request; Refresh backend settings obtains an authenticated, no-store diagnostic snapshot. Server summaries cover only the latest 256 requests on the responding instance, not the entire deployment. There is no diagnostics polling or telemetry write to Table Storage.
 
 Browser elapsed time includes response consumption. `Server-Timing` exposes safe server durations; `X-Request-Id` links the response to allowlisted structured logs. Storage operations, pages, rows, transaction sizes, conflicts and HTTP attempts are separate metrics. Parallel durations overlap, so summed storage time is not wall-clock time. Initialisation and first requests should be compared separately from warm requests. Never add request bodies, raw keys, tokens, scientific content or arbitrary error objects to logs.

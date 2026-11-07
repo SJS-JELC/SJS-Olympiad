@@ -17,6 +17,8 @@ Pre-existing edits: .scratch/README.md, .scratch/readiness-pilot/map.md, docs/re
 
 ## Decisions-so-far
 
+- [Copy performance report](issues/02-copy-report.md) implemented and verified locally; copies browser history plus detailed instance metrics without making a request. Deployment pending.
+
 - [Local implementation accepted](issues/01-implementation.md): measurements and full validation in [verification.md](verification.md); independent review passed. Deployment/reset and hosted latency acceptance remain separate.
 
 ## Fog
